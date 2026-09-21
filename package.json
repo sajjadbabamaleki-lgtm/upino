@@ -1,0 +1,21 @@
+{
+  "name": "@upino/engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Upino financial engine — deterministic implementation of Product Foundation v3.4 (Frozen G0)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}
