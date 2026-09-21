@@ -27,7 +27,9 @@ class UpinoTokens {
 
   static const actionPrimary = Color(0xFF2F3AE8); // white label 7.5:1
   static const actionPrimaryPressed = Color(0xFF2229B8);
-  static const actionTint = Color(0xFFE8EAFE); // active nav pill
+  static const actionTint = Color(0xFFEFF1FE); // active nav pill
+  static const actionOnTint = Color(0xFF262A78); // label on the tint, 9.4:1
+  static const navIdle = Color(0xFF939399); // idle nav glyph, 3.06:1 on white
 
   /// The gradient is reserved for hero states S1 and S2 (§32.6).
   static const gradientStart = Color(0xFF2F3AE8);

@@ -279,7 +279,10 @@ class _Stat extends StatelessWidget {
 }
 
 /// The floating pill navigation. The active destination carries a tinted pill
-/// with its label; the others show icons only.
+/// with its label; the others show glyphs only.
+///
+/// The bar is padded uniformly and the row stretches, so the selected pill
+/// sits the same distance from the bar's top, bottom and outer edge.
 class UpinoNavBar extends StatelessWidget {
   const UpinoNavBar({
     required this.index,
@@ -289,6 +292,10 @@ class UpinoNavBar extends StatelessWidget {
 
   final int index;
   final ValueChanged<int> onSelect;
+
+  /// Distance from the selected pill to the bar edge, on all three sides.
+  static const inset = 9.0;
+  static const itemHeight = 46.0;
 
   static const _items = <({IconData icon, String label})>[
     (icon: Icons.home_rounded, label: 'Home'),
@@ -300,7 +307,8 @@ class UpinoNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = isDark(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      key: const Key('nav-bar-surface'),
+      padding: const EdgeInsets.all(inset),
       decoration: BoxDecoration(
         color: dark ? UpinoTokens.darkSurfaceRaised : UpinoTokens.surfaceRaised,
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
@@ -308,23 +316,32 @@ class UpinoNavBar extends StatelessWidget {
             ? null
             : const [
                 BoxShadow(
-                  color: Color(0x14000000),
-                  blurRadius: 24,
-                  offset: Offset(0, 8),
+                  color: Color(0x1A1B1F3B),
+                  blurRadius: 30,
+                  offset: Offset(0, 12),
+                ),
+                BoxShadow(
+                  color: Color(0x0F1B1F3B),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
                 ),
               ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          for (var i = 0; i < _items.length; i++)
-            _NavItem(
-              icon: _items[i].icon,
-              label: _items[i].label,
-              selected: i == index,
-              onTap: () => onSelect(i),
-            ),
-        ],
+      child: SizedBox(
+        height: itemHeight,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            for (var i = 0; i < _items.length; i++)
+              _NavItem(
+                icon: _items[i].icon,
+                label: _items[i].label,
+                selected: i == index,
+                onTap: () => onSelect(i),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -346,37 +363,39 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     final tint = dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint;
+    final onTint =
+        dark ? UpinoTokens.darkTextPrimary : UpinoTokens.actionOnTint;
+    final glyph = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
 
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: EdgeInsets.symmetric(
-          horizontal: selected ? 18 : 22,
-          vertical: 11,
-        ),
+      child: Container(
+        key: selected ? const Key('nav-selected-pill') : null,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: selected ? 18 : 26),
         decoration: BoxDecoration(
           color: selected ? tint : Colors.transparent,
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
               size: 21,
-              color: selected ? active : UpinoTokens.textTertiary,
+              color: selected ? glyph : UpinoTokens.navIdle,
             ),
             if (selected) ...[
-              const SizedBox(width: 8),
+              const SizedBox(width: 9),
               Text(
                 label,
                 style: TextStyle(
-                  color: active,
-                  fontSize: 14,
+                  color: onTint,
+                  fontSize: 14.5,
                   fontWeight: FontWeight.w700,
+                  letterSpacing: -0.2,
                 ),
               ),
             ],
