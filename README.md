@@ -1,7 +1,7 @@
 # Upino — Financial Engine
 
 Deterministic implementation of the financial engine specified in
-**Upino Product Foundation v3.4 (Frozen G0)**.
+**Upino Product Foundation v3.5 (Frozen G0)**.
 
 The engine owns every monetary calculation. It is pure: given identical inputs
 and an identical engine version it returns identical allocations, Safe-to-Spend,
@@ -15,12 +15,12 @@ and timezone boundaries; deterministic snapshots and reason codes."*
 | Gate | Requirement | State |
 |---|---|---|
 | G0 | Domain contracts internally consistent | Closed by the v3.4 specification |
-| **G1** | **T01–T12 executable and passing** | **Met — all 35 fixtures pass** |
+| **G1** | **T01–T12 executable and passing** | **Met — all 36 fixtures pass** |
 | G2 | Vertical slice end to end | Not started (needs a client) |
 
 ```
 npm install
-npm test        # 52 tests: 35 acceptance fixtures, 15 invariants, 2 divergence
+npm test        # 53 tests: 36 acceptance fixtures, 15 invariants, 2 formula guards
 npm run typecheck
 ```
 
@@ -52,16 +52,15 @@ purchases reserve their full outstanding amount at P3; the contractual minimum
 is tracked separately and only to the extent it exceeds the reserve, so the
 overlap is never reserved twice (§9, INV-16, fixtures T34/T35).
 
-### One deliberate divergence from the written formula
+### The mandatory funding gap is summed per claim
 
-§13 states the mandatory funding gap as `max(0, Σ(required mandatory) − liquidity)`.
-The engine instead sums the per-claim shortfalls of the mandatory classes.
+§13 defines `mandatory_funding_gap` as the sum of what each mandatory claim
+still needs after allocation, across P0–P5 and P7.
 
-The two agree on every fixture in §24. They are not equivalent in general: the
-P6 buffer is non-mandatory but sits *above* P7 hard goals in the waterfall, so
-it can absorb liquidity a hard goal then cannot reach. In that case the written
-formula reports no gap while a mandatory claim is genuinely short. The
-shortfall-based form is correct there and identical everywhere else.
-
-`tests/spec-divergence.test.ts` pins both behaviours. Resolving this is a
-specification decision, not an implementation one.
+It is not a single subtraction of mandatory totals from liquidity. The P6
+buffer is non-mandatory but sits *above* P7 hard goals in the waterfall, so a
+funded buffer can absorb liquidity a hard goal then cannot reach. A
+subtraction would report no gap there while a hard commitment is genuinely
+underfunded. Fixture T36 covers exactly that case, and
+`tests/gap-formula.test.ts` pins the superseded form so it cannot be
+reintroduced as a simplification.

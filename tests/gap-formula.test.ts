@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { allocate, format, specFormMandatoryGap, type AllocationInput } from '../src/index.js';
+import { allocate, format, supersededSubtractionGap, type AllocationInput } from '../src/index.js';
 import { claim, eur, P, TODAY, TOMORROW } from './helpers.js';
 
 /**
- * §13 states mandatory_funding_gap as
+ * §13 defines mandatory_funding_gap as the per-claim shortfall sum across the
+ * mandatory classes. Before v3.5 it was written as a single subtraction,
  *
- *   max(0, Σ(required mandatory allocations at P0,P1,P2,P3,P4,P5,P7) − liquidity)
+ *   max(0, Σ(required mandatory) − liquidity)
  *
- * The engine instead sums the per-claim shortfalls of those classes. The two
- * agree on every fixture in §24, but they are not equivalent in general, and
- * the difference is a real reporting gap rather than a style choice.
+ * which agrees on most inputs but silently under-reports in the case below.
+ * These tests pin why the subtraction form was replaced, so it cannot be
+ * reintroduced as a "simplification".
  */
-describe('§13 mandatory_funding_gap — engine form vs the literal formula', () => {
+describe('§13 mandatory_funding_gap — current form vs the superseded subtraction', () => {
   const base = (claims: AllocationInput['claims'], liquidity: string): AllocationInput => ({
     currency: 'EUR',
     liquidity: eur(liquidity),
@@ -30,11 +31,11 @@ describe('§13 mandatory_funding_gap — engine form vs the literal formula', ()
     ];
     for (const [liquidity, claims] of cases) {
       const input = base(claims, liquidity);
-      expect(format(allocate(input).mandatoryFundingGap)).toBe(format(specFormMandatoryGap(input)));
+      expect(format(allocate(input).mandatoryFundingGap)).toBe(format(supersededSubtractionGap(input)));
     }
   });
 
-  it('they diverge when the P6 buffer absorbs liquidity a P7 hard goal then cannot reach', () => {
+  it('T36 — the subtraction form hides a hard-goal shortfall the buffer caused', () => {
     // The buffer is non-mandatory but sits above hard goals in the waterfall,
     // so it can starve a mandatory claim without the subtraction form noticing.
     const input = base(
@@ -46,11 +47,13 @@ describe('§13 mandatory_funding_gap — engine form vs the literal formula', ()
     expect(format(result.allocations.find((a) => a.claimId === 'buffer')!.allocated)).toBe('800.00 EUR');
     expect(format(result.allocations.find((a) => a.claimId === 'goal')!.allocated)).toBe('200.00 EUR');
 
-    // The hard goal is genuinely €200 short and the engine reports it.
+    // The hard goal is genuinely €200 short, and §13 as written since v3.5
+    // reports it.
     expect(format(result.mandatoryFundingGap)).toBe('200.00 EUR');
+    expect(format(result.bufferShortfall)).toBe('0.00 EUR');
 
-    // The literal §13 formula reports nothing, because Σ mandatory (€400) is
-    // comfortably under liquidity (€1,000).
-    expect(format(specFormMandatoryGap(input))).toBe('0.00 EUR');
+    // The superseded subtraction reported nothing, because Σ mandatory (€400)
+    // is comfortably under liquidity (€1,000).
+    expect(format(supersededSubtractionGap(input))).toBe('0.00 EUR');
   });
 });

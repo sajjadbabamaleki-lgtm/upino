@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   allocate, computePlan, contributionSchedule, format, isNegative, newReservation,
-  release, settle, specFormMandatoryGap, type Claim,
+  release, settle, type Claim,
 } from '../src/index.js';
 import {
   allocatedAt, BANK, claim, ev, eur, income, LOAN, NOW, opening, P, plan,

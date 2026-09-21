@@ -121,16 +121,14 @@ export function allocate(input: AllocationInput): AllocationResult {
   const allocatedBeforeDiscretionary = sum(before.map((a) => a.allocated), code);
 
   /**
-   * mandatory_funding_gap (§13) is the unfunded part of the mandatory classes
-   * P0–P5 and P7. P6 buffer and P8 flexible shortfalls are reported separately
-   * and never inflate it.
+   * mandatory_funding_gap (§13): the sum of what each mandatory claim still
+   * needs after allocation, across P0–P5 and P7. P6 buffer and P8 flexible
+   * shortfalls are reported separately and never inflate it.
    *
-   * The specification states this as Σ(required mandatory) − liquidity. That
-   * form agrees with every fixture but under-reports where a non-mandatory
-   * class funded earlier in the waterfall — P6 buffer sits above P7 hard goals
-   * — absorbs liquidity a mandatory claim then cannot reach. Summing the
-   * per-claim shortfalls is equivalent on every fixture and correct in that
-   * case too, so it is what the engine computes. See tests/spec-divergence.
+   * Summed per claim rather than by subtracting one mandatory total from total
+   * liquidity, because P6 sits above P7 in the waterfall: a funded buffer can
+   * absorb liquidity a hard goal then cannot reach, and a single subtraction
+   * would report no gap while a hard commitment is underfunded (fixture T36).
    */
   const mandatoryFundingGap = sum(
     allocations.filter((a) => isMandatory(a.priority)).map((a) => a.shortfall),
@@ -152,8 +150,14 @@ export function allocate(input: AllocationInput): AllocationResult {
   };
 }
 
-/** Literal form of the §13 formula, kept so tests can assert the two agree. */
-export function specFormMandatoryGap(input: AllocationInput): Money {
+/**
+ * The subtraction form the specification carried before v3.5. Superseded and
+ * exported only so a test can pin why it was replaced — never call it to
+ * compute a published gap.
+ *
+ * @deprecated Use the `mandatoryFundingGap` returned by {@link allocate}.
+ */
+export function supersededSubtractionGap(input: AllocationInput): Money {
   const requiredMandatory = sum(
     input.claims
       .filter((c) => isMandatory(effectivePriority(c, input.today)))

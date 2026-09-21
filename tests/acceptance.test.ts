@@ -479,6 +479,22 @@ describe('§24 Acceptance Test Vectors', () => {
     expect(format(s.mandatoryFundingGap)).toBe('150.00 EUR');
     expect(s.reasonCodes).toContain('CARD_SPEND_FUNDING_GAP');
   });
+
+  it('T36 — a funded buffer cannot hide an underfunded hard goal', () => {
+    const s = plan({
+      openingBalances: opening([BANK, '1000.00']),
+      claims: [
+        claim('buffer', P.P6_BUFFER, '800.00'),
+        claim('goal', P.P7_HARD_GOAL, '400.00'),
+      ],
+    });
+    expect(format(allocatedAt(s, P.P6_BUFFER))).toBe('800.00 EUR');
+    expect(format(allocatedAt(s, P.P7_HARD_GOAL))).toBe('200.00 EUR');
+    expect(format(s.safeToSpendNow)).toBe('0.00 EUR');
+    expect(format(s.mandatoryFundingGap)).toBe('200.00 EUR');
+    expect(format(s.bufferShortfall)).toBe('0.00 EUR');
+    expect(s.reasonCodes).toContain('GOAL_AT_RISK');
+  });
 });
 
 const replacer = (_k: string, v: unknown): unknown => (typeof v === 'bigint' ? v.toString() : v);
