@@ -88,6 +88,7 @@ class PlanInput {
 class PlanSnapshot {
   const PlanSnapshot({
     required this.engineVersion,
+    required this.computedAt,
     required this.currency,
     required this.today,
     required this.safeToSpendNow,
@@ -107,6 +108,11 @@ class PlanSnapshot {
   });
 
   final String engineVersion;
+
+  /// The instant this snapshot was computed for. Presentation derives ages
+  /// from this, never from the wall clock, so a snapshot always renders
+  /// consistently with the state it describes.
+  final DateTime computedAt;
   final String currency;
   final LocalDate today;
   final Money safeToSpendNow;
@@ -123,6 +129,15 @@ class PlanSnapshot {
   final Money trustedAllocatableLiquidity;
   final LedgerState ledger;
   final DateTime? oldestConfirmationAt;
+
+  /// Whole days since the oldest required balance confirmation, floored at
+  /// zero. Null when no balance has been confirmed yet.
+  int? get balanceAgeInDays {
+    final confirmed = oldestConfirmationAt;
+    if (confirmed == null) return null;
+    final days = computedAt.difference(confirmed).inDays;
+    return days < 0 ? 0 : days;
+  }
 
   bool get hasMandatoryGap => mandatoryFundingGap.minor > 0;
 
@@ -279,6 +294,7 @@ PlanSnapshot computePlan(PlanInput input) {
 
   return PlanSnapshot(
     engineVersion: engineVersion,
+    computedAt: input.now,
     currency: currency,
     today: today,
     safeToSpendNow: safeToSpendNow,

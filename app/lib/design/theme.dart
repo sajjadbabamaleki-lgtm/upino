@@ -15,7 +15,7 @@ const moneyFeatures = <FontFeature>[
   FontFeature.liningFigures(),
 ];
 
-ThemeData buildTheme({required Brightness brightness}) {
+ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
   final dark = brightness == Brightness.dark;
 
   final page = dark ? UpinoTokens.darkSurfacePage : UpinoTokens.surfacePage;
@@ -30,6 +30,9 @@ ThemeData buildTheme({required Brightness brightness}) {
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    // Set here rather than on textTheme alone, so component styles such as
+    // button labels inherit it too.
+    fontFamily: fontFamily,
     scaffoldBackgroundColor: page,
     colorScheme: ColorScheme.fromSeed(
       seedColor: UpinoTokens.actionPrimary,
@@ -81,7 +84,13 @@ ThemeData buildTheme({required Brightness brightness}) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
         ),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        // The family is repeated here because an explicit component textStyle
+        // wins over ThemeData.fontFamily and would otherwise fall back.
+        textStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          fontFamily: fontFamily,
+        ),
       ),
     ),
   );

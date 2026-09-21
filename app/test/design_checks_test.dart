@@ -83,6 +83,8 @@ bool usesGradient(WidgetTester tester) => paintedColors(tester)
     .contains(UpinoTokens.gradientStart);
 
 void main() {
+  _ageRegression();
+
   group('§32.10 Design acceptance checks', () {
     testWidgets('D01 — trusted, STS positive: gradient hero, no accent', (t) async {
       final s = snap(claims: [claim('rent', Priority.p2HardObligation, '1200.00')]);
@@ -306,6 +308,28 @@ void main() {
         ),
       ),);
       expect(paintedColors(t), contains(UpinoTokens.darkGradientStart));
+    });
+  });
+}
+
+// Regression: the freshness line once derived its age from the wall clock
+// rather than the snapshot, so a snapshot computed for a fixed instant
+// rendered "-1 days ago".
+void _ageRegression() {
+  group('§32.6 freshness line reads the snapshot clock', () {
+    test('age comes from the snapshot, not the wall clock', () {
+      final s = snap(oldestConfirmationAt: now.subtract(const Duration(days: 8)));
+      expect(s.computedAt, now);
+      expect(s.balanceAgeInDays, 8);
+    });
+
+    test('a confirmation newer than the snapshot never reads negative', () {
+      final s = snap(oldestConfirmationAt: now.add(const Duration(days: 3)));
+      expect(s.balanceAgeInDays, 0);
+    });
+
+    test('no confirmation yet reads as unknown, not zero', () {
+      expect(snap().balanceAgeInDays, isNull);
     });
   });
 }

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../design/theme.dart';
 import '../design/tokens.dart';
+import '../engine/clock.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
 
@@ -293,17 +294,17 @@ class _FreshnessRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final confirmedAt = snapshot.oldestConfirmationAt;
-    final days = confirmedAt == null
-        ? null
-        : DateTime.now().toUtc().difference(confirmedAt).inDays;
+    final days = snapshot.balanceAgeInDays;
     return Row(
       children: [
         Expanded(
           child: Text(
-            days == null
-                ? 'Balance not confirmed yet'
-                : 'Balance confirmed $days days ago',
+            switch (days) {
+              null => 'Balance not confirmed yet',
+              0 => 'Balance confirmed today',
+              1 => 'Balance confirmed yesterday',
+              _ => 'Balance confirmed $days days ago',
+            },
             style: const TextStyle(color: Colors.white60, fontSize: 13),
           ),
         ),
@@ -364,4 +365,11 @@ class _Figure extends StatelessWidget {
       );
 }
 
-String _formatDate(Object date) => date.toString();
+const _months = <String>[
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/// Dates read as words. The engine's own `toString` is an ISO string meant
+/// for logs and fixtures, never for the person using the app.
+String _formatDate(LocalDate date) => '${date.day} ${_months[date.month - 1]}';
