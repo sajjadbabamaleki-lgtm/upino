@@ -27,6 +27,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static const _navBottomGap = 22.0;
+  static const _navHeight = UpinoNavBar.itemHeight + UpinoNavBar.inset * 2;
+
   int _tab = 0;
 
   AppState get state => widget.state;
@@ -138,9 +141,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: NavScrim(navHeight: _navHeight, bottomGap: _navBottomGap),
+          ),
+          Positioned(
             left: UpinoTokens.gutter,
             right: UpinoTokens.gutter,
-            bottom: 22,
+            bottom: _navBottomGap,
             child: UpinoNavBar(
               index: _tab,
               onSelect: (i) => setState(() => _tab = i),

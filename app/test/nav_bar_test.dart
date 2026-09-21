@@ -83,14 +83,44 @@ void main() {
           .widget<Container>(find.byKey(const Key('nav-bar-surface')))
           .decoration! as BoxDecoration;
 
-  testWidgets('the bar carries a soft shadow in light mode only', (t) async {
+  testWidgets('the bar casts no shadow in either mode', (t) async {
     await pumpBar(t, 2, Brightness.light);
-    final light = barDecoration(t);
-    expect(light.boxShadow, isNotNull);
-    expect(light.boxShadow!.first.blurRadius, greaterThanOrEqualTo(24));
+    expect(barDecoration(t).boxShadow, isNull);
 
     await pumpBar(t, 2, Brightness.dark);
     expect(barDecoration(t).boxShadow, isNull);
+  });
+
+  testWidgets('the scrim fades from nothing into the page colour', (t) async {
+    const scrim = NavScrim(navHeight: 64, bottomGap: 22);
+    await t.pumpWidget(
+      MaterialApp(
+        theme: buildTheme(brightness: Brightness.light),
+        home: const Scaffold(
+          body: Align(alignment: Alignment.bottomCenter, child: scrim),
+        ),
+      ),
+    );
+
+    final decorated = t.widget<DecoratedBox>(
+      find.descendant(of: find.byType(NavScrim), matching: find.byType(DecoratedBox)),
+    );
+    final gradient =
+        (decorated.decoration as BoxDecoration).gradient! as LinearGradient;
+
+    expect(gradient.begin, Alignment.topCenter);
+    expect(gradient.end, Alignment.bottomCenter);
+    expect(gradient.colors.first.a, 0, reason: 'the top edge must be invisible');
+    expect(gradient.colors.last, UpinoTokens.surfacePage);
+
+    // Solid page colour from the bar's top edge down, transparent 10 above it.
+    expect(scrim.height, 10 + 64 + 22);
+    expect(gradient.stops![1], closeTo(10 / scrim.height, 0.0001));
+  });
+
+  testWidgets('the scrim reaches exactly 10 above the bar on Home', (t) async {
+    final scrim = const NavScrim(navHeight: 64, bottomGap: 22);
+    expect(scrim.height - scrim.navHeight - scrim.bottomGap, 10);
   });
 
   test('the idle glyph clears the 3:1 minimum for a UI component', () {

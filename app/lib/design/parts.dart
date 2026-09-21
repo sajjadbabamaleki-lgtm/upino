@@ -312,20 +312,6 @@ class UpinoNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: dark ? UpinoTokens.darkSurfaceRaised : UpinoTokens.surfaceRaised,
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-        boxShadow: dark
-            ? null
-            : const [
-                BoxShadow(
-                  color: Color(0x1A1B1F3B),
-                  blurRadius: 30,
-                  offset: Offset(0, 12),
-                ),
-                BoxShadow(
-                  color: Color(0x0F1B1F3B),
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
-                ),
-              ],
       ),
       child: SizedBox(
         height: itemHeight,
@@ -400,6 +386,49 @@ class _NavItem extends StatelessWidget {
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Sits behind the floating navigation and fades scrolling content into the
+/// page. It replaces a drop shadow: the bar reads as separated because what
+/// passes under it disappears, not because it is outlined.
+///
+/// The gradient starts fully transparent [fadeHeight] above the bar's top
+/// edge and is solid page colour from that edge down.
+class NavScrim extends StatelessWidget {
+  const NavScrim({
+    required this.navHeight,
+    required this.bottomGap,
+    this.fadeHeight = 10,
+    super.key,
+  });
+
+  final double navHeight;
+  final double bottomGap;
+  final double fadeHeight;
+
+  double get height => fadeHeight + navHeight + bottomGap;
+
+  @override
+  Widget build(BuildContext context) {
+    final page = isDark(context)
+        ? UpinoTokens.darkSurfacePage
+        : UpinoTokens.surfacePage;
+    return IgnorePointer(
+      child: SizedBox(
+        height: height,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [page.withValues(alpha: 0), page, page],
+              stops: [0, fadeHeight / height, 1],
+            ),
+          ),
         ),
       ),
     );
