@@ -64,3 +64,40 @@ subtraction would report no gap there while a hard commitment is genuinely
 underfunded. Fixture T36 covers exactly that case, and
 `tests/gap-formula.test.ts` pins the superseded form so it cannot be
 reintroduced as a simplification.
+
+## Flutter client (`app/`)
+
+The G2 vertical slice: onboarding → first plan → Home → Quick Expense →
+immediate recalculation (§18).
+
+```
+cd app
+flutter pub get
+flutter test      # 52 tests
+flutter analyze
+```
+
+### Two engines, one fixture table
+
+`app/lib/engine/` is a Dart port of `src/`. Duplicating money logic is a
+drift risk, so both implementations run the **same** §24 fixture table —
+`tests/acceptance.test.ts` and `app/test/acceptance_test.dart` assert the same
+36 rows with the same expected values. A divergence fails one suite
+immediately.
+
+The port exists because Quick Expense targets roughly three seconds (§18) and
+the product serves cash users with intermittent connectivity, so the decision
+number is computed on-device rather than behind a network call.
+
+| Suite | Covers |
+|---|---|
+| `app/test/acceptance_test.dart` | §24 fixtures T01–T36 |
+| `app/test/design_checks_test.dart` | §32.10 design checks D01–D12 |
+| `app/test/vertical_slice_test.dart` | §18 end to end, through the real widgets |
+
+### Timezone
+
+The Dart core SDK ships no IANA database, so `LocalDate.at` takes the UTC
+offset in effect at that instant rather than a zone name. Local-midnight
+semantics are preserved (fixture T12); wiring a real zone database is a
+client concern, not an engine one.
