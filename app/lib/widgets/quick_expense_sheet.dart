@@ -1,28 +1,37 @@
-/// Quick Expense, §18 step 4: amount → reason → save.
+/// Quick Expense, §18 step 4: amount → save.
 ///
 /// §18 targets roughly three seconds on the normal path, so the keypad opens
-/// focused, the reason is optional and nothing else stands between the user
-/// and Save.
+/// focused and nothing stands between the user and Save.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../engine/money.dart';
 
 class QuickExpenseSheet extends StatefulWidget {
-  const QuickExpenseSheet({required this.currency, super.key});
+  const QuickExpenseSheet({
+    required this.currency,
+    this.title = 'How much did you spend?',
+    super.key,
+  });
 
   final String currency;
+  final String title;
 
-  static Future<Money?> show(BuildContext context, String currency) =>
+  static Future<Money?> show(
+    BuildContext context,
+    String currency, {
+    String title = 'How much did you spend?',
+  }) =>
       showModalBottomSheet<Money>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (_) => QuickExpenseSheet(currency: currency),
+        builder: (_) => QuickExpenseSheet(currency: currency, title: title),
       );
 
   @override
@@ -65,24 +74,17 @@ class _QuickExpenseSheetState extends State<QuickExpenseSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
+    final dark = isDark(context);
     final amount = _parsed;
 
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(
-          UpinoTokens.gutter,
-          12,
-          UpinoTokens.gutter,
-          UpinoTokens.gutter,
-        ),
+        padding: const EdgeInsets.fromLTRB(22, 12, 22, 22),
         decoration: BoxDecoration(
           color: dark ? UpinoTokens.darkSurfaceRaised : UpinoTokens.surfaceRaised,
           borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(UpinoTokens.radiusCard + 4),
+            top: Radius.circular(UpinoTokens.radiusHero),
           ),
         ),
         child: SafeArea(
@@ -93,53 +95,63 @@ class _QuickExpenseSheetState extends State<QuickExpenseSheet> {
             children: [
               Center(
                 child: Container(
-                  width: 40,
+                  width: 42,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: dark
-                        ? UpinoTokens.darkBorderSubtle
-                        : UpinoTokens.borderSubtle,
+                    color: borderColor(context),
                     borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Text('How much did you spend?',
-                  style: theme.textTheme.headlineMedium,),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _controller,
-                focusNode: _focus,
-                autofocus: true,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                ],
-                onChanged: (_) => setState(() {}),
-                onSubmitted: (_) => _save(),
-                style: theme.textTheme.displayLarge?.copyWith(
-                  fontSize: 44,
-                  fontFeatures: moneyFeatures,
-                ),
-                decoration: InputDecoration(
-                  prefixText: Currency.of(widget.currency).symbol,
-                  prefixStyle: theme.textTheme.displayLarge?.copyWith(
-                    fontSize: 44,
-                    color: dark
-                        ? UpinoTokens.darkTextTertiary
-                        : UpinoTokens.textTertiary,
-                  ),
-                  hintText: '0.00',
-                  border: InputBorder.none,
+              const SizedBox(height: 22),
+              Text(widget.title, style: theme.textTheme.headlineMedium),
+              const SizedBox(height: 18),
+              UpinoCard(
+                color: sunkenColor(context),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      Currency.of(widget.currency).symbol,
+                      style: theme.textTheme.displayMedium
+                          ?.copyWith(color: UpinoTokens.textTertiary),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        focusNode: _focus,
+                        autofocus: true,
+                        keyboardType:
+                            const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        ],
+                        onChanged: (_) => setState(() {}),
+                        onSubmitted: (_) => _save(),
+                        style: theme.textTheme.displayMedium
+                            ?.copyWith(fontFeatures: moneyFeatures),
+                        decoration: InputDecoration(
+                          hintText: '0.00',
+                          hintStyle: theme.textTheme.displayMedium
+                              ?.copyWith(color: UpinoTokens.textTertiary),
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 18),
               FilledButton(
                 onPressed: amount == null ? null : _save,
                 child: const Text('Save'),
               ),
-              const SizedBox(height: 4),
             ],
           ),
         ),

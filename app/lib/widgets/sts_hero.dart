@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../engine/clock.dart';
@@ -31,28 +32,27 @@ class StsHero extends StatelessWidget {
     required this.snapshot,
     required this.onConfirmBalance,
     required this.onResolve,
+    this.onQuickExpense,
     super.key,
   });
 
   final PlanSnapshot snapshot;
   final VoidCallback onConfirmBalance;
   final VoidCallback onResolve;
+  final VoidCallback? onQuickExpense;
 
   @override
-  Widget build(BuildContext context) {
-    final state = heroStateFor(snapshot);
-    return switch (state) {
-      HeroState.trusted || HeroState.degraded => _GradientHero(
-          snapshot: snapshot,
-          degraded: state == HeroState.degraded,
-          onConfirmBalance: onConfirmBalance,
-        ),
-      HeroState.fundingGap =>
-        _GapHero(snapshot: snapshot, onResolve: onResolve),
-      HeroState.reviewRequired =>
-        _ReviewHero(snapshot: snapshot, onConfirmBalance: onConfirmBalance),
-    };
-  }
+  Widget build(BuildContext context) => switch (heroStateFor(snapshot)) {
+        HeroState.trusted || HeroState.degraded => _GradientHero(
+            snapshot: snapshot,
+            degraded: heroStateFor(snapshot) == HeroState.degraded,
+            onConfirmBalance: onConfirmBalance,
+            onQuickExpense: onQuickExpense,
+          ),
+        HeroState.fundingGap => _GapHero(snapshot: snapshot, onResolve: onResolve),
+        HeroState.reviewRequired =>
+          _ReviewHero(snapshot: snapshot, onConfirmBalance: onConfirmBalance),
+      };
 }
 
 /// States S1 and S2. The fill is identical in both: age is de-emphasis, not
@@ -63,18 +63,20 @@ class _GradientHero extends StatelessWidget {
     required this.snapshot,
     required this.degraded,
     required this.onConfirmBalance,
+    required this.onQuickExpense,
   });
 
   final PlanSnapshot snapshot;
   final bool degraded;
   final VoidCallback onConfirmBalance;
+  final VoidCallback? onQuickExpense;
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = isDark(context);
     return _HeroShell(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -83,25 +85,28 @@ class _GradientHero extends StatelessWidget {
               : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
         ),
       ),
+      decoration2: const DotField(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _HeroLabel('Safe to spend now'),
-          const SizedBox(height: 10),
+          const UpinoBadge(
+            'Safe to spend now',
+            background: Color(0x2EFFFFFF),
+            foreground: UpinoTokens.textOnInverse,
+          ),
+          const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
           const SizedBox(height: 14),
-          _HeroSupport(
-            'Until ${_formatDate(snapshot.decisionHorizonEnd)}'
+          _HeroMeta(
+            'Until ${formatDate(snapshot.decisionHorizonEnd)}'
             '${UpinoTokens.separator}'
-            '${snapshot.protectedTotal.display()} protected',
+            '${snapshot.protectedTotal.display()} set aside',
           ),
-          if (degraded) ...[
-            const SizedBox(height: 16),
-            _FreshnessRow(
-              snapshot: snapshot,
-              onConfirmBalance: onConfirmBalance,
-            ),
-          ],
+          const SizedBox(height: 18),
+          if (degraded)
+            _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
+          else if (onQuickExpense != null)
+            _HeroButton(label: 'Record a spend', onPressed: onQuickExpense!),
         ],
       ),
     );
@@ -121,40 +126,59 @@ class _GapHero extends StatelessWidget {
     final top = snapshot.topUnfundedClaim;
     return _HeroShell(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
         color: UpinoTokens.surfaceInverse,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _HeroLabel('Safe to spend now'),
-          const SizedBox(height: 10),
-          _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              const Icon(Icons.error_outline,
-                  size: 18, color: UpinoTokens.criticalOnInverse,),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  '${snapshot.mandatoryFundingGap.display()} short of what you '
-                  'have committed',
-                  style: const TextStyle(
-                    color: UpinoTokens.criticalOnInverse,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    fontFeatures: moneyFeatures,
-                  ),
-                ),
-              ),
-            ],
+          const UpinoBadge(
+            'Safe to spend now',
+            background: Color(0x1FFFFFFF),
+            foreground: UpinoTokens.textOnInverse,
           ),
-          if (top != null) ...[
-            const SizedBox(height: 6),
-            _HeroSupport('${top.label}${UpinoTokens.separator}'
-                '${top.shortfall.display()} unfunded'),
-          ],
+          const SizedBox(height: 16),
+          _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
+          const SizedBox(height: 18),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: const Color(0x1FFF8A80),
+              borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.error_outline_rounded,
+                        size: 19, color: UpinoTokens.criticalOnInverse,),
+                    const SizedBox(width: 9),
+                    Expanded(
+                      child: Text(
+                        '${snapshot.mandatoryFundingGap.display()} short',
+                        style: const TextStyle(
+                          color: UpinoTokens.criticalOnInverse,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.3,
+                          fontFeatures: moneyFeatures,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (top != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    '${top.label}${UpinoTokens.separator}'
+                    '${top.shortfall.display()} unfunded',
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ],
+              ],
+            ),
+          ),
           const SizedBox(height: 18),
           _HeroButton(label: 'See what is short', onPressed: onResolve),
         ],
@@ -174,64 +198,35 @@ class _ReviewHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(UpinoTokens.cardPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
-        color: dark ? UpinoTokens.darkSurfaceCard : UpinoTokens.surfaceCard,
-        border: Border.all(
-          color: dark ? UpinoTokens.darkBorderSubtle : UpinoTokens.borderSubtle,
-        ),
-      ),
+    final dark = isDark(context);
+    return UpinoCard(
+      radius: UpinoTokens.radiusHero,
+      padding: const EdgeInsets.all(22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Safe to spend', style: theme.textTheme.bodySmall),
-          const SizedBox(height: 6),
+          UpinoBadge(
+            'Not up to date',
+            background: dark
+                ? UpinoTokens.darkCriticalSurface
+                : UpinoTokens.criticalSurface,
+            foreground: dark ? UpinoTokens.darkCritical : UpinoTokens.critical,
+          ),
+          const SizedBox(height: 14),
           Text(
             snapshot.safeToSpendNow.display(),
-            style: theme.textTheme.headlineMedium?.copyWith(
+            style: theme.textTheme.displayMedium?.copyWith(
               color: dark
                   ? UpinoTokens.darkTextSecondary
                   : UpinoTokens.textSecondary,
-              fontFeatures: moneyFeatures,
             ),
           ),
-          const SizedBox(height: 4),
-          Text('Not up to date', style: theme.textTheme.bodySmall),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: dark
-                  ? UpinoTokens.darkCriticalSurface
-                  : UpinoTokens.criticalSurface,
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.error_outline,
-                  size: 18,
-                  color: dark ? UpinoTokens.darkCritical : UpinoTokens.critical,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Check your balance so this number can be trusted again.',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: dark
-                          ? UpinoTokens.darkTextPrimary
-                          : UpinoTokens.textPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 6),
+          Text(
+            'Check your balance so this number can be trusted again.',
+            style: theme.textTheme.bodySmall,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           FilledButton(
             onPressed: onConfirmBalance,
             child: const Text('Confirm balance'),
@@ -243,44 +238,45 @@ class _ReviewHero extends StatelessWidget {
 }
 
 class _HeroShell extends StatelessWidget {
-  const _HeroShell({required this.decoration, required this.child});
+  const _HeroShell({
+    required this.decoration,
+    required this.child,
+    this.decoration2,
+  });
 
   final BoxDecoration decoration;
   final Widget child;
+  final Widget? decoration2;
 
   @override
-  Widget build(BuildContext context) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(UpinoTokens.cardPadding + 4),
-        decoration: decoration,
-        child: child,
-      );
-}
-
-class _HeroLabel extends StatelessWidget {
-  const _HeroLabel(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Text(
-        text.toUpperCase(),
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 12,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.1,
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
+        child: Container(
+          width: double.infinity,
+          decoration: decoration,
+          child: Stack(
+            children: [
+              if (decoration2 != null)
+                Positioned(top: -6, right: -6, child: decoration2!),
+              Padding(padding: const EdgeInsets.all(22), child: child),
+            ],
+          ),
         ),
       );
 }
 
-class _HeroSupport extends StatelessWidget {
-  const _HeroSupport(this.text);
+class _HeroMeta extends StatelessWidget {
+  const _HeroMeta(this.text);
   final String text;
 
   @override
   Widget build(BuildContext context) => Text(
         text,
-        style: const TextStyle(color: Colors.white70, fontSize: 13.5),
+        style: const TextStyle(
+          color: Colors.white70,
+          fontSize: 13.5,
+          fontFeatures: moneyFeatures,
+        ),
       );
 }
 
@@ -308,20 +304,30 @@ class _FreshnessRow extends StatelessWidget {
             style: const TextStyle(color: Colors.white60, fontSize: 13),
           ),
         ),
-        TextButton(
-          onPressed: onConfirmBalance,
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            visualDensity: VisualDensity.compact,
+        GestureDetector(
+          onTap: onConfirmBalance,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+            decoration: BoxDecoration(
+              color: const Color(0x26FFFFFF),
+              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+            ),
+            child: const Text(
+              'Confirm',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
-          child: const Text('Confirm'),
         ),
       ],
     );
   }
 }
 
+/// The white pill that sits inside a coloured hero.
 class _HeroButton extends StatelessWidget {
   const _HeroButton({required this.label, required this.onPressed});
 
@@ -335,8 +341,8 @@ class _HeroButton extends StatelessWidget {
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: Colors.white,
-            foregroundColor: UpinoTokens.surfaceInverse,
-            minimumSize: const Size.fromHeight(50),
+            foregroundColor: UpinoTokens.actionPrimary,
+            minimumSize: const Size.fromHeight(52),
           ),
           child: Text(label),
         ),
@@ -372,4 +378,4 @@ const _months = <String>[
 
 /// Dates read as words. The engine's own `toString` is an ISO string meant
 /// for logs and fixtures, never for the person using the app.
-String _formatDate(LocalDate date) => '${date.day} ${_months[date.month - 1]}';
+String formatDate(LocalDate date) => '${date.day} ${_months[date.month - 1]}';

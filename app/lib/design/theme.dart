@@ -1,7 +1,6 @@
 /// Flutter theme assembled from the §32 tokens.
 library;
 
-
 import 'package:flutter/material.dart';
 
 import 'tokens.dart';
@@ -27,13 +26,22 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
       dark ? UpinoTokens.darkTextSecondary : UpinoTokens.textSecondary;
   final critical = dark ? UpinoTokens.darkCritical : UpinoTokens.critical;
 
+  TextStyle heading(double size, {double spacing = -0.8}) => TextStyle(
+        fontSize: size,
+        fontWeight: FontWeight.w800,
+        letterSpacing: spacing,
+        height: 1.15,
+        color: textPrimary,
+        fontFamily: fontFamily,
+      );
+
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    scaffoldBackgroundColor: page,
     // Set here rather than on textTheme alone, so component styles such as
     // button labels inherit it too.
     fontFamily: fontFamily,
-    scaffoldBackgroundColor: page,
     colorScheme: ColorScheme.fromSeed(
       seedColor: UpinoTokens.actionPrimary,
       brightness: brightness,
@@ -44,43 +52,47 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
       error: critical,
       onSurface: textPrimary,
     ),
-    cardTheme: CardThemeData(
-      color: card,
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
-      ),
-    ),
     textTheme: TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 52,
-        height: 1.05,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -1.5,
-        color: textPrimary,
-        fontFeatures: moneyFeatures,
-      ),
-      headlineMedium: TextStyle(
-        fontSize: 26,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.5,
-        color: textPrimary,
-      ),
+      displayLarge: heading(50, spacing: -2).copyWith(fontFeatures: moneyFeatures),
+      displayMedium: heading(38, spacing: -1.4).copyWith(fontFeatures: moneyFeatures),
+      headlineLarge: heading(30, spacing: -1),
+      headlineMedium: heading(25),
+      headlineSmall: heading(22, spacing: -0.5).copyWith(fontFeatures: moneyFeatures),
+      titleLarge: heading(19, spacing: -0.4),
       titleMedium: TextStyle(
-        fontSize: 17,
-        fontWeight: FontWeight.w600,
+        fontSize: 15.5,
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.2,
         color: textPrimary,
+        fontFamily: fontFamily,
       ),
-      bodyMedium: TextStyle(fontSize: 15, height: 1.4, color: textPrimary),
-      bodySmall: TextStyle(fontSize: 13, height: 1.35, color: textSecondary),
-      labelLarge: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      bodyMedium: TextStyle(
+        fontSize: 14.5,
+        height: 1.4,
+        color: textPrimary,
+        fontFamily: fontFamily,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 13,
+        height: 1.35,
+        color: textSecondary,
+        fontFamily: fontFamily,
+      ),
+      labelLarge: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w700,
+        fontFamily: fontFamily,
+      ),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: primary,
         foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(54),
+        disabledBackgroundColor:
+            dark ? UpinoTokens.darkSurfaceSunken : UpinoTokens.surfaceSunken,
+        disabledForegroundColor: UpinoTokens.textTertiary,
+        minimumSize: const Size.fromHeight(56),
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
         ),
@@ -88,7 +100,7 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
         // wins over ThemeData.fontFamily and would otherwise fall back.
         textStyle: TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
           fontFamily: fontFamily,
         ),
       ),

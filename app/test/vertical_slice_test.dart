@@ -29,6 +29,13 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  /// The optional commitments are collapsed by default, so the test opens
+  /// them the way a person would.
+  Future<void> openCommitments(WidgetTester tester) async {
+    await tester.tap(find.text('Add your commitments'));
+    await tester.pumpAndSettle();
+  }
+
   /// Fields are addressed by name, so the test says what it means and does
   /// not silently pass when the form is reordered.
   Future<void> enterAmount(WidgetTester tester, String field, String value) async {
@@ -54,6 +61,7 @@ void main() {
 
     await enterAmount(tester, 'balance', '3000.00');
     await enterAmount(tester, 'income', '2000.00');
+    await openCommitments(tester);
     await enterAmount(tester, 'rent', '1200.00');
     await enterAmount(tester, 'essentials', '400.00');
     expect(tester.widget<FilledButton>(cta).onPressed, isNotNull);
@@ -69,7 +77,7 @@ void main() {
     expect(state.snapshot.confidenceState, ConfidenceState.trusted);
 
     // 3. Quick Expense: amount, save. Nothing else on the path.
-    await tester.tap(find.widgetWithText(FloatingActionButton, 'Spent'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Record a spend'));
     await tester.pumpAndSettle();
     expect(find.text('How much did you spend?'), findsOneWidget);
 
@@ -111,6 +119,7 @@ void main() {
     await boot(tester);
     await enterAmount(tester, 'balance', '900.00');
     await enterAmount(tester, 'income', '2000.00');
+    await openCommitments(tester);
     await enterAmount(tester, 'rent', '500.00');
     await enterAmount(tester, 'essentials', '300.00');
     await enterAmount(tester, 'goal', '300.00');
@@ -122,10 +131,7 @@ void main() {
     expect(s.mandatoryFundingGap.toString(), '200.00 EUR');
 
     expect(find.text('€0.00'), findsOneWidget);
-    expect(
-      find.text('€200.00 short of what you have committed'),
-      findsOneWidget,
-    );
+    expect(find.text('€200.00 short'), findsOneWidget);
     expect(find.text('See what is short'), findsOneWidget);
 
     // The breakdown names the claim rather than moving it.
@@ -139,6 +145,7 @@ void main() {
     await boot(tester);
     await enterAmount(tester, 'balance', '1000.00');
     await enterAmount(tester, 'income', '2000.00');
+    await openCommitments(tester);
     await enterAmount(tester, 'rent', '400.00');
     await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
     await tester.pumpAndSettle();

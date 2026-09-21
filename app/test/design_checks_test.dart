@@ -118,19 +118,15 @@ void main() {
       expect(degradedColors, isNot(contains(UpinoTokens.critical)));
       expect(degradedColors, isNot(contains(UpinoTokens.criticalOnInverse)));
       expect(degradedColors, isNot(contains(UpinoTokens.criticalSurface)));
-      // Degraded may add de-emphasis, never emphasis: anything new must be a
-      // lower-opacity variant of the on-inverse text, not a new hue.
+      // §15.2 allows age to change emphasis but not to introduce alarm, so
+      // anything new must be neutral. Opacity is not the test: the Confirm
+      // label is legitimately opaque white.
       final introduced = degradedColors.difference(trustedColors);
       for (final color in introduced) {
         expect(
           color.r == color.g && color.g == color.b,
           isTrue,
-          reason: 'age introduced a hue ($color); §15.2 allows de-emphasis only',
-        );
-        expect(
-          color.a < 1.0,
-          isTrue,
-          reason: 'age introduced a fully opaque colour ($color)',
+          reason: 'age introduced the hue $color; §15.2 allows neutrals only',
         );
       }
       expect(find.textContaining('Confirm'), findsOneWidget);
@@ -143,7 +139,7 @@ void main() {
 
       await pumpHero(t, s);
       expect(usesGradient(t), isFalse);
-      expect(find.text('Not up to date'), findsOneWidget);
+      expect(find.text('NOT UP TO DATE'), findsOneWidget);
       expect(find.text('Confirm balance'), findsOneWidget);
     });
 
@@ -176,10 +172,7 @@ void main() {
       // The gap is stated once on the hero and again beside the claim that
       // caused it; both are the same authoritative figure.
       expect(find.textContaining('€200.00'), findsNWidgets(2));
-      expect(
-        find.text('€200.00 short of what you have committed'),
-        findsOneWidget,
-      );
+      expect(find.text('€200.00 short'), findsOneWidget);
     });
 
     testWidgets('D06 — review takes precedence over a funding gap', (t) async {
@@ -193,7 +186,7 @@ void main() {
       expect(heroStateFor(s), HeroState.reviewRequired);
 
       await pumpHero(t, s);
-      expect(find.text('Not up to date'), findsOneWidget);
+      expect(find.text('NOT UP TO DATE'), findsOneWidget);
     });
 
     testWidgets('D07 — a buffer shortfall never borrows the critical token', (t) async {

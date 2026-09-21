@@ -8,7 +8,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../design/theme.dart';
+import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart';
@@ -31,6 +31,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _goal = TextEditingController();
 
   int _payDayOffset = 30;
+  bool _showOptional = false;
 
   @override
   void dispose() {
@@ -71,27 +72,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
             UpinoTokens.gutter,
-            24,
+            20,
             UpinoTokens.gutter,
-            32,
+            36,
           ),
           children: [
-            Text('Set up your plan', style: theme.textTheme.displayLarge
-                ?.copyWith(fontSize: 34, letterSpacing: -1),),
-            const SizedBox(height: 8),
-            Text(
-              'Two answers are enough to start. Everything else can wait.',
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: UpinoTokens.textSecondary),
+            const Padding(
+              padding: EdgeInsets.only(left: 4, bottom: 14),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: UpinoBadge('Takes about a minute'),
+              ),
             ),
-            const SizedBox(height: 28),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Set up your plan', style: theme.textTheme.headlineLarge),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Two answers are enough to start. Everything else can wait.',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
             _Field(
               key: const Key('field-balance'),
               controller: _balance,
               label: 'How much do you have right now?',
               hint: 'Across the accounts you spend from',
               currency: _draft.currency,
-              required: true,
               onChanged: () => setState(() {}),
             ),
             _Field(
@@ -100,41 +114,56 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               label: 'How much is your next pay?',
               hint: 'Your usual amount is fine',
               currency: _draft.currency,
-              required: true,
               onChanged: () => setState(() {}),
             ),
             _PayDayField(
               days: _payDayOffset,
               onChanged: (v) => setState(() => _payDayOffset = v),
             ),
-            const SizedBox(height: 8),
-            Text('Optional', style: theme.textTheme.bodySmall),
-            const SizedBox(height: 12),
-            _Field(
-              key: const Key('field-rent'),
-              controller: _rent,
-              label: 'Rent and fixed bills',
-              hint: 'Due before your next pay',
-              currency: _draft.currency,
-              onChanged: () => setState(() {}),
+
+            const SizedBox(height: 6),
+            ActionRow(
+              title: 'Add your commitments',
+              subtitle: _showOptional
+                  ? 'Rent, essentials and a goal'
+                  : 'Optional, and you can do it later',
+              trailing: RowAffordance(
+                icon: _showOptional
+                    ? Icons.keyboard_arrow_up_rounded
+                    : Icons.keyboard_arrow_down_rounded,
+              ),
+              onTap: () => setState(() => _showOptional = !_showOptional),
             ),
-            _Field(
-              key: const Key('field-essentials'),
-              controller: _essentials,
-              label: 'Food and transport',
-              hint: 'What you need to get through the period',
-              currency: _draft.currency,
-              onChanged: () => setState(() {}),
-            ),
-            _Field(
-              key: const Key('field-goal'),
-              controller: _goal,
-              label: 'Saving toward a goal',
-              hint: 'What you want to put aside this period',
-              currency: _draft.currency,
-              onChanged: () => setState(() {}),
-            ),
-            const SizedBox(height: 12),
+
+            if (_showOptional) ...[
+              const SizedBox(height: 20),
+              _Field(
+                key: const Key('field-rent'),
+                controller: _rent,
+                label: 'Rent and fixed bills',
+                hint: 'Due before your next pay',
+                currency: _draft.currency,
+                onChanged: () => setState(() {}),
+              ),
+              _Field(
+                key: const Key('field-essentials'),
+                controller: _essentials,
+                label: 'Food and transport',
+                hint: 'What you need to get through the period',
+                currency: _draft.currency,
+                onChanged: () => setState(() {}),
+              ),
+              _Field(
+                key: const Key('field-goal'),
+                controller: _goal,
+                label: 'Saving toward a goal',
+                hint: 'What you want to put aside this period',
+                currency: _draft.currency,
+                onChanged: () => setState(() {}),
+              ),
+            ],
+
+            const SizedBox(height: 22),
             FilledButton(
               onPressed: _canFinish ? _finish : null,
               child: const Text('See what I can spend'),
@@ -153,7 +182,6 @@ class _Field extends StatelessWidget {
     required this.hint,
     required this.currency,
     required this.onChanged,
-    this.required = false,
     super.key,
   });
 
@@ -162,45 +190,55 @@ class _Field extends StatelessWidget {
   final String hint;
   final String currency;
   final VoidCallback onChanged;
-  final bool required;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 2),
-          Text(hint, style: theme.textTheme.bodySmall),
-          const SizedBox(height: 10),
-          TextField(
-            controller: controller,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-            ],
-            onChanged: (_) => onChanged(),
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontSize: 20, fontFeatures: moneyFeatures),
-            decoration: InputDecoration(
-              prefixText: '${Currency.of(currency).symbol} ',
-              hintText: '0.00',
-              filled: true,
-              fillColor:
-                  dark ? UpinoTokens.darkSurfaceCard : UpinoTokens.surfaceCard,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
+      padding: const EdgeInsets.only(bottom: 16),
+      child: UpinoCard(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 2),
+            Text(hint, style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.5)),
+            const SizedBox(height: 6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  Currency.of(currency).symbol,
+                  style: theme.textTheme.headlineSmall
+                      ?.copyWith(color: UpinoTokens.textTertiary),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                    ],
+                    onChanged: (_) => onChanged(),
+                    style: theme.textTheme.headlineSmall,
+                    decoration: InputDecoration(
+                      hintText: '0.00',
+                      hintStyle: theme.textTheme.headlineSmall
+                          ?.copyWith(color: UpinoTokens.textTertiary),
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -216,23 +254,68 @@ class _PayDayField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 22),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('When is your next pay?', style: theme.textTheme.titleMedium),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            children: [7, 14, 30]
-                .map((d) => ChoiceChip(
-                      label: Text('In $d days'),
-                      selected: days == d,
-                      onSelected: (_) => onChanged(d),
-                    ),)
-                .toList(),
+      padding: const EdgeInsets.only(bottom: 16),
+      child: UpinoCard(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('When is your next pay?', style: theme.textTheme.titleMedium),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                for (final d in [7, 14, 30])
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: d == 30 ? 0 : 8),
+                      child: _DayChip(
+                        label: '$d days',
+                        selected: days == d,
+                        onTap: () => onChanged(d),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DayChip extends StatelessWidget {
+  const _DayChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = isDark(context);
+    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 46,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected ? active : sunkenColor(context),
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? Colors.white : UpinoTokens.textSecondary,
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
           ),
-        ],
+        ),
       ),
     );
   }
