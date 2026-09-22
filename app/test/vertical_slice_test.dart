@@ -11,6 +11,7 @@ import 'package:upino/state/app_state.dart';
 
 void main() {
   _reopenTests();
+  _setupIsObviousTests();
 
   late AppState state;
 
@@ -234,6 +235,66 @@ void _reopenTests() {
       final state = await boot(tester);
       expect(state.restoreFailure, isNotNull);
       expect(find.text('Set up your plan'), findsOneWidget);
+    });
+  });
+}
+
+// Found by installing the app on a real phone: the setup screen looked like a
+// dead end. The amount fields showed "0.00", which reads as a filled value
+// rather than an empty one, and the disabled button gave no reason.
+void _setupIsObviousTests() {
+  group('the setup screen says what to do', () {
+    Future<void> boot(WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(420, 1800)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(
+        state: AppState(
+          now: DateTime.utc(2026, 10, 1, 10),
+          utcOffset: const Duration(hours: 2),
+        ),
+      ),);
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('empty fields invite typing rather than showing a value',
+        (tester) async {
+      await boot(tester);
+      expect(find.text('Tap to type'), findsWidgets);
+      expect(find.text('0.00'), findsNothing,
+          reason: 'a zero placeholder reads as an amount already entered',);
+    });
+
+    testWidgets('a disabled button explains what is missing', (tester) async {
+      await boot(tester);
+      final cta = find.widgetWithText(FilledButton, 'See what I can spend');
+      expect(tester.widget<FilledButton>(cta).onPressed, isNull);
+      expect(
+        find.text('Fill in the first two answers to continue'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the explanation disappears once the button works',
+        (tester) async {
+      await boot(tester);
+      for (final field in ['balance', 'income']) {
+        await tester.enterText(
+          find.descendant(
+            of: find.byKey(Key('field-$field')),
+            matching: find.byType(TextField),
+          ),
+          '100.00',
+        );
+        await tester.pump();
+      }
+      final cta = find.widgetWithText(FilledButton, 'See what I can spend');
+      expect(tester.widget<FilledButton>(cta).onPressed, isNotNull);
+      expect(
+        find.text('Fill in the first two answers to continue'),
+        findsNothing,
+      );
     });
   });
 }

@@ -168,6 +168,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: _canFinish ? _finish : null,
               child: const Text('See what I can spend'),
             ),
+            if (!_canFinish) ...[
+              const SizedBox(height: 10),
+              Center(
+                child: Text(
+                  'Fill in the first two answers to continue',
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -205,37 +214,46 @@ class _Field extends StatelessWidget {
             const SizedBox(height: 2),
             Text(hint, style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.5)),
             const SizedBox(height: 6),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  Currency.of(currency).symbol,
-                  style: theme.textTheme.headlineSmall
-                      ?.copyWith(color: UpinoTokens.textTertiary),
-                ),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                    ],
-                    onChanged: (_) => onChanged(),
-                    style: theme.textTheme.headlineSmall,
-                    decoration: InputDecoration(
-                      hintText: '0.00',
-                      hintStyle: theme.textTheme.headlineSmall
-                          ?.copyWith(color: UpinoTokens.textTertiary),
-                      border: InputBorder.none,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              decoration: BoxDecoration(
+                color: sunkenColor(context),
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    Currency.of(currency).symbol,
+                    style: theme.textTheme.headlineSmall
+                        ?.copyWith(color: UpinoTokens.textTertiary),
+                  ),
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                      ],
+                      onChanged: (_) => onChanged(),
+                      style: theme.textTheme.headlineSmall,
+                      decoration: InputDecoration(
+                        // "0.00" read as a filled value on a real phone, so
+                        // the placeholder now says what to do instead.
+                        hintText: 'Tap to type',
+                        hintStyle: theme.textTheme.bodyMedium
+                            ?.copyWith(color: UpinoTokens.textTertiary),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
