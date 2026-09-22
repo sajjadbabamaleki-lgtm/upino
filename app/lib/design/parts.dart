@@ -313,9 +313,12 @@ class UpinoNavBar extends StatelessWidget {
   static const _items = <({IconData icon, String label})>[
     (icon: Icons.home_rounded, label: 'Home'),
     (icon: Icons.account_balance_wallet_rounded, label: 'Plan'),
+    (icon: Icons.flag_rounded, label: 'Goals'),
     (icon: Icons.receipt_long_rounded, label: 'Activity'),
     (icon: Icons.grid_view_rounded, label: 'Profile'),
   ];
+
+  static int get destinationCount => _items.length;
 
   @override
   Widget build(BuildContext context) {
@@ -374,7 +377,7 @@ class _NavItem extends StatelessWidget {
       child: Container(
         key: selected ? const Key('nav-selected-pill') : null,
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: selected ? 16 : 18),
+        padding: EdgeInsets.symmetric(horizontal: selected ? 14 : 12),
         decoration: BoxDecoration(
           color: selected ? tint : Colors.transparent,
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),

@@ -264,9 +264,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('plan-goals')));
+    await tester.tap(find.byIcon(Icons.flag_rounded));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),

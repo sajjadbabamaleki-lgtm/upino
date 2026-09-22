@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/data/plan_document.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/data/serialization.dart';
+import 'package:upino/design/parts.dart';
 import 'package:upino/domain/goal.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/domain.dart';
@@ -244,6 +245,40 @@ void main() {
     });
   });
 
+  group('the goals destination', () {
+    testWidgets('the bar carries Goals and it opens the screen', (tester) async {
+      tester.view
+        ..physicalSize = const Size(420, 1600)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.flag_rounded));
+      await tester.pumpAndSettle();
+      expect(find.text('Goals'), findsWidgets);
+      expect(find.byKey(const Key('goals-new')), findsOneWidget);
+    });
+
+    testWidgets('the Plan row switches to that same tab', (tester) async {
+      tester.view
+        ..physicalSize = const Size(420, 1600)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('plan-goals')));
+      await tester.pumpAndSettle();
+
+      // The tab, not a pushed copy: the bar is still there and Goals is lit.
+      expect(find.byType(UpinoNavBar), findsOneWidget);
+      expect(find.byKey(const Key('goals-new')), findsOneWidget);
+    });
+  });
+
   group('the goals screen', () {
     Future<AppState> openGoals(WidgetTester tester, AppState state) async {
       tester.view
@@ -252,9 +287,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('plan-goals')));
+      await tester.tap(find.byIcon(Icons.flag_rounded));
       await tester.pumpAndSettle();
       return state;
     }

@@ -17,14 +17,10 @@ import '../widgets/goal_editor_sheet.dart';
 import 'plan_screen.dart' show formatDateShort;
 
 class GoalsScreen extends StatelessWidget {
-  const GoalsScreen({required this.state, super.key});
+  const GoalsScreen({required this.state, required this.padding, super.key});
 
   final AppState state;
-
-  static Future<void> open(BuildContext context, AppState state) =>
-      Navigator.of(context).push(
-        MaterialPageRoute<void>(builder: (_) => GoalsScreen(state: state)),
-      );
+  final EdgeInsets padding;
 
   Future<void> _create(BuildContext context) async {
     final draft = await GoalEditorSheet.show(context, state: state);
@@ -71,60 +67,56 @@ class GoalsScreen extends StatelessWidget {
 
     return AnimatedBuilder(
       animation: state,
-      builder: (context, _) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          title: Text('Goals', style: theme.textTheme.titleLarge),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => _create(context),
-          backgroundColor:
-              isDark(context) ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary,
-          foregroundColor: Colors.white,
-          icon: const Icon(Icons.add_rounded),
-          label: const Text('New goal'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.fromLTRB(
-            UpinoTokens.gutter,
-            4,
-            UpinoTokens.gutter,
-            110,
-          ),
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 0, 4, 18),
-              child: Text(
-                state.goals.isEmpty
-                    ? 'Nothing saved toward yet.'
-                    : 'What each goal needs from this pay period.',
-                style: theme.textTheme.bodySmall,
-              ),
-            ),
-            if (goals.isEmpty)
-              UpinoCard(
-                child: Text(
-                  'Add something you are saving for — a trip, a deposit, a '
-                  'replacement laptop. Upino works out what to hold back each '
-                  'pay period so it arrives on time.',
+      builder: (context, _) => ListView(
+        padding: padding,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Goals', style: theme.textTheme.headlineLarge),
+                const SizedBox(height: 2),
+                Text(
+                  goals.isEmpty
+                      ? 'Nothing saved toward yet.'
+                      : 'What each goal needs from this pay period.',
                   style: theme.textTheme.bodySmall,
                 ),
-              )
-            else
-              for (final goal in goals) ...[
-                _GoalCard(
-                  goal: goal,
-                  today: state.today,
-                  payCycleDays: state.payCycleDays,
-                  onEdit: () => _edit(context, goal),
-                  onContribute: () => _contribute(context, goal),
-                ),
-                const SizedBox(height: 12),
               ],
-          ],
-        ),
+            ),
+          ),
+          if (goals.isEmpty)
+            UpinoCard(
+              child: Text(
+                'Add something you are saving for — a trip, a deposit, a '
+                'replacement laptop. Upino works out what to hold back each '
+                'pay period so it arrives on time.',
+                style: theme.textTheme.bodySmall,
+              ),
+            )
+          else
+            for (final goal in goals) ...[
+              _GoalCard(
+                goal: goal,
+                today: state.today,
+                payCycleDays: state.payCycleDays,
+                onEdit: () => _edit(context, goal),
+                onContribute: () => _contribute(context, goal),
+              ),
+              const SizedBox(height: 12),
+            ],
+          const SizedBox(height: 10),
+          // A floating button would sit on top of the nav bar, so the one
+          // action this tab has lives in the list like the Plan tab's adds.
+          ActionRow(
+            key: const Key('goals-new'),
+            title: 'New goal',
+            subtitle: 'Something you are putting money aside for',
+            trailing: const RowAffordance(icon: Icons.add_rounded),
+            onTap: () => _create(context),
+          ),
+        ],
       ),
     );
   }

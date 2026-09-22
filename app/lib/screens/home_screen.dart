@@ -16,6 +16,7 @@ import '../engine/plan.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import 'activity_screen.dart';
+import 'goals_screen.dart';
 import 'plan_screen.dart';
 import 'profile_screen.dart';
 import '../widgets/sts_hero.dart';
@@ -80,9 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             bottom: false,
             child: switch (_tab) {
-              1 => PlanScreen(state: state, padding: contentPadding),
-              2 => ActivityScreen(state: state, padding: contentPadding),
-              3 => ProfileScreen(state: state, padding: contentPadding),
+              1 => PlanScreen(
+                  state: state,
+                  padding: contentPadding,
+                  onOpenGoals: () => setState(() => _tab = 2),
+                ),
+              2 => GoalsScreen(state: state, padding: contentPadding),
+              3 => ActivityScreen(state: state, padding: contentPadding),
+              4 => ProfileScreen(state: state, padding: contentPadding),
               _ => ListView(
                   padding: contentPadding,
                   children: [

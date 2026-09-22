@@ -15,7 +15,6 @@ import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
-import 'goals_screen.dart';
 import '../widgets/sts_hero.dart' show formatDate;
 
 const _shortMonths = <String>[
@@ -28,10 +27,19 @@ String formatDateShort(LocalDate date) =>
     '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
 
 class PlanScreen extends StatelessWidget {
-  const PlanScreen({required this.state, required this.padding, super.key});
+  const PlanScreen({
+    required this.state,
+    required this.padding,
+    required this.onOpenGoals,
+    super.key,
+  });
 
   final AppState state;
   final EdgeInsets padding;
+
+  /// Goals has its own destination, so these rows switch tab rather than
+  /// pushing a second copy of the screen on top of the bar.
+  final VoidCallback onOpenGoals;
 
   Future<void> _editClaim(
     BuildContext context, {
@@ -135,7 +143,7 @@ class PlanScreen extends StatelessWidget {
             title: 'Save toward something',
             subtitle: 'A trip, a deposit, a replacement laptop',
             trailing: const RowAffordance(icon: Icons.add_rounded),
-            onTap: () => GoalsScreen.open(context, state),
+            onTap: () => onOpenGoals(),
           )
         else ...[
           for (final goal in state.goals.take(3)) ...[
@@ -148,7 +156,7 @@ class PlanScreen extends StatelessWidget {
               trailing: _Amount(
                 goal.requiredThisCycle(state.today, state.payCycleDays),
               ),
-              onTap: () => GoalsScreen.open(context, state),
+              onTap: () => onOpenGoals(),
             ),
             const SizedBox(height: 10),
           ],
@@ -156,7 +164,7 @@ class PlanScreen extends StatelessWidget {
             key: const Key('plan-goals'),
             title: 'All goals',
             subtitle: 'Add, edit or put money aside',
-            onTap: () => GoalsScreen.open(context, state),
+            onTap: () => onOpenGoals(),
           ),
         ],
 

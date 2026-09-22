@@ -56,7 +56,8 @@ void main() {
   };
 
   testWidgets('the selected pill is inset equally on three sides', (t) async {
-    await pumpBar(t, 3, Brightness.light);
+    // The last destination, so its outer edge is the bar's right edge.
+    await pumpBar(t, UpinoNavBar.destinationCount - 1, Brightness.light);
 
     final bar = await rectOf(t, find.byType(UpinoNavBar));
     final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
@@ -90,7 +91,7 @@ void main() {
   });
 
   testWidgets('every destination fits on one row at phone width', (t) async {
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < UpinoNavBar.destinationCount; i++) {
       await pumpBar(t, i, Brightness.light);
       expect(didOverflow(), isFalse, reason: 'destination $i overflowed');
     }
@@ -103,10 +104,11 @@ void main() {
   });
 
   testWidgets('only the selected destination shows a label', (t) async {
-    await pumpBar(t, 3, Brightness.light);
+    await pumpBar(t, 4, Brightness.light);
     expect(find.text('Profile'), findsOneWidget);
     expect(find.text('Home'), findsNothing);
     expect(find.text('Plan'), findsNothing);
+    expect(find.text('Goals'), findsNothing);
     expect(find.text('Activity'), findsNothing);
   });
 
