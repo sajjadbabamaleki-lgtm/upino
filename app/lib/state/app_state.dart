@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../data/plan_document.dart';
+import '../domain/goal.dart';
 import '../data/plan_store.dart';
 import '../engine/allocate.dart';
 import '../engine/clock.dart';
@@ -27,6 +28,7 @@ class OnboardingDraft {
   Money? essentials;
   Money? cardMinimum;
   Money? goalAmount;
+  int? payCycleDays;
 
   bool get isComplete => currentBalance != null && incomeAmount != null;
 }
@@ -74,9 +76,12 @@ class AppState extends ChangeNotifier {
   final List<LedgerEvent> _events = [];
   final List<Claim> _claims = [];
   final List<IncomeEvent> _incomeEvents = [];
+  final List<Goal> _goals = [];
 
   String _currency = 'EUR';
   ThemeChoice _themeChoice = ThemeChoice.system;
+  int _payCycleDays = 30;
+  int _goalSeq = 0;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
   bool _onboarded = false;
@@ -132,12 +137,34 @@ class AppState extends ChangeNotifier {
     _onboarded = document.onboarded;
     _eventSeq = document.eventSequence;
     _themeChoice = document.themeChoice;
+    _payCycleDays = document.payCycleDays;
+    _goals
+      ..clear()
+      ..addAll(document.goals);
+    _goalSeq = _goals.length;
+
     _events
       ..clear()
       ..addAll(document.events);
     _claims
       ..clear()
       ..addAll(document.claims);
+
+    // A plan saved before goals existed carried one flat "goal" claim with no
+    // target or date. Turn it into a real goal rather than leaving it behind.
+    // This has to run after the claims are loaded, not before them.
+    final legacy = _claims.indexWhere((c) => c.id == 'goal');
+    if (legacy >= 0) {
+      final claim = _claims.removeAt(legacy);
+      _goals.add(Goal(
+        id: 'g${++_goalSeq}',
+        name: claim.label,
+        target: claim.amount,
+        targetDate: today.addDays(_payCycleDays),
+        saved: Money.zero(_currency),
+        kind: GoalKind.hard,
+      ),);
+    }
     _incomeEvents
       ..clear()
       ..addAll(document.incomeEvents);
@@ -153,6 +180,8 @@ class AppState extends ChangeNotifier {
         lastBalanceConfirmationAt: _lastBalanceConfirmation,
         eventSequence: _eventSeq,
         themeChoice: _themeChoice,
+        goals: List.unmodifiable(_goals),
+        payCycleDays: _payCycleDays,
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -176,13 +205,81 @@ class AppState extends ChangeNotifier {
           _accountId: _openingBalance ?? Money.zero(_currency),
         },
         events: _events,
-        claims: _claims,
+        claims: [..._claims, ..._goalClaims],
         incomeEvents: _incomeEvents,
         oldestConfirmationAt: _lastBalanceConfirmation,
       ),);
 
+  /// Each goal contributes this period's required contribution, so the
+  /// waterfall protects the schedule rather than the whole target (§8).
+  List<Claim> get _goalClaims => [
+        for (final goal in _goals)
+          if (goal.toClaim(today, _payCycleDays) case final claim?) claim,
+      ];
+
+  List<Goal> get goals => List.unmodifiable(_goals);
+  int get payCycleDays => _payCycleDays;
+
+  void addGoal({
+    required String name,
+    required Money target,
+    required LocalDate targetDate,
+    GoalKind kind = GoalKind.hard,
+    Money? saved,
+  }) {
+    _goals.add(Goal(
+      id: 'g${++_goalSeq}',
+      name: name,
+      target: target,
+      targetDate: targetDate,
+      saved: saved ?? Money.zero(_currency),
+      kind: kind,
+    ),);
+    _persist();
+    notifyListeners();
+  }
+
+  void updateGoal(
+    String id, {
+    String? name,
+    Money? target,
+    LocalDate? targetDate,
+    GoalKind? kind,
+  }) {
+    final index = _goals.indexWhere((g) => g.id == id);
+    if (index < 0) return;
+    _goals[index] = _goals[index].copyWith(
+      name: name,
+      target: target,
+      targetDate: targetDate,
+      kind: kind,
+    );
+    _persist();
+    notifyListeners();
+  }
+
+  /// Record progress toward a goal. The money is already counted in
+  /// liquidity; what changes is how much still has to be held back each
+  /// period, so a contribution lowers future claims rather than spending
+  /// anything now.
+  void contributeToGoal(String id, Money amount) {
+    final index = _goals.indexWhere((g) => g.id == id);
+    if (index < 0 || amount.minor <= 0) return;
+    final goal = _goals[index];
+    _goals[index] = goal.copyWith(saved: goal.saved + amount);
+    _persist();
+    notifyListeners();
+  }
+
+  void removeGoal(String id) {
+    _goals.removeWhere((g) => g.id == id);
+    _persist();
+    notifyListeners();
+  }
+
   void completeOnboarding(OnboardingDraft draft) {
     _currency = draft.currency;
+    _payCycleDays = draft.payCycleDays ?? 30;
     _openingBalance = draft.currentBalance ?? Money.zero(_currency);
     _lastBalanceConfirmation = _now;
 
@@ -210,14 +307,21 @@ class AppState extends ChangeNotifier {
             label: 'Food and transport',
             amount: draft.essentials!,
           ),
-        if (draft.goalAmount != null && draft.goalAmount!.minor > 0)
-          Claim(
-            id: 'goal',
-            priority: Priority.p7HardGoal,
-            label: 'Savings goal',
-            amount: draft.goalAmount!,
-          ),
       ]);
+
+    _goals.clear();
+    _goalSeq = 0;
+    final goalAmount = draft.goalAmount;
+    if (goalAmount != null && goalAmount.minor > 0) {
+      // Onboarding asks what to put aside this period, not a target, so the
+      // first goal is that amount over the coming year — a starting point the
+      // Goals screen can correct.
+      addGoal(
+        name: 'Savings goal',
+        target: Money(goalAmount.minor * 12, _currency),
+        targetDate: today.addDays(_payCycleDays * 12),
+      );
+    }
 
     _incomeEvents.clear();
     final incomeAmount = draft.incomeAmount;
@@ -299,7 +403,6 @@ class AppState extends ChangeNotifier {
       label: 'Food and transport'
     ),
     (id: 'buffer', priority: Priority.p6Buffer, label: 'Emergency buffer'),
-    (id: 'goal', priority: Priority.p7HardGoal, label: 'Savings goal'),
   ];
 
   /// Create or change a commitment. A zero amount removes it rather than
@@ -364,6 +467,8 @@ class AppState extends ChangeNotifier {
     _events.clear();
     _claims.clear();
     _incomeEvents.clear();
+    _goals.clear();
+    _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;
     _onboarded = false;

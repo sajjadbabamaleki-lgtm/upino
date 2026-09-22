@@ -64,12 +64,19 @@ void main() {
 
     test('rows are ordered by the waterfall, not by when they were added', () {
       final state = funded()
-        ..setClaimAmount('goal', eur('50.00'))
         ..setClaimAmount('buffer', eur('100.00'))
+        ..setClaimAmount('card-minimum', eur('75.00'))
         ..setClaimAmount('essentials', eur('200.00'));
       expect(
         state.editableClaims.map((c) => c.id).toList(),
-        ['rent', 'essentials', 'buffer', 'goal'],
+        ['card-minimum', 'rent', 'essentials', 'buffer'],
+      );
+    });
+
+    test('a goal is not offered here, because goals have their own screen', () {
+      expect(
+        AppState.addableClaims.map((c) => c.id),
+        isNot(contains('goal')),
       );
     });
 
@@ -181,9 +188,9 @@ void main() {
 
     testWidgets('a missing commitment is offered, then added', (tester) async {
       final state = await openPlan(tester, funded());
-      expect(find.byKey(const Key('plan-add-goal')), findsOneWidget);
+      expect(find.byKey(const Key('plan-add-buffer')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('plan-add-goal')));
+      await tester.tap(find.byKey(const Key('plan-add-buffer')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '150.00');
       await tester.pump();
@@ -191,8 +198,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.snapshot.safeToSpendNow, eur('450.00'));
-      expect(find.byKey(const Key('plan-add-goal')), findsNothing);
-      expect(find.byKey(const Key('plan-claim-goal')), findsOneWidget);
+      expect(find.byKey(const Key('plan-add-buffer')), findsNothing);
+      expect(find.byKey(const Key('plan-claim-buffer')), findsOneWidget);
     });
 
     testWidgets('confirming a balance corrects liquidity, not spending',

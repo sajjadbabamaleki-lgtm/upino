@@ -9,11 +9,23 @@ import 'package:flutter/material.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
+import '../domain/goal.dart';
+import '../engine/clock.dart';
 import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import 'goals_screen.dart';
 import '../widgets/sts_hero.dart' show formatDate;
+
+const _shortMonths = <String>[
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+];
+
+/// `12 Mar 2027` — short enough to sit beside a figure.
+String formatDateShort(LocalDate date) =>
+    '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({required this.state, required this.padding, super.key});
@@ -111,6 +123,42 @@ class PlanScreen extends StatelessWidget {
                   '${formatDate(income.expectedDate)}',
           onTap: () => _editIncome(context),
         ),
+
+        const SizedBox(height: 26),
+        SectionHeading(
+          'Goals',
+          count: state.goals.isEmpty ? null : state.goals.length,
+        ),
+        if (state.goals.isEmpty)
+          ActionRow(
+            key: const Key('plan-goals'),
+            title: 'Save toward something',
+            subtitle: 'A trip, a deposit, a replacement laptop',
+            trailing: const RowAffordance(icon: Icons.add_rounded),
+            onTap: () => GoalsScreen.open(context, state),
+          )
+        else ...[
+          for (final goal in state.goals.take(3)) ...[
+            ActionRow(
+              key: Key('plan-goal-${goal.id}'),
+              title: goal.name,
+              subtitle: goal.kind == GoalKind.paused
+                  ? 'Paused'
+                  : '${goal.saved.display()} of ${goal.target.display()}',
+              trailing: _Amount(
+                goal.requiredThisCycle(state.today, state.payCycleDays),
+              ),
+              onTap: () => GoalsScreen.open(context, state),
+            ),
+            const SizedBox(height: 10),
+          ],
+          ActionRow(
+            key: const Key('plan-goals'),
+            title: 'All goals',
+            subtitle: 'Add, edit or put money aside',
+            onTap: () => GoalsScreen.open(context, state),
+          ),
+        ],
 
         const SizedBox(height: 26),
         SectionHeading('Set aside first', count: claims.isEmpty ? null : claims.length),

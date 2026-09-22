@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
+import '../domain/goal.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart' show ThemeChoice;
 import 'serialization.dart';
@@ -25,6 +26,8 @@ class PlanDocument {
     this.lastBalanceConfirmationAt,
     this.eventSequence = 0,
     this.themeChoice = ThemeChoice.system,
+    this.goals = const [],
+    this.payCycleDays = 30,
   });
 
   final String currency;
@@ -42,6 +45,11 @@ class PlanDocument {
   /// A preference rather than plan data, but it lives here so there is one
   /// thing to save and one thing to read back.
   final ThemeChoice themeChoice;
+  final List<Goal> goals;
+
+  /// How long a pay period is, which is what a goal's contribution schedule
+  /// divides by (§8).
+  final int payCycleDays;
 
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
@@ -50,6 +58,8 @@ class PlanDocument {
         'onboarded': onboarded,
         'eventSequence': eventSequence,
         'themeChoice': themeChoice.name,
+        'payCycleDays': payCycleDays,
+        'goals': goals.map(goalToJson).toList(),
         if (lastBalanceConfirmationAt != null)
           'lastBalanceConfirmationAt':
               lastBalanceConfirmationAt!.toUtc().toIso8601String(),
@@ -88,6 +98,8 @@ class PlanDocument {
       onboarded: json['onboarded'] as bool? ?? false,
       eventSequence: json['eventSequence'] as int? ?? 0,
       // Absent in a version 1 document, which simply means "follow the phone".
+      goals: listOf(json['goals'], goalFromJson),
+      payCycleDays: json['payCycleDays'] as int? ?? 30,
       themeChoice: json['themeChoice'] == null
           ? ThemeChoice.system
           : enumByName(ThemeChoice.values, json['themeChoice'], 'theme choice'),

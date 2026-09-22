@@ -18,6 +18,7 @@ import 'package:upino/engine/ledger.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/engine/plan.dart';
 import 'package:upino/main.dart';
+import 'package:upino/domain/goal.dart';
 import 'package:upino/state/app_state.dart';
 import 'package:upino/widgets/sts_hero.dart';
 
@@ -234,6 +235,42 @@ void main() {
     await expectLater(
       find.byKey(boundary),
       matchesGoldenFile('screenshots/03d-profile.png'),
+    );
+  });
+
+  testWidgets('03e goals', (tester) async {
+    final state = fundedState()
+      ..addGoal(
+        name: 'Trip to Japan',
+        target: eur('4200.00'),
+        targetDate: LocalDate.parse('2027-09-01'),
+      )
+      ..addGoal(
+        name: 'New laptop',
+        target: eur('1600.00'),
+        targetDate: LocalDate.parse('2027-04-01'),
+        kind: GoalKind.flexible,
+      );
+    state.contributeToGoal(state.goals.first.id, eur('1150.00'));
+
+    tester.view
+      ..physicalSize = const Size(400, 1250)
+      ..devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: boundary,
+        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('plan-goals')));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundary),
+      matchesGoldenFile('screenshots/03e-goals.png'),
     );
   });
 

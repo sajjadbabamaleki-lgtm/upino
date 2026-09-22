@@ -10,6 +10,7 @@
 ///   §5 holds it. No decimal string, no double, nothing to re-parse wrongly.
 library;
 
+import '../domain/goal.dart';
 import '../engine/clock.dart';
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
@@ -20,7 +21,8 @@ import '../engine/money.dart';
 /// fields taking their defaults.
 ///
 /// 2 — added the theme preference.
-const int schemaVersion = 2;
+/// 3 — added goals and the pay-cycle length.
+const int schemaVersion = 3;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);
@@ -289,3 +291,23 @@ LedgerEvent ledgerEventFromJson(Map<String, Object?> json) {
     final unknown => throw UnreadablePlanDocument('unknown event kind "$unknown"'),
   };
 }
+
+// --- goals ------------------------------------------------------------------
+
+Map<String, Object?> goalToJson(Goal g) => {
+      'id': g.id,
+      'name': g.name,
+      'target': moneyToJson(g.target),
+      'targetDate': localDateToJson(g.targetDate),
+      'saved': moneyToJson(g.saved),
+      'kind': g.kind.name,
+    };
+
+Goal goalFromJson(Map<String, Object?> json) => Goal(
+      id: json['id']! as String,
+      name: json['name']! as String,
+      target: moneyFromJson(json['target']),
+      targetDate: localDateFromJson(json['targetDate']),
+      saved: moneyFromJson(json['saved']),
+      kind: enumByName(GoalKind.values, json['kind'], 'goal kind'),
+    );

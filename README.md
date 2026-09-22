@@ -99,6 +99,7 @@ number is computed on-device rather than behind a network call.
 | `app/test/activity_test.dart` | Listing recorded events and correcting them |
 | `app/test/plan_screen_test.dart` | Editing commitments, income and starting over |
 | `app/test/theme_choice_test.dart` | The theme preference and its persistence |
+| `app/test/goals_test.dart` | Goal targets, schedules, kinds and migration |
 
 ### Timezone
 
@@ -156,6 +157,7 @@ Four destinations, as §32.9 specifies.
 |---|---|
 | Home | The decision: Safe-to-Spend, what is short, why the figure moved |
 | Plan | Commitments, income and balance — listed in waterfall order |
+| Goals | Targets, progress and what each needs from this pay period |
 | Activity | What was recorded, and how to correct it |
 | Profile | Balance confirmation, confidence, theme, starting over |
 
@@ -195,3 +197,22 @@ flutter pub get
 flutter run                  # on a connected device or emulator
 flutter build apk --debug    # build/app/outputs/flutter-apk/app-debug.apk
 ```
+
+### Goals
+
+A goal is a target, a date, what has been put aside, and how firm it is
+(§10). What the waterfall protects is not the target but the contribution
+needed this pay period to still reach it on time (§8): remaining divided by
+the pay periods left, quantized by §5.1 so the schedule sums exactly.
+
+Committed goals sit at P7 and count toward the mandatory gap. Flexible ones
+sit at P8 and yield first. Paused ones stay visible and claim nothing.
+
+Adding money to a goal is not spending: the money is already in liquidity, so
+a contribution lowers what has to be held back from here on rather than
+moving anything.
+
+**The instalment carries no due date.** Dating the goal claim at its target
+made the engine correctly conclude that income arriving before then would
+cover it, so it protected nothing and the goal silently never funded. Goals
+with a nearer target fund first through an explicit user priority instead.
