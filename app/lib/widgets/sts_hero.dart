@@ -259,7 +259,7 @@ class _HeroShell extends StatelessWidget {
               if (decoration2 != null)
                 Positioned(top: -6, right: -6, child: decoration2!),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 26, 22, 26),
+                padding: const EdgeInsets.fromLTRB(22, 31, 22, 31),
                 child: child,
               ),
             ],

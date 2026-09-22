@@ -416,7 +416,7 @@ class NavScrim extends StatelessWidget {
   const NavScrim({
     required this.navHeight,
     required this.bottomGap,
-    this.fadeHeight = 10,
+    this.fadeHeight = 15,
     super.key,
   });
 

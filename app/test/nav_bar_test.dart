@@ -145,14 +145,14 @@ void main() {
     expect(gradient.colors.first.a, 0, reason: 'the top edge must be invisible');
     expect(gradient.colors.last, UpinoTokens.surfacePage);
 
-    // Solid page colour from the bar's top edge down, transparent 10 above it.
-    expect(scrim.height, 10 + 64 + 22);
-    expect(gradient.stops![1], closeTo(10 / scrim.height, 0.0001));
+    // Solid page colour from the bar's top edge down, transparent 15 above it.
+    expect(scrim.height, 15 + 64 + 22);
+    expect(gradient.stops![1], closeTo(15 / scrim.height, 0.0001));
   });
 
-  testWidgets('the scrim reaches exactly 10 above the bar on Home', (t) async {
+  testWidgets('the scrim reaches exactly 15 above the bar on Home', (t) async {
     final scrim = const NavScrim(navHeight: 64, bottomGap: 22);
-    expect(scrim.height - scrim.navHeight - scrim.bottomGap, 10);
+    expect(scrim.height - scrim.navHeight - scrim.bottomGap, 15);
   });
 
   test('the idle glyph clears the 3:1 minimum for a UI component', () {
