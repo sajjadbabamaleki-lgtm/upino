@@ -2,47 +2,70 @@ name: Android build
 
 # Builds an installable APK on every push, so the app can be tried on a real
 # phone without anyone setting up Flutter or the Android SDK locally.
+#
+# Flutter is installed by cloning it rather than through a marketplace action:
+# a private repository may refuse third-party actions, and that refusal shows
+# up as a job that dies in seconds with no logs at all.
 on:
   push:
     branches: ['**']
   workflow_dispatch:
 
-jobs:
-  test:
-    name: Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - run: flutter pub get
-        working-directory: app
-      - run: flutter analyze
-        working-directory: app
-      - run: flutter test
-        working-directory: app
+env:
+  FLUTTER_HOME: ${{ github.workspace }}/.flutter
 
-  apk:
-    name: APK
-    needs: test
+jobs:
+  build:
+    name: Test and build APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - uses: subosito/flutter-action@v2
+
+      - name: Cache Flutter
+        id: flutter-cache
+        uses: actions/cache@v4
         with:
-          channel: stable
-      - run: flutter pub get
+          path: ${{ env.FLUTTER_HOME }}
+          key: flutter-stable-${{ runner.os }}-v1
+
+      - name: Install Flutter
+        if: steps.flutter-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 -b stable https://github.com/flutter/flutter.git "$FLUTTER_HOME"
+
+      - name: Put Flutter on PATH
+        run: |
+          echo "$FLUTTER_HOME/bin" >> "$GITHUB_PATH"
+          echo "$FLUTTER_HOME/bin/cache/dart-sdk/bin" >> "$GITHUB_PATH"
+
+      - name: Warm up Flutter
+        run: |
+          git config --global --add safe.directory "$FLUTTER_HOME"
+          flutter --version
+          flutter precache --android
+
+      - name: Dependencies
         working-directory: app
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: app
+        run: flutter analyze
+
+      - name: Test
+        working-directory: app
+        run: flutter test
 
       # Debug signing, so the APK installs without a release key. Fine for
       # trying the app; a store build needs its own signing config.
-      - run: flutter build apk --debug
+      - name: Build APK
         working-directory: app
+        run: flutter build apk --debug
 
       - uses: actions/upload-artifact@v4
         with:
