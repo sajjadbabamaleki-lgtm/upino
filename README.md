@@ -161,3 +161,29 @@ The Plan screen lists commitments in waterfall order rather than in the order
 they were typed, and each row says in plain language where it sits — "Must be
 paid — comes first", "Kept back for emergencies". The order on screen is the
 order the money is actually assigned, so it is explained rather than asserted.
+
+### Running it on a phone
+
+Every push builds an installable APK in CI, so trying the app needs no local
+Flutter or Android SDK.
+
+1. Open the repository's **Actions** tab on GitHub.
+2. Pick the newest **Android build** run for your branch.
+3. Download the **upino-apk** artifact and unzip it.
+4. Copy the `.apk` to an Android phone and open it. Android asks once to
+   allow installing from this source.
+
+The APK is debug-signed, which is what makes it installable without a release
+key. A store build needs its own signing config.
+
+The app declares no permissions and talks to no network: the plan lives in a
+file in the app's own storage.
+
+Building locally instead:
+
+```
+cd app
+flutter pub get
+flutter run                  # on a connected device or emulator
+flutter build apk --debug    # build/app/outputs/flutter-apk/app-debug.apk
+```

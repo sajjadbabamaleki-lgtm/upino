@@ -5,3 +5,8 @@ build/
 .packages
 *.iml
 .idea/
+android/local.properties
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
