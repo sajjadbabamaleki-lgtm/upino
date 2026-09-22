@@ -2,8 +2,12 @@
 /// commands, hands them to the engine and renders the snapshot (§22, §17).
 library;
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
+import '../data/plan_document.dart';
+import '../data/plan_store.dart';
 import '../engine/allocate.dart';
 import '../engine/clock.dart';
 import '../engine/domain.dart';
@@ -28,14 +32,19 @@ class OnboardingDraft {
 }
 
 class AppState extends ChangeNotifier {
-  AppState({DateTime? now, Duration? utcOffset})
+  AppState({DateTime? now, Duration? utcOffset, PlanStore? store})
       : _now = now ?? DateTime.now().toUtc(),
-        _utcOffset = utcOffset ?? DateTime.now().timeZoneOffset;
+        _utcOffset = utcOffset ?? DateTime.now().timeZoneOffset,
+        _store = store,
+        // With no storage there is nothing to wait for, so the UI should not
+        // sit on the restoring screen.
+        _restored = store == null;
 
   static const _accountId = 'main';
 
   final DateTime _now;
   final Duration _utcOffset;
+  final PlanStore? _store;
 
   final List<LedgerEvent> _events = [];
   final List<Claim> _claims = [];
@@ -52,6 +61,70 @@ class AppState extends ChangeNotifier {
   Money? lastRecordedExpense;
 
   bool get isOnboarded => _onboarded;
+
+  /// True once [restore] has run. The UI waits for it rather than showing an
+  /// empty plan for a frame and then replacing it.
+  bool get isRestored => _restored;
+  bool _restored;
+
+  /// Set when a stored document could not be read. The plan is left empty
+  /// rather than partially applied, and the file is kept for inspection.
+  String? get restoreFailure => _restoreFailure;
+  String? _restoreFailure;
+
+  /// Replay a stored plan. The engine recomputes everything from the log, so
+  /// nothing derived is trusted from disk (INV-07).
+  Future<void> restore() async {
+    final store = _store;
+    if (store == null) {
+      _restored = true;
+      notifyListeners();
+      return;
+    }
+    try {
+      final document = await store.load();
+      if (document != null) _apply(document);
+    } on Object catch (error) {
+      _restoreFailure = error.toString();
+    }
+    _restored = true;
+    notifyListeners();
+  }
+
+  void _apply(PlanDocument document) {
+    _currency = document.currency;
+    _openingBalance = document.openingBalance;
+    _lastBalanceConfirmation = document.lastBalanceConfirmationAt;
+    _onboarded = document.onboarded;
+    _eventSeq = document.eventSequence;
+    _events
+      ..clear()
+      ..addAll(document.events);
+    _claims
+      ..clear()
+      ..addAll(document.claims);
+    _incomeEvents
+      ..clear()
+      ..addAll(document.incomeEvents);
+  }
+
+  PlanDocument toDocument() => PlanDocument(
+        currency: _currency,
+        openingBalance: _openingBalance ?? Money.zero(_currency),
+        events: List.unmodifiable(_events),
+        claims: List.unmodifiable(_claims),
+        incomeEvents: List.unmodifiable(_incomeEvents),
+        onboarded: _onboarded,
+        lastBalanceConfirmationAt: _lastBalanceConfirmation,
+        eventSequence: _eventSeq,
+      );
+
+  /// Every mutation persists. Saving is fire-and-forget so recording a spend
+  /// stays within the §18 three-second target; the in-memory state is already
+  /// correct when the UI rebuilds.
+  void _persist() {
+    unawaited(_store?.save(toDocument()));
+  }
   String get currency => _currency;
   LocalDate get today => LocalDate.at(_now, _utcOffset);
   List<Claim> get claims => List.unmodifiable(_claims);
@@ -123,6 +196,7 @@ class AppState extends ChangeNotifier {
     }
 
     _onboarded = true;
+    _persist();
     notifyListeners();
   }
 
@@ -135,6 +209,7 @@ class AppState extends ChangeNotifier {
       amount: amount,
     ),);
     lastRecordedExpense = amount;
+    _persist();
     notifyListeners();
   }
 
@@ -152,6 +227,7 @@ class AppState extends ChangeNotifier {
       ),);
     }
     _lastBalanceConfirmation = _now;
+    _persist();
     notifyListeners();
   }
 

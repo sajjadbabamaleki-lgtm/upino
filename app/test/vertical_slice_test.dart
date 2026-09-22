@@ -3,12 +3,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/engine/plan.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
 
 void main() {
+  _reopenTests();
+
   late AppState state;
 
   setUp(() {
@@ -159,5 +162,78 @@ void main() {
     expect(state.snapshot.safeToSpendNow.toString(), '600.00 EUR');
     await tester.pumpAndSettle();
     expect(find.text('€600.00'), findsOneWidget);
+  });
+}
+
+// Closing and reopening the app. This is what persistence is for: the plan a
+// person built is still there, and the figure they trusted is unchanged.
+void _reopenTests() {
+  group('reopening the app', () {
+    late InMemoryPlanStore store;
+
+    setUp(() => store = InMemoryPlanStore());
+
+    Future<AppState> boot(WidgetTester tester) async {
+      final state = AppState(
+        now: DateTime.utc(2026, 10, 1, 10),
+        utcOffset: const Duration(hours: 2),
+        store: store,
+      );
+      await state.restore();
+      tester.view
+        ..physicalSize = const Size(420, 1800)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpAndSettle();
+      return state;
+    }
+
+    testWidgets('a finished plan comes back instead of the setup form',
+        (tester) async {
+      final first = await boot(tester);
+      expect(find.text('Set up your plan'), findsOneWidget);
+
+      await tester.enterText(
+        find.descendant(
+          of: find.byKey(const Key('field-balance')),
+          matching: find.byType(TextField),
+        ),
+        '3000.00',
+      );
+      await tester.pump();
+      await tester.enterText(
+        find.descendant(
+          of: find.byKey(const Key('field-income')),
+          matching: find.byType(TextField),
+        ),
+        '2000.00',
+      );
+      await tester.pump();
+      await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('€3,000.00'), findsOneWidget);
+      first.recordExpense(Money.parse('25.00', 'EUR'));
+      await tester.pumpAndSettle();
+      expect(find.text('€2,975.00'), findsOneWidget);
+
+      // Close and reopen against the same storage.
+      final second = await boot(tester);
+      expect(second.isOnboarded, isTrue);
+      expect(find.text('Set up your plan'), findsNothing);
+      expect(find.text('Your plan'), findsOneWidget);
+      expect(find.text('€2,975.00'), findsOneWidget);
+      expect(second.snapshot.ledger.cumulativeSpending,
+          Money.parse('25.00', 'EUR'),);
+    });
+
+    testWidgets('a corrupt file sends the user to setup, not to a wrong figure',
+        (tester) async {
+      store = InMemoryPlanStore('{{{ truncated');
+      final state = await boot(tester);
+      expect(state.restoreFailure, isNotNull);
+      expect(find.text('Set up your plan'), findsOneWidget);
+    });
   });
 }

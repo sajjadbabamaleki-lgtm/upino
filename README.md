@@ -94,6 +94,8 @@ number is computed on-device rather than behind a network call.
 | `app/test/acceptance_test.dart` | §24 fixtures T01–T36 |
 | `app/test/design_checks_test.dart` | §32.10 design checks D01–D12 |
 | `app/test/vertical_slice_test.dart` | §18 end to end, through the real widgets |
+| `app/test/persistence_test.dart` | Saving, reopening and refusing bad documents |
+| `app/test/nav_bar_test.dart` | Navigation geometry, measured rather than eyeballed |
 
 ### Timezone
 
@@ -101,3 +103,28 @@ The Dart core SDK ships no IANA database, so `LocalDate.at` takes the UTC
 offset in effect at that instant rather than a zone name. Local-midnight
 semantics are preserved (fixture T12); wiring a real zone database is a
 client concern, not an engine one.
+
+### Persistence
+
+A plan is stored as one JSON document: the event log, the plan state and the
+opening balance. Nothing computed is stored, so reopening replays the log
+through the engine and lands on the same numbers (INV-07) — a saved file can
+never disagree with the engine.
+
+Two rules keep a stored plan meaning what it meant:
+
+- **Enums persist by name.** An index would silently change meaning the moment
+  a case is inserted into `Priority` or `ReservationState`.
+- **Money persists as integer minor units plus its currency**, exactly as §5
+  holds it — no decimal string to re-parse, no double.
+
+A document carries `schemaVersion`. A reader that meets a newer version, an
+unknown enum name or an unknown event kind refuses the whole document rather
+than applying part of it; the app then starts clean and reports why, instead
+of showing a figure built from half a plan.
+
+`FilePlanStore` writes to a scratch file and renames it over the target, so an
+interrupted write cannot leave a half-saved plan. Writes are serialized and
+coalesced because the app persists after every mutation: two rapid edits
+would otherwise race the same scratch path, and an older state must never land
+on disk after a newer one.
