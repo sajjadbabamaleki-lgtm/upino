@@ -143,6 +143,70 @@ void main() {
       expect(find.textContaining('Nothing matches'), findsOneWidget);
     });
 
+    testWidgets('a row is one line, the height of the search field',
+        (tester) async {
+      await pump(tester, (_) {});
+
+      final search = tester.getSize(find.byKey(const Key('currency-search-bar')));
+      final row = tester.getSize(find.byKey(const Key('currency-USD')));
+      expect(row.height, closeTo(search.height, 0.01));
+
+      // One line means one text baseline per label: the country and the
+      // currency name sit side by side, not stacked.
+      final country = tester.getRect(find.text('United States'));
+      final name = tester.getRect(find.text('US dollar'));
+      expect(country.top, closeTo(name.top, 6),
+          reason: 'the two labels are stacked, not on one line',);
+      expect(name.left, greaterThan(country.right - 1),
+          reason: 'the currency name must follow the country, left to right',);
+    });
+
+    testWidgets('the row reads flag, country, currency, symbol left to right',
+        (tester) async {
+      await pump(tester, (_) {});
+      final flag = tester.getRect(find.text('🇺🇸'));
+      final country = tester.getRect(find.text('United States'));
+      final name = tester.getRect(find.text('US dollar'));
+      final symbol = tester.getRect(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.text(r'$'),
+        ),
+      );
+      final order = [flag.left, country.left, name.left, symbol.left];
+      expect(
+        order,
+        orderedEquals(List<double>.from(order)..sort()),
+        reason: 'left to right: flag, country, currency name, symbol',
+      );
+    });
+
+    testWidgets('the longest names fit the row rather than overflowing it',
+        (tester) async {
+      // Flutter reports a layout overflow through the error reporter rather
+      // than by throwing, so a row that does not fit would pass unnoticed.
+      String? reported;
+      final previous = FlutterError.onError;
+      FlutterError.onError = (details) {
+        reported = details.exceptionAsString();
+        previous?.call(details);
+      };
+      addTearDown(() => FlutterError.onError = previous);
+
+      for (final query in [
+        'São Tomé',
+        'Trinidad',
+        'Bosnia',
+        'Papua',
+        'Eastern Caribbean',
+      ]) {
+        await pump(tester, (_) {});
+        await tester.enterText(find.byKey(const Key('currency-search')), query);
+        await tester.pumpAndSettle();
+        expect(reported, isNull, reason: '$query overflowed its row');
+      }
+    });
+
     testWidgets('tapping a row reports that code', (tester) async {
       String? picked;
       await pump(tester, (c) => picked = c);

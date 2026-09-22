@@ -106,7 +106,7 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
                     widget.padding.bottom,
                   ),
                   itemCount: matches.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  separatorBuilder: (_, __) => const SizedBox(height: 6),
                   itemBuilder: (context, i) => _CurrencyRow(
                     info: matches[i],
                     selected: matches[i].code == widget.selected,
@@ -129,6 +129,8 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      key: const Key('currency-search-bar'),
+      height: _CurrencyRow.height,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: cardColor(context),
@@ -155,7 +157,7 @@ class _SearchField extends StatelessWidget {
                     ?.copyWith(color: UpinoTokens.textTertiary),
                 border: InputBorder.none,
                 isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                contentPadding: EdgeInsets.zero,
               ),
             ),
           ),
@@ -165,15 +167,18 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-/// Flag, country, then what the money is called and its symbol — the order
-/// someone scans in, with the symbol last because it is the confirmation
-/// rather than the thing being looked for.
+/// One line, the height of the search field above it: flag, country, what the
+/// money is called, then its symbol. The trailing slot is reserved on every
+/// row whether or not the tick is in it, so the text has the same width to
+/// work with on the selected row as on any other.
 class _CurrencyRow extends StatelessWidget {
   const _CurrencyRow({
     required this.info,
     required this.selected,
     required this.onTap,
   });
+
+  static const height = 44.0;
 
   final CurrencyInfo info;
   final bool selected;
@@ -183,77 +188,72 @@ class _CurrencyRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dark = isDark(context);
+    final accent = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
         key: Key('currency-${info.code}'),
-        padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
+        height: height,
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
           color: selected
               ? (dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint)
               : cardColor(context),
-          borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
         ),
         child: Row(
           children: [
-            Text(info.flag, style: const TextStyle(fontSize: 22)),
-            const SizedBox(width: 14),
+            Text(info.flag, style: const TextStyle(fontSize: 19)),
+            const SizedBox(width: 11),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text(
-                    info.country,
-                    style: theme.textTheme.titleMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  // The country is what people scan for, so it keeps the
+                  // larger share when the two cannot both fit.
+                  Flexible(
+                    flex: 3,
+                    child: Text(
+                      info.country,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 14.5,
+                        color: selected && !dark
+                            ? UpinoTokens.actionOnTint
+                            : null,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const SizedBox(height: 1),
-                  Text(
-                    info.name,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(fontSize: 12.5),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  const SizedBox(width: 8),
+                  Flexible(
+                    flex: 2,
+                    child: Text(
+                      info.name,
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  info.symbol,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: selected
-                        ? (dark
-                            ? UpinoTokens.darkTextPrimary
-                            : UpinoTokens.actionOnTint)
-                        : null,
-                  ),
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  info.code,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 11.5,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-              ],
-            ),
-            if (selected) ...[
-              const SizedBox(width: 10),
-              Icon(
-                Icons.check_circle_rounded,
-                size: 20,
-                color: dark
-                    ? UpinoTokens.darkActionPrimary
-                    : UpinoTokens.actionPrimary,
+            const SizedBox(width: 8),
+            Text(
+              info.symbol,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 14.5,
+                color: selected ? accent : UpinoTokens.textSecondary,
               ),
-            ],
+            ),
+            SizedBox(
+              width: 22,
+              child: selected
+                  ? Icon(Icons.check_rounded, size: 17, color: accent)
+                  : null,
+            ),
           ],
         ),
       ),
