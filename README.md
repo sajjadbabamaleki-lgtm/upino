@@ -96,6 +96,7 @@ number is computed on-device rather than behind a network call.
 | `app/test/vertical_slice_test.dart` | §18 end to end, through the real widgets |
 | `app/test/persistence_test.dart` | Saving, reopening and refusing bad documents |
 | `app/test/nav_bar_test.dart` | Navigation geometry, measured rather than eyeballed |
+| `app/test/activity_test.dart` | Listing recorded events and correcting them |
 
 ### Timezone
 
@@ -128,3 +129,15 @@ interrupted write cannot leave a half-saved plan. Writes are serialized and
 coalesced because the app persists after every mutation: two rapid edits
 would otherwise race the same scratch path, and an older state must never land
 on disk after a newer one.
+
+### Corrections
+
+Removing a recorded entry appends a `CorrectionEvent` beside it rather than
+deleting it. The voided event stays in the log, so the record still explains
+what the plan used to say (§15, §21), while the figure recovers immediately
+because the reducer collects voided ids in a first pass and skips those events
+when folding.
+
+The entry also stays on the Activity list, dimmed and marked. Silently erasing
+a line the user once saw would contradict the one rule this product is built
+on, in the smallest and most damaging way available.

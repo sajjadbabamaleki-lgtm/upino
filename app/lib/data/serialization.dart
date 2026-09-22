@@ -188,6 +188,12 @@ Map<String, Object?> ledgerEventToJson(LedgerEvent e) {
         'amount': moneyToJson(amount),
         if (linkedExpenseId != null) 'linkedExpenseId': linkedExpenseId,
       },
+    CorrectionEvent(:final voidsEventId, :final reason) => {
+        ...base,
+        'kind': 'correction',
+        'voidsEventId': voidsEventId,
+        'reason': reason,
+      },
     BalanceAdjustmentEvent(
       :final accountId,
       :final delta,
@@ -262,6 +268,12 @@ LedgerEvent ledgerEventFromJson(Map<String, Object?> json) {
         accountId: json['accountId']! as String,
         amount: amount(),
         linkedExpenseId: json['linkedExpenseId'] as String?,
+        canonicalId: canonicalId,
+      ),
+    'correction' => CorrectionEvent(
+        id: id,
+        voidsEventId: json['voidsEventId']! as String,
+        reason: json['reason']! as String,
         canonicalId: canonicalId,
       ),
     'balanceAdjustment' => BalanceAdjustmentEvent(

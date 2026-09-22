@@ -31,6 +31,26 @@ class OnboardingDraft {
   bool get isComplete => currentBalance != null && incomeAmount != null;
 }
 
+/// One row of the Activity screen.
+class ActivityEntry {
+  const ActivityEntry({
+    required this.eventId,
+    required this.label,
+    required this.amount,
+    required this.increasesMoney,
+    required this.removed,
+  });
+
+  final String eventId;
+  final String label;
+  final Money amount;
+  final bool increasesMoney;
+
+  /// Still listed, but no longer counted. Removed entries stay visible
+  /// because this product does not erase what it once told you.
+  final bool removed;
+}
+
 class AppState extends ChangeNotifier {
   AppState({DateTime? now, Duration? utcOffset, PlanStore? store})
       : _now = now ?? DateTime.now().toUtc(),
@@ -233,6 +253,72 @@ class AppState extends ChangeNotifier {
 
   void clearExpenseConfirmation() {
     lastRecordedExpense = null;
+    notifyListeners();
+  }
+
+  /// What the Activity screen shows: the events a person recorded, newest
+  /// first, each marked with whether it still counts.
+  List<ActivityEntry> get activity {
+    final corrected = <String>{
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final entries = <ActivityEntry>[];
+    for (final e in _events) {
+      final described = _describe(e);
+      if (described == null) continue;
+      entries.add(ActivityEntry(
+        eventId: e.id,
+        label: described.label,
+        amount: described.amount,
+        increasesMoney: described.increasesMoney,
+        removed: corrected.contains(e.id),
+      ),);
+    }
+    return entries.reversed.toList();
+  }
+
+  ({String label, Money amount, bool increasesMoney})? _describe(LedgerEvent e) =>
+      switch (e) {
+        ExpenseEvent(:final amount) =>
+          (label: 'Spent', amount: amount, increasesMoney: false),
+        CardPurchaseEvent(:final amount) =>
+          (label: 'Card purchase', amount: amount, increasesMoney: false),
+        CardSettlementEvent(:final amount) =>
+          (label: 'Card payment', amount: amount, increasesMoney: false),
+        IncomeConfirmedEvent(:final amount) =>
+          (label: 'Income received', amount: amount, increasesMoney: true),
+        RefundEvent(:final amount) =>
+          (label: 'Refund', amount: amount, increasesMoney: true),
+        TransferEvent(:final amount) =>
+          (label: 'Moved between accounts', amount: amount, increasesMoney: true),
+        LoanDrawdownEvent(:final amount) =>
+          (label: 'Loan received', amount: amount, increasesMoney: true),
+        DebtPaymentEvent(:final amount) =>
+          (label: 'Debt payment', amount: amount, increasesMoney: false),
+        BalanceAdjustmentEvent(:final delta) => (
+            label: 'Balance corrected',
+            amount: delta.isNegative ? -delta : delta,
+            increasesMoney: !delta.isNegative,
+          ),
+        // A correction is not itself an entry; it marks the one it voids.
+        CorrectionEvent() => null,
+      };
+
+  /// Remove a recorded event. The event stays in the log and a correction is
+  /// appended beside it, so the record still explains what the plan used to
+  /// say (§15, §21). Nothing is erased.
+  void removeEvent(String eventId, {String reason = 'Removed by user'}) {
+    if (_events.every((e) => e.id != eventId)) return;
+    if (_events.any((e) => e is CorrectionEvent && e.voidsEventId == eventId)) {
+      return;
+    }
+    _events.add(CorrectionEvent(
+      id: 'e${++_eventSeq}',
+      voidsEventId: eventId,
+      reason: reason,
+    ),);
+    _persist();
     notifyListeners();
   }
 

@@ -173,6 +173,28 @@ void main() {
     );
   });
 
+  testWidgets('03b activity with a removed entry', (tester) async {
+    final state = fundedState(withExpense: true)..recordExpense(eur('9.99'));
+    state.removeEvent(state.activity[1].eventId);
+    tester.view
+      ..physicalSize = const Size(400, 700)
+      ..devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: boundary,
+        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.receipt_long_rounded));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundary),
+      matchesGoldenFile('screenshots/03b-activity.png'),
+    );
+  });
+
   testWidgets('04 hero S1 trusted', (tester) async {
     await shoot(
       tester,

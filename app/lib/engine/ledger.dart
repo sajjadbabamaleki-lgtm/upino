@@ -139,7 +139,21 @@ class BalanceAdjustmentEvent extends LedgerEvent {
   final String? supersededBy;
 }
 
-enum QuarantineReason { duplicate, unlinkedRefund }
+/// A user correction (§15, §21). The voided event stays in the log: nothing
+/// is erased, so the record still explains what the plan used to say.
+class CorrectionEvent extends LedgerEvent {
+  const CorrectionEvent({
+    required super.id,
+    required this.voidsEventId,
+    required this.reason,
+    super.canonicalId,
+  });
+
+  final String voidsEventId;
+  final String reason;
+}
+
+enum QuarantineReason { duplicate, unlinkedRefund, corrected }
 
 class QuarantinedEvent {
   const QuarantinedEvent(this.eventId, this.reason);
@@ -190,6 +204,13 @@ LedgerState reduceLedger(
   final debtPrincipal = <String, Money>{};
   final quarantined = <QuarantinedEvent>[];
   final postedCanonical = <String>{};
+
+  // Gathered first, because a correction is appended after the event it
+  // voids and must still stop it from posting.
+  final voided = <String>{
+    for (final e in events)
+      if (e is CorrectionEvent) e.voidsEventId,
+  };
   final spending = <Money>[];
   final income = <Money>[];
 
@@ -198,6 +219,11 @@ LedgerState reduceLedger(
   }
 
   for (final e in events) {
+    if (voided.contains(e.id)) {
+      quarantined.add(QuarantinedEvent(e.id, QuarantineReason.corrected));
+      continue;
+    }
+
     final canonical = e.canonicalId;
     if (canonical != null) {
       if (postedCanonical.contains(canonical)) {
@@ -247,6 +273,11 @@ LedgerState reduceLedger(
 
       case BalanceAdjustmentEvent(:final accountId, :final delta, :final supersededBy):
         if (supersededBy == null) bump(balances, accountId, delta);
+
+      case CorrectionEvent():
+        // Carries no economic value of its own; its effect is the event it
+        // voids, which was skipped above.
+        break;
     }
   }
 

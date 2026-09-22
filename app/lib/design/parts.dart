@@ -299,7 +299,7 @@ class UpinoNavBar extends StatelessWidget {
 
   static const _items = <({IconData icon, String label})>[
     (icon: Icons.home_rounded, label: 'Home'),
-    (icon: Icons.receipt_long_rounded, label: 'Plan'),
+    (icon: Icons.receipt_long_rounded, label: 'Activity'),
     (icon: Icons.grid_view_rounded, label: 'Profile'),
   ];
 
