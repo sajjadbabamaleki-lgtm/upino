@@ -164,8 +164,17 @@ order the money is actually assigned, so it is explained rather than asserted.
 
 ### Running it on a phone
 
-Every push builds an installable APK in CI, so trying the app needs no local
-Flutter or Android SDK.
+The workflow in `.github/workflows/android.yml` builds an installable APK on
+every push.
+
+**It cannot run on this repository as things stand.** Every job fails after a
+few seconds with no logs, including a probe whose only step was `echo` and
+which used no actions at all, so the runner is never starting. On a private
+repository that points at the account's Actions minutes or spending limit,
+under Settings → Billing and licensing. Public repositories get unlimited
+minutes; private ones are metered.
+
+Once the runner starts, the artifact is available like this:
 
 1. Open the repository's **Actions** tab on GitHub.
 2. Pick the newest **Android build** run for your branch.
@@ -179,7 +188,7 @@ key. A store build needs its own signing config.
 The app declares no permissions and talks to no network: the plan lives in a
 file in the app's own storage.
 
-Building locally instead:
+Building locally instead, which needs no CI at all:
 
 ```
 cd app
