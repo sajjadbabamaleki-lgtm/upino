@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- UpinoTokens.surfacePage. The window wears the page colour so the
+         launch frame and the app frame are the same shade. -->
+    <color name="upino_page">#FFF0F0F0</color>
+</resources>

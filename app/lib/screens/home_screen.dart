@@ -68,11 +68,16 @@ class _HomeScreenState extends State<HomeScreen> {
         .where((a) => a.shortfall.minor > 0)
         .toList();
 
-    const contentPadding = EdgeInsets.fromLTRB(
+    // Edge to edge, so the view now extends under the gesture bar. Everything
+    // that was measured from the bottom of the screen has to clear it.
+    final systemBottom = MediaQuery.viewPaddingOf(context).bottom;
+    final navBottomGap = _navBottomGap + systemBottom;
+
+    final contentPadding = EdgeInsets.fromLTRB(
       UpinoTokens.gutter,
       8,
       UpinoTokens.gutter,
-      120,
+      120 + systemBottom,
     );
 
     return Scaffold(
@@ -167,12 +172,12 @@ class _HomeScreenState extends State<HomeScreen> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: NavScrim(navHeight: _navHeight, bottomGap: _navBottomGap),
+            child: NavScrim(navHeight: _navHeight, bottomGap: navBottomGap),
           ),
           Positioned(
             left: UpinoTokens.gutter,
             right: UpinoTokens.gutter,
-            bottom: _navBottomGap,
+            bottom: navBottomGap,
             child: UpinoNavBar(
               index: _tab,
               onSelect: (i) => setState(() => _tab = i),

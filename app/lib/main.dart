@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'data/plan_store.dart';
 import 'design/theme.dart';
@@ -11,6 +12,11 @@ import 'state/app_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Draw the page colour the full height of the display, behind the clock and
+  // the battery at the top and behind the gesture bar at the bottom. Every
+  // screen already wraps its content in a SafeArea, so only the background
+  // moves up; nothing lands under the status icons.
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   final state = AppState(store: await FilePlanStore.inAppDirectory());
   unawaited(state.restore());
   runApp(UpinoApp(state: state));
@@ -40,6 +46,10 @@ class UpinoApp extends StatelessWidget {
           ThemeChoice.light => ThemeMode.light,
           ThemeChoice.dark => ThemeMode.dark,
         },
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: _overlayStyle(Theme.of(context).brightness),
+          child: child ?? const SizedBox.shrink(),
+        ),
         // Waiting one frame beats showing an empty plan and replacing it.
         home: !state.isRestored
             ? const _RestoringScreen()
@@ -50,6 +60,25 @@ class UpinoApp extends StatelessWidget {
 
   ThemeData _themed(Brightness brightness) =>
       buildTheme(brightness: brightness, fontFamily: fontFamily);
+
+  /// Transparent bars, with the glyphs inside them set to whichever of black
+  /// or white reads against the page underneath. Android and iOS name that
+  /// choice with opposite conventions, hence the two fields.
+  static SystemUiOverlayStyle _overlayStyle(Brightness brightness) {
+    final light = brightness == Brightness.light;
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: light ? Brightness.dark : Brightness.light,
+      statusBarBrightness: light ? Brightness.light : Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      systemNavigationBarIconBrightness:
+          light ? Brightness.dark : Brightness.light,
+      // Without this Android paints its own translucent scrim over the
+      // navigation bar, which shows as a band in a different shade.
+      systemNavigationBarContrastEnforced: false,
+    );
+  }
 }
 
 class _RestoringScreen extends StatelessWidget {
