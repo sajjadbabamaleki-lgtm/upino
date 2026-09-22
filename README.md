@@ -164,23 +164,17 @@ order the money is actually assigned, so it is explained rather than asserted.
 
 ### Running it on a phone
 
-The workflow in `.github/workflows/android.yml` builds an installable APK on
-every push.
+Every push builds an installable APK and publishes it to the **latest-android**
+release, so the download link never changes:
 
-**It cannot run on this repository as things stand.** Every job fails after a
-few seconds with no logs, including a probe whose only step was `echo` and
-which used no actions at all, so the runner is never starting. On a private
-repository that points at the account's Actions minutes or spending limit,
-under Settings → Billing and licensing. Public repositories get unlimited
-minutes; private ones are metered.
+**https://github.com/sajjadbabamaleki-lgtm/upino/releases/tag/latest-android**
 
-Once the runner starts, the artifact is available like this:
+Open that on the phone, download `upino.apk` and tap it. Android asks once to
+allow installing from this source.
 
-1. Open the repository's **Actions** tab on GitHub.
-2. Pick the newest **Android build** run for your branch.
-3. Download the **upino-apk** artifact and unzip it.
-4. Copy the `.apk` to an Android phone and open it. Android asks once to
-   allow installing from this source.
+The release exists because a workflow artifact is only reachable from the
+desktop web UI and arrives wrapped in a zip — useless on the device the app is
+meant to run on. The artifact is still uploaded for CI debugging.
 
 The APK is debug-signed, which is what makes it installable without a release
 key. A store build needs its own signing config.

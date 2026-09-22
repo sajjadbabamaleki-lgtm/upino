@@ -11,6 +11,9 @@ on:
     branches: ['**']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   FLUTTER_HOME: ${{ github.workspace }}/.flutter
 
@@ -73,3 +76,26 @@ jobs:
           path: app/build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      # Artifacts are only reachable from the desktop web UI and arrive
+      # wrapped in a zip. A release gives a plain .apk link that a phone can
+      # download and open directly, which is the whole point of building it.
+      - name: Publish to the latest-android release
+        if: github.ref_name == 'claude/v1-to-v2-improvements-075f22'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cp app/build/app/outputs/flutter-apk/app-debug.apk upino.apk
+
+          # A moving tag keeps one stable download URL across builds.
+          gh release delete latest-android --yes --cleanup-tag || true
+          gh release create latest-android upino.apk \
+            --title "Upino — latest Android build" \
+            --notes "Debug-signed build of ${{ github.sha }}.
+
+          Download **upino.apk** below and open it on an Android phone.
+          Android asks once to allow installing from this source.
+
+          The app requests no permissions and makes no network calls." \
+            --target "${{ github.sha }}" 
