@@ -78,8 +78,8 @@ class _GradientHero extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: dark
               ? const [UpinoTokens.darkGradientStart, UpinoTokens.darkGradientEnd]
               : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
@@ -102,7 +102,7 @@ class _GradientHero extends StatelessWidget {
             '${UpinoTokens.separator}'
             '${snapshot.protectedTotal.display()} set aside',
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 26),
           if (degraded)
             _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
           else if (onQuickExpense != null)
@@ -258,13 +258,19 @@ class _HeroShell extends StatelessWidget {
             children: [
               if (decoration2 != null)
                 Positioned(top: -6, right: -6, child: decoration2!),
-              Padding(padding: const EdgeInsets.all(22), child: child),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 26, 22, 26),
+                child: child,
+              ),
             ],
           ),
         ),
       );
 }
 
+/// Plain white, no scrim: at the card's proportions this line lands just
+/// above the midpoint of the sweep, where white measures 5.3:1. The scrim is
+/// reserved for the freshness row, which sits lower.
 class _HeroMeta extends StatelessWidget {
   const _HeroMeta(this.text);
   final String text;
@@ -273,7 +279,7 @@ class _HeroMeta extends StatelessWidget {
   Widget build(BuildContext context) => Text(
         text,
         style: const TextStyle(
-          color: Colors.white70,
+          color: Colors.white,
           fontSize: 13.5,
           fontFeatures: moneyFeatures,
         ),
@@ -291,7 +297,13 @@ class _FreshnessRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final days = snapshot.balanceAgeInDays;
-    return Row(
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
+      decoration: BoxDecoration(
+        color: UpinoTokens.onGradientScrim,
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+      ),
+      child: Row(
       children: [
         Expanded(
           child: Text(
@@ -301,7 +313,7 @@ class _FreshnessRow extends StatelessWidget {
               1 => 'Balance confirmed yesterday',
               _ => 'Balance confirmed $days days ago',
             },
-            style: const TextStyle(color: Colors.white60, fontSize: 13),
+            style: const TextStyle(color: Colors.white, fontSize: 13),
           ),
         ),
         GestureDetector(
@@ -309,13 +321,13 @@ class _FreshnessRow extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
             decoration: BoxDecoration(
-              color: const Color(0x26FFFFFF),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
             ),
             child: const Text(
               'Confirm',
               style: TextStyle(
-                color: Colors.white,
+                color: UpinoTokens.gradientStart,
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
               ),
@@ -323,6 +335,7 @@ class _FreshnessRow extends StatelessWidget {
           ),
         ),
       ],
+      ),
     );
   }
 }

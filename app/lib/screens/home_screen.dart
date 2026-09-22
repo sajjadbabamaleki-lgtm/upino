@@ -194,7 +194,7 @@ class _ConfirmationBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => UpinoCard(
-        color: UpinoTokens.accentConfirm,
+        gradient: accentSurfaceGradient,
         radius: UpinoTokens.radiusInner,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         child: Row(

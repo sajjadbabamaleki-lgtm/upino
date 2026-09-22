@@ -31,13 +31,28 @@ class UpinoTokens {
   static const actionOnTint = Color(0xFF262A78); // label on the tint, 9.4:1
   static const navIdle = Color(0xFF939399); // idle nav glyph, 3.06:1 on white
 
-  /// The gradient is reserved for hero states S1 and S2 (§32.6).
-  static const gradientStart = Color(0xFF2F3AE8);
-  static const gradientEnd = Color(0xFF5B62F7);
+  /// The gradient is reserved for hero states S1 and S2 (§32.6). Both stops
+  /// are read off the approved direction rather than chosen. The reference
+  /// card's per-row modal colour climbs at a steady rate over its clean band,
+  /// and its left and right edges agree at every row, so the sweep is
+  /// vertical and far wider than a tinted wash. The ends are that band's
+  /// slope carried out to the card edges, not to where the blue channel
+  /// would have run past 255.
+  static const gradientStart = Color(0xFF2129D6); // white label 8.93:1
+  static const gradientEnd = Color(0xFF958DFF); // white label 2.79:1
+
+  /// White clears 4.5:1 only down to about three fifths of that sweep.
+  /// Anything sitting lower gets this scrim behind it, which restores the
+  /// ratio without pulling the gradient's light end back in. Kept as light
+  /// as the ratio allows so it reads as a soft chip, not a bar.
+  static const onGradientScrim = Color(0x33000000);
 
   /// Transient confirmation only — never the Safe-to-Spend figure (§32.7).
-  static const accentConfirm = Color(0xFFCDF95F); // with textPrimary 12.5:1
-  static const accentConfirmSurface = Color(0xFFEFFBCF);
+  /// The reference uses the saturated end for pills and dots alone; a filled
+  /// panel takes the two surface stops instead, lightest at the top.
+  static const accentConfirm = Color(0xFFCDFE6C); // with textPrimary 15.32:1
+  static const accentSurfaceStart = Color(0xFFF7FFE8); // textPrimary 17.40:1
+  static const accentSurfaceEnd = Color(0xFFE0FFA0); // textPrimary 16.17:1
 
   static const critical = Color(0xFFCC2E26); // white 5.27:1 · on card 5.2:1
 
@@ -58,8 +73,10 @@ class UpinoTokens {
 
   static const darkActionPrimary = Color(0xFF5B63F5); // white label 4.62:1
   static const darkActionTint = Color(0xFF26294A);
-  static const darkGradientStart = Color(0xFF3A43F0);
-  static const darkGradientEnd = Color(0xFF6B72FF);
+  /// The same sweep held back about a tenth, so the hero does not glare
+  /// against the dark page.
+  static const darkGradientStart = Color(0xFF1E26C5); // white 9.82:1
+  static const darkGradientEnd = Color(0xFF837CE0); // white 3.54:1
 
   /// A filled critical surface in dark mode takes a near-black label; white
   /// on this colour measures 2.79:1 and is prohibited.

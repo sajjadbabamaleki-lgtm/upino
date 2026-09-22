@@ -24,6 +24,7 @@ class UpinoCard extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.all(UpinoTokens.cardPadding),
     this.color,
+    this.gradient,
     this.radius = UpinoTokens.radiusCard,
     super.key,
   });
@@ -31,6 +32,9 @@ class UpinoCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
   final Color? color;
+
+  /// Set instead of [color] for the one accent panel that carries a sweep.
+  final Gradient? gradient;
   final double radius;
 
   @override
@@ -38,12 +42,21 @@ class UpinoCard extends StatelessWidget {
         width: double.infinity,
         padding: padding,
         decoration: BoxDecoration(
-          color: color ?? cardColor(context),
+          color: gradient == null ? color ?? cardColor(context) : null,
+          gradient: gradient,
           borderRadius: BorderRadius.circular(radius),
         ),
         child: child,
       );
 }
+
+/// The accent panel's sweep, lightest at the top, read off the approved
+/// direction the same way the hero's was.
+const accentSurfaceGradient = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [UpinoTokens.accentSurfaceStart, UpinoTokens.accentSurfaceEnd],
+);
 
 /// Small caps pill. The lime fill marks a moment that just happened and never
 /// a persistent state (§32.7); other fills carry no such meaning.
