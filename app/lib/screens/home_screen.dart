@@ -14,8 +14,10 @@ import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
 import '../state/app_state.dart';
-import '../widgets/quick_expense_sheet.dart';
+import '../widgets/amount_sheet.dart';
 import 'activity_screen.dart';
+import 'plan_screen.dart';
+import 'profile_screen.dart';
 import '../widgets/sts_hero.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,15 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
   AppState get state => widget.state;
 
   Future<void> _recordExpense() async {
-    final amount = await QuickExpenseSheet.show(context, state.currency);
+    final amount = await AmountSheet.show(
+      context,
+      currency: state.currency,
+      title: 'How much did you spend?',
+    );
     if (amount != null) state.recordExpense(amount);
   }
 
   Future<void> _confirmBalance() async {
-    final observed = await QuickExpenseSheet.show(
+    final observed = await AmountSheet.show(
       context,
-      state.currency,
+      currency: state.currency,
       title: 'What is your balance now?',
+      explanation:
+          'Any difference is recorded as a correction, never as spending.',
+      initial: state.snapshot.trustedAllocatableLiquidity,
     );
     if (observed != null) state.confirmBalance(observed);
   }
@@ -71,8 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             bottom: false,
             child: switch (_tab) {
-              1 => ActivityScreen(state: state, padding: contentPadding),
-              2 => _ProfilePlaceholder(padding: contentPadding),
+              1 => PlanScreen(state: state, padding: contentPadding),
+              2 => ActivityScreen(state: state, padding: contentPadding),
+              3 => ProfileScreen(state: state, padding: contentPadding),
               _ => ListView(
                   padding: contentPadding,
                   children: [
@@ -172,32 +182,6 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (_) => _BreakdownSheet(snapshot: snapshot),
-    );
-  }
-}
-
-class _ProfilePlaceholder extends StatelessWidget {
-  const _ProfilePlaceholder({required this.padding});
-
-  final EdgeInsets padding;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return ListView(
-      padding: padding,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Text('Profile', style: theme.textTheme.headlineLarge),
-        ),
-        UpinoCard(
-          child: Text(
-            'Editing your plan, goals and settings lives here. Not built yet.',
-            style: theme.textTheme.bodySmall,
-          ),
-        ),
-      ],
     );
   }
 }

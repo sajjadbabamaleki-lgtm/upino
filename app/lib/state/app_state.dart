@@ -256,6 +256,107 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The commitments a person can edit, in the order the waterfall funds
+  /// them, so the list reads the way the money is actually assigned (§11).
+  List<Claim> get editableClaims {
+    final sorted = [..._claims]..sort(Claim.compare);
+    return List.unmodifiable(sorted);
+  }
+
+  IncomeEvent? get nextIncome =>
+      _incomeEvents.isEmpty ? null : _incomeEvents.first;
+
+  Money get openingBalance => _openingBalance ?? Money.zero(_currency);
+
+  /// Amounts a person can add. Debt and sinking funds are modelled but have
+  /// no editor yet, so they are not offered.
+  static const addableClaims = <({String id, Priority priority, String label})>[
+    (id: 'rent', priority: Priority.p2HardObligation, label: 'Rent and bills'),
+    (
+      id: 'card-minimum',
+      priority: Priority.p2HardObligation,
+      label: 'Card minimum due'
+    ),
+    (
+      id: 'essentials',
+      priority: Priority.p4EssentialLiving,
+      label: 'Food and transport'
+    ),
+    (id: 'buffer', priority: Priority.p6Buffer, label: 'Emergency buffer'),
+    (id: 'goal', priority: Priority.p7HardGoal, label: 'Savings goal'),
+  ];
+
+  /// Create or change a commitment. A zero amount removes it rather than
+  /// leaving a claim that protects nothing.
+  void setClaimAmount(String id, Money amount) {
+    final template = addableClaims.where((c) => c.id == id).firstOrNull;
+    final index = _claims.indexWhere((c) => c.id == id);
+
+    if (amount.minor <= 0) {
+      if (index >= 0) _claims.removeAt(index);
+    } else if (index >= 0) {
+      final existing = _claims[index];
+      _claims[index] = Claim(
+        id: existing.id,
+        priority: existing.priority,
+        label: existing.label,
+        amount: amount,
+        dueDate: existing.dueDate,
+        userPriority: existing.userPriority,
+        reservation: existing.reservation,
+      );
+    } else if (template != null) {
+      _claims.add(Claim(
+        id: template.id,
+        priority: template.priority,
+        label: template.label,
+        amount: amount,
+      ),);
+    } else {
+      return;
+    }
+
+    _persist();
+    notifyListeners();
+  }
+
+  void removeClaim(String id) => setClaimAmount(id, Money.zero(_currency));
+
+  /// Change what the next pay is expected to be. Still an expectation, so it
+  /// stays out of safe_to_spend_now (INV-04).
+  void setExpectedIncome({Money? amount, LocalDate? date}) {
+    final current = _incomeEvents.isEmpty ? null : _incomeEvents.first;
+    final nextAmount = amount ?? current?.expectedAmount;
+    final nextDate = date ?? current?.expectedDate;
+    if (nextAmount == null || nextDate == null) return;
+
+    _incomeEvents
+      ..clear()
+      ..add(IncomeEvent(
+        id: 'income-next',
+        expectedAmount: nextAmount,
+        expectedDate: nextDate,
+        state: IncomeState.expected,
+      ),);
+    _persist();
+    notifyListeners();
+  }
+
+  /// Wipe the plan and start again. The stored document goes too, because a
+  /// half-cleared plan would be worse than none.
+  Future<void> startOver() async {
+    _events.clear();
+    _claims.clear();
+    _incomeEvents.clear();
+    _openingBalance = null;
+    _lastBalanceConfirmation = null;
+    _onboarded = false;
+    _eventSeq = 0;
+    lastRecordedExpense = null;
+    await _store?.clear();
+    notifyListeners();
+  }
+
   /// What the Activity screen shows: the events a person recorded, newest
   /// first, each marked with whether it still counts.
   List<ActivityEntry> get activity {

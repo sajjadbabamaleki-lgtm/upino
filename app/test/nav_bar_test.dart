@@ -38,9 +38,25 @@ Future<void> pumpBar(
   await tester.pump(kThemeAnimationDuration + const Duration(milliseconds: 20));
 }
 
+/// Flutter reports a layout overflow through the error reporter rather than
+/// by throwing, so a row that does not fit would otherwise pass unnoticed.
+bool didOverflow() {
+  final error = _lastError;
+  _lastError = null;
+  return error != null && error.contains('overflowed');
+}
+
+String? _lastError;
+
 void main() {
+  final previousOnError = FlutterError.onError;
+  FlutterError.onError = (details) {
+    _lastError = details.exceptionAsString();
+    previousOnError?.call(details);
+  };
+
   testWidgets('the selected pill is inset equally on three sides', (t) async {
-    await pumpBar(t, 2, Brightness.light);
+    await pumpBar(t, 3, Brightness.light);
 
     final bar = await rectOf(t, find.byType(UpinoNavBar));
     final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
@@ -65,17 +81,33 @@ void main() {
     expect(pill.left - bar.left, closeTo(UpinoNavBar.inset, 0.01));
   });
 
+  testWidgets('a middle destination keeps the same vertical insets', (t) async {
+    await pumpBar(t, 1, Brightness.light);
+    final bar = await rectOf(t, find.byType(UpinoNavBar));
+    final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
+    expect(pill.top - bar.top, closeTo(UpinoNavBar.inset, 0.01));
+    expect(bar.bottom - pill.bottom, closeTo(UpinoNavBar.inset, 0.01));
+  });
+
+  testWidgets('every destination fits on one row at phone width', (t) async {
+    for (var i = 0; i < 4; i++) {
+      await pumpBar(t, i, Brightness.light);
+      expect(didOverflow(), isFalse, reason: 'destination $i overflowed');
+    }
+  });
+
   testWidgets('the pill fills the row height', (t) async {
-    await pumpBar(t, 2, Brightness.light);
+    await pumpBar(t, 3, Brightness.light);
     final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
     expect(pill.height, closeTo(UpinoNavBar.itemHeight, 0.01));
   });
 
   testWidgets('only the selected destination shows a label', (t) async {
-    await pumpBar(t, 2, Brightness.light);
+    await pumpBar(t, 3, Brightness.light);
     expect(find.text('Profile'), findsOneWidget);
     expect(find.text('Home'), findsNothing);
     expect(find.text('Plan'), findsNothing);
+    expect(find.text('Activity'), findsNothing);
   });
 
   BoxDecoration barDecoration(WidgetTester tester) =>
@@ -84,10 +116,10 @@ void main() {
           .decoration! as BoxDecoration;
 
   testWidgets('the bar casts no shadow in either mode', (t) async {
-    await pumpBar(t, 2, Brightness.light);
+    await pumpBar(t, 3, Brightness.light);
     expect(barDecoration(t).boxShadow, isNull);
 
-    await pumpBar(t, 2, Brightness.dark);
+    await pumpBar(t, 3, Brightness.dark);
     expect(barDecoration(t).boxShadow, isNull);
   });
 

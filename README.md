@@ -97,6 +97,7 @@ number is computed on-device rather than behind a network call.
 | `app/test/persistence_test.dart` | Saving, reopening and refusing bad documents |
 | `app/test/nav_bar_test.dart` | Navigation geometry, measured rather than eyeballed |
 | `app/test/activity_test.dart` | Listing recorded events and correcting them |
+| `app/test/plan_screen_test.dart` | Editing commitments, income and starting over |
 
 ### Timezone
 
@@ -141,3 +142,22 @@ when folding.
 The entry also stays on the Activity list, dimmed and marked. Silently erasing
 a line the user once saw would contradict the one rule this product is built
 on, in the smallest and most damaging way available.
+
+### Screens
+
+Four destinations, as §32.9 specifies.
+
+| Screen | Holds |
+|---|---|
+| Home | The decision: Safe-to-Spend, what is short, why the figure moved |
+| Plan | Commitments, income and balance — listed in waterfall order |
+| Activity | What was recorded, and how to correct it |
+| Profile | Balance confirmation, confidence, starting over |
+
+Every amount in the app is entered through one `AmountSheet`, so the keypad
+path is identical whether it is a spend, a balance confirmation or an edit.
+
+The Plan screen lists commitments in waterfall order rather than in the order
+they were typed, and each row says in plain language where it sits — "Must be
+paid — comes first", "Kept back for emergencies". The order on screen is the
+order the money is actually assigned, so it is explained rather than asserted.
