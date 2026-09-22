@@ -11,6 +11,7 @@ import 'dart:convert';
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
 import '../engine/money.dart';
+import '../state/app_state.dart' show ThemeChoice;
 import 'serialization.dart';
 
 class PlanDocument {
@@ -23,6 +24,7 @@ class PlanDocument {
     required this.onboarded,
     this.lastBalanceConfirmationAt,
     this.eventSequence = 0,
+    this.themeChoice = ThemeChoice.system,
   });
 
   final String currency;
@@ -37,12 +39,17 @@ class PlanDocument {
   /// length would collide after any event is ever dropped.
   final int eventSequence;
 
+  /// A preference rather than plan data, but it lives here so there is one
+  /// thing to save and one thing to read back.
+  final ThemeChoice themeChoice;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
         'openingBalance': moneyToJson(openingBalance),
         'onboarded': onboarded,
         'eventSequence': eventSequence,
+        'themeChoice': themeChoice.name,
         if (lastBalanceConfirmationAt != null)
           'lastBalanceConfirmationAt':
               lastBalanceConfirmationAt!.toUtc().toIso8601String(),
@@ -80,6 +87,10 @@ class PlanDocument {
       incomeEvents: listOf(json['incomeEvents'], incomeFromJson),
       onboarded: json['onboarded'] as bool? ?? false,
       eventSequence: json['eventSequence'] as int? ?? 0,
+      // Absent in a version 1 document, which simply means "follow the phone".
+      themeChoice: json['themeChoice'] == null
+          ? ThemeChoice.system
+          : enumByName(ThemeChoice.values, json['themeChoice'], 'theme choice'),
       lastBalanceConfirmationAt:
           confirmedAt == null ? null : DateTime.parse(confirmedAt as String),
     );

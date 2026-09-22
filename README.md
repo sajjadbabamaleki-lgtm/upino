@@ -98,6 +98,7 @@ number is computed on-device rather than behind a network call.
 | `app/test/nav_bar_test.dart` | Navigation geometry, measured rather than eyeballed |
 | `app/test/activity_test.dart` | Listing recorded events and correcting them |
 | `app/test/plan_screen_test.dart` | Editing commitments, income and starting over |
+| `app/test/theme_choice_test.dart` | The theme preference and its persistence |
 
 ### Timezone
 
@@ -119,6 +120,10 @@ Two rules keep a stored plan meaning what it meant:
   a case is inserted into `Priority` or `ReservationState`.
 - **Money persists as integer minor units plus its currency**, exactly as §5
   holds it — no decimal string to re-parse, no double.
+
+The theme preference lives in the same document. It is a preference rather
+than plan data, so deleting the plan keeps it, and a version 1 document
+without the field simply loads as "follow the phone".
 
 A document carries `schemaVersion`. A reader that meets a newer version, an
 unknown enum name or an unknown event kind refuses the whole document rather
@@ -152,7 +157,7 @@ Four destinations, as §32.9 specifies.
 | Home | The decision: Safe-to-Spend, what is short, why the figure moved |
 | Plan | Commitments, income and balance — listed in waterfall order |
 | Activity | What was recorded, and how to correct it |
-| Profile | Balance confirmation, confidence, starting over |
+| Profile | Balance confirmation, confidence, theme, starting over |
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.

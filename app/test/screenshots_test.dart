@@ -216,6 +216,27 @@ void main() {
     );
   });
 
+  testWidgets('03d profile with the theme picker', (tester) async {
+    final state = fundedState();
+    tester.view
+      ..physicalSize = const Size(400, 1000)
+      ..devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: boundary,
+        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+      ),
+    );
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.grid_view_rounded));
+    await tester.pumpAndSettle();
+    await expectLater(
+      find.byKey(boundary),
+      matchesGoldenFile('screenshots/03d-profile.png'),
+    );
+  });
+
   testWidgets('04 hero S1 trusted', (tester) async {
     await shoot(
       tester,

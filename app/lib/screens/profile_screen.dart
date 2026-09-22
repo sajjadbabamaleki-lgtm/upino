@@ -9,6 +9,48 @@ import '../engine/plan.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 
+class _ThemeOption extends StatelessWidget {
+  const _ThemeOption({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    super.key,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = isDark(context);
+    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 46,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: selected ? active : sunkenColor(context),
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected
+                ? Colors.white
+                : (dark
+                    ? UpinoTokens.darkTextSecondary
+                    : UpinoTokens.textSecondary),
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({required this.state, required this.padding, super.key});
 
@@ -108,6 +150,45 @@ class ProfileScreen extends StatelessWidget {
                         'balance to fix it.',
                 },
                 style: theme.textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 26),
+        const SectionHeading('Appearance'),
+        UpinoCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Theme', style: theme.textTheme.titleMedium),
+              const SizedBox(height: 4),
+              Text(
+                'Following your phone is the default, so nothing is imposed.',
+                style: theme.textTheme.bodySmall,
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  for (final choice in ThemeChoice.values)
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          right: choice == ThemeChoice.dark ? 0 : 8,
+                        ),
+                        child: _ThemeOption(
+                          key: Key('theme-${choice.name}'),
+                          label: switch (choice) {
+                            ThemeChoice.system => 'Phone',
+                            ThemeChoice.light => 'Light',
+                            ThemeChoice.dark => 'Dark',
+                          },
+                          selected: state.themeChoice == choice,
+                          onTap: () => state.setThemeChoice(choice),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ],
           ),

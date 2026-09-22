@@ -31,6 +31,11 @@ class OnboardingDraft {
   bool get isComplete => currentBalance != null && incomeAmount != null;
 }
 
+/// Which theme the app follows. Stored with the plan so it survives a
+/// reinstall on the same device, and defaults to whatever the phone is set
+/// to rather than imposing a choice.
+enum ThemeChoice { system, light, dark }
+
 /// One row of the Activity screen.
 class ActivityEntry {
   const ActivityEntry({
@@ -71,6 +76,7 @@ class AppState extends ChangeNotifier {
   final List<IncomeEvent> _incomeEvents = [];
 
   String _currency = 'EUR';
+  ThemeChoice _themeChoice = ThemeChoice.system;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
   bool _onboarded = false;
@@ -81,6 +87,14 @@ class AppState extends ChangeNotifier {
   Money? lastRecordedExpense;
 
   bool get isOnboarded => _onboarded;
+  ThemeChoice get themeChoice => _themeChoice;
+
+  void setThemeChoice(ThemeChoice choice) {
+    if (choice == _themeChoice) return;
+    _themeChoice = choice;
+    _persist();
+    notifyListeners();
+  }
 
   /// True once [restore] has run. The UI waits for it rather than showing an
   /// empty plan for a frame and then replacing it.
@@ -117,6 +131,7 @@ class AppState extends ChangeNotifier {
     _lastBalanceConfirmation = document.lastBalanceConfirmationAt;
     _onboarded = document.onboarded;
     _eventSeq = document.eventSequence;
+    _themeChoice = document.themeChoice;
     _events
       ..clear()
       ..addAll(document.events);
@@ -137,6 +152,7 @@ class AppState extends ChangeNotifier {
         onboarded: _onboarded,
         lastBalanceConfirmationAt: _lastBalanceConfirmation,
         eventSequence: _eventSeq,
+        themeChoice: _themeChoice,
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -353,6 +369,7 @@ class AppState extends ChangeNotifier {
     _onboarded = false;
     _eventSeq = 0;
     lastRecordedExpense = null;
+    // The theme is a preference, not plan data, so wiping the plan keeps it.
     await _store?.clear();
     notifyListeners();
   }

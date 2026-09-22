@@ -15,10 +15,12 @@ import '../engine/domain.dart';
 import '../engine/ledger.dart';
 import '../engine/money.dart';
 
-/// Bumped whenever the shape below changes in a way older documents cannot be
-/// read as-is. A reader that meets a newer version refuses rather than
-/// guessing.
-const int schemaVersion = 1;
+/// Bumped whenever the shape below changes. A reader that meets a *newer*
+/// version refuses rather than guessing; an older one still loads, with new
+/// fields taking their defaults.
+///
+/// 2 — added the theme preference.
+const int schemaVersion = 2;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);

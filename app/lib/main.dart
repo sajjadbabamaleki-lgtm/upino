@@ -25,21 +25,27 @@ class UpinoApp extends StatelessWidget {
   final String? fontFamily;
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: state,
+        builder: (context, _) => _app(context),
+      );
+
+  Widget _app(BuildContext context) => MaterialApp(
         title: 'Upino',
         debugShowCheckedModeBanner: false,
         theme: _themed(Brightness.light),
         darkTheme: _themed(Brightness.dark),
-        home: AnimatedBuilder(
-          animation: state,
-          builder: (context, _) {
-            // Waiting one frame beats showing an empty plan and replacing it.
-            if (!state.isRestored) return const _RestoringScreen();
-            return state.isOnboarded
+        themeMode: switch (state.themeChoice) {
+          ThemeChoice.system => ThemeMode.system,
+          ThemeChoice.light => ThemeMode.light,
+          ThemeChoice.dark => ThemeMode.dark,
+        },
+        // Waiting one frame beats showing an empty plan and replacing it.
+        home: !state.isRestored
+            ? const _RestoringScreen()
+            : state.isOnboarded
                 ? HomeScreen(state: state)
-                : OnboardingScreen(state: state);
-          },
-        ),
+                : OnboardingScreen(state: state),
       );
 
   ThemeData _themed(Brightness brightness) =>
