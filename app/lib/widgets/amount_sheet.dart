@@ -113,6 +113,7 @@ class _AmountSheetState extends State<AmountSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final amount = _parsed;
+    final decimals = Currency.of(widget.currency).exponent;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -167,17 +168,24 @@ class _AmountSheetState extends State<AmountSheet> {
                         controller: _controller,
                         focusNode: _focus,
                         autofocus: true,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(decimal: true),
+                        // A currency with no minor unit rejects a decimal
+                        // point on parse, so it is not offered or accepted.
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: decimals > 0,
+                        ),
                         inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                          FilteringTextInputFormatter.allow(
+                            decimals > 0 ? RegExp(r'[0-9.]') : RegExp(r'[0-9]'),
+                          ),
                         ],
                         onChanged: (_) => setState(() {}),
                         onSubmitted: (_) => _save(),
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontFeatures: moneyFeatures),
                         decoration: InputDecoration(
-                          hintText: '0.00',
+                          hintText: decimals == 0
+                              ? '0'
+                              : '0.${'0' * decimals}',
                           hintStyle: theme.textTheme.displayMedium
                               ?.copyWith(color: UpinoTokens.textTertiary),
                           border: InputBorder.none,

@@ -24,13 +24,20 @@ void main() {
 
   /// A tall surface so the whole form is laid out; the default 800x600 test
   /// window leaves the lower fields unbuilt inside the scroll view.
-  Future<void> boot(WidgetTester tester) async {
+  /// [currency] is tapped when onboarding opens on the currency question, so
+  /// tests about the form that follows it do not each repeat the step. Pass
+  /// null to stop at the question itself.
+  Future<void> boot(WidgetTester tester, {String? currency = 'EUR'}) async {
     tester.view
       ..physicalSize = const Size(420, 1800)
       ..devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(UpinoApp(state: state));
     await tester.pumpAndSettle();
+    if (currency != null && find.text('Which currency?').evaluate().isNotEmpty) {
+      await tester.tap(find.byKey(Key('currency-$currency')));
+      await tester.pumpAndSettle();
+    }
   }
 
   /// The optional commitments are collapsed by default, so the test opens
@@ -174,7 +181,9 @@ void _reopenTests() {
 
     setUp(() => store = InMemoryPlanStore());
 
-    Future<AppState> boot(WidgetTester tester) async {
+    /// [currency] is tapped when onboarding opens on the currency question.
+    /// Left null so each test says for itself whether it gets that far.
+    Future<AppState> boot(WidgetTester tester, {String? currency}) async {
       final state = AppState(
         now: DateTime.utc(2026, 10, 1, 10),
         utcOffset: const Duration(hours: 2),
@@ -187,12 +196,16 @@ void _reopenTests() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
+      if (currency != null) {
+        await tester.tap(find.byKey(Key('currency-$currency')));
+        await tester.pumpAndSettle();
+      }
       return state;
     }
 
     testWidgets('a finished plan comes back instead of the setup form',
         (tester) async {
-      final first = await boot(tester);
+      final first = await boot(tester, currency: 'EUR');
       expect(find.text('Set up your plan'), findsOneWidget);
 
       await tester.enterText(
@@ -222,6 +235,7 @@ void _reopenTests() {
       // Close and reopen against the same storage.
       final second = await boot(tester);
       expect(second.isOnboarded, isTrue);
+      expect(find.text('Which currency?'), findsNothing);
       expect(find.text('Set up your plan'), findsNothing);
       expect(find.text('Your plan'), findsOneWidget);
       expect(find.text('€2,975.00'), findsOneWidget);
@@ -232,9 +246,10 @@ void _reopenTests() {
     testWidgets('a corrupt file sends the user to setup, not to a wrong figure',
         (tester) async {
       store = InMemoryPlanStore('{{{ truncated');
-      final state = await boot(tester);
+      final state = await boot(tester, currency: null);
       expect(state.restoreFailure, isNotNull);
-      expect(find.text('Set up your plan'), findsOneWidget);
+      // Onboarding from the top, which starts at the currency question.
+      expect(find.text('Which currency?'), findsOneWidget);
     });
   });
 }
@@ -255,6 +270,9 @@ void _setupIsObviousTests() {
           utcOffset: const Duration(hours: 2),
         ),
       ),);
+      await tester.pumpAndSettle();
+      // Past the currency question; these tests are about the form after it.
+      await tester.tap(find.byKey(const Key('currency-EUR')));
       await tester.pumpAndSettle();
     }
 

@@ -4,6 +4,8 @@
 /// never used for a monetary value.
 library;
 
+import 'currencies.dart';
+
 class Currency {
   const Currency(this.code, this.exponent, {this.symbol = ''});
 
@@ -16,11 +18,11 @@ class Currency {
   static const gbp = Currency('GBP', 2, symbol: '£');
   static const jpy = Currency('JPY', 0, symbol: '¥');
 
-  static const _registry = <String, Currency>{
-    'EUR': eur,
-    'USD': usd,
-    'GBP': gbp,
-    'JPY': jpy,
+  /// Built from the generated table, so the exponent the engine rounds to and
+  /// the one the picker offered are the same number by construction.
+  static final Map<String, Currency> _registry = {
+    for (final c in currencyCatalogue)
+      c.code: Currency(c.code, c.exponent, symbol: c.symbol),
   };
 
   static Currency of(String code) {
@@ -28,6 +30,8 @@ class Currency {
     if (c == null) throw ArgumentError('Unknown currency: $code');
     return c;
   }
+
+  static bool isKnown(String code) => _registry.containsKey(code);
 }
 
 /// An exact monetary amount held as integer minor units.

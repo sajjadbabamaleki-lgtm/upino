@@ -10,8 +10,10 @@ import 'package:flutter/services.dart';
 
 import '../design/parts.dart';
 import '../design/tokens.dart';
+import '../engine/currencies.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart';
+import 'currency_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({required this.state, super.key});
@@ -32,6 +34,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   int _payDayOffset = 30;
   bool _showOptional = false;
+
+  /// Currency first: every amount below is stored in minor units of it, and
+  /// currencies disagree about how many minor units there are.
+  bool _currencyChosen = false;
 
   @override
   void dispose() {
@@ -64,9 +70,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     widget.state.completeOnboarding(_draft);
   }
 
+  void _chooseCurrency(String code) {
+    setState(() {
+      _draft.currency = code;
+      _currencyChosen = true;
+      // Amounts typed under the old currency would be reinterpreted at a
+      // different scale, so they are cleared rather than silently rescaled.
+      for (final c in [_balance, _income, _rent, _essentials, _goal]) {
+        c.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_currencyChosen) {
+      return Scaffold(
+        body: SafeArea(
+          child: CurrencyPicker(
+            selected: _draft.currency,
+            onSelect: _chooseCurrency,
+          ),
+        ),
+      );
+    }
+
     final theme = Theme.of(context);
+    final info = currencyCatalogue.firstWhere((c) => c.code == _draft.currency);
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -98,7 +128,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 18),
+            ActionRow(
+              key: const Key('change-currency'),
+              title: '${info.flag}  ${info.country}',
+              subtitle: '${info.name} · ${info.code}',
+              trailing: const RowAffordance(icon: Icons.swap_horiz_rounded),
+              onTap: () => setState(() => _currencyChosen = false),
+            ),
+            const SizedBox(height: 18),
 
             _Field(
               key: const Key('field-balance'),
@@ -233,10 +271,18 @@ class _Field extends StatelessWidget {
                   Expanded(
                     child: TextField(
                       controller: controller,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      // A currency with no minor unit — the rial, the yen —
+                      // rejects a decimal point on parse, so the keyboard does
+                      // not offer one and the formatter does not accept one.
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: Currency.of(currency).exponent > 0,
+                      ),
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        FilteringTextInputFormatter.allow(
+                          Currency.of(currency).exponent > 0
+                              ? RegExp(r'[0-9.]')
+                              : RegExp(r'[0-9]'),
+                        ),
                       ],
                       onChanged: (_) => onChanged(),
                       style: theme.textTheme.headlineSmall,

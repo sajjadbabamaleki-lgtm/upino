@@ -252,7 +252,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.isOnboarded, isFalse);
-      expect(find.text('Set up your plan'), findsOneWidget);
+      // Back to the top of onboarding, which is the currency question.
+      expect(find.text('Which currency?'), findsOneWidget);
     });
   });
 }

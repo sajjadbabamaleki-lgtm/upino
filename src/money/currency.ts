@@ -3,6 +3,8 @@
  * defines for its minor unit, per ISO 4217. Authoritative amounts are held as
  * integer minor units (§5, §5.1) so no binary floating point is ever involved.
  */
+import { CURRENCY_TABLE } from './currency-table';
+
 export interface Currency {
   readonly code: string;
   readonly exponent: number;
@@ -13,14 +15,13 @@ export interface Currency {
   readonly roundingException?: { readonly mode: 'HALF_UP'; readonly version: string };
 }
 
-const REGISTRY = new Map<string, Currency>([
-  ['EUR', { code: 'EUR', exponent: 2 }],
-  ['USD', { code: 'USD', exponent: 2 }],
-  ['GBP', { code: 'GBP', exponent: 2 }],
-  ['JPY', { code: 'JPY', exponent: 0 }],
-  ['IRR', { code: 'IRR', exponent: 0 }],
-  ['KWD', { code: 'KWD', exponent: 3 }],
-]);
+/**
+ * Built from the generated table, which the Dart engine is built from too, so
+ * the two cannot disagree about a currency's exponent.
+ */
+const REGISTRY = new Map<string, Currency>(
+  CURRENCY_TABLE.map(([code, exponent]) => [code, { code, exponent }]),
+);
 
 export function currency(code: string): Currency {
   const c = REGISTRY.get(code);

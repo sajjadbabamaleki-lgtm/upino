@@ -118,6 +118,7 @@ Future<void> shootApp(
   String name,
   AppState state, {
   Size size = const Size(400, 900),
+  Future<void> Function(WidgetTester)? after,
 }) async {
   tester.view
     ..physicalSize = size
@@ -127,6 +128,7 @@ Future<void> shootApp(
     RepaintBoundary(key: boundary, child: UpinoApp(state: state, fontFamily: 'UpinoSans')),
   );
   await tester.pump();
+  if (after != null) await after(tester);
   await expectLater(
     find.byKey(boundary),
     matchesGoldenFile('screenshots/$name.png'),
@@ -153,12 +155,28 @@ Future<void> loadFonts() async {
 void main() {
   setUpAll(loadFonts);
 
-  testWidgets('01 onboarding', (tester) async {
+  testWidgets('01 currency', (tester) async {
+    // The first screen onboarding shows. The flags render as boxes here: the
+    // harness loads Roboto and the icon face, and no emoji font ships with the
+    // test binding. On a phone the system emoji font draws them.
     await shootApp(
       tester,
-      '01-onboarding',
+      '01-currency',
+      AppState(now: now, utcOffset: cest),
+      size: const Size(400, 900),
+    );
+  });
+
+  testWidgets('01b onboarding', (tester) async {
+    await shootApp(
+      tester,
+      '01b-onboarding',
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 1400),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('currency-EUR')));
+        await tester.pumpAndSettle();
+      },
     );
   });
 
