@@ -11,7 +11,9 @@ import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../domain/goal.dart';
+import '../domain/inflation.dart';
 import '../engine/clock.dart';
+import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../state/app_state.dart';
@@ -97,6 +99,8 @@ class GoalsScreen extends StatelessWidget {
             for (final goal in goals) ...[
               _GoalCard(
                 goal: goal,
+                inflated: state.inflatedTarget(goal),
+                rate: state.inflationBasisPoints,
                 today: state.today,
                 payCycleDays: state.payCycleDays,
                 onEdit: () => _edit(context, goal),
@@ -105,6 +109,10 @@ class GoalsScreen extends StatelessWidget {
               const SizedBox(height: 12),
             ],
           const SizedBox(height: 10),
+          if (goals.isNotEmpty) ...[
+            _InflationRow(state: state),
+            const SizedBox(height: 10),
+          ],
           // A floating button would sit on top of the nav bar, so the one
           // action this tab has lives in the list like the Plan tab's adds.
           ActionRow(
@@ -124,12 +132,18 @@ class _GoalCard extends StatelessWidget {
   const _GoalCard({
     required this.goal,
     required this.today,
+    this.inflated,
+    this.rate,
     required this.payCycleDays,
     required this.onEdit,
     required this.onContribute,
   });
 
   final Goal goal;
+
+  /// The target at the expected inflation on its date, when that is more.
+  final Money? inflated;
+  final int? rate;
   final LocalDate today;
   final int payCycleDays;
   final VoidCallback onEdit;
@@ -208,6 +222,25 @@ class _GoalCard extends StatelessWidget {
               ),
             ],
           ),
+          if (inflated != null && rate != null) ...[
+            const SizedBox(height: 14),
+            Container(
+              key: Key('goal-inflated-${goal.id}'),
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: sunkenColor(context),
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+              ),
+              child: Text(
+                AppLocalizations.of(context).goalsInflated(
+                  formatRate(rate!),
+                  inflated!.display(),
+                ),
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
@@ -282,6 +315,104 @@ class _Fact extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         Text(label, style: theme.textTheme.bodySmall?.copyWith(fontSize: 12)),
+      ],
+    );
+  }
+}
+
+/// The yearly inflation the person expects. Theirs to set: the app has no
+/// network to fetch a figure, and an official one is often not the one a
+/// household actually meets at the till.
+class _InflationRow extends StatelessWidget {
+  const _InflationRow({required this.state});
+
+  final AppState state;
+
+  Future<void> _edit(BuildContext context) async {
+    final answer = await showDialog<String>(
+      context: context,
+      builder: (_) => _InflationDialog(current: state.inflationBasisPoints),
+    );
+    if (answer == null) return;
+    if (answer.trim().isEmpty) {
+      state.setInflation(null);
+      return;
+    }
+    final rate = parseRate(answer);
+    if (rate != null) state.setInflation(rate);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final rate = state.inflationBasisPoints;
+    return ActionRow(
+      key: const Key('goals-inflation'),
+      title: l.inflationTitle,
+      subtitle: rate == null ? l.inflationNotSet : l.inflationRate(formatRate(rate)),
+      trailing: const RowAffordance(icon: 'trendingUp'),
+      onTap: () => _edit(context),
+    );
+  }
+}
+
+class _InflationDialog extends StatefulWidget {
+  const _InflationDialog({required this.current});
+
+  final int? current;
+
+  @override
+  State<_InflationDialog> createState() => _InflationDialogState();
+}
+
+class _InflationDialogState extends State<_InflationDialog> {
+  late final _controller = TextEditingController(
+    text: widget.current == null ? '' : formatRate(widget.current!),
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return AlertDialog(
+      backgroundColor: cardColor(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+      ),
+      title: Text(l.inflationDialogTitle),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.inflationDialogBlurb,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          TextField(
+            key: const Key('inflation-field'),
+            controller: _controller,
+            autofocus: true,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            decoration: const InputDecoration(suffixText: '%'),
+            onSubmitted: (v) => Navigator.of(context).pop(v),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l.cancel),
+        ),
+        TextButton(
+          key: const Key('inflation-save'),
+          onPressed: () => Navigator.of(context).pop(_controller.text),
+          child: Text(l.save),
+        ),
       ],
     );
   }

@@ -854,4 +854,28 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'این پشتیبان با نسخهٔ جدیدتری از Upino ساخته شده. اپ را به‌روز کنید و دوباره امتحان کنید.';
+
+  @override
+  String get inflationTitle => 'تورم';
+
+  @override
+  String get inflationNotSet =>
+      'تنظیم نشده. نرخ سالانهٔ تورم را وارد کنید تا هزینهٔ واقعی هدف‌ها را ببینید.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate٪ در سال';
+  }
+
+  @override
+  String get inflationDialogTitle => 'تورم سالانه';
+
+  @override
+  String get inflationDialogBlurb =>
+      'قیمت‌ها بالا می‌روند، پس هدفی که با پول امروز تعیین شده در موعدش گران‌تر است. نرخی را که انتظار دارید وارد کنید. برای خاموش کردن خالی بگذارید.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'با تورم $rate٪ در سال، این هدف تا آن موقع حدود $amount هزینه خواهد داشت.';
+  }
 }

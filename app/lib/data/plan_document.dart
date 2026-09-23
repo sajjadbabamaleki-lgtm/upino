@@ -33,6 +33,7 @@ class PlanDocument {
     this.recordedAt = const {},
     this.goals = const [],
     this.payCycleDays = 30,
+    this.inflationBasisPoints,
   });
 
   final String currency;
@@ -74,6 +75,10 @@ class PlanDocument {
   /// divides by (§8).
   final int payCycleDays;
 
+  /// The yearly inflation the person expects, in basis points. A whole
+  /// number rather than a percentage so no binary fraction is involved.
+  final int? inflationBasisPoints;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -83,6 +88,8 @@ class PlanDocument {
         'themeChoice': themeChoice.name,
         if (languageCode != null) 'languageCode': languageCode,
         'payCycleDays': payCycleDays,
+        if (inflationBasisPoints != null)
+          'inflationBasisPoints': inflationBasisPoints,
         'goals': goals.map(goalToJson).toList(),
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
@@ -134,6 +141,7 @@ class PlanDocument {
       // Absent in a version 1 document, which simply means "follow the phone".
       goals: listOf(json['goals'], goalFromJson),
       payCycleDays: json['payCycleDays'] as int? ?? 30,
+      inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null
           ? ThemeChoice.system
           : enumByName(ThemeChoice.values, json['themeChoice'], 'theme choice'),

@@ -875,4 +875,28 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'Cette sauvegarde vient d’une version plus récente d’Upino. Mettez l’app à jour et réessayez.';
+
+  @override
+  String get inflationTitle => 'Inflation';
+
+  @override
+  String get inflationNotSet =>
+      'Non défini. Ajoutez le taux annuel de votre pays pour voir le vrai coût de vos objectifs.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate % par an';
+  }
+
+  @override
+  String get inflationDialogTitle => 'Inflation annuelle';
+
+  @override
+  String get inflationDialogBlurb =>
+      'Les prix montent : un objectif fixé en argent d’aujourd’hui coûtera plus à son échéance. Indiquez le taux attendu ; laissez vide pour désactiver.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'À $rate % par an, cela coûtera environ $amount à l’échéance.';
+  }
 }

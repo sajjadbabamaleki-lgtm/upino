@@ -254,5 +254,11 @@
   "backupRestored": "Yedek geri yüklendi",
   "backupWrongPassword": "Bu parola yedeği açmıyor.",
   "backupNotABackup": "Bu dosya bir Upino yedeği değil.",
-  "backupUnreadable": "Bu yedek Upino'nun daha yeni bir sürümüyle yapılmış. Uygulamayı güncelleyip tekrar deneyin."
+  "backupUnreadable": "Bu yedek Upino'nun daha yeni bir sürümüyle yapılmış. Uygulamayı güncelleyip tekrar deneyin.",
+  "inflationTitle": "Enflasyon",
+  "inflationNotSet": "Ayarlanmadı. Hedeflerin gerçek maliyetini görmek için yıllık oranı girin.",
+  "inflationRate": "Yıllık %{rate}",
+  "inflationDialogTitle": "Yıllık enflasyon",
+  "inflationDialogBlurb": "Fiyatlar artar; bugünün parasıyla belirlenen hedef vadesinde daha pahalıya gelir. Beklediğiniz oranı girin; kapatmak için boş bırakın.",
+  "goalsInflated": "Yıllık %{rate} ile, o zamana kadar yaklaşık {amount} tutacak."
 }

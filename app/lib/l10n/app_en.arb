@@ -437,5 +437,28 @@
   "backupRestored": "Backup restored",
   "backupWrongPassword": "That password does not open this backup.",
   "backupNotABackup": "That file is not an Upino backup.",
-  "backupUnreadable": "This backup was made by a newer version of Upino. Update the app and try again."
+  "backupUnreadable": "This backup was made by a newer version of Upino. Update the app and try again.",
+  "inflationTitle": "Inflation",
+  "inflationNotSet": "Not set. Add the yearly rate where you live to see what goals will really cost.",
+  "inflationRate": "{rate}% a year",
+  "@inflationRate": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "inflationDialogTitle": "Yearly inflation",
+  "inflationDialogBlurb": "Prices rise, so a goal set in today's money costs more on its date. Enter the rate you expect. Leave it empty to turn this off.",
+  "goalsInflated": "At {rate}% a year, this will cost about {amount} by then.",
+  "@goalsInflated": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

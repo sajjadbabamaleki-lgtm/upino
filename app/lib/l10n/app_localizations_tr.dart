@@ -855,4 +855,28 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'Bu yedek Upino\'nun daha yeni bir sürümüyle yapılmış. Uygulamayı güncelleyip tekrar deneyin.';
+
+  @override
+  String get inflationTitle => 'Enflasyon';
+
+  @override
+  String get inflationNotSet =>
+      'Ayarlanmadı. Hedeflerin gerçek maliyetini görmek için yıllık oranı girin.';
+
+  @override
+  String inflationRate(String rate) {
+    return 'Yıllık %$rate';
+  }
+
+  @override
+  String get inflationDialogTitle => 'Yıllık enflasyon';
+
+  @override
+  String get inflationDialogBlurb =>
+      'Fiyatlar artar; bugünün parasıyla belirlenen hedef vadesinde daha pahalıya gelir. Beklediğiniz oranı girin; kapatmak için boş bırakın.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'Yıllık %$rate ile, o zamana kadar yaklaşık $amount tutacak.';
+  }
 }

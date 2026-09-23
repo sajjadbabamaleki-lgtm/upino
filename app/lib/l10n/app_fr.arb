@@ -254,5 +254,11 @@
   "backupRestored": "Sauvegarde restaurée",
   "backupWrongPassword": "Ce mot de passe n’ouvre pas cette sauvegarde.",
   "backupNotABackup": "Ce fichier n’est pas une sauvegarde Upino.",
-  "backupUnreadable": "Cette sauvegarde vient d’une version plus récente d’Upino. Mettez l’app à jour et réessayez."
+  "backupUnreadable": "Cette sauvegarde vient d’une version plus récente d’Upino. Mettez l’app à jour et réessayez.",
+  "inflationTitle": "Inflation",
+  "inflationNotSet": "Non défini. Ajoutez le taux annuel de votre pays pour voir le vrai coût de vos objectifs.",
+  "inflationRate": "{rate} % par an",
+  "inflationDialogTitle": "Inflation annuelle",
+  "inflationDialogBlurb": "Les prix montent : un objectif fixé en argent d’aujourd’hui coûtera plus à son échéance. Indiquez le taux attendu ; laissez vide pour désactiver.",
+  "goalsInflated": "À {rate} % par an, cela coûtera environ {amount} à l’échéance."
 }

@@ -858,4 +858,28 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'Копия создана более новой версией Upino. Обновите приложение и попробуйте снова.';
+
+  @override
+  String get inflationTitle => 'Инфляция';
+
+  @override
+  String get inflationNotSet =>
+      'Не задано. Укажите годовую инфляцию, чтобы видеть реальную стоимость целей.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate% в год';
+  }
+
+  @override
+  String get inflationDialogTitle => 'Годовая инфляция';
+
+  @override
+  String get inflationDialogBlurb =>
+      'Цены растут, поэтому цель в сегодняшних деньгах к сроку обойдётся дороже. Укажите ожидаемую ставку; оставьте пустым, чтобы отключить.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'При $rate% в год к сроку это будет стоить около $amount.';
+  }
 }

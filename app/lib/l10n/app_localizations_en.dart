@@ -860,4 +860,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'This backup was made by a newer version of Upino. Update the app and try again.';
+
+  @override
+  String get inflationTitle => 'Inflation';
+
+  @override
+  String get inflationNotSet =>
+      'Not set. Add the yearly rate where you live to see what goals will really cost.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate% a year';
+  }
+
+  @override
+  String get inflationDialogTitle => 'Yearly inflation';
+
+  @override
+  String get inflationDialogBlurb =>
+      'Prices rise, so a goal set in today\'s money costs more on its date. Enter the rate you expect. Leave it empty to turn this off.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'At $rate% a year, this will cost about $amount by then.';
+  }
 }

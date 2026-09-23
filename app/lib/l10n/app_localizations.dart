@@ -1643,6 +1643,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This backup was made by a newer version of Upino. Update the app and try again.'**
   String get backupUnreadable;
+
+  /// No description provided for @inflationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inflation'**
+  String get inflationTitle;
+
+  /// No description provided for @inflationNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set. Add the yearly rate where you live to see what goals will really cost.'**
+  String get inflationNotSet;
+
+  /// No description provided for @inflationRate.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}% a year'**
+  String inflationRate(String rate);
+
+  /// No description provided for @inflationDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly inflation'**
+  String get inflationDialogTitle;
+
+  /// No description provided for @inflationDialogBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices rise, so a goal set in today\'s money costs more on its date. Enter the rate you expect. Leave it empty to turn this off.'**
+  String get inflationDialogBlurb;
+
+  /// No description provided for @goalsInflated.
+  ///
+  /// In en, this message translates to:
+  /// **'At {rate}% a year, this will cost about {amount} by then.'**
+  String goalsInflated(String rate, String amount);
 }
 
 class _AppLocalizationsDelegate

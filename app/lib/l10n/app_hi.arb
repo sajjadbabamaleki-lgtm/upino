@@ -254,5 +254,11 @@
   "backupRestored": "बैकअप वापस आ गया",
   "backupWrongPassword": "यह पासवर्ड इस बैकअप को नहीं खोलता।",
   "backupNotABackup": "यह फ़ाइल Upino बैकअप नहीं है।",
-  "backupUnreadable": "यह बैकअप Upino के नए संस्करण से बना है। ऐप अपडेट करके फिर कोशिश करें।"
+  "backupUnreadable": "यह बैकअप Upino के नए संस्करण से बना है। ऐप अपडेट करके फिर कोशिश करें।",
+  "inflationTitle": "महँगाई",
+  "inflationNotSet": "सेट नहीं है। अपने यहाँ की सालाना दर डालें ताकि लक्ष्यों की असली लागत दिखे।",
+  "inflationRate": "{rate}% सालाना",
+  "inflationDialogTitle": "सालाना महँगाई",
+  "inflationDialogBlurb": "दाम बढ़ते हैं, इसलिए आज के पैसे में तय लक्ष्य अपनी तारीख़ पर ज़्यादा महँगा होगा। अपेक्षित दर डालें, बंद करने के लिए खाली छोड़ें।",
+  "goalsInflated": "{rate}% सालाना से, तब तक इसकी लागत लगभग {amount} होगी।"
 }

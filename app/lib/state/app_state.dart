@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import '../data/plan_document.dart';
 import '../domain/category.dart';
 import '../domain/goal.dart';
+import '../domain/inflation.dart';
 import '../data/plan_store.dart';
 import '../engine/allocate.dart';
 import '../engine/clock.dart';
@@ -160,6 +161,7 @@ class AppState extends ChangeNotifier {
   final Map<String, SpendCategory> _categories = {};
   final Map<String, DateTime> _recordedAt = {};
   int _payCycleDays = 30;
+  int? _inflationBasisPoints;
   int _goalSeq = 0;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
@@ -237,6 +239,7 @@ class AppState extends ChangeNotifier {
       ..clear()
       ..addAll(document.recordedAt);
     _payCycleDays = document.payCycleDays;
+    _inflationBasisPoints = document.inflationBasisPoints;
     _goals
       ..clear()
       ..addAll(document.goals);
@@ -296,6 +299,7 @@ class AppState extends ChangeNotifier {
         recordedAt: Map.of(_recordedAt),
         goals: List.unmodifiable(_goals),
         payCycleDays: _payCycleDays,
+        inflationBasisPoints: _inflationBasisPoints,
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -484,6 +488,33 @@ class AppState extends ChangeNotifier {
       ];
 
   List<Goal> get goals => List.unmodifiable(_goals);
+
+  /// The yearly inflation the person expects, in basis points, or null when
+  /// they have not said. A preference like the theme, so starting over
+  /// keeps it.
+  int? get inflationBasisPoints => _inflationBasisPoints;
+
+  void setInflation(int? basisPoints) {
+    final next = basisPoints == null || basisPoints <= 0 ? null : basisPoints;
+    if (next == _inflationBasisPoints) return;
+    _inflationBasisPoints = next;
+    _persist();
+    notifyListeners();
+  }
+
+  /// What [goal]'s target will cost on its date at the expected rate, or
+  /// null when there is nothing to say: no rate, a goal already reached or
+  /// paused, or a date that has come.
+  Money? inflatedTarget(Goal goal) {
+    final rate = _inflationBasisPoints;
+    if (rate == null || goal.isComplete || goal.kind == GoalKind.paused) {
+      return null;
+    }
+    final days = goal.targetDate.differenceInDays(today);
+    if (days <= 0) return null;
+    final grown = inflated(goal.target, rate, days);
+    return grown > goal.target ? grown : null;
+  }
   int get payCycleDays => _payCycleDays;
 
   void addGoal({

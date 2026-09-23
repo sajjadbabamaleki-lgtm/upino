@@ -822,4 +822,26 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get backupUnreadable => '此备份由更新版本的 Upino 创建。请更新应用后重试。';
+
+  @override
+  String get inflationTitle => '通货膨胀';
+
+  @override
+  String get inflationNotSet => '未设置。填写当地的年通胀率，查看目标的真实花费。';
+
+  @override
+  String inflationRate(String rate) {
+    return '每年 $rate%';
+  }
+
+  @override
+  String get inflationDialogTitle => '年通胀率';
+
+  @override
+  String get inflationDialogBlurb => '物价上涨，按今天的钱设定的目标到期时会更贵。输入你预计的通胀率，留空则关闭。';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return '按每年 $rate% 计算，届时约需 $amount。';
+  }
 }

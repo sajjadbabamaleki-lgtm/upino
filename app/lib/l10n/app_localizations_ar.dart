@@ -843,4 +843,28 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'أُنشئت هذه النسخة بإصدار أحدث من Upino. حدّث التطبيق وحاول مجددًا.';
+
+  @override
+  String get inflationTitle => 'التضخم';
+
+  @override
+  String get inflationNotSet =>
+      'غير محدد. أضف المعدل السنوي في بلدك لترى الكلفة الحقيقية للأهداف.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate% سنويًا';
+  }
+
+  @override
+  String get inflationDialogTitle => 'التضخم السنوي';
+
+  @override
+  String get inflationDialogBlurb =>
+      'ترتفع الأسعار، فالهدف المحدد بأموال اليوم يكلف أكثر في موعده. أدخل المعدل المتوقع، واتركه فارغًا لإيقاف ذلك.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'بمعدل $rate% سنويًا، سيكلف هذا نحو $amount بحلول ذلك الوقت.';
+  }
 }

@@ -857,4 +857,28 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'यह बैकअप Upino के नए संस्करण से बना है। ऐप अपडेट करके फिर कोशिश करें।';
+
+  @override
+  String get inflationTitle => 'महँगाई';
+
+  @override
+  String get inflationNotSet =>
+      'सेट नहीं है। अपने यहाँ की सालाना दर डालें ताकि लक्ष्यों की असली लागत दिखे।';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate% सालाना';
+  }
+
+  @override
+  String get inflationDialogTitle => 'सालाना महँगाई';
+
+  @override
+  String get inflationDialogBlurb =>
+      'दाम बढ़ते हैं, इसलिए आज के पैसे में तय लक्ष्य अपनी तारीख़ पर ज़्यादा महँगा होगा। अपेक्षित दर डालें, बंद करने के लिए खाली छोड़ें।';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return '$rate% सालाना से, तब तक इसकी लागत लगभग $amount होगी।';
+  }
 }

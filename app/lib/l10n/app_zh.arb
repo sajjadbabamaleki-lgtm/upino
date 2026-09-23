@@ -254,5 +254,11 @@
   "backupRestored": "备份已恢复",
   "backupWrongPassword": "该密码无法打开此备份。",
   "backupNotABackup": "该文件不是 Upino 备份。",
-  "backupUnreadable": "此备份由更新版本的 Upino 创建。请更新应用后重试。"
+  "backupUnreadable": "此备份由更新版本的 Upino 创建。请更新应用后重试。",
+  "inflationTitle": "通货膨胀",
+  "inflationNotSet": "未设置。填写当地的年通胀率，查看目标的真实花费。",
+  "inflationRate": "每年 {rate}%",
+  "inflationDialogTitle": "年通胀率",
+  "inflationDialogBlurb": "物价上涨，按今天的钱设定的目标到期时会更贵。输入你预计的通胀率，留空则关闭。",
+  "goalsInflated": "按每年 {rate}% 计算，届时约需 {amount}。"
 }

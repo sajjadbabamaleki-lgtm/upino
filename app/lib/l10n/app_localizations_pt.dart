@@ -866,4 +866,28 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get backupUnreadable =>
       'Esta cópia foi feita por uma versão mais recente do Upino. Atualize a app e tente de novo.';
+
+  @override
+  String get inflationTitle => 'Inflação';
+
+  @override
+  String get inflationNotSet =>
+      'Não definido. Indique a taxa anual onde vive para ver quanto as metas vão realmente custar.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate% ao ano';
+  }
+
+  @override
+  String get inflationDialogTitle => 'Inflação anual';
+
+  @override
+  String get inflationDialogBlurb =>
+      'Os preços sobem, por isso uma meta definida no dinheiro de hoje custa mais na sua data. Indique a taxa que espera; deixe vazio para desligar.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'A $rate% ao ano, vai custar cerca de $amount nessa altura.';
+  }
 }

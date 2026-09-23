@@ -254,5 +254,11 @@
   "backupRestored": "Copia restaurada",
   "backupWrongPassword": "Esa contraseña no abre esta copia.",
   "backupNotABackup": "Ese archivo no es una copia de Upino.",
-  "backupUnreadable": "Esta copia es de una versión más nueva de Upino. Actualiza la app e inténtalo de nuevo."
+  "backupUnreadable": "Esta copia es de una versión más nueva de Upino. Actualiza la app e inténtalo de nuevo.",
+  "inflationTitle": "Inflación",
+  "inflationNotSet": "Sin definir. Añade la tasa anual de tu país para ver lo que costarán de verdad tus metas.",
+  "inflationRate": "{rate} % al año",
+  "inflationDialogTitle": "Inflación anual",
+  "inflationDialogBlurb": "Los precios suben, así que una meta fijada con el dinero de hoy costará más en su fecha. Indica la tasa que esperas; déjalo vacío para desactivarlo.",
+  "goalsInflated": "Al {rate} % anual, costará unos {amount} para entonces."
 }

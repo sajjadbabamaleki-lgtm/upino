@@ -23,7 +23,8 @@ import '../engine/money.dart';
 /// 2 — added the theme preference.
 /// 3 — added goals and the pay-cycle length.
 /// 4 — added spend categories and when each spend was recorded.
-const int schemaVersion = 4;
+/// 5 — added the expected yearly inflation.
+const int schemaVersion = 5;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);
