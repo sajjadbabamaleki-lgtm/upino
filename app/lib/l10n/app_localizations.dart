@@ -1253,6 +1253,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can change this later in Profile.'**
   String get languageBlurb;
+
+  /// No description provided for @profileLedgerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Is the record complete?'**
+  String get profileLedgerTitle;
+
+  /// No description provided for @ledgerComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you have spent is recorded.'**
+  String get ledgerComplete;
+
+  /// No description provided for @ledgerPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Some spending was found only when you confirmed your balance.'**
+  String get ledgerPartial;
+
+  /// No description provided for @ledgerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino cannot tell how much is missing. Confirm your balance to find out.'**
+  String get ledgerUnknown;
+
+  /// No description provided for @askTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before you spend'**
+  String get askTitle;
+
+  /// No description provided for @askBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a purchase against your plan. Nothing is recorded and nothing changes.'**
+  String get askBlurb;
+
+  /// No description provided for @askAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How much would it be?'**
+  String get askAmountLabel;
+
+  /// No description provided for @askRun.
+  ///
+  /// In en, this message translates to:
+  /// **'See what it would do'**
+  String get askRun;
+
+  /// No description provided for @askDoNotBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not buy'**
+  String get askDoNotBuy;
+
+  /// No description provided for @askBuyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy it today'**
+  String get askBuyNow;
+
+  /// No description provided for @askBuyAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy it after {date}'**
+  String askBuyAfter(String date);
+
+  /// No description provided for @askUnchanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan stays as it is.'**
+  String get askUnchanged;
+
+  /// No description provided for @askStsAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to spend afterwards'**
+  String get askStsAfter;
+
+  /// No description provided for @askBreaks.
+  ///
+  /// In en, this message translates to:
+  /// **'This leaves something you must pay unfunded.'**
+  String get askBreaks;
+
+  /// No description provided for @askSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing you must pay is left unfunded.'**
+  String get askSafe;
+
+  /// No description provided for @askCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'What gets less'**
+  String get askCosts;
+
+  /// No description provided for @askCostLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} · {amount} less'**
+  String askCostLine(String label, String amount);
+
+  /// No description provided for @askWaitingHelps.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting until your pay arrives covers everything.'**
+  String get askWaitingHelps;
+
+  /// No description provided for @askNoIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'No pay is expected yet, so there is nothing later to compare against.'**
+  String get askNoIncome;
+
+  /// No description provided for @askAssumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Assumes your pay arrives as expected on {date}.'**
+  String askAssumption(String date);
+
+  /// No description provided for @askNoVerdict.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino does not say yes or no. The trade-off is yours.'**
+  String get askNoVerdict;
 }
 
 class _AppLocalizationsDelegate

@@ -636,4 +636,79 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get languageBlurb => 'आप इसे बाद में प्रोफ़ाइल में बदल सकते हैं।';
+
+  @override
+  String get profileLedgerTitle => 'क्या रिकॉर्ड पूरा है?';
+
+  @override
+  String get ledgerComplete => 'आपने जो ख़र्च किया सब दर्ज है।';
+
+  @override
+  String get ledgerPartial =>
+      'कुछ ख़र्च तभी सामने आया जब आपने शेष की पुष्टि की।';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino नहीं बता सकता कितना छूटा है। जानने के लिए शेष की पुष्टि करें।';
+
+  @override
+  String get askTitle => 'ख़र्च करने से पहले पूछें';
+
+  @override
+  String get askBlurb =>
+      'अपनी योजना पर एक ख़रीद आज़माएँ। कुछ दर्ज नहीं होता और कुछ बदलता नहीं।';
+
+  @override
+  String get askAmountLabel => 'यह कितने की होगी?';
+
+  @override
+  String get askRun => 'देखें इसका क्या असर होगा';
+
+  @override
+  String get askDoNotBuy => 'न ख़रीदें';
+
+  @override
+  String get askBuyNow => 'आज ख़रीदें';
+
+  @override
+  String askBuyAfter(String date) {
+    return '$date के बाद ख़रीदें';
+  }
+
+  @override
+  String get askUnchanged => 'आपकी योजना जैसी है वैसी रहती है।';
+
+  @override
+  String get askStsAfter => 'उसके बाद आप कितना ख़र्च कर सकते हैं';
+
+  @override
+  String get askBreaks =>
+      'इससे कोई ऐसी चीज़ बिना व्यवस्था के रह जाती है जो चुकानी ज़रूरी है।';
+
+  @override
+  String get askSafe => 'चुकाने लायक़ कोई चीज़ बिना व्यवस्था के नहीं रहती।';
+
+  @override
+  String get askCosts => 'किसे कम मिलता है';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount कम';
+  }
+
+  @override
+  String get askWaitingHelps =>
+      'तनख़्वाह आने तक रुकने से सब कुछ पूरा हो जाता है।';
+
+  @override
+  String get askNoIncome =>
+      'अभी कोई तनख़्वाह अपेक्षित नहीं, इसलिए तुलना के लिए आगे कोई समय नहीं है।';
+
+  @override
+  String askAssumption(String date) {
+    return 'यह मानकर कि आपकी तनख़्वाह $date को अपेक्षित रूप से आएगी।';
+  }
+
+  @override
+  String get askNoVerdict => 'Upino हाँ या ना नहीं कहता। फ़ैसला आपका है।';
 }

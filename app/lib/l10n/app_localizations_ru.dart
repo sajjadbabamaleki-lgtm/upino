@@ -638,4 +638,77 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get languageBlurb => 'Это можно изменить позже в профиле.';
+
+  @override
+  String get profileLedgerTitle => 'Запись полная?';
+
+  @override
+  String get ledgerComplete => 'Всё, что вы потратили, записано.';
+
+  @override
+  String get ledgerPartial =>
+      'Часть трат обнаружилась только при подтверждении баланса.';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino не знает, сколько пропущено. Подтвердите баланс, чтобы выяснить.';
+
+  @override
+  String get askTitle => 'Спросите перед тратой';
+
+  @override
+  String get askBlurb =>
+      'Проверьте покупку на своём плане. Ничего не записывается и ничего не меняется.';
+
+  @override
+  String get askAmountLabel => 'Сколько это будет?';
+
+  @override
+  String get askRun => 'Показать, что изменится';
+
+  @override
+  String get askDoNotBuy => 'Не покупать';
+
+  @override
+  String get askBuyNow => 'Купить сегодня';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'Купить после $date';
+  }
+
+  @override
+  String get askUnchanged => 'Ваш план остаётся прежним.';
+
+  @override
+  String get askStsAfter => 'Сколько можно будет потратить после';
+
+  @override
+  String get askBreaks => 'Это оставляет непокрытым то, что нужно оплатить.';
+
+  @override
+  String get askSafe => 'Ничего обязательного не остаётся непокрытым.';
+
+  @override
+  String get askCosts => 'Что получит меньше';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · на $amount меньше';
+  }
+
+  @override
+  String get askWaitingHelps => 'Если дождаться дохода, покрывается всё.';
+
+  @override
+  String get askNoIncome =>
+      'Дохода пока не ожидается, поэтому не с чем сравнивать позже.';
+
+  @override
+  String askAssumption(String date) {
+    return 'Предполагается, что доход придёт как ожидается $date.';
+  }
+
+  @override
+  String get askNoVerdict => 'Upino не говорит «да» или «нет». Выбор за вами.';
 }

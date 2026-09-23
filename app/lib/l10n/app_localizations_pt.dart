@@ -645,4 +645,78 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get languageBlurb => 'Você pode mudar isso depois em Perfil.';
+
+  @override
+  String get profileLedgerTitle => 'O registro está completo?';
+
+  @override
+  String get ledgerComplete => 'Tudo o que você gastou está registrado.';
+
+  @override
+  String get ledgerPartial =>
+      'Parte dos gastos só apareceu quando você confirmou o saldo.';
+
+  @override
+  String get ledgerUnknown =>
+      'O Upino não sabe quanto está faltando. Confirme seu saldo para descobrir.';
+
+  @override
+  String get askTitle => 'Pergunte antes de gastar';
+
+  @override
+  String get askBlurb =>
+      'Teste uma compra contra o seu plano. Nada é registrado e nada muda.';
+
+  @override
+  String get askAmountLabel => 'Quanto seria?';
+
+  @override
+  String get askRun => 'Ver o que aconteceria';
+
+  @override
+  String get askDoNotBuy => 'Não comprar';
+
+  @override
+  String get askBuyNow => 'Comprar hoje';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'Comprar depois de $date';
+  }
+
+  @override
+  String get askUnchanged => 'Seu plano continua como está.';
+
+  @override
+  String get askStsAfter => 'O que você poderia gastar depois';
+
+  @override
+  String get askBreaks =>
+      'Isso deixa sem cobertura algo que você precisa pagar.';
+
+  @override
+  String get askSafe => 'Nada do que você precisa pagar fica sem cobertura.';
+
+  @override
+  String get askCosts => 'O que recebe menos';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount a menos';
+  }
+
+  @override
+  String get askWaitingHelps => 'Esperar seu pagamento chegar cobre tudo.';
+
+  @override
+  String get askNoIncome =>
+      'Nenhum pagamento é esperado ainda, então não há um momento posterior para comparar.';
+
+  @override
+  String askAssumption(String date) {
+    return 'Supõe que seu pagamento chegue como esperado em $date.';
+  }
+
+  @override
+  String get askNoVerdict => 'O Upino não diz sim nem não. A escolha é sua.';
 }

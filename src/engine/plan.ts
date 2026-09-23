@@ -10,7 +10,14 @@ import { reduceLedger, totalCardOutstanding, trustedLiquidity, type LedgerState 
 import { add, clampAtZero, format, gt, isZero, sub, sum, zero, type Money } from '../money/money.js';
 import { isOnOrBefore, toLocalDate, type Instant, type LocalDate } from '../time/clock.js';
 import { allocate, type Allocation, type AllocationResult } from './allocate.js';
-import { evaluateConfidence, type ConfidenceState } from './confidence.js';
+import {
+  ATTRIBUTION,
+  evaluateConfidence,
+  evaluateLedgerCompleteness,
+  type AttributionConfidence,
+  type ConfidenceState,
+  type LedgerCompleteness,
+} from './confidence.js';
 
 export interface CardTerms {
   readonly id: CardId;
@@ -54,6 +61,50 @@ export interface PlanSnapshot {
   readonly allocations: readonly Allocation[];
   readonly trustedAllocatableLiquidity: Money;
   readonly ledger: LedgerState;
+
+  /**
+   * §15.3.2. Governs what may be said about history, never what is computed
+   * about money — INV-18 pins that separation.
+   */
+  readonly ledgerCompleteness: LedgerCompleteness;
+
+  /** §15.3.4. Always NONE while the data model is manual-first. */
+  readonly attributionConfidence: AttributionConfidence;
+}
+
+/** §15.3.2 — money the engine learned about only by reconciliation. */
+function reconciledMinor(events: readonly LedgerEvent[]): bigint {
+  let total = 0n;
+  for (const e of events) {
+    if (e.kind === 'balance_adjustment') {
+      total += e.delta.minor < 0n ? -e.delta.minor : e.delta.minor;
+    }
+  }
+  return total;
+}
+
+/**
+ * §15.3.2 — money the engine was told about. A correction is not itself
+ * movement; it marks another event, so it is counted neither here nor above.
+ */
+function recordedMinor(events: readonly LedgerEvent[]): bigint {
+  const counted = new Set<string>([
+    'expense',
+    'card_purchase',
+    'card_settlement',
+    'income_confirmed',
+    'loan_drawdown',
+    'debt_payment',
+    'transfer',
+    'refund',
+  ]);
+  let total = 0n;
+  for (const e of events) {
+    if (!counted.has(e.kind)) continue;
+    const m = (e as { amount: Money }).amount.minor;
+    total += m < 0n ? -m : m;
+  }
+  return total;
 }
 
 function nextIncomeDate(income: readonly IncomeEvent[], today: LocalDate): LocalDate | undefined {
@@ -235,5 +286,14 @@ export function computePlan(input: PlanInput): PlanSnapshot {
     allocations: result.allocations,
     trustedAllocatableLiquidity: liquidity,
     ledger,
+    ledgerCompleteness: evaluateLedgerCompleteness({
+      now: input.now,
+      ...(input.oldestConfirmationAt !== undefined
+        ? { lastConfirmationAt: input.oldestConfirmationAt }
+        : {}),
+      reconciledMinor: reconciledMinor(input.events ?? []),
+      recordedMinor: recordedMinor(input.events ?? []),
+    }),
+    attributionConfidence: ATTRIBUTION.NONE,
   };
 }

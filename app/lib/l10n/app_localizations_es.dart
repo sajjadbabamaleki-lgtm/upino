@@ -640,4 +640,78 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageBlurb => 'Puedes cambiarlo luego en Perfil.';
+
+  @override
+  String get profileLedgerTitle => '¿El registro está completo?';
+
+  @override
+  String get ledgerComplete => 'Todo lo que has gastado está registrado.';
+
+  @override
+  String get ledgerPartial =>
+      'Parte del gasto solo apareció al confirmar tu saldo.';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino no puede saber cuánto falta. Confirma tu saldo para averiguarlo.';
+
+  @override
+  String get askTitle => 'Pregunta antes de gastar';
+
+  @override
+  String get askBlurb =>
+      'Prueba una compra contra tu plan. No se registra nada y nada cambia.';
+
+  @override
+  String get askAmountLabel => '¿Cuánto sería?';
+
+  @override
+  String get askRun => 'Ver qué pasaría';
+
+  @override
+  String get askDoNotBuy => 'No comprar';
+
+  @override
+  String get askBuyNow => 'Comprarlo hoy';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'Comprarlo después del $date';
+  }
+
+  @override
+  String get askUnchanged => 'Tu plan queda igual.';
+
+  @override
+  String get askStsAfter => 'Lo que podrías gastar después';
+
+  @override
+  String get askBreaks => 'Esto deja sin cubrir algo que tienes que pagar.';
+
+  @override
+  String get askSafe => 'Nada de lo que tienes que pagar queda sin cubrir.';
+
+  @override
+  String get askCosts => 'Qué recibe menos';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount menos';
+  }
+
+  @override
+  String get askWaitingHelps =>
+      'Esperar a que llegue tu ingreso lo cubre todo.';
+
+  @override
+  String get askNoIncome =>
+      'Aún no se espera ningún ingreso, así que no hay un momento posterior con el que comparar.';
+
+  @override
+  String askAssumption(String date) {
+    return 'Supone que tu ingreso llega como se espera el $date.';
+  }
+
+  @override
+  String get askNoVerdict => 'Upino no dice sí ni no. La decisión es tuya.';
 }

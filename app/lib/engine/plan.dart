@@ -9,7 +9,7 @@ import 'ledger.dart';
 import 'money.dart';
 
 const engineVersion = '0.1.0';
-const specVersion = 'Upino Product Foundation v3.5 (Frozen G0)';
+const specVersion = 'Upino Product Foundation v3.6 (G0 + §15.3)';
 
 /// Confidence policy (§15.2). Thresholds are versioned product defaults.
 enum ConfidenceState { trusted, degraded, reviewRequired }
@@ -41,6 +41,75 @@ ConfidenceState evaluateConfidence({
 
   if (openReviewItems > 0) return ConfidenceState.degraded;
   return ConfidenceState.trusted;
+}
+
+/// §15.3.2 — how complete the transaction record is, which is a different
+/// question from whether the balance is fresh.
+///
+/// Completeness cannot be observed prospectively: the engine cannot know
+/// what the user did not enter, because that is what "not entered" means.
+/// The only evidence is the size of the delta reconciliation reveals after
+/// the fact, so the measure is retrospective by construction.
+enum LedgerCompleteness { complete, partial, unknown }
+
+/// §15.3.4 — whether a category-, merchant- or purchase-specific claim is
+/// allowed. In the manual-first data model an expense carries a label the
+/// user typed and nothing more, so this is [none] for every snapshot this
+/// engine version produces. It is defined ahead of the data that would move
+/// it because its purpose is to block such claims by default.
+enum AttributionConfidence { none, partial, attributed }
+
+class LedgerPolicy {
+  const LedgerPolicy();
+  static const version = '2026-09-v1';
+
+  /// Drift is the share of money movement the engine learned about only
+  /// through reconciliation rather than by being told. Compared in permille
+  /// so the whole comparison stays in integers (§5).
+  static const completeThroughDriftPermille = 50;
+  static const partialThroughDriftPermille = 250;
+
+  /// Past this many days, the period since the last confirmation is
+  /// unmeasured, whatever the last reconciliation showed.
+  static const measuredThroughDays = 14;
+}
+
+/// §15.3.2. Returns [LedgerCompleteness.unknown] rather than guessing
+/// whenever the evidence does not support a stronger answer.
+LedgerCompleteness evaluateLedgerCompleteness({
+  required DateTime now,
+  required DateTime? lastConfirmationAt,
+  required int reconciledMinor,
+  required int recordedMinor,
+}) {
+  if (lastConfirmationAt == null) return LedgerCompleteness.unknown;
+
+  final ageDays = now.difference(lastConfirmationAt).inHours / 24.0;
+  if (ageDays > LedgerPolicy.measuredThroughDays) {
+    return LedgerCompleteness.unknown;
+  }
+
+  final reconciled = reconciledMinor.abs();
+  final recorded = recordedMinor.abs();
+  if (recorded == 0) {
+    // Nothing happened and nothing is missing, or money moved and none of
+    // it was recorded. Those are opposite answers, not one uncertain one.
+    return reconciled == 0
+        ? LedgerCompleteness.complete
+        : LedgerCompleteness.unknown;
+  }
+
+  final driftPermille = divideRoundHalfEven(
+    reconciled * 1000,
+    reconciled + recorded,
+  );
+  if (driftPermille <= LedgerPolicy.completeThroughDriftPermille) {
+    return LedgerCompleteness.complete;
+  }
+  if (driftPermille <= LedgerPolicy.partialThroughDriftPermille) {
+    return LedgerCompleteness.partial;
+  }
+  return LedgerCompleteness.unknown;
 }
 
 class CardTerms {
@@ -105,6 +174,8 @@ class PlanSnapshot {
     required this.trustedAllocatableLiquidity,
     required this.ledger,
     required this.oldestConfirmationAt,
+    required this.ledgerCompleteness,
+    required this.attributionConfidence,
   });
 
   final String engineVersion;
@@ -129,6 +200,14 @@ class PlanSnapshot {
   final Money trustedAllocatableLiquidity;
   final LedgerState ledger;
   final DateTime? oldestConfirmationAt;
+
+  /// §15.3.2. Governs what may be said about history, never what is computed
+  /// about money — INV-18 pins that separation.
+  final LedgerCompleteness ledgerCompleteness;
+
+  /// §15.3.4. Always [AttributionConfidence.none] while the data model is
+  /// manual-first.
+  final AttributionConfidence attributionConfidence;
 
   /// Whole days since the oldest required balance confirmation, floored at
   /// zero. Null when no balance has been confirmed yet.
@@ -228,6 +307,35 @@ List<ReasonCode> _reasonCodes({
 }
 
 /// Allocation runs first; Safe-to-Spend is exactly the P9 residual (§13).
+/// §15.3.2 — money the engine learned about only by reconciliation.
+int _reconciledMinor(List<LedgerEvent> events) {
+  var total = 0;
+  for (final e in events) {
+    if (e is BalanceAdjustmentEvent) total += e.delta.minor.abs();
+  }
+  return total;
+}
+
+/// §15.3.2 — money the engine was told about. A correction is not itself
+/// movement; it marks another event, so it is not counted here or above.
+int _recordedMinor(List<LedgerEvent> events) {
+  var total = 0;
+  for (final e in events) {
+    total += switch (e) {
+      ExpenseEvent(:final amount) => amount.minor.abs(),
+      CardPurchaseEvent(:final amount) => amount.minor.abs(),
+      CardSettlementEvent(:final amount) => amount.minor.abs(),
+      IncomeConfirmedEvent(:final amount) => amount.minor.abs(),
+      LoanDrawdownEvent(:final amount) => amount.minor.abs(),
+      DebtPaymentEvent(:final amount) => amount.minor.abs(),
+      TransferEvent(:final amount) => amount.minor.abs(),
+      RefundEvent(:final amount) => amount.minor.abs(),
+      _ => 0,
+    };
+  }
+  return total;
+}
+
 PlanSnapshot computePlan(PlanInput input) {
   final currency = input.currency;
   final today = LocalDate.at(input.now, input.utcOffset);
@@ -317,5 +425,12 @@ PlanSnapshot computePlan(PlanInput input) {
     trustedAllocatableLiquidity: liquidity,
     ledger: ledger,
     oldestConfirmationAt: input.oldestConfirmationAt,
+    ledgerCompleteness: evaluateLedgerCompleteness(
+      now: input.now,
+      lastConfirmationAt: input.oldestConfirmationAt,
+      reconciledMinor: _reconciledMinor(input.events),
+      recordedMinor: _recordedMinor(input.events),
+    ),
+    attributionConfidence: AttributionConfidence.none,
   );
 }

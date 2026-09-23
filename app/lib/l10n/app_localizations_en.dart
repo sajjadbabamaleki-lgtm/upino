@@ -638,4 +638,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageBlurb => 'You can change this later in Profile.';
+
+  @override
+  String get profileLedgerTitle => 'Is the record complete?';
+
+  @override
+  String get ledgerComplete => 'Everything you have spent is recorded.';
+
+  @override
+  String get ledgerPartial =>
+      'Some spending was found only when you confirmed your balance.';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino cannot tell how much is missing. Confirm your balance to find out.';
+
+  @override
+  String get askTitle => 'Ask before you spend';
+
+  @override
+  String get askBlurb =>
+      'Try a purchase against your plan. Nothing is recorded and nothing changes.';
+
+  @override
+  String get askAmountLabel => 'How much would it be?';
+
+  @override
+  String get askRun => 'See what it would do';
+
+  @override
+  String get askDoNotBuy => 'Do not buy';
+
+  @override
+  String get askBuyNow => 'Buy it today';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'Buy it after $date';
+  }
+
+  @override
+  String get askUnchanged => 'Your plan stays as it is.';
+
+  @override
+  String get askStsAfter => 'Safe to spend afterwards';
+
+  @override
+  String get askBreaks => 'This leaves something you must pay unfunded.';
+
+  @override
+  String get askSafe => 'Nothing you must pay is left unfunded.';
+
+  @override
+  String get askCosts => 'What gets less';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount less';
+  }
+
+  @override
+  String get askWaitingHelps =>
+      'Waiting until your pay arrives covers everything.';
+
+  @override
+  String get askNoIncome =>
+      'No pay is expected yet, so there is nothing later to compare against.';
+
+  @override
+  String askAssumption(String date) {
+    return 'Assumes your pay arrives as expected on $date.';
+  }
+
+  @override
+  String get askNoVerdict =>
+      'Upino does not say yes or no. The trade-off is yours.';
 }

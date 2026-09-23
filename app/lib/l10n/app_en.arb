@@ -317,5 +317,50 @@
   "claimEssentials": "Food and transport",
   "claimBuffer": "Emergency buffer",
   "languageTitle": "Which language?",
-  "languageBlurb": "You can change this later in Profile."
+  "languageBlurb": "You can change this later in Profile.",
+  "profileLedgerTitle": "Is the record complete?",
+  "ledgerComplete": "Everything you have spent is recorded.",
+  "ledgerPartial": "Some spending was found only when you confirmed your balance.",
+  "ledgerUnknown": "Upino cannot tell how much is missing. Confirm your balance to find out.",
+  "askTitle": "Ask before you spend",
+  "askBlurb": "Try a purchase against your plan. Nothing is recorded and nothing changes.",
+  "askAmountLabel": "How much would it be?",
+  "askRun": "See what it would do",
+  "askDoNotBuy": "Do not buy",
+  "askBuyNow": "Buy it today",
+  "askBuyAfter": "Buy it after {date}",
+  "askUnchanged": "Your plan stays as it is.",
+  "askStsAfter": "Safe to spend afterwards",
+  "askBreaks": "This leaves something you must pay unfunded.",
+  "askSafe": "Nothing you must pay is left unfunded.",
+  "askCosts": "What gets less",
+  "askCostLine": "{label} · {amount} less",
+  "askWaitingHelps": "Waiting until your pay arrives covers everything.",
+  "askNoIncome": "No pay is expected yet, so there is nothing later to compare against.",
+  "askAssumption": "Assumes your pay arrives as expected on {date}.",
+  "askNoVerdict": "Upino does not say yes or no. The trade-off is yours.",
+  "@askBuyAfter": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@askCostLine": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@askAssumption": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

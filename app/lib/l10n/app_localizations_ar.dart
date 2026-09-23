@@ -626,4 +626,74 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageBlurb => 'يمكنك تغييرها لاحقاً من الملف.';
+
+  @override
+  String get profileLedgerTitle => 'هل السجل كامل؟';
+
+  @override
+  String get ledgerComplete => 'كل ما أنفقته مسجَّل.';
+
+  @override
+  String get ledgerPartial => 'بعض المصروفات ظهرت فقط عند تأكيد رصيدك.';
+
+  @override
+  String get ledgerUnknown => 'لا يعرف أوبينو كم ينقص. أكّد رصيدك لتعرف.';
+
+  @override
+  String get askTitle => 'اسأل قبل أن تنفق';
+
+  @override
+  String get askBlurb =>
+      'جرّب عملية شراء على خطتك. لا يُسجَّل شيء ولا يتغيّر شيء.';
+
+  @override
+  String get askAmountLabel => 'كم ستكون؟';
+
+  @override
+  String get askRun => 'أرني ما ستفعله';
+
+  @override
+  String get askDoNotBuy => 'عدم الشراء';
+
+  @override
+  String get askBuyNow => 'اشترِها اليوم';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'اشترِها بعد $date';
+  }
+
+  @override
+  String get askUnchanged => 'تبقى خطتك كما هي.';
+
+  @override
+  String get askStsAfter => 'ما يمكنك إنفاقه بعدها';
+
+  @override
+  String get askBreaks => 'هذا يترك شيئاً يجب دفعه دون تغطية.';
+
+  @override
+  String get askSafe => 'لا شيء مما يجب دفعه يبقى دون تغطية.';
+
+  @override
+  String get askCosts => 'ما الذي ينقص';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount أقل';
+  }
+
+  @override
+  String get askWaitingHelps => 'الانتظار حتى وصول راتبك يغطّي كل شيء.';
+
+  @override
+  String get askNoIncome => 'لا راتب متوقّع بعد، فلا وقت لاحق للمقارنة.';
+
+  @override
+  String askAssumption(String date) {
+    return 'بافتراض وصول راتبك كما هو متوقّع في $date.';
+  }
+
+  @override
+  String get askNoVerdict => 'لا يقول أوبينو نعم أو لا. المفاضلة لك.';
 }

@@ -613,4 +613,73 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get languageBlurb => '之后可以在「我的」里更改。';
+
+  @override
+  String get profileLedgerTitle => '记录完整吗？';
+
+  @override
+  String get ledgerComplete => '你花的每一笔都记下了。';
+
+  @override
+  String get ledgerPartial => '有一部分支出是在你确认余额时才发现的。';
+
+  @override
+  String get ledgerUnknown => 'Upino 无法判断漏了多少。确认余额即可知道。';
+
+  @override
+  String get askTitle => '花钱前先问';
+
+  @override
+  String get askBlurb => '把一笔消费放到你的计划里试试。不会记录任何东西，也不会改变任何东西。';
+
+  @override
+  String get askAmountLabel => '这笔要多少？';
+
+  @override
+  String get askRun => '看看会怎样';
+
+  @override
+  String get askDoNotBuy => '不买';
+
+  @override
+  String get askBuyNow => '今天就买';
+
+  @override
+  String askBuyAfter(String date) {
+    return '$date 之后再买';
+  }
+
+  @override
+  String get askUnchanged => '你的计划保持原样。';
+
+  @override
+  String get askStsAfter => '之后还能花多少';
+
+  @override
+  String get askBreaks => '这会让一笔必须支付的钱没有着落。';
+
+  @override
+  String get askSafe => '必须支付的项目都仍有着落。';
+
+  @override
+  String get askCosts => '什么会变少';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · 少 $amount';
+  }
+
+  @override
+  String get askWaitingHelps => '等到收入到账再买，一切都能覆盖。';
+
+  @override
+  String get askNoIncome => '目前没有预期的收入，因此没有更晚的时间点可比较。';
+
+  @override
+  String askAssumption(String date) {
+    return '假设你的收入按预期在 $date 到账。';
+  }
+
+  @override
+  String get askNoVerdict => 'Upino 不说该或不该。取舍在你。';
 }

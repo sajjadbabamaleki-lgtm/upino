@@ -33,6 +33,57 @@ class OnboardingDraft {
   bool get isComplete => currentBalance != null && incomeAmount != null;
 }
 
+/// The three ways a contemplated purchase can go, each a full PlanSnapshot
+/// from the same engine (Strategic Evolution §3.3).
+///
+/// The product shows consequences rather than a verdict: there is no field
+/// here that says yes or no, because the trade-off is the user's to make.
+class SpendScenarios {
+  const SpendScenarios({
+    required this.amount,
+    required this.doNotBuy,
+    required this.buyNow,
+    required this.buyAfterIncome,
+    required this.incomeDate,
+  });
+
+  final Money amount;
+  final PlanSnapshot doNotBuy;
+  final PlanSnapshot buyNow;
+
+  /// Null when no pay is expected, so there is no later moment to compare.
+  final PlanSnapshot? buyAfterIncome;
+  final LocalDate? incomeDate;
+
+  /// True when buying now leaves a commitment that must be paid unfunded.
+  /// This is the one consequence worth naming before any other.
+  bool get breaksNow =>
+      buyNow.mandatoryFundingGap > doNotBuy.mandatoryFundingGap;
+
+  bool get breaksAfterIncome =>
+      buyAfterIncome != null &&
+      buyAfterIncome!.mandatoryFundingGap.minor > 0;
+
+  /// Commitments that lose funding by buying now, worst first. Named rather
+  /// than summarised, because "something is short" is not actionable.
+  List<({String claimId, String label, Money lost})> get costsNow {
+    final before = {for (final a in doNotBuy.allocations) a.claimId: a.allocated};
+    final out = <({String claimId, String label, Money lost})>[];
+    for (final a in buyNow.allocations) {
+      final was = before[a.claimId];
+      if (was == null || a.allocated >= was) continue;
+      out.add((claimId: a.claimId, label: a.label, lost: was - a.allocated));
+    }
+    out.sort((x, y) => y.lost.compareTo(x.lost));
+    return out;
+  }
+
+  /// Whether waiting is materially better, which is the only comparison the
+  /// engine can make without assuming anything about behaviour.
+  bool get waitingHelps =>
+      buyAfterIncome != null && breaksNow && !breaksAfterIncome;
+}
+
 /// Which theme the app follows. Stored with the plan so it survives a
 /// reinstall on the same device, and defaults to whatever the phone is set
 /// to rather than imposing a choice.
@@ -590,18 +641,79 @@ class AppState extends ChangeNotifier {
   }
 
   /// RunScenario (§22) — non-mutating, because the engine is pure.
-  PlanSnapshot simulateExpense(Money amount) => computePlan(PlanInput(
+  PlanSnapshot simulateExpense(Money amount) => _simulate(extraExpense: amount);
+
+  /// The three answers to "should I buy this?" (Strategic Evolution §3.3).
+  ///
+  /// Every figure comes from the same engine that produces the live plan, run
+  /// on inputs that differ only by the contemplated purchase. Nothing here is
+  /// arithmetic done on top of a snapshot, and nothing mutates the plan.
+  SpendScenarios simulatePurchase(Money amount) => SpendScenarios(
+        amount: amount,
+        doNotBuy: snapshot,
+        buyNow: _simulate(extraExpense: amount),
+        buyAfterIncome: _afterIncome(amount),
+        incomeDate: _projectableIncome?.expectedDate,
+      );
+
+  IncomeEvent? get _projectableIncome {
+    for (final i in _incomeEvents) {
+      if (i.isProjectable) return i;
+    }
+    return null;
+  }
+
+  /// "If your pay arrives as expected and you buy it then." The income is
+  /// treated as received and the clock moved past it — a stated assumption,
+  /// not a claim that the money has arrived. Null when no pay is expected,
+  /// because there is then no later moment to compare against.
+  PlanSnapshot? _afterIncome(Money amount) {
+    final income = _projectableIncome;
+    if (income == null) return null;
+
+    final arrival = income.expectedDate;
+    final then = DateTime.utc(arrival.year, arrival.month, arrival.day, 12)
+        .subtract(_utcOffset);
+    if (!then.isAfter(_now)) return null;
+
+    return _simulate(
+      extraExpense: amount,
+      at: then,
+      extraEvents: [
+        IncomeConfirmedEvent(
+          id: 'scenario-income',
+          accountId: _accountId,
+          amount: income.projectedAmount ?? income.expectedAmount,
+        ),
+      ],
+      incomeEvents: _incomeEvents.where((i) => i.id != income.id).toList(),
+    );
+  }
+
+  PlanSnapshot _simulate({
+    Money? extraExpense,
+    DateTime? at,
+    List<LedgerEvent> extraEvents = const [],
+    List<IncomeEvent>? incomeEvents,
+  }) =>
+      computePlan(PlanInput(
         currency: _currency,
-        now: _now,
+        now: at ?? _now,
         utcOffset: _utcOffset,
         includedAccounts: const [_accountId],
         openingBalances: {_accountId: _openingBalance ?? Money.zero(_currency)},
         events: [
           ..._events,
-          ExpenseEvent(id: 'scenario', accountId: _accountId, amount: amount),
+          ...extraEvents,
+          if (extraExpense != null)
+            ExpenseEvent(
+              id: 'scenario',
+              accountId: _accountId,
+              amount: extraExpense,
+            ),
         ],
         claims: _claims,
-        incomeEvents: _incomeEvents,
+        incomeEvents: incomeEvents ?? _incomeEvents,
         oldestConfirmationAt: _lastBalanceConfirmation,
       ),);
 

@@ -299,6 +299,23 @@ void main() {
     );
   });
 
+  testWidgets('03g ask before you spend', (tester) async {
+    await shootApp(
+      tester,
+      '03g-ask',
+      fundedState(),
+      size: const Size(400, 1250),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('home-ask')));
+        await tester.pumpAndSettle();
+        await tester.enterText(find.byKey(const Key('ask-amount')), '1500');
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('ask-run')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
   testWidgets('03e goals', (tester) async {
     final state = fundedState()
       ..addGoal(

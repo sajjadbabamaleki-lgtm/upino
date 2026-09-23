@@ -635,4 +635,78 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get languageBlurb => 'Bunu sonra Profil’den değiştirebilirsiniz.';
+
+  @override
+  String get profileLedgerTitle => 'Kayıt eksiksiz mi?';
+
+  @override
+  String get ledgerComplete => 'Harcadığınız her şey kayıtlı.';
+
+  @override
+  String get ledgerPartial =>
+      'Bazı harcamalar ancak bakiyenizi onayladığınızda ortaya çıktı.';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino ne kadarının eksik olduğunu bilemiyor. Öğrenmek için bakiyenizi onaylayın.';
+
+  @override
+  String get askTitle => 'Harcamadan önce sor';
+
+  @override
+  String get askBlurb =>
+      'Bir alışverişi planınıza karşı deneyin. Hiçbir şey kaydedilmez, hiçbir şey değişmez.';
+
+  @override
+  String get askAmountLabel => 'Ne kadar tutar?';
+
+  @override
+  String get askRun => 'Ne yapacağını gör';
+
+  @override
+  String get askDoNotBuy => 'Almamak';
+
+  @override
+  String get askBuyNow => 'Bugün al';
+
+  @override
+  String askBuyAfter(String date) {
+    return '$date tarihinden sonra al';
+  }
+
+  @override
+  String get askUnchanged => 'Planınız olduğu gibi kalır.';
+
+  @override
+  String get askStsAfter => 'Sonrasında harcayabileceğiniz';
+
+  @override
+  String get askBreaks => 'Bu, ödemeniz gereken bir şeyi karşılıksız bırakır.';
+
+  @override
+  String get askSafe => 'Ödemeniz gereken hiçbir şey karşılıksız kalmıyor.';
+
+  @override
+  String get askCosts => 'Ne azalıyor';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount daha az';
+  }
+
+  @override
+  String get askWaitingHelps =>
+      'Maaşınız gelene kadar beklemek her şeyi karşılıyor.';
+
+  @override
+  String get askNoIncome =>
+      'Henüz beklenen bir maaş yok, bu yüzden karşılaştırılacak ileri bir an yok.';
+
+  @override
+  String askAssumption(String date) {
+    return 'Maaşınızın $date tarihinde beklendiği gibi geleceği varsayılır.';
+  }
+
+  @override
+  String get askNoVerdict => 'Upino evet ya da hayır demez. Karar sizin.';
 }

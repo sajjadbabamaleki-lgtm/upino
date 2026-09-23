@@ -150,6 +150,29 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
 
+        const SizedBox(height: 10),
+        // §15.3 — a second trust card, because a confirmed balance is a fact
+        // about liquidity and not a claim that the list explaining it is
+        // complete. Conflating the two is what this exists to prevent.
+        UpinoCard(
+          key: const Key('profile-ledger'),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l.profileLedgerTitle, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 4),
+              Text(
+                switch (snapshot.ledgerCompleteness) {
+                  LedgerCompleteness.complete => l.ledgerComplete,
+                  LedgerCompleteness.partial => l.ledgerPartial,
+                  LedgerCompleteness.unknown => l.ledgerUnknown,
+                },
+                style: theme.textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+
         const SizedBox(height: 26),
         SectionHeading(l.profileAppearance),
         UpinoCard(

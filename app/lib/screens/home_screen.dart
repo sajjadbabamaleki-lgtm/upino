@@ -19,6 +19,7 @@ import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import 'activity_screen.dart';
+import 'ask_screen.dart';
 import 'goals_screen.dart';
 import 'plan_screen.dart';
 import 'profile_screen.dart';
@@ -135,6 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     onDismiss: state.clearExpenseConfirmation,
                   ),
                 ],
+
+                const SizedBox(height: 14),
+                ActionRow(
+                  key: const Key('home-ask'),
+                  title: l.askTitle,
+                  subtitle: l.askBlurb,
+                  trailing: const RowAffordance(icon: Icons.help_outline_rounded),
+                  onTap: () => AskScreen.open(context, state),
+                ),
 
                 const SizedBox(height: 26),
 

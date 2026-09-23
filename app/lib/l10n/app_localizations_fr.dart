@@ -652,4 +652,79 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageBlurb => 'Vous pourrez la changer plus tard dans Profil.';
+
+  @override
+  String get profileLedgerTitle => 'L’historique est-il complet ?';
+
+  @override
+  String get ledgerComplete => 'Tout ce que vous avez dépensé est enregistré.';
+
+  @override
+  String get ledgerPartial =>
+      'Une partie des dépenses n’est apparue qu’à la confirmation de votre solde.';
+
+  @override
+  String get ledgerUnknown =>
+      'Upino ne peut pas dire ce qui manque. Confirmez votre solde pour le savoir.';
+
+  @override
+  String get askTitle => 'Demandez avant de dépenser';
+
+  @override
+  String get askBlurb =>
+      'Testez un achat sur votre plan. Rien n’est enregistré et rien ne change.';
+
+  @override
+  String get askAmountLabel => 'Ce serait combien ?';
+
+  @override
+  String get askRun => 'Voir ce que cela ferait';
+
+  @override
+  String get askDoNotBuy => 'Ne pas acheter';
+
+  @override
+  String get askBuyNow => 'L’acheter aujourd’hui';
+
+  @override
+  String askBuyAfter(String date) {
+    return 'L’acheter après le $date';
+  }
+
+  @override
+  String get askUnchanged => 'Votre plan reste tel quel.';
+
+  @override
+  String get askStsAfter => 'Ce que vous pourriez dépenser ensuite';
+
+  @override
+  String get askBreaks =>
+      'Cela laisse à découvert quelque chose que vous devez payer.';
+
+  @override
+  String get askSafe => 'Rien de ce que vous devez payer ne reste à découvert.';
+
+  @override
+  String get askCosts => 'Ce qui reçoit moins';
+
+  @override
+  String askCostLine(String label, String amount) {
+    return '$label · $amount de moins';
+  }
+
+  @override
+  String get askWaitingHelps => 'Attendre votre salaire couvre tout.';
+
+  @override
+  String get askNoIncome =>
+      'Aucun salaire n’est attendu, il n’y a donc pas de moment ultérieur à comparer.';
+
+  @override
+  String askAssumption(String date) {
+    return 'En supposant que votre salaire arrive comme prévu le $date.';
+  }
+
+  @override
+  String get askNoVerdict =>
+      'Upino ne dit ni oui ni non. L’arbitrage vous revient.';
 }
