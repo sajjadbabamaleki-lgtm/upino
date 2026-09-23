@@ -8,6 +8,8 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
+    private var pendingSmsPermission: MethodChannel.Result? = null
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "upino/sms")
@@ -17,9 +19,37 @@ class MainActivity : FlutterActivity() {
                         val since = (call.argument<Number>("since") ?: 0).toLong()
                         result.success(readInbox(since))
                     }
+                    "requestPermission" -> requestSmsPermission(result)
                     else -> result.notImplemented()
                 }
             }
+    }
+
+    private fun hasSmsPermission() =
+        checkSelfPermission(Manifest.permission.READ_SMS) ==
+            PackageManager.PERMISSION_GRANTED
+
+    /** Asks once, and answers Dart with whether reading is now allowed. */
+    private fun requestSmsPermission(result: MethodChannel.Result) {
+        if (hasSmsPermission()) {
+            result.success(true)
+            return
+        }
+        pendingSmsPermission?.success(false)
+        pendingSmsPermission = result
+        requestPermissions(arrayOf(Manifest.permission.READ_SMS), SMS_REQUEST)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != SMS_REQUEST) return
+        val granted = grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
+        pendingSmsPermission?.success(granted)
+        pendingSmsPermission = null
     }
 
     /**
@@ -28,11 +58,7 @@ class MainActivity : FlutterActivity() {
      * bank's debit notice. Nothing leaves the device.
      */
     private fun readInbox(since: Long): List<Map<String, Any?>> {
-        if (checkSelfPermission(Manifest.permission.READ_SMS) !=
-            PackageManager.PERMISSION_GRANTED
-        ) {
-            return emptyList()
-        }
+        if (!hasSmsPermission()) return emptyList()
         val out = mutableListOf<Map<String, Any?>>()
         contentResolver.query(
             Uri.parse("content://sms/inbox"),
@@ -59,5 +85,9 @@ class MainActivity : FlutterActivity() {
             }
         }
         return out
+    }
+
+    private companion object {
+        const val SMS_REQUEST = 4201
     }
 }

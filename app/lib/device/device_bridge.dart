@@ -15,7 +15,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:home_widget/home_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -226,7 +225,10 @@ class DeviceBridge {
 
   Future<bool> requestNotifications() async {
     try {
-      return await Permission.notification.request().isGranted;
+      final android = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      // Null below Android 13, where no runtime permission exists.
+      return await android?.requestNotificationsPermission() ?? true;
     } on Object {
       return false;
     }
@@ -236,7 +238,7 @@ class DeviceBridge {
 
   Future<bool> requestSms() async {
     try {
-      return await Permission.sms.request().isGranted;
+      return await _sms.invokeMethod<bool>('requestPermission') ?? false;
     } on Object {
       return false;
     }
