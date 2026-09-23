@@ -91,7 +91,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _openLanguage() => UpinoSheet.show<void>(
         context,
         builder: (sheetContext) => UpinoSheet(
-          heightFactor: UpinoSheet.defaultHeight,
           onClose: () => Navigator.of(sheetContext).pop(),
           child: LanguagePicker(
             selected: widget.state.languageCode,
@@ -106,7 +105,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _openCurrency() => UpinoSheet.show<void>(
         context,
         builder: (sheetContext) => UpinoSheet(
-          heightFactor: UpinoSheet.defaultHeight,
           onClose: () => Navigator.of(sheetContext).pop(),
           child: CurrencyPicker(
             selected: _currency,

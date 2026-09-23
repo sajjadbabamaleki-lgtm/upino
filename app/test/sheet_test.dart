@@ -113,29 +113,53 @@ void main() {
       expect(find.byType(LanguagePicker), findsNothing);
     });
 
-    testWidgets('sits low enough that the screen above it still reads',
+    testWidgets('opens tall enough to show every language at once',
         (tester) async {
-      // Asked for after seeing it on a phone: a sheet that stops just under
-      // the status bar is a screen, not a sheet. Both pickers share one top
-      // edge, around two fifths down, which leaves the rows they answer in
-      // view above them.
+      // The height the sheet is set to is this list: eleven rows, and a
+      // language you have to scroll to find is a language someone who cannot
+      // read the current one may never find.
       await pumpSetup(tester);
       final screen =
           tester.view.physicalSize.height / tester.view.devicePixelRatio;
+      await tester.tap(find.byKey(const Key('change-language')));
+      await tester.pumpAndSettle();
+
+      for (final code in ['system', ...languageNames.keys]) {
+        final row = find.byKey(Key('language-$code'));
+        expect(row, findsOneWidget, reason: code);
+        expect(
+          tester.getRect(row).bottom,
+          lessThanOrEqualTo(screen),
+          reason: '$code is below the bottom of the screen',
+        );
+      }
+    });
+
+    testWidgets(
+        'both pickers open to the same edge, below the top of the '
+        'screen', (tester) async {
+      // Two pickers opening to two heights read as two components. And a
+      // sheet that reaches the status bar is a screen, not a sheet.
+      await pumpSetup(tester);
+      final screen =
+          tester.view.physicalSize.height / tester.view.devicePixelRatio;
+      final tops = <String, double>{};
 
       for (final row in ['change-language', 'change-currency']) {
         await tester.tap(find.byKey(Key(row)));
         await tester.pumpAndSettle();
-        final top = tester.getTopLeft(find.byKey(const Key('sheet-handle'))).dy;
-        expect(
-          top / screen,
-          closeTo(1 - UpinoSheet.defaultHeight, 0.03),
-          reason: '$row opened too high or too low on the screen',
-        );
+        tops[row] = tester.getTopLeft(find.byKey(const Key('sheet-handle'))).dy;
         expect(find.text('Set up your plan'), findsOneWidget);
         await tester.tap(find.byKey(const Key('sheet-close')));
         await tester.pumpAndSettle();
       }
+
+      expect(tops['change-language'], tops['change-currency']);
+      expect(
+        tops['change-language'],
+        greaterThan(screen * (1 - UpinoSheet.maxShare) - 1),
+        reason: 'the page behind has to keep a strip of the screen',
+      );
     });
 
     testWidgets('keeps its height when the keyboard comes up', (tester) async {

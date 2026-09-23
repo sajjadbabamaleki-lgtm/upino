@@ -66,7 +66,7 @@ class LanguagePicker extends StatelessWidget {
               UpinoTokens.gutter + 4,
               4,
               UpinoTokens.gutter + 4,
-              16,
+              12,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,14 +80,17 @@ class LanguagePicker extends StatelessWidget {
         Flexible(
           child: ListView.separated(
             shrinkWrap: true,
+            // Tight on purpose: eleven rows, and the sheet is sized to show
+            // all of them at once on a phone. Every point spent here is a
+            // point the last row has to be scrolled to reach.
             padding: const EdgeInsets.fromLTRB(
               UpinoTokens.gutter,
               0,
               UpinoTokens.gutter,
-              28,
+              12,
             ),
             itemCount: codes.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 6),
+            separatorBuilder: (_, __) => const SizedBox(height: 4),
             itemBuilder: (context, i) => _LanguageRow(
               code: codes[i],
               selected: codes[i] == selected,

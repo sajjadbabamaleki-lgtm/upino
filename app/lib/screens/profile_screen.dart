@@ -247,7 +247,6 @@ class _LanguageRow extends StatelessWidget {
     await UpinoSheet.show<void>(
       context,
       builder: (sheetContext) => UpinoSheet(
-        heightFactor: UpinoSheet.defaultHeight,
         onClose: () => Navigator.of(sheetContext).pop(),
         child: LanguagePicker(
           selected: state.languageCode,

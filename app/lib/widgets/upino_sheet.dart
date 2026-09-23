@@ -23,7 +23,7 @@ import '../design/tokens.dart';
 class UpinoSheet extends StatelessWidget {
   const UpinoSheet({
     required this.child,
-    this.heightFactor,
+    this.height = pickerHeight,
     this.onClose,
     super.key,
   });
@@ -39,19 +39,23 @@ class UpinoSheet extends StatelessWidget {
     reverseCurve: Easing.emphasizedAccelerate,
   );
 
-  /// The share of the screen a picker sheet takes. Reached by measurement
-  /// rather than taste: at [defaultHeight] the top edge of the sheet sits
-  /// around two fifths of the way down a phone screen, which leaves the page
-  /// it belongs to plainly in view above it. Taller than this and the sheet
-  /// reads as a new screen that happened to slide, which is the thing it was
-  /// built to stop doing.
-  static const defaultHeight = 0.6;
+  /// How tall a picker sheet is, in logical pixels. Measured, not chosen:
+  /// this is what the language list needs to show all eleven rows at once,
+  /// which is the whole point of the sheet — a language you cannot see is a
+  /// language you cannot pick. The currency list, at 149 rows, could never
+  /// be shown whole, so it takes the same height rather than one of its own:
+  /// two pickers opening to two different heights read as two components.
+  static const pickerHeight = 704.0;
 
-  /// Null lets the sheet take the height of its content, which only suits a
-  /// short one; a factor between 0 and 1 is that share of the whole screen.
-  /// It is measured against the screen, not against the room left over, so
-  /// the keyboard coming up does not change how tall the sheet wants to be.
-  final double? heightFactor;
+  /// …but never more of the screen than this. On a small phone the sheet
+  /// gives up height rather than the page behind it, and the list scrolls.
+  static const maxShare = 0.88;
+
+  /// Fixed in pixels rather than as a share of the screen, so a bigger phone
+  /// shows the same sheet with more page above it instead of a taller sheet
+  /// with empty space in it. [maxShare] and the room actually left both cap
+  /// it, which is how the keyboard takes its space back.
+  final double height;
 
   /// Given a close button when there is one; a list that closes on choosing
   /// does not need it, but a sheet the user may leave without answering does.
@@ -93,30 +97,28 @@ class UpinoSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _SheetHead(onClose: onClose),
-            heightFactor == null ? child : Expanded(child: child),
+            Expanded(child: child),
           ],
         ),
       ),
     );
 
-    final factor = heightFactor;
     return Padding(
       // The search field inside a picker must stay above the keyboard.
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
-      child: factor == null
-          ? sheet
-          : LayoutBuilder(
-              builder: (context, constraints) {
-                final wanted = MediaQuery.sizeOf(context).height * factor;
-                // The keyboard eats into what is left; the sheet gives way to
-                // it rather than pushing its own top off the screen.
-                final room = constraints.maxHeight;
-                return SizedBox(
-                  height: room.isFinite ? math.min(wanted, room) : wanted,
-                  child: sheet,
-                );
-              },
-            ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          var limit = math.min(
+            height,
+            MediaQuery.sizeOf(context).height * maxShare,
+          );
+          // The keyboard eats into what is left; the sheet gives way to it
+          // rather than pushing its own top off the screen.
+          final room = constraints.maxHeight;
+          if (room.isFinite) limit = math.min(limit, room);
+          return SizedBox(height: limit, child: sheet);
+        },
+      ),
     );
   }
 }
