@@ -25,7 +25,10 @@ class CurrencyPicker extends StatefulWidget {
     super.key,
   });
 
-  final String selected;
+  /// Null on the way in, so no row is marked before a choice is made. It is
+  /// set when the list is reopened to change an existing choice, which is the
+  /// only time the highlight has anything to say — picking closes the list.
+  final String? selected;
   final ValueChanged<String> onSelect;
   final EdgeInsets padding;
 

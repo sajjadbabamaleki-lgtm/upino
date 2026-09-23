@@ -36,8 +36,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _showOptional = false;
 
   /// Currency first: every amount below is stored in minor units of it, and
-  /// currencies disagree about how many minor units there are.
-  bool _currencyChosen = false;
+  /// currencies disagree about how many minor units there are. Null until the
+  /// user picks one, so nothing on the list looks already chosen on the way
+  /// in — the highlight is for coming back to change it.
+  String? _currency;
+  bool _picking = true;
 
   @override
   void dispose() {
@@ -71,24 +74,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _chooseCurrency(String code) {
+    // Picking closes the list and hands the form back; the search keyboard
+    // would otherwise still be up over it.
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
+      final changed = code != _currency;
+      _currency = code;
       _draft.currency = code;
-      _currencyChosen = true;
-      // Amounts typed under the old currency would be reinterpreted at a
-      // different scale, so they are cleared rather than silently rescaled.
-      for (final c in [_balance, _income, _rent, _essentials, _goal]) {
-        c.clear();
+      _picking = false;
+      if (changed) {
+        // Amounts typed under the old currency would be reinterpreted at a
+        // different scale, so they are cleared rather than silently rescaled.
+        for (final c in [_balance, _income, _rent, _essentials, _goal]) {
+          c.clear();
+        }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_currencyChosen) {
+    if (_picking) {
       return Scaffold(
         body: SafeArea(
           child: CurrencyPicker(
-            selected: _draft.currency,
+            selected: _currency,
             onSelect: _chooseCurrency,
           ),
         ),
@@ -134,7 +144,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               title: '${info.flag}  ${info.country}',
               subtitle: '${info.name} · ${info.code}',
               trailing: const RowAffordance(icon: Icons.swap_horiz_rounded),
-              onTap: () => setState(() => _currencyChosen = false),
+              onTap: () => setState(() => _picking = true),
             ),
             const SizedBox(height: 18),
 

@@ -109,7 +109,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: CurrencyPicker(selected: 'EUR', onSelect: onSelect),
+            body: CurrencyPicker(selected: null, onSelect: onSelect),
           ),
         ),
       );
@@ -320,6 +320,58 @@ void main() {
       // because they would be storing minor units of an unknown size.
       expect(find.text('Which currency?'), findsOneWidget);
       expect(find.byKey(const Key('field-balance')), findsNothing);
+    });
+
+    testWidgets('nothing looks chosen before the user chooses', (tester) async {
+      await pumpOnboarding(tester);
+      // A highlighted row on the way in would claim a default nobody picked.
+      expect(find.byType(CurrencyPicker), findsOneWidget);
+      expect(
+        tester.widget<CurrencyPicker>(find.byType(CurrencyPicker)).selected,
+        isNull,
+      );
+    });
+
+    testWidgets('picking closes the list at once, and reopening marks it',
+        (tester) async {
+      await pumpOnboarding(tester);
+      await tester.tap(find.byKey(const Key('currency-JPY')));
+      await tester.pump();
+
+      // No animation to wait out: the list is gone on the next frame.
+      expect(find.byType(CurrencyPicker), findsNothing);
+      expect(find.byKey(const Key('field-balance')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('change-currency')));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<CurrencyPicker>(find.byType(CurrencyPicker)).selected,
+        'JPY',
+        reason: 'coming back to change it is the one time the mark is read',
+      );
+    });
+
+    testWidgets('reopening and picking the same one keeps what was typed',
+        (tester) async {
+      await pumpOnboarding(tester);
+      await tester.tap(find.byKey(const Key('currency-USD')));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const Key('field-balance')), '2000');
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('change-currency')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('currency-USD')));
+      await tester.pumpAndSettle();
+
+      // Same currency, same scale, so there is nothing to reinterpret.
+      final field = tester.widget<EditableText>(
+        find.descendant(
+          of: find.byKey(const Key('field-balance')),
+          matching: find.byType(EditableText),
+        ),
+      );
+      expect(field.controller.text, '2000');
     });
 
     testWidgets('choosing one moves on and carries into the plan',
