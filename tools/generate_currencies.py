@@ -12,6 +12,7 @@ Regenerate and commit the output whenever the table changes.
 """
 import os
 import sys
+import unicodedata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -36,6 +37,21 @@ def check():
         assert symbol and country and name, code
     missing = (ZERO_DECIMAL | THREE_DECIMAL) - set(codes)
     assert not missing, f'special-exponent codes absent: {sorted(missing)}'
+
+
+def fold(s):
+    """Lowercase and strip accents: 'São Tomé' becomes 'sao tome'.
+
+    Characters with no ASCII equivalent, such as the Tongan okina, are
+    dropped rather than kept, since nobody types them into a search box.
+    """
+    decomposed = unicodedata.normalize('NFKD', s.lower())
+    stripped = ''.join(c for c in decomposed if not unicodedata.combining(c))
+    # A handful do not decompose: ł, ø, đ.
+    for a, b in [('\u0142', 'l'), ('\u00f8', 'o'), ('\u0111', 'd'),
+                 ('\u00e6', 'ae'), ('\u00df', 'ss')]:
+        stripped = stripped.replace(a, b)
+    return ''.join(c for c in stripped if ord(c) < 128)
 
 
 def dart_string(s):
@@ -63,6 +79,7 @@ class CurrencyInfo {
     required this.flagCountry,
     required this.country,
     required this.name,
+    required this.searchKey,
   });
 
   final String code;
@@ -74,17 +91,25 @@ class CurrencyInfo {
   final String country;
   final String name;
 
+  /// The code, country and name folded to lowercase ASCII, so that someone
+  /// typing "turkiye", "sao tome" or "zloty" without the accent still finds
+  /// the row. Generated, because folding correctly needs a Unicode table.
+  final String searchKey;
+
   /// The two regional indicator letters Android draws as a flag.
   String get flag => String.fromCharCodes(
         flagCountry.codeUnits.map((c) => 0x1F1E6 + c - 0x41),
       );
 
-  /// Matches a code, a country or a currency name, so "usd", "united" and
-  /// "dollar" all find the US dollar.
+  /// The three ways in: the country, what the money is called, and the
+  /// three-letter code. "united", "dollar" and "usd" all find the US dollar.
+  ///
+  /// [searchKey] holds all three folded to plain ASCII; the raw fields are
+  /// checked too so that typing the accent works as well as leaving it off.
   bool matches(String query) {
     final q = query.trim().toLowerCase();
     if (q.isEmpty) return true;
-    return code.toLowerCase().contains(q) ||
+    return searchKey.contains(q) ||
         country.toLowerCase().contains(q) ||
         name.toLowerCase().contains(q);
   }
@@ -94,9 +119,10 @@ const currencyCatalogue = <CurrencyInfo>[''']
     for code, exp, symbol, flag, country, name in TABLE:
         out.append(
             '  CurrencyInfo(code: %s, exponent: %d, symbol: %s, '
-            'flagCountry: %s, country: %s, name: %s),' % (
+            'flagCountry: %s, country: %s, name: %s, searchKey: %s),' % (
                 dart_string(code), exp, dart_string(symbol),
-                dart_string(flag), dart_string(country), dart_string(name)))
+                dart_string(flag), dart_string(country), dart_string(name),
+                dart_string(fold(' '.join([code, country, name])))))
     out.append('];\n')
     path = os.path.join(ROOT, 'app', 'lib', 'engine', 'currencies.dart')
     with open(path, 'w') as f:

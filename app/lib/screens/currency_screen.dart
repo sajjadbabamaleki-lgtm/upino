@@ -155,7 +155,7 @@ class _SearchField extends StatelessWidget {
               textInputAction: TextInputAction.search,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
-                hintText: 'Search country or code',
+                hintText: 'Search country, currency or code',
                 hintStyle: theme.textTheme.bodyMedium
                     ?.copyWith(color: UpinoTokens.textTertiary),
                 border: InputBorder.none,
@@ -221,7 +221,7 @@ class _CurrencyRow extends StatelessWidget {
                     TextSpan(
                       text: info.country,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontSize: 13,
+                        fontSize: 14,
                         color: selected && !dark
                             ? UpinoTokens.actionOnTint
                             : null,

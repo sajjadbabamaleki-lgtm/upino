@@ -93,6 +93,57 @@ void main() {
       );
     });
 
+    test('all three ways in work for the same currency', () {
+      // Country, what the money is called, and the three-letter code.
+      for (final query in ['Oman', 'Omani rial', 'OMR', 'omr']) {
+        expect(
+          currencyCatalogue.where((c) => c.matches(query)).map((c) => c.code),
+          contains('OMR'),
+          reason: query,
+        );
+      }
+      for (final query in ['United Arab Emirates', 'UAE dirham', 'aed']) {
+        expect(
+          currencyCatalogue.where((c) => c.matches(query)).map((c) => c.code),
+          contains('AED'),
+          reason: query,
+        );
+      }
+    });
+
+    test('an accent can be typed or left off', () {
+      // Nine rows carry accents. Someone reaching for the Turkish lira types
+      // "turkiye", not "Türkiye", and has to find it either way.
+      const pairs = {
+        'turkiye': 'TRY',
+        'Türkiye': 'TRY',
+        'sao tome': 'STN',
+        'São Tomé': 'STN',
+        'zloty': 'PLN',
+        'złoty': 'PLN',
+        'curacao': 'ANG',
+        'cordoba': 'NIO',
+        'colon': 'CRC',
+        'bolivar': 'VES',
+        'krona': 'ISK',
+      };
+      pairs.forEach((query, code) {
+        expect(
+          currencyCatalogue.where((c) => c.matches(query)).map((c) => c.code),
+          contains(code),
+          reason: query,
+        );
+      });
+    });
+
+    test('every row can be found by each of the three', () {
+      for (final c in currencyCatalogue) {
+        expect(c.matches(c.code), isTrue, reason: '${c.code} by code');
+        expect(c.matches(c.country), isTrue, reason: '${c.code} by country');
+        expect(c.matches(c.name), isTrue, reason: '${c.code} by name');
+      }
+    });
+
     test('an empty query keeps the full list in its given order', () {
       final all = currencyCatalogue.where((c) => c.matches('  ')).toList();
       expect(all.length, currencyCatalogue.length);
