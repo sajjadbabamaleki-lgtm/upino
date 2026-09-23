@@ -8,6 +8,7 @@ import 'package:upino/engine/money.dart';
 import 'package:upino/engine/plan.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
+import 'pickers.dart';
 
 void main() {
   _reopenTests();
@@ -24,9 +25,9 @@ void main() {
 
   /// A tall surface so the whole form is laid out; the default 800x600 test
   /// window leaves the lower fields unbuilt inside the scroll view.
-  /// [currency] is tapped when onboarding opens on the currency question, so
-  /// tests about the form that follows it do not each repeat the step. Pass
-  /// null to stop at the question itself.
+  /// [currency] is chosen from the sheet the setup screen opens, so tests
+  /// about the form that follows do not each repeat the step. Pass null to
+  /// stop at the setup screen with the question still unanswered.
   Future<void> boot(WidgetTester tester, {String? currency = 'EUR'}) async {
     tester.view
       ..physicalSize = const Size(420, 1800)
@@ -34,12 +35,9 @@ void main() {
     addTearDown(tester.view.reset);
     await tester.pumpWidget(UpinoApp(state: state));
     await tester.pumpAndSettle();
-    if (currency != null && find.text('Which language?').evaluate().isNotEmpty) {
-      // Language first, then currency; these tests are about what follows.
-      await tester.tap(find.byKey(const Key('language-system')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(Key('currency-$currency')));
-      await tester.pumpAndSettle();
+    if (currency != null &&
+        find.byKey(const Key('change-currency')).evaluate().isNotEmpty) {
+      await pickCurrency(tester, currency);
     }
   }
 
@@ -201,12 +199,7 @@ void _reopenTests() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      if (currency != null) {
-        await tester.tap(find.byKey(const Key('language-system')));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(Key('currency-$currency')));
-        await tester.pumpAndSettle();
-      }
+      if (currency != null) await pickCurrency(tester, currency);
       return state;
     }
 
@@ -236,7 +229,7 @@ void _reopenTests() {
       // Close and reopen against the same storage.
       final second = await boot(tester);
       expect(second.isOnboarded, isTrue);
-      expect(find.text('Which language?'), findsNothing);
+      expect(find.byKey(const Key('change-currency')), findsNothing);
       expect(find.text('Set up your plan'), findsNothing);
       expect(find.text('Your plan'), findsOneWidget);
       expect(find.text('€2,975.00'), findsOneWidget);
@@ -249,8 +242,9 @@ void _reopenTests() {
       store = InMemoryPlanStore('{{{ truncated');
       final state = await boot(tester, currency: null);
       expect(state.restoreFailure, isNotNull);
-      // Onboarding from the top, which starts at the language question.
-      expect(find.text('Which language?'), findsOneWidget);
+      // Onboarding from the top, with the currency still unanswered.
+      expect(find.text('Set up your plan'), findsOneWidget);
+      expect(find.byKey(const Key('field-balance')), findsNothing);
     });
   });
 }
@@ -272,12 +266,8 @@ void _setupIsObviousTests() {
         ),
       ),);
       await tester.pumpAndSettle();
-      // Past the language and currency questions; these tests are about the
-      // form that follows them.
-      await tester.tap(find.byKey(const Key('language-system')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('currency-EUR')));
-      await tester.pumpAndSettle();
+      // Past the currency question; these tests are about the form below it.
+      await pickCurrency(tester, 'EUR');
     }
 
     testWidgets('empty fields invite typing rather than showing a value',

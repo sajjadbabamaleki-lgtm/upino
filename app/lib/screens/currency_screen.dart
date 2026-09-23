@@ -20,7 +20,7 @@ class CurrencyPicker extends StatefulWidget {
     required this.onSelect,
     this.padding = const EdgeInsets.fromLTRB(
       UpinoTokens.gutter,
-      20,
+      4,
       UpinoTokens.gutter,
       28,
     ),

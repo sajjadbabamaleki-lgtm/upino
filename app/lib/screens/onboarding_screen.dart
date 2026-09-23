@@ -17,9 +17,7 @@ import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import 'currency_screen.dart';
 import 'language_screen.dart';
-
-/// Language, then currency, then the two amounts.
-enum _Step { language, currency, details }
+import '../widgets/upino_sheet.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({required this.state, super.key});
@@ -42,15 +40,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _payDayOffset = 30;
   bool _showOptional = false;
 
-  /// Language, then currency, then the form. Language is first because the
-  /// currency question is made of words; currency is before the amounts
-  /// because every amount is stored in minor units of it, and currencies
-  /// disagree about how many minor units there are.
-  ///
-  /// The currency is null until the user picks one, so nothing on that list
-  /// looks already chosen on the way in.
+  /// Null until the user picks one. Two things hang on it: nothing on the
+  /// currency list looks already chosen on the way in, and the amount fields
+  /// stay off the screen until there is a currency to store them in. Every
+  /// amount is held in minor units of the chosen currency, and currencies
+  /// disagree about how many minor units there are — a rial has none, a
+  /// dinar has three — so a number typed before the choice would have to be
+  /// reinterpreted afterwards.
   String? _currency;
-  _Step _step = _Step.language;
 
   @override
   void dispose() {
@@ -91,20 +88,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     widget.state.completeOnboarding(_draft);
   }
 
-  void _chooseLanguage(String? code) {
-    widget.state.setLanguageCode(code);
-    setState(() => _step = _Step.currency);
-  }
+  Future<void> _openLanguage() => UpinoSheet.show<void>(
+        context,
+        builder: (sheetContext) => UpinoSheet(
+          onClose: () => Navigator.of(sheetContext).pop(),
+          child: LanguagePicker(
+            selected: widget.state.languageCode,
+            onSelect: (code) {
+              widget.state.setLanguageCode(code);
+              Navigator.of(sheetContext).pop();
+            },
+          ),
+        ),
+      );
+
+  Future<void> _openCurrency() => UpinoSheet.show<void>(
+        context,
+        builder: (sheetContext) => UpinoSheet(
+          heightFactor: 0.9,
+          onClose: () => Navigator.of(sheetContext).pop(),
+          child: CurrencyPicker(
+            selected: _currency,
+            onSelect: (code) {
+              Navigator.of(sheetContext).pop();
+              _chooseCurrency(code);
+            },
+          ),
+        ),
+      );
 
   void _chooseCurrency(String code) {
-    // Picking closes the list and hands the form back; the search keyboard
-    // would otherwise still be up over it.
+    // The search keyboard would otherwise still be up over the form the
+    // sheet has just uncovered.
     FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
       final changed = code != _currency;
       _currency = code;
       _draft.currency = code;
-      _step = _Step.details;
       if (changed) {
         // Amounts typed under the old currency would be reinterpreted at a
         // different scale, so they are cleared rather than silently rescaled.
@@ -124,31 +144,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_step == _Step.language) {
-      return Scaffold(
-        body: SafeArea(
-          child: LanguagePicker(
-            selected: widget.state.languageCode,
-            onSelect: _chooseLanguage,
-          ),
-        ),
-      );
-    }
-
-    if (_step == _Step.currency) {
-      return Scaffold(
-        body: SafeArea(
-          child: CurrencyPicker(
-            selected: _currency,
-            onSelect: _chooseCurrency,
-          ),
-        ),
-      );
-    }
-
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final info = currencyCatalogue.firstWhere((c) => c.code == _draft.currency);
+    final chosen = _currency;
+    final info = chosen == null
+        ? null
+        : currencyCatalogue.firstWhere((c) => c.code == chosen);
+    final language = widget.state.languageCode;
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -182,99 +184,115 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 18),
             ActionRow(
-              key: const Key('change-currency'),
-              leading: CountryFlag(info.flagCountry, size: 22),
-              title: info.country,
-              subtitle: '${info.name} · ${info.code}',
-              trailing: const RowAffordance(icon: 'swap'),
-              onTap: () => setState(() => _step = _Step.currency),
+              key: const Key('change-language'),
+              title: l.profileLanguage,
+              subtitle: language == null
+                  ? l.languagePhone
+                  : languageNames[language]!.native,
+              onTap: _openLanguage,
             ),
-            const SizedBox(height: 18),
-
-            _Field(
-              key: const Key('field-balance'),
-              controller: _balance,
-              label: l.onboardingBalanceLabel,
-              hint: l.onboardingBalanceHint,
-              currency: _draft.currency,
-              onChanged: () => setState(() {}),
-            ),
-            // Income is a range because for most people it is one. Forcing a
-            // single number would make the plan look precise and be wrong in
-            // every month that came in under it.
-            _RangeField(
-              label: l.onboardingIncomeLabel,
-              hint: l.onboardingIncomeHint,
-              currency: _draft.currency,
-              lowKey: const Key('field-income'),
-              highKey: const Key('field-income-upper'),
-              low: _income,
-              high: _incomeUpper,
-              lowLabel: l.onboardingIncomeFrom,
-              highLabel: l.onboardingIncomeTo,
-              highHint: l.onboardingIncomeToOptional,
-              onChanged: () => setState(() {}),
-            ),
-            _PayDayField(
-              days: _payDayOffset,
-              onChanged: (v) => setState(() => _payDayOffset = v),
-            ),
-
-            const SizedBox(height: 6),
+            const SizedBox(height: 10),
+            // Before a choice is made the row carries the question itself,
+            // because it is the only thing on the screen left to do.
             ActionRow(
-              title: l.onboardingCommitments,
-              subtitle: _showOptional
-                  ? l.onboardingCommitmentsOpen
-                  : l.onboardingCommitmentsShut,
-              trailing: RowAffordance(
-                icon: _showOptional
-                    ? 'chevronUp'
-                    : 'chevronDown',
-              ),
-              onTap: () => setState(() => _showOptional = !_showOptional),
+              key: const Key('change-currency'),
+              leading:
+                  info == null ? null : CountryFlag(info.flagCountry, size: 22),
+              title: info?.country ?? l.currencyTitle,
+              subtitle: info == null
+                  ? l.currencyBlurb
+                  : '${info.name} · ${info.code}',
+              trailing:
+                  RowAffordance(icon: info == null ? 'chevronRight' : 'swap'),
+              onTap: _openCurrency,
             ),
 
-            if (_showOptional) ...[
-              const SizedBox(height: 20),
-              _Field(
-                key: const Key('field-rent'),
-                controller: _rent,
-                label: l.onboardingRentLabel,
-                hint: l.onboardingRentHint,
-                currency: _draft.currency,
-                onChanged: () => setState(() {}),
-              ),
-              _Field(
-                key: const Key('field-essentials'),
-                controller: _essentials,
-                label: l.onboardingEssentialsLabel,
-                hint: l.onboardingEssentialsHint,
-                currency: _draft.currency,
-                onChanged: () => setState(() {}),
-              ),
-              _Field(
-                key: const Key('field-goal'),
-                controller: _goal,
-                label: l.onboardingGoalLabel,
-                hint: l.onboardingGoalHint,
-                currency: _draft.currency,
-                onChanged: () => setState(() {}),
-              ),
-            ],
+            if (info != null) ...[
+              const SizedBox(height: 18),
 
-            const SizedBox(height: 22),
-            FilledButton(
-              onPressed: _canFinish ? _finish : null,
-              child: Text(l.onboardingFinish),
-            ),
-            if (!_canFinish) ...[
-              const SizedBox(height: 10),
-              Center(
-                child: Text(
-                  l.onboardingIncomplete,
-                  style: theme.textTheme.bodySmall,
+              _Field(
+                key: const Key('field-balance'),
+                controller: _balance,
+                label: l.onboardingBalanceLabel,
+                hint: l.onboardingBalanceHint,
+                currency: _draft.currency,
+                onChanged: () => setState(() {}),
+              ),
+              // Income is a range because for most people it is one. Forcing a
+              // single number would make the plan look precise and be wrong in
+              // every month that came in under it.
+              _RangeField(
+                label: l.onboardingIncomeLabel,
+                hint: l.onboardingIncomeHint,
+                currency: _draft.currency,
+                lowKey: const Key('field-income'),
+                highKey: const Key('field-income-upper'),
+                low: _income,
+                high: _incomeUpper,
+                lowLabel: l.onboardingIncomeFrom,
+                highLabel: l.onboardingIncomeTo,
+                highHint: l.onboardingIncomeToOptional,
+                onChanged: () => setState(() {}),
+              ),
+              _PayDayField(
+                days: _payDayOffset,
+                onChanged: (v) => setState(() => _payDayOffset = v),
+              ),
+
+              const SizedBox(height: 6),
+              ActionRow(
+                title: l.onboardingCommitments,
+                subtitle: _showOptional
+                    ? l.onboardingCommitmentsOpen
+                    : l.onboardingCommitmentsShut,
+                trailing: RowAffordance(
+                  icon: _showOptional ? 'chevronUp' : 'chevronDown',
                 ),
+                onTap: () => setState(() => _showOptional = !_showOptional),
               ),
+
+              if (_showOptional) ...[
+                const SizedBox(height: 20),
+                _Field(
+                  key: const Key('field-rent'),
+                  controller: _rent,
+                  label: l.onboardingRentLabel,
+                  hint: l.onboardingRentHint,
+                  currency: _draft.currency,
+                  onChanged: () => setState(() {}),
+                ),
+                _Field(
+                  key: const Key('field-essentials'),
+                  controller: _essentials,
+                  label: l.onboardingEssentialsLabel,
+                  hint: l.onboardingEssentialsHint,
+                  currency: _draft.currency,
+                  onChanged: () => setState(() {}),
+                ),
+                _Field(
+                  key: const Key('field-goal'),
+                  controller: _goal,
+                  label: l.onboardingGoalLabel,
+                  hint: l.onboardingGoalHint,
+                  currency: _draft.currency,
+                  onChanged: () => setState(() {}),
+                ),
+              ],
+
+              const SizedBox(height: 22),
+              FilledButton(
+                onPressed: _canFinish ? _finish : null,
+                child: Text(l.onboardingFinish),
+              ),
+              if (!_canFinish) ...[
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    l.onboardingIncomplete,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
             ],
           ],
         ),
@@ -467,7 +485,10 @@ class _Field extends StatelessWidget {
           children: [
             Text(label, style: theme.textTheme.titleMedium),
             const SizedBox(height: 2),
-            Text(hint, style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.5)),
+            Text(
+              hint,
+              style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.5),
+            ),
             const SizedBox(height: 6),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
@@ -511,7 +532,8 @@ class _Field extends StatelessWidget {
                             ?.copyWith(color: UpinoTokens.textTertiary),
                         border: InputBorder.none,
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 12),
                       ),
                     ),
                   ),
@@ -582,7 +604,8 @@ class _DayChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final active =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     return GestureDetector(
       onTap: onTap,
       child: Container(

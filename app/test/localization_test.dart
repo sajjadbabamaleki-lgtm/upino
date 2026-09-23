@@ -170,17 +170,24 @@ void main() {
   });
 
   group('the picker', () {
-    testWidgets('is the first thing the app asks', (tester) async {
-      // Before currency, because the currency question is made of words.
+    testWidgets('opens from the setup screen and turns the app at once',
+        (tester) async {
       final state = AppState(now: DateTime.utc(2026, 10, 1, 10));
       await pumpApp(tester, state);
-      expect(find.text('Which language?'), findsOneWidget);
-      expect(find.text('Which currency?'), findsNothing);
+      // The sheet is not up until the row is tapped: setup opens on the
+      // screen the answers belong to, not on a question with no context.
+      expect(find.byType(LanguagePicker), findsNothing);
+
+      await tester.tap(find.byKey(const Key('change-language')));
+      await tester.pumpAndSettle();
+      expect(find.byType(LanguagePicker), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('language-fa')));
       await tester.pumpAndSettle();
       expect(state.languageCode, 'fa');
-      // And the currency question arrives in the language just chosen.
+      // The sheet leaves and the screen behind it is already in Persian,
+      // including the currency question still waiting on it.
+      expect(find.byType(LanguagePicker), findsNothing);
       expect(find.text('کدام واحد پول؟'), findsOneWidget);
     });
 
@@ -188,6 +195,8 @@ void main() {
       // Someone who cannot read the language currently showing still has to
       // find their own, so no row depends on the current one.
       await pumpApp(tester, AppState(now: DateTime.utc(2026, 10, 1, 10)));
+      await tester.tap(find.byKey(const Key('change-language')));
+      await tester.pumpAndSettle();
       for (final entry in languageNames.entries) {
         expect(
           find.byKey(Key('language-${entry.key}')),

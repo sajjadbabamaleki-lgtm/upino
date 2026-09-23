@@ -263,8 +263,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.isOnboarded, isFalse);
-      // Back to the top of onboarding, which is the language question.
-      expect(find.text('Which language?'), findsOneWidget);
+      // Back to the top of onboarding, with nothing answered yet.
+      expect(find.text('Set up your plan'), findsOneWidget);
+      expect(find.byKey(const Key('field-balance')), findsNothing);
     });
   });
 }

@@ -54,13 +54,17 @@ class LanguagePicker extends StatelessWidget {
     final codes = <String?>[null, ...languageNames.keys];
 
     return Column(
+      // Ten languages and the phone make a list short enough to show whole,
+      // so the sheet is sized to it rather than to a share of the screen: a
+      // fixed height would leave a band of empty sheet under the last row.
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (showHeading)
           Padding(
             padding: const EdgeInsets.fromLTRB(
               UpinoTokens.gutter + 4,
-              20,
+              4,
               UpinoTokens.gutter + 4,
               16,
             ),
@@ -73,8 +77,9 @@ class LanguagePicker extends StatelessWidget {
               ],
             ),
           ),
-        Expanded(
+        Flexible(
           child: ListView.separated(
+            shrinkWrap: true,
             padding: const EdgeInsets.fromLTRB(
               UpinoTokens.gutter,
               0,
@@ -141,9 +146,8 @@ class _LanguageRow extends StatelessWidget {
                       text: names?.native ?? l.languagePhone,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontSize: 14,
-                        color: selected && !dark
-                            ? UpinoTokens.actionOnTint
-                            : null,
+                        color:
+                            selected && !dark ? UpinoTokens.actionOnTint : null,
                       ),
                     ),
                     if (names != null && names.english != names.native)

@@ -15,6 +15,7 @@ import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
 import 'package:upino/screens/currency_screen.dart';
 import 'package:upino/state/app_state.dart';
+import 'pickers.dart';
 
 void main() {
   group('the table', () {
@@ -377,24 +378,27 @@ void main() {
       final state = AppState(now: DateTime.utc(2026, 10, 1, 10));
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      // Language comes before currency: the currency question is made of
-      // words, so it is asked second.
-      expect(find.text('Which language?'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('language-system')));
-      await tester.pumpAndSettle();
       return state;
+    }
+
+    Future<void> openCurrency(WidgetTester tester) async {
+      await tester.tap(find.byKey(const Key('change-currency')));
+      await tester.pumpAndSettle();
     }
 
     testWidgets('asks for the currency before anything else', (tester) async {
       await pumpOnboarding(tester);
       // The amount fields are not reachable until a currency is chosen,
-      // because they would be storing minor units of an unknown size.
+      // because they would be storing minor units of an unknown size. Until
+      // then the row carries the question itself.
       expect(find.text('Which currency?'), findsOneWidget);
       expect(find.byKey(const Key('field-balance')), findsNothing);
+      expect(find.byType(CurrencyPicker), findsNothing);
     });
 
     testWidgets('nothing looks chosen before the user chooses', (tester) async {
       await pumpOnboarding(tester);
+      await openCurrency(tester);
       // A highlighted row on the way in would claim a default nobody picked.
       expect(find.byType(CurrencyPicker), findsOneWidget);
       expect(
@@ -403,18 +407,18 @@ void main() {
       );
     });
 
-    testWidgets('picking closes the list at once, and reopening marks it',
+    testWidgets('picking closes the sheet, and reopening marks it',
         (tester) async {
       await pumpOnboarding(tester);
+      await openCurrency(tester);
       await tester.tap(find.byKey(const Key('currency-JPY')));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      // No animation to wait out: the list is gone on the next frame.
+      // The sheet leaves, and the form it was covering is filled in behind.
       expect(find.byType(CurrencyPicker), findsNothing);
       expect(find.byKey(const Key('field-balance')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('change-currency')));
-      await tester.pumpAndSettle();
+      await openCurrency(tester);
       expect(
         tester.widget<CurrencyPicker>(find.byType(CurrencyPicker)).selected,
         'JPY',
@@ -425,15 +429,11 @@ void main() {
     testWidgets('reopening and picking the same one keeps what was typed',
         (tester) async {
       await pumpOnboarding(tester);
-      await tester.tap(find.byKey(const Key('currency-USD')));
-      await tester.pumpAndSettle();
+      await pickCurrency(tester, 'USD');
       await tester.enterText(find.byKey(const Key('field-balance')), '2000');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('change-currency')));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('currency-USD')));
-      await tester.pumpAndSettle();
+      await pickCurrency(tester, 'USD');
 
       // Same currency, same scale, so there is nothing to reinterpret.
       final field = tester.widget<EditableText>(
@@ -448,6 +448,7 @@ void main() {
     testWidgets('choosing one moves on and carries into the plan',
         (tester) async {
       final state = await pumpOnboarding(tester);
+      await openCurrency(tester);
 
       await tester.enterText(find.byKey(const Key('currency-search')), 'oman');
       await tester.pumpAndSettle();
@@ -469,13 +470,11 @@ void main() {
 
     testWidgets('going back and changing it clears the amounts', (tester) async {
       await pumpOnboarding(tester);
-      await tester.tap(find.byKey(const Key('currency-USD')));
-      await tester.pumpAndSettle();
+      await pickCurrency(tester, 'USD');
       await tester.enterText(find.byKey(const Key('field-balance')), '2000');
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('change-currency')));
-      await tester.pumpAndSettle();
+      await openCurrency(tester);
       await tester.enterText(find.byKey(const Key('currency-search')), 'japan');
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('currency-JPY')));

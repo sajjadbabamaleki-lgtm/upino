@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import 'language_screen.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/upino_sheet.dart';
 
 class _ThemeOption extends StatelessWidget {
   const _ThemeOption({
@@ -26,7 +27,8 @@ class _ThemeOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final active =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -242,31 +244,16 @@ class _LanguageRow extends StatelessWidget {
   final AppState state;
 
   Future<void> _open(BuildContext context) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => FractionallySizedBox(
-        heightFactor: 0.82,
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark(context)
-                ? UpinoTokens.darkSurfacePage
-                : UpinoTokens.surfacePage,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(UpinoTokens.radiusHero),
-            ),
-          ),
-          child: SafeArea(
-            top: false,
-            child: LanguagePicker(
-              selected: state.languageCode,
-              onSelect: (code) {
-                state.setLanguageCode(code);
-                Navigator.of(sheetContext).pop();
-              },
-            ),
-          ),
+    await UpinoSheet.show<void>(
+      context,
+      builder: (sheetContext) => UpinoSheet(
+        onClose: () => Navigator.of(sheetContext).pop(),
+        child: LanguagePicker(
+          selected: state.languageCode,
+          onSelect: (code) {
+            state.setLanguageCode(code);
+            Navigator.of(sheetContext).pop();
+          },
         ),
       ),
     );
@@ -279,9 +266,7 @@ class _LanguageRow extends StatelessWidget {
     return ActionRow(
       key: const Key('profile-language'),
       title: l.profileLanguage,
-      subtitle: code == null
-          ? l.languagePhone
-          : languageNames[code]!.native,
+      subtitle: code == null ? l.languagePhone : languageNames[code]!.native,
       trailing: const RowAffordance(icon: 'chevronRight'),
       onTap: () => _open(context),
     );

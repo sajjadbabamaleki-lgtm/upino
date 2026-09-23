@@ -158,28 +158,45 @@ Future<void> loadFonts() async {
 void main() {
   setUpAll(loadFonts);
 
-  testWidgets('01 language', (tester) async {
-    // The first screen the app shows. Each language is named in itself, so
-    // this one list is readable whatever the phone is set to.
+  testWidgets('01a setup', (tester) async {
+    // The first screen the app shows. Both questions are rows on it, and the
+    // currency row carries its question until it is answered, because the
+    // amounts below cannot be asked for before it is.
     await shootApp(
       tester,
-      '01-language',
+      '01a-setup',
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 900),
     );
   });
 
+  testWidgets('01 language', (tester) async {
+    // The sheet the setup screen opens, over the screen it belongs to. Each
+    // language is named in itself, so this one list is readable whatever the
+    // phone is set to.
+    await shootApp(
+      tester,
+      '01-language',
+      AppState(now: now, utcOffset: cest),
+      size: const Size(400, 900),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('change-language')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
   testWidgets('01b currency', (tester) async {
-    // The first screen onboarding shows. The flags render as boxes here: the
-    // harness loads Roboto and the icon face, and no emoji font ships with the
-    // test binding. On a phone the system emoji font draws them.
+    // The other sheet. The flags render as boxes here: the harness loads
+    // Roboto and the icon face, and no emoji font ships with the test
+    // binding. On a phone the system emoji font draws them.
     await shootApp(
       tester,
       '01b-currency',
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 900),
       after: (tester) async {
-        await tester.tap(find.byKey(const Key('language-system')));
+        await tester.tap(find.byKey(const Key('change-currency')));
         await tester.pumpAndSettle();
       },
     );
@@ -192,7 +209,7 @@ void main() {
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 1400),
       after: (tester) async {
-        await tester.tap(find.byKey(const Key('language-system')));
+        await tester.tap(find.byKey(const Key('change-currency')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const Key('currency-EUR')));
         await tester.pumpAndSettle();
