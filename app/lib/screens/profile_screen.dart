@@ -3,12 +3,15 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/icon.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
+import '../engine/currencies.dart';
 import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import 'currency_screen.dart';
 import 'language_screen.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/upino_sheet.dart';
@@ -123,6 +126,8 @@ class ProfileScreen extends StatelessWidget {
         ),
 
         SectionHeading(l.profileYourData),
+        _CurrencyRow(state: state),
+        const SizedBox(height: 10),
         ActionRow(
           key: const Key('profile-confirm-balance'),
           title: l.profileConfirmBalance,
@@ -268,6 +273,77 @@ class _LanguageRow extends StatelessWidget {
       key: const Key('profile-language'),
       title: l.profileLanguage,
       subtitle: code == null ? l.languagePhone : languageNames[code]!.native,
+      trailing: const RowAffordance(icon: 'chevronRight'),
+      onTap: () => _open(context),
+    );
+  }
+}
+
+/// The currency the plan is kept in. Onboarding asks it first; this is the
+/// way back to it afterwards, through the same picker.
+///
+/// A change is confirmed before it happens, because it changes what every
+/// figure in the plan means and there is no exchange rate behind it.
+class _CurrencyRow extends StatelessWidget {
+  const _CurrencyRow({required this.state});
+
+  final AppState state;
+
+  Future<void> _open(BuildContext context) async {
+    final picked = await UpinoSheet.show<String>(
+      context,
+      builder: (sheetContext) => UpinoSheet(
+        onClose: () => Navigator.of(sheetContext).pop(),
+        child: CurrencyPicker(
+          selected: state.currency,
+          onSelect: (code) => Navigator.of(sheetContext).pop(code),
+        ),
+      ),
+    );
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (picked == null || picked == state.currency || !context.mounted) {
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final l = AppLocalizations.of(dialogContext);
+        return AlertDialog(
+          backgroundColor: cardColor(dialogContext),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+          ),
+          title: Text(l.currencyChangeTitle(picked)),
+          content: Text(l.currencyChangeBlurb(picked)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(l.cancel),
+            ),
+            TextButton(
+              key: const Key('currency-change-confirm'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(l.currencyChangeConfirm),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed ?? false) state.changeCurrency(picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final info = currencyCatalogue
+        .where((c) => c.code == state.currency)
+        .firstOrNull;
+    return ActionRow(
+      key: const Key('profile-currency'),
+      leading: info == null ? null : CountryFlag(info.flagCountry, size: 22),
+      title: l.profileCurrency,
+      subtitle: info == null ? state.currency : '${info.name} · ${info.code}',
       trailing: const RowAffordance(icon: 'chevronRight'),
       onTap: () => _open(context),
     );

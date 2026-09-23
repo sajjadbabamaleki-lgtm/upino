@@ -548,6 +548,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileCurrency => 'العملة';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'التحويل إلى $currency؟';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'يحتفظ كل مبلغ في خطتك برقمه ويُعرض بـ $currency من الآن. لا يُحوَّل أي شيء بسعر صرف، فاستخدم هذا لتصحيح العملة لا لتحويل أموالك.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'تحويل';
+
+  @override
   String get profileYourData => 'بياناتك';
 
   @override

@@ -1098,6 +1098,24 @@ abstract class AppLocalizations {
   /// **'Currency'**
   String get profileCurrency;
 
+  /// No description provided for @currencyChangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to {currency}?'**
+  String currencyChangeTitle(String currency);
+
+  /// No description provided for @currencyChangeBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Every amount in your plan keeps its number and is shown in {currency} from now on. Nothing is converted at an exchange rate, so use this to correct the currency, not to convert your money.'**
+  String currencyChangeBlurb(String currency);
+
+  /// No description provided for @currencyChangeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get currencyChangeConfirm;
+
   /// No description provided for @profileYourData.
   ///
   /// In en, this message translates to:

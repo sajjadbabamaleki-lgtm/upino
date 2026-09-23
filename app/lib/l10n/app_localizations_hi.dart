@@ -557,6 +557,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get profileCurrency => 'मुद्रा';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return '$currency पर बदलें?';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'आपकी योजना की हर राशि अपनी संख्या रखती है और अब से $currency में दिखेगी। किसी विनिमय दर से कुछ नहीं बदला जाता, इसलिए इसे मुद्रा सुधारने के लिए इस्तेमाल करें, पैसे बदलने के लिए नहीं।';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'बदलें';
+
+  @override
   String get profileYourData => 'आपका डेटा';
 
   @override

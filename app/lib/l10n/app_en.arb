@@ -285,6 +285,23 @@
   "profileLanguageBlurb": "Following your phone is the default, so nothing is imposed.",
   "languagePhone": "Phone",
   "profileCurrency": "Currency",
+  "currencyChangeTitle": "Switch to {currency}?",
+  "@currencyChangeTitle": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "currencyChangeBlurb": "Every amount in your plan keeps its number and is shown in {currency} from now on. Nothing is converted at an exchange rate, so use this to correct the currency, not to convert your money.",
+  "@currencyChangeBlurb": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "currencyChangeConfirm": "Switch",
   "profileYourData": "Your data",
   "profileDelete": "Delete my plan",
   "profileDeleteSub": "Clears everything and returns to setup",

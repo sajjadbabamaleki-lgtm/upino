@@ -110,6 +110,20 @@ class Money implements Comparable<Money> {
   bool get isZero => minor == 0;
   bool get isNegative => minor < 0;
 
+  /// The same face value written in [code]: `12.50 EUR` becomes `12.50 USD`.
+  ///
+  /// This relabels, it does not convert — there is no exchange rate here. It
+  /// exists for correcting the currency a plan is kept in, and only rescales
+  /// the minor units where the two currencies disagree about how many there
+  /// are. Precision the target cannot hold is rounded half-even (§5.1), so
+  /// `12.50 EUR` in yen is `¥12`.
+  Money relabelled(String code) {
+    final from = Currency.of(currency).exponent;
+    final to = Currency.of(code).exponent;
+    if (to >= from) return Money(minor * _pow10(to - from), code);
+    return Money(divideRoundHalfEven(minor, _pow10(from - to)), code);
+  }
+
   /// Floors at zero — the published Safe-to-Spend is never negative (INV-05).
   Money get clampedAtZero => isNegative ? Money.zero(currency) : this;
 

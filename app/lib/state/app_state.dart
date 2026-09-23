@@ -284,6 +284,140 @@ class AppState extends ChangeNotifier {
     unawaited(_store?.save(toDocument()));
   }
   String get currency => _currency;
+
+  /// Keep the plan in [code] instead. Every amount keeps its number and takes
+  /// the new currency; nothing is converted at an exchange rate, because the
+  /// app has no rates and a guessed one would put a made-up figure on Home.
+  /// This is for a plan set up in the wrong currency, which onboarding
+  /// otherwise leaves no way out of short of deleting everything.
+  ///
+  /// The log is rewritten in place rather than corrected by a new event: the
+  /// engine forbids mixing currencies (§16), and what changes is the unit the
+  /// amounts are written in, not what happened.
+  void changeCurrency(String code) {
+    if (code == _currency || !Currency.isKnown(code)) return;
+    Money r(Money m) => m.relabelled(code);
+    Money? rn(Money? m) => m?.relabelled(code);
+
+    _currency = code;
+    _openingBalance = rn(_openingBalance);
+    lastRecordedExpense = null;
+
+    for (var i = 0; i < _events.length; i++) {
+      _events[i] = _relabelEvent(_events[i], code);
+    }
+    for (var i = 0; i < _claims.length; i++) {
+      final c = _claims[i];
+      final reservation = c.reservation;
+      _claims[i] = Claim(
+        id: c.id,
+        priority: c.priority,
+        label: c.label,
+        amount: r(c.amount),
+        dueDate: c.dueDate,
+        userPriority: c.userPriority,
+        reservation: reservation == null
+            ? null
+            : Reservation(
+                r(reservation.amount),
+                consumed: r(reservation.consumed),
+                state: reservation.state,
+              ),
+      );
+    }
+    for (var i = 0; i < _incomeEvents.length; i++) {
+      final income = _incomeEvents[i];
+      final amount = r(income.expectedAmount);
+      final upper = rn(income.expectedUpperAmount);
+      _incomeEvents[i] = IncomeEvent(
+        id: income.id,
+        expectedAmount: amount,
+        expectedDate: income.expectedDate,
+        state: income.state,
+        confirmedAmount: rn(income.confirmedAmount),
+        // Rounding into a currency with fewer decimals can close a narrow
+        // range, and a range must not run backwards.
+        expectedUpperAmount:
+            upper != null && upper.minor > amount.minor ? upper : null,
+      );
+    }
+    for (var i = 0; i < _goals.length; i++) {
+      final g = _goals[i];
+      _goals[i] = g.copyWith(target: r(g.target), saved: r(g.saved));
+    }
+
+    _persist();
+    notifyListeners();
+  }
+
+  static LedgerEvent _relabelEvent(LedgerEvent e, String code) {
+    Money r(Money m) => m.relabelled(code);
+    return switch (e) {
+      ExpenseEvent() => ExpenseEvent(
+          id: e.id,
+          accountId: e.accountId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      CardPurchaseEvent() => CardPurchaseEvent(
+          id: e.id,
+          cardId: e.cardId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      CardSettlementEvent() => CardSettlementEvent(
+          id: e.id,
+          accountId: e.accountId,
+          cardId: e.cardId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      IncomeConfirmedEvent() => IncomeConfirmedEvent(
+          id: e.id,
+          accountId: e.accountId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      LoanDrawdownEvent() => LoanDrawdownEvent(
+          id: e.id,
+          accountId: e.accountId,
+          debtId: e.debtId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      DebtPaymentEvent() => DebtPaymentEvent(
+          id: e.id,
+          accountId: e.accountId,
+          debtId: e.debtId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      TransferEvent() => TransferEvent(
+          id: e.id,
+          fromAccountId: e.fromAccountId,
+          toAccountId: e.toAccountId,
+          amount: r(e.amount),
+          canonicalId: e.canonicalId,
+        ),
+      RefundEvent() => RefundEvent(
+          id: e.id,
+          accountId: e.accountId,
+          amount: r(e.amount),
+          linkedExpenseId: e.linkedExpenseId,
+          canonicalId: e.canonicalId,
+        ),
+      BalanceAdjustmentEvent() => BalanceAdjustmentEvent(
+          id: e.id,
+          accountId: e.accountId,
+          delta: r(e.delta),
+          reason: e.reason,
+          supersededBy: e.supersededBy,
+          canonicalId: e.canonicalId,
+        ),
+      CorrectionEvent() => e,
+    };
+  }
+
   LocalDate get today => LocalDate.at(_now, _utcOffset);
   List<Claim> get claims => List.unmodifiable(_claims);
 

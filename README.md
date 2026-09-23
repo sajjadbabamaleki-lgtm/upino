@@ -77,7 +77,7 @@ immediate recalculation (§18).
 ```
 cd app
 flutter pub get
-flutter test      # 52 tests
+flutter test      # 287 tests
 flutter analyze
 ```
 
@@ -140,6 +140,16 @@ interrupted write cannot leave a half-saved plan. Writes are serialized and
 coalesced because the app persists after every mutation: two rapid edits
 would otherwise race the same scratch path, and an older state must never land
 on disk after a newer one.
+
+### Changing the currency
+
+Onboarding asks the currency first, and Profile can change it afterwards
+through the same picker. A change relabels rather than converts: every amount
+keeps its number and takes the new currency, rescaled only where the two
+disagree about decimals (rounded half-even, §5.1). There are no exchange rates
+in the app, and a guessed one would put a made-up figure on Home, so the
+confirmation says plainly that this corrects the currency and does not convert
+money.
 
 ### Corrections
 

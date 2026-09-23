@@ -557,6 +557,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get profileCurrency => 'Para birimi';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return '$currency para birimine geçilsin mi?';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'Planınızdaki her tutar sayısını korur ve bundan sonra $currency olarak gösterilir. Hiçbir şey döviz kuruyla çevrilmez; bunu para birimini düzeltmek için kullanın, paranızı çevirmek için değil.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'Geç';
+
+  @override
   String get profileYourData => 'Verileriniz';
 
   @override

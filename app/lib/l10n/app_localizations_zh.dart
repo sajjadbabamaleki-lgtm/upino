@@ -534,6 +534,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileCurrency => '货币';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return '改用 $currency？';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return '计划中的每个金额保持原有数字，今后以 $currency 显示。不会按汇率换算，此功能用于更正货币，而非兑换资金。';
+  }
+
+  @override
+  String get currencyChangeConfirm => '更改';
+
+  @override
   String get profileYourData => '你的数据';
 
   @override

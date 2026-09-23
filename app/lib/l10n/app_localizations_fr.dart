@@ -574,6 +574,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileCurrency => 'Devise';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'Passer en $currency ?';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'Chaque montant de votre plan garde son nombre et s’affiche désormais en $currency. Rien n’est converti au taux de change : utilisez ceci pour corriger la devise, pas pour convertir votre argent.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'Changer';
+
+  @override
   String get profileYourData => 'Vos données';
 
   @override

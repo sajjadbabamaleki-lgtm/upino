@@ -560,6 +560,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileCurrency => 'Currency';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'Switch to $currency?';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'Every amount in your plan keeps its number and is shown in $currency from now on. Nothing is converted at an exchange rate, so use this to correct the currency, not to convert your money.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'Switch';
+
+  @override
   String get profileYourData => 'Your data';
 
   @override

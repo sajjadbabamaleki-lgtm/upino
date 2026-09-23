@@ -560,6 +560,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get profileCurrency => 'Валюта';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'Перейти на $currency?';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'Каждая сумма в плане сохраняет своё число и теперь показывается в $currency. Ничего не пересчитывается по курсу: это для исправления валюты, а не для обмена денег.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'Перейти';
+
+  @override
   String get profileYourData => 'Ваши данные';
 
   @override

@@ -555,6 +555,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get profileCurrency => 'واحد پول';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'تغییر به $currency؟';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'همهٔ مبلغ‌های برنامه همان عدد خود را نگه می‌دارند و از این پس به $currency نشان داده می‌شوند. هیچ تبدیلی با نرخ ارز انجام نمی‌شود؛ این برای اصلاح واحد پول است، نه تبدیل پول.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'تغییر';
+
+  @override
   String get profileYourData => 'داده‌های شما';
 
   @override
