@@ -11,13 +11,34 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import '../engine/clock.dart';
+import 'jalali.dart';
 
 String _tag(BuildContext context) => Localizations.localeOf(context).toString();
 
-/// `28 October`, or its equivalent.
-String formatDate(BuildContext context, LocalDate date) =>
-    DateFormat.MMMMd(_tag(context)).format(DateTime(date.year, date.month, date.day));
+/// Persian readers get the Solar Hijri calendar, which is the one their pay
+/// and rent actually fall on.
+bool _jalali(BuildContext context) =>
+    Localizations.localeOf(context).languageCode == 'fa';
 
-/// `28 Oct 2026`, or its equivalent.
-String formatDateShort(BuildContext context, LocalDate date) =>
-    DateFormat.yMMMd(_tag(context)).format(DateTime(date.year, date.month, date.day));
+JalaliDate _toJalali(LocalDate d) =>
+    JalaliDate.fromGregorian(d.year, d.month, d.day);
+
+/// `28 October`, or its equivalent — `۶ آبان` in Persian.
+String formatDate(BuildContext context, LocalDate date) {
+  if (_jalali(context)) {
+    final j = _toJalali(date);
+    return persianDigits('${j.day} ${j.monthName}');
+  }
+  return DateFormat.MMMMd(_tag(context))
+      .format(DateTime(date.year, date.month, date.day));
+}
+
+/// `28 Oct 2026`, or its equivalent — `۶ آبان ۱۴۰۵` in Persian.
+String formatDateShort(BuildContext context, LocalDate date) {
+  if (_jalali(context)) {
+    final j = _toJalali(date);
+    return persianDigits('${j.day} ${j.monthName} ${j.year}');
+  }
+  return DateFormat.yMMMd(_tag(context))
+      .format(DateTime(date.year, date.month, date.day));
+}
