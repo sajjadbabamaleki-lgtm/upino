@@ -123,3 +123,23 @@ jobs:
 
           The app requests no permissions and makes no network calls." \
             --target "${{ github.sha }}" 
+
+      # Any other branch publishes to its own moving pre-release, so a change
+      # can be tried on a phone before it is merged without replacing the
+      # build the stable link above points at.
+      - name: Publish to the preview-android release
+        if: github.ref_name != 'claude/v1-to-v2-improvements-075f22'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cp app/build/app/outputs/flutter-apk/app-debug.apk upino-preview.apk
+
+          gh release delete preview-android --yes --cleanup-tag || true
+          gh release create preview-android upino-preview.apk \
+            --prerelease --latest=false \
+            --title "Upino — preview Android build" \
+            --notes "Debug-signed preview of ${{ github.ref_name }} at ${{ github.sha }}. Not merged yet.
+
+          Download **upino-preview.apk** below and open it on an Android phone." \
+            --target "${{ github.sha }}"
