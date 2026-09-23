@@ -49,11 +49,11 @@ class AppLocalizationsHi extends AppLocalizations {
       'शुरू करने के लिए दो जवाब काफ़ी हैं। बाक़ी बाद में हो सकता है।';
 
   @override
-  String get onboardingBalanceLabel => 'आज आपके पास क्या उपलब्ध है?';
+  String get onboardingBalanceLabel => 'आज आपकी बचत';
 
   @override
   String get onboardingBalanceHint =>
-      'आपकी योजना का हर आँकड़ा इसी से नापा जाता है।';
+      'वह पैसा जिससे आप वाक़ई ख़र्च कर सकते हैं, वह नहीं जिसे अछूता रखना चाहते हैं।';
 
   @override
   String get onboardingIncomeLabel => 'महीने में आप कितना कमाते हैं?';

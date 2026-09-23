@@ -49,11 +49,11 @@ class AppLocalizationsFa extends AppLocalizations {
       'دو جواب برای شروع کافی است. بقیه می‌تواند صبر کند.';
 
   @override
-  String get onboardingBalanceLabel => 'امروز به چه پولی دسترسی دارید؟';
+  String get onboardingBalanceLabel => 'پس‌انداز فعلی شما';
 
   @override
   String get onboardingBalanceHint =>
-      'هر عددی در برنامهٔ شما از همین یکی اندازه گرفته می‌شود.';
+      'پولی که واقعاً می‌توانید از آن خرج کنید، نه آنچه قصد دارید دست‌نخورده بماند.';
 
   @override
   String get onboardingIncomeLabel => 'در ماه چقدر درآمد دارید؟';

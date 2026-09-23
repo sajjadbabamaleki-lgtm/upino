@@ -8,6 +8,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/design/icon.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
@@ -201,7 +202,7 @@ void main() {
 
     testWidgets('is reachable again from Profile', (tester) async {
       await pumpApp(tester, funded());
-      await tester.tap(find.byIcon(Icons.grid_view_rounded));
+      await tester.tap(find.byKey(const Key('nav-4')));
       await tester.pumpAndSettle();
 
       final row = find.byKey(const Key('profile-language'));
@@ -257,7 +258,7 @@ void main() {
       // must not: a rising forecast drawn as a falling arrow is worse than
       // an arrow pointing the unexpected way.
       await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final icon = find.byIcon(Icons.trending_up_rounded);
+      final icon = find.byWidgetPredicate((w) => w is UpinoIcon && w.name == 'trendingUp');
       expect(icon, findsOneWidget);
       expect(
         Directionality.of(tester.element(icon)),

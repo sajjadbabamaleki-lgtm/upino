@@ -47,10 +47,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingBlurb => '两个答案就能开始，其余的可以稍后再说。';
 
   @override
-  String get onboardingBalanceLabel => '你今天能动用多少？';
+  String get onboardingBalanceLabel => '你目前的存款';
 
   @override
-  String get onboardingBalanceHint => '计划里的每一个数字都以它为起点。';
+  String get onboardingBalanceHint => '你真正可以动用的钱，而不是打算不碰的那部分。';
 
   @override
   String get onboardingIncomeLabel => '你每月收入是多少？';

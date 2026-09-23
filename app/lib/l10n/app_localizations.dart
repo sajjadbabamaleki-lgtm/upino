@@ -189,13 +189,13 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingBalanceLabel.
   ///
   /// In en, this message translates to:
-  /// **'What can you draw on today?'**
+  /// **'Your savings today'**
   String get onboardingBalanceLabel;
 
   /// No description provided for @onboardingBalanceHint.
   ///
   /// In en, this message translates to:
-  /// **'Every figure in your plan is measured from this one.'**
+  /// **'Money you could actually spend from, not what you mean to keep untouched.'**
   String get onboardingBalanceHint;
 
   /// No description provided for @onboardingIncomeLabel.

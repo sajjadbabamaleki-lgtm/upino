@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../data/receipt_store.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
@@ -162,7 +163,7 @@ class _ActivityRow extends StatelessWidget {
             ),
             if (onRemove != null) ...[
               const SizedBox(width: 10),
-              Icon(Icons.more_horiz_rounded, size: 20, color: muted),
+              UpinoIcon('more', size: 20, color: muted),
             ],
           ],
         ),

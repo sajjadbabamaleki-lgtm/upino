@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../design/parts.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../engine/currencies.dart';
 import '../engine/money.dart';
@@ -182,9 +183,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             const SizedBox(height: 18),
             ActionRow(
               key: const Key('change-currency'),
-              title: '${info.flag}  ${info.country}',
+              leading: CountryFlag(info.flagCountry, size: 22),
+              title: info.country,
               subtitle: '${info.name} · ${info.code}',
-              trailing: const RowAffordance(icon: Icons.swap_horiz_rounded),
+              trailing: const RowAffordance(icon: 'swap'),
               onTap: () => setState(() => _step = _Step.currency),
             ),
             const SizedBox(height: 18),
@@ -226,8 +228,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   : l.onboardingCommitmentsShut,
               trailing: RowAffordance(
                 icon: _showOptional
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.keyboard_arrow_down_rounded,
+                    ? 'chevronUp'
+                    : 'chevronDown',
               ),
               onTap: () => setState(() => _showOptional = !_showOptional),
             ),

@@ -110,7 +110,7 @@ class GoalsScreen extends StatelessWidget {
             key: const Key('goals-new'),
             title: l.goalsNew,
             subtitle: l.goalsNewSub,
-            trailing: const RowAffordance(icon: Icons.add_rounded),
+            trailing: const RowAffordance(icon: 'add'),
             onTap: () => _create(context),
           ),
         ],
@@ -153,7 +153,7 @@ class _GoalCard extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: onEdit,
-                child: const RowAffordance(icon: Icons.tune_rounded),
+                child: const RowAffordance(icon: 'tune'),
               ),
             ],
           ),

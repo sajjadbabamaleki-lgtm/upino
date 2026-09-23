@@ -49,11 +49,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'Для начала хватит двух ответов. Остальное может подождать.';
 
   @override
-  String get onboardingBalanceLabel => 'Чем вы располагаете сегодня?';
+  String get onboardingBalanceLabel => 'Ваши сбережения сегодня';
 
   @override
   String get onboardingBalanceHint =>
-      'Каждая цифра в плане отсчитывается от этой.';
+      'Деньги, из которых вы действительно можете тратить, а не те, что решили не трогать.';
 
   @override
   String get onboardingIncomeLabel => 'Сколько вы зарабатываете в месяц?';

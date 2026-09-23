@@ -254,7 +254,7 @@ void main() {
       await tester.pumpWidget(UpinoApp(state: funded()));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.flag_rounded));
+      await tester.tap(find.byKey(const Key('nav-2')));
       await tester.pumpAndSettle();
       expect(find.text('Goals'), findsWidgets);
       expect(find.byKey(const Key('goals-new')), findsOneWidget);
@@ -268,7 +268,7 @@ void main() {
       await tester.pumpWidget(UpinoApp(state: funded()));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+      await tester.tap(find.byKey(const Key('nav-1')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('plan-goals')));
       await tester.pumpAndSettle();
@@ -287,7 +287,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.flag_rounded));
+      await tester.tap(find.byKey(const Key('nav-2')));
       await tester.pumpAndSettle();
       return state;
     }
@@ -348,7 +348,7 @@ void main() {
         );
       await openGoals(tester, state);
 
-      await tester.tap(find.byIcon(Icons.tune_rounded));
+      await tester.tap(find.byType(RowAffordance).first);
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('goal-delete')));
       await tester.pumpAndSettle();

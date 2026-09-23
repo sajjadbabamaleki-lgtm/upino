@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
 import '../design/theme.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
@@ -156,7 +157,7 @@ class _GapHero extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.error_outline_rounded,
+                    const UpinoIcon('alert',
                         size: 19, color: UpinoTokens.criticalOnInverse,),
                     const SizedBox(width: 9),
                     Expanded(
@@ -267,7 +268,7 @@ class _HeroShell extends StatelessWidget {
               if (decoration2 != null)
                 Positioned(top: -6, right: -6, child: decoration2!),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 31, 22, 31),
+                padding: const EdgeInsets.fromLTRB(22, 16, 22, 16),
                 child: child,
               ),
             ],

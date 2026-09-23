@@ -49,11 +49,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Duas respostas bastam para começar. O resto pode esperar.';
 
   @override
-  String get onboardingBalanceLabel => 'De quanto você dispõe hoje?';
+  String get onboardingBalanceLabel => 'Sua reserva hoje';
 
   @override
   String get onboardingBalanceHint =>
-      'Cada valor do seu plano é medido a partir deste.';
+      'Dinheiro do qual você poderia realmente gastar, não o que pretende deixar intocado.';
 
   @override
   String get onboardingIncomeLabel => 'Quanto você ganha por mês?';

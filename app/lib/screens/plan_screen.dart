@@ -148,7 +148,7 @@ class PlanScreen extends StatelessWidget {
             key: const Key('plan-goals'),
             title: l.planSaveToward,
             subtitle: l.planSaveTowardSub,
-            trailing: const RowAffordance(icon: Icons.add_rounded),
+            trailing: const RowAffordance(icon: 'add'),
             onTap: () => onOpenGoals(),
           )
         else ...[
@@ -211,7 +211,7 @@ class PlanScreen extends StatelessWidget {
               key: Key('plan-add-${option.id}'),
               title: labelForClaim(l, option.id, option.label),
               subtitle: _priorityExplanation(l, option.priority),
-              trailing: const RowAffordance(icon: Icons.add_rounded),
+              trailing: const RowAffordance(icon: 'add'),
               onTap: () => _editClaim(
                 context,
                 id: option.id,

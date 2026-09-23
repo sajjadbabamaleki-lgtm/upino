@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import '../design/parts.dart';
 import '../design/theme.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../domain/goal.dart';
 import '../engine/clock.dart';
@@ -405,10 +406,8 @@ class _KindRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              selected
-                  ? Icons.radio_button_checked_rounded
-                  : Icons.radio_button_unchecked_rounded,
+            UpinoIcon(
+              selected ? 'radioOn' : 'radioOff',
               size: 20,
               color: selected ? active : UpinoTokens.textTertiary,
             ),

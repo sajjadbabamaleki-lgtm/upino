@@ -226,7 +226,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.receipt_long_rounded));
+    await tester.tap(find.byKey(const Key('nav-3')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),
@@ -247,7 +247,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+    await tester.tap(find.byKey(const Key('nav-1')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),
@@ -262,7 +262,7 @@ void main() {
       fundedState(),
       size: const Size(400, 900),
       after: (tester) async {
-        await tester.tap(find.byIcon(Icons.grid_view_rounded));
+        await tester.tap(find.byKey(const Key('nav-4')));
         await tester.pumpAndSettle();
         final row = find.byKey(const Key('profile-language'));
         await tester.scrollUntilVisible(
@@ -291,7 +291,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.grid_view_rounded));
+    await tester.tap(find.byKey(const Key('nav-4')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),
@@ -342,7 +342,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.tap(find.byIcon(Icons.flag_rounded));
+    await tester.tap(find.byKey(const Key('nav-2')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),

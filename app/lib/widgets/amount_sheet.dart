@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../design/parts.dart';
 import '../design/theme.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import 'dart:io';
 
@@ -330,7 +331,7 @@ class _ReceiptRow extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: snap.data == null
-                  ? const Icon(Icons.receipt_long_rounded, size: 20)
+                  ? const UpinoIcon('activity', size: 20)
                   : Image.file(snap.data!, fit: BoxFit.cover),
             ),
           ),
@@ -341,8 +342,7 @@ class _ReceiptRow extends StatelessWidget {
           GestureDetector(
             key: const Key('receipt-clear'),
             onTap: onClear,
-            child: Icon(
-              Icons.close_rounded,
+            child: UpinoIcon('close',
               size: 19,
               color: isDark(context)
                   ? UpinoTokens.darkTextTertiary
@@ -358,7 +358,7 @@ class _ReceiptRow extends StatelessWidget {
         Expanded(
           child: _ReceiptButton(
             key: const Key('receipt-camera'),
-            icon: Icons.photo_camera_rounded,
+            icon: 'camera',
             label: l.receiptCamera,
             onTap: onCamera,
           ),
@@ -367,7 +367,7 @@ class _ReceiptRow extends StatelessWidget {
         Expanded(
           child: _ReceiptButton(
             key: const Key('receipt-gallery'),
-            icon: Icons.photo_library_rounded,
+            icon: 'gallery',
             label: l.receiptGallery,
             onTap: onGallery,
           ),
@@ -385,7 +385,7 @@ class _ReceiptButton extends StatelessWidget {
     super.key,
   });
 
-  final IconData icon;
+  final String icon;
   final String label;
   final VoidCallback onTap;
 
@@ -404,7 +404,7 @@ class _ReceiptButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 18, color: UpinoTokens.textSecondary),
+            UpinoIcon(icon, size: 18, color: UpinoTokens.textSecondary),
             const SizedBox(width: 8),
             Flexible(
               child: Text(

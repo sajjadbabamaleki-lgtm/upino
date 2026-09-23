@@ -8,6 +8,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/l10n/app_localizations.dart';
+import 'package:upino/design/icon.dart';
+import 'package:upino/design/icons.dart';
 import 'package:upino/engine/currencies.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
@@ -67,11 +69,16 @@ void main() {
       );
     });
 
-    test('a flag is two regional indicator letters', () {
-      final usd = currencyCatalogue.firstWhere((c) => c.code == 'USD');
-      expect(usd.flag.runes.length, 2);
-      expect(usd.flag.runes.first, 0x1F1FA); // U
-      expect(usd.flag.runes.last, 0x1F1F8); // S
+    test('every row has a round flag of its own', () {
+      // Emoji flags came from the phone's font and were missing on some
+      // builds. These are drawn from bundled SVG, so every row has one.
+      for (final c in currencyCatalogue) {
+        expect(
+          countryFlags.containsKey(c.flagCountry.toLowerCase()),
+          isTrue,
+          reason: '${c.code} has no flag for ${c.flagCountry}',
+        );
+      }
     });
   });
 
@@ -177,7 +184,7 @@ void main() {
         find.descendant(
           of: find.byKey(Key('currency-$code')),
           matching: find.byType(Text),
-        ).at(1),
+        ).first,
       );
       final out = <String>[];
       (text.textSpan! as TextSpan).visitChildren((span) {
@@ -227,7 +234,7 @@ void main() {
         find.descendant(
           of: find.byKey(const Key('currency-USD')),
           matching: find.byType(Text),
-        ).at(1),
+        ).first,
       );
       expect(text.maxLines, 1);
       expect(text.overflow, TextOverflow.ellipsis);
@@ -240,12 +247,17 @@ void main() {
       // Within the run, reading order is span order.
       expect(labelSpans(tester, 'USD'), ['United States', '  US dollar']);
 
-      final flag = tester.getRect(find.text('🇺🇸'));
+      final flag = tester.getRect(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.byType(CountryFlag),
+        ),
+      );
       final label = tester.getRect(
         find.descendant(
           of: find.byKey(const Key('currency-USD')),
           matching: find.byType(Text),
-        ).at(1),
+        ).first,
       );
       final code = tester.getRect(
         find.descendant(
@@ -276,7 +288,7 @@ void main() {
         find.descendant(
           of: find.byKey(const Key('currency-AUD')),
           matching: find.byType(Text),
-        ).at(1),
+        ).first,
       );
       final painter = TextPainter(
         text: text.textSpan,

@@ -9,6 +9,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../engine/currencies.dart';
 import '../l10n/app_localizations.dart';
@@ -141,8 +142,7 @@ class _SearchField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.search_rounded,
+          const UpinoIcon('search',
             size: 20,
             color: UpinoTokens.textTertiary,
           ),
@@ -207,7 +207,7 @@ class _CurrencyRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(info.flag, style: const TextStyle(fontSize: 19)),
+            CountryFlag(info.flagCountry, size: 21),
             const SizedBox(width: 11),
             // One text run rather than two flexed boxes. Two boxes split the
             // width by a fixed ratio, so "Australian dollar" was clipped while

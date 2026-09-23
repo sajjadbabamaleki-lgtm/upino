@@ -282,7 +282,7 @@ class _LanguageRow extends StatelessWidget {
       subtitle: code == null
           ? l.languagePhone
           : languageNames[code]!.native,
-      trailing: const RowAffordance(icon: Icons.chevron_right_rounded),
+      trailing: const RowAffordance(icon: 'chevronRight'),
       onTap: () => _open(context),
     );
   }

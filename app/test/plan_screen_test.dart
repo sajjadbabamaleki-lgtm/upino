@@ -151,7 +151,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+      await tester.tap(find.byKey(const Key('nav-1')));
       await tester.pumpAndSettle();
       return state;
     }
@@ -169,7 +169,7 @@ void main() {
 
       expect(state.snapshot.safeToSpendNow, eur('450.00'));
 
-      await tester.tap(find.byIcon(Icons.home_rounded));
+      await tester.tap(find.byKey(const Key('nav-0')));
       await tester.pumpAndSettle();
       expect(find.text('€450.00'), findsOneWidget);
     });
@@ -226,7 +226,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.grid_view_rounded));
+      await tester.tap(find.byKey(const Key('nav-4')));
       await tester.pumpAndSettle();
       return state;
     }

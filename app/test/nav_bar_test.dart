@@ -6,6 +6,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/l10n/app_localizations.dart';
+import 'package:upino/design/icon.dart';
 import 'package:upino/design/parts.dart';
 import 'package:upino/design/theme.dart';
 import 'package:upino/design/tokens.dart';
@@ -123,7 +124,13 @@ void main() {
     // icon and label.
     await pumpBar(t, 0, Brightness.light);
     final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
-    final icon = await rectOf(t, find.byIcon(Icons.home_rounded));
+    final icon = await rectOf(
+      t,
+      find.descendant(
+        of: find.byKey(const Key('nav-selected-pill')),
+        matching: find.byType(UpinoIcon),
+      ),
+    );
     final label = await rectOf(t, find.text('Home'));
 
     const padding = 12.0;

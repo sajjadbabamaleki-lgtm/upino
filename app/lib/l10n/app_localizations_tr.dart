@@ -49,11 +49,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'Başlamak için iki cevap yeter. Gerisi bekleyebilir.';
 
   @override
-  String get onboardingBalanceLabel => 'Bugün hangi paraya erişebiliyorsunuz?';
+  String get onboardingBalanceLabel => 'Bugünkü birikiminiz';
 
   @override
   String get onboardingBalanceHint =>
-      'Planınızdaki her rakam bu rakamdan ölçülür.';
+      'Gerçekten harcayabileceğiniz para; dokunmamayı düşündüğünüz kısım değil.';
 
   @override
   String get onboardingIncomeLabel => 'Ayda ne kadar kazanıyorsunuz?';

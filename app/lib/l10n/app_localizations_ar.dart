@@ -49,10 +49,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'إجابتان تكفيان للبدء. كل ما عداهما يمكن أن ينتظر.';
 
   @override
-  String get onboardingBalanceLabel => 'ما المال المتاح لك اليوم؟';
+  String get onboardingBalanceLabel => 'مدّخراتك اليوم';
 
   @override
-  String get onboardingBalanceHint => 'كل رقم في خطتك يُقاس من هذا الرقم.';
+  String get onboardingBalanceHint =>
+      'المال الذي يمكنك الإنفاق منه فعلاً، لا ما تنوي إبقاءه دون مساس.';
 
   @override
   String get onboardingIncomeLabel => 'كم تكسب في الشهر؟';

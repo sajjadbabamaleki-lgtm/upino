@@ -138,7 +138,7 @@ void main() {
       await tester.pumpWidget(UpinoApp(state: funded()));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.account_balance_wallet_rounded));
+      await tester.tap(find.byKey(const Key('nav-1')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('plan-balance')));
       await tester.pumpAndSettle();

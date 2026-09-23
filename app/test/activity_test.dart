@@ -160,7 +160,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.receipt_long_rounded));
+      await tester.tap(find.byKey(const Key('nav-3')));
       await tester.pumpAndSettle();
       return state;
     }

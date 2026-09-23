@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
 import '../design/theme.dart';
+import '../design/icon.dart';
 import '../design/tokens.dart';
 import '../engine/allocate.dart';
 import '../engine/domain.dart';
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   key: const Key('home-ask'),
                   title: l.askTitle,
                   subtitle: l.askBlurb,
-                  trailing: const RowAffordance(icon: Icons.help_outline_rounded),
+                  trailing: const RowAffordance(icon: 'ask'),
                   onTap: () => AskScreen.open(context, state),
                 ),
 
@@ -241,7 +242,7 @@ class _ConfirmationBanner extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         child: Row(
           children: [
-            const Icon(Icons.check_circle_rounded,
+            const UpinoIcon('confirmed',
                 size: 19, color: UpinoTokens.textPrimary,),
             const SizedBox(width: 10),
             Expanded(
@@ -257,7 +258,7 @@ class _ConfirmationBanner extends StatelessWidget {
             ),
             GestureDetector(
               onTap: onDismiss,
-              child: const Icon(Icons.close_rounded,
+              child: const UpinoIcon('close',
                   size: 18, color: UpinoTokens.textPrimary,),
             ),
           ],
@@ -301,7 +302,7 @@ class _ProjectedCard extends StatelessWidget {
           // forecast of more money, so this one glyph keeps its direction.
           const Directionality(
             textDirection: TextDirection.ltr,
-            child: RowAffordance(icon: Icons.trending_up_rounded),
+            child: RowAffordance(icon: 'trendingUp'),
           ),
         ],
       ),

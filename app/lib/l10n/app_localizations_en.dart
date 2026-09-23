@@ -49,11 +49,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Two answers are enough to start. Everything else can wait.';
 
   @override
-  String get onboardingBalanceLabel => 'What can you draw on today?';
+  String get onboardingBalanceLabel => 'Your savings today';
 
   @override
   String get onboardingBalanceHint =>
-      'Every figure in your plan is measured from this one.';
+      'Money you could actually spend from, not what you mean to keep untouched.';
 
   @override
   String get onboardingIncomeLabel => 'What do you earn in a month?';

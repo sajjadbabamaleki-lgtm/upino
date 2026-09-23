@@ -4,6 +4,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'icon.dart';
 import 'tokens.dart';
 
 bool isDark(BuildContext context) =>
@@ -136,9 +137,9 @@ class SectionHeading extends StatelessWidget {
 
 /// The small rounded affordance that sits at the right of a list row.
 class RowAffordance extends StatelessWidget {
-  const RowAffordance({this.icon = Icons.chevron_right, super.key});
+  const RowAffordance({this.icon = 'chevronRight', super.key});
 
-  final IconData icon;
+  final String icon;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -149,7 +150,7 @@ class RowAffordance extends StatelessWidget {
           color: sunkenColor(context),
           borderRadius: BorderRadius.circular(13),
         ),
-        child: Icon(icon, size: 19, color: UpinoTokens.textTertiary),
+        child: UpinoIcon(icon, size: 19, color: UpinoTokens.textTertiary),
       );
 }
 
@@ -311,12 +312,12 @@ class UpinoNavBar extends StatelessWidget {
   static const inset = 9.0;
   static const itemHeight = 46.0;
 
-  static const _icons = <IconData>[
-    Icons.home_rounded,
-    Icons.account_balance_wallet_rounded,
-    Icons.flag_rounded,
-    Icons.receipt_long_rounded,
-    Icons.grid_view_rounded,
+  static const _icons = <String>[
+    'home',
+    'plan',
+    'goals',
+    'activity',
+    'profile',
   ];
 
   static List<String> labelsOf(AppLocalizations l) =>
@@ -349,6 +350,7 @@ class UpinoNavBar extends StatelessWidget {
               if (i == index)
                 Flexible(
                   child: _NavItem(
+                    key: Key('nav-$i'),
                     icon: _icons[i],
                     label: labels[i],
                     selected: true,
@@ -357,6 +359,7 @@ class UpinoNavBar extends StatelessWidget {
                 )
               else
                 _NavItem(
+                  key: Key('nav-$i'),
                   icon: _icons[i],
                   label: labels[i],
                   selected: false,
@@ -375,9 +378,10 @@ class _NavItem extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
+    super.key,
   });
 
-  final IconData icon;
+  final String icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -408,7 +412,7 @@ class _NavItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            UpinoIcon(
               icon,
               size: 21,
               color: selected ? glyph : UpinoTokens.navIdle,
