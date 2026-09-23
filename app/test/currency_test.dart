@@ -116,6 +116,23 @@ void main() {
       await tester.pumpAndSettle();
     }
 
+    /// The country and the currency name are one text run, so they are read
+    /// back as the spans of that run rather than as separate widgets.
+    List<String> labelSpans(WidgetTester tester, String code) {
+      final text = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(Key('currency-$code')),
+          matching: find.byType(Text),
+        ).at(1),
+      );
+      final out = <String>[];
+      (text.textSpan! as TextSpan).visitChildren((span) {
+        if (span is TextSpan && span.text != null) out.add(span.text!);
+        return true;
+      });
+      return out;
+    }
+
     testWidgets('shows the important ones without scrolling', (tester) async {
       await pump(tester, (_) {});
       expect(find.byKey(const Key('currency-USD')), findsOneWidget);
@@ -129,8 +146,7 @@ void main() {
 
       expect(find.byKey(const Key('currency-OMR')), findsOneWidget);
       expect(find.byKey(const Key('currency-USD')), findsNothing);
-      expect(find.text('Oman'), findsOneWidget);
-      expect(find.text('Omani rial'), findsOneWidget);
+      expect(labelSpans(tester, 'OMR'), ['Oman', '  Omani rial']);
     });
 
     testWidgets('a search that matches nothing says so', (tester) async {
@@ -151,34 +167,70 @@ void main() {
       final row = tester.getSize(find.byKey(const Key('currency-USD')));
       expect(row.height, closeTo(search.height, 0.01));
 
-      // One line means one text baseline per label: the country and the
-      // currency name sit side by side, not stacked.
-      final country = tester.getRect(find.text('United States'));
-      final name = tester.getRect(find.text('US dollar'));
-      expect(country.top, closeTo(name.top, 6),
-          reason: 'the two labels are stacked, not on one line',);
-      expect(name.left, greaterThan(country.right - 1),
-          reason: 'the currency name must follow the country, left to right',);
+      // One line: the country and the currency name are one run, and the run
+      // is capped at a single line rather than wrapping.
+      final text = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.byType(Text),
+        ).at(1),
+      );
+      expect(text.maxLines, 1);
+      expect(text.overflow, TextOverflow.ellipsis);
     });
 
-    testWidgets('the row reads flag, country, currency, symbol left to right',
+    testWidgets('the row reads flag, country, currency, code, symbol',
         (tester) async {
       await pump(tester, (_) {});
+
+      // Within the run, reading order is span order.
+      expect(labelSpans(tester, 'USD'), ['United States', '  US dollar']);
+
       final flag = tester.getRect(find.text('🇺🇸'));
-      final country = tester.getRect(find.text('United States'));
-      final name = tester.getRect(find.text('US dollar'));
+      final label = tester.getRect(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.byType(Text),
+        ).at(1),
+      );
+      final code = tester.getRect(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.text('USD'),
+        ),
+      );
       final symbol = tester.getRect(
         find.descendant(
           of: find.byKey(const Key('currency-USD')),
           matching: find.text(r'$'),
         ),
       );
-      final order = [flag.left, country.left, name.left, symbol.left];
+      final order = [flag.left, label.left, code.left, symbol.left];
       expect(
         order,
         orderedEquals(List<double>.from(order)..sort()),
-        reason: 'left to right: flag, country, currency name, symbol',
+        reason: 'left to right: flag, labels, code, symbol',
       );
+    });
+
+    testWidgets('a name is not clipped while there is room beside it',
+        (tester) async {
+      // Two flexed boxes split the width by ratio, which clipped
+      // "Australian dollar" although the row was half empty.
+      await pump(tester, (_) {});
+      final text = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('currency-AUD')),
+          matching: find.byType(Text),
+        ).at(1),
+      );
+      final painter = TextPainter(
+        text: text.textSpan,
+        maxLines: 1,
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: tester.getSize(find.byKey(const Key('currency-AUD'))).width);
+      expect(painter.didExceedMaxLines, isFalse);
+      expect(labelSpans(tester, 'AUD'), ['Australia', '  Australian dollar']);
     });
 
     testWidgets('the longest names fit the row rather than overflowing it',
@@ -205,6 +257,21 @@ void main() {
         await tester.pumpAndSettle();
         expect(reported, isNull, reason: '$query overflowed its row');
       }
+    });
+
+    testWidgets('a currency with no glyph of its own shows its code once',
+        (tester) async {
+      await pump(tester, (_) {});
+      await tester.enterText(find.byKey(const Key('currency-search')), 'oman');
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('currency-OMR')),
+          matching: find.text('OMR'),
+        ),
+        findsOneWidget,
+        reason: 'the code stood in for the symbol and was printed twice',
+      );
     });
 
     testWidgets('tapping a row reports that code', (tester) async {

@@ -206,54 +206,63 @@ class _CurrencyRow extends StatelessWidget {
           children: [
             Text(info.flag, style: const TextStyle(fontSize: 19)),
             const SizedBox(width: 11),
+            // One text run rather than two flexed boxes. Two boxes split the
+            // width by a fixed ratio, so "Australian dollar" was clipped while
+            // the space beside a short country name went unused. As one run
+            // the line fills what is there and the ellipsis, when it is
+            // needed at all, falls at the end.
             Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  // The country is what people scan for, so it keeps the
-                  // larger share when the two cannot both fit.
-                  Flexible(
-                    flex: 3,
-                    child: Text(
-                      info.country,
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: info.country,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        fontSize: 14.5,
+                        fontSize: 13,
                         color: selected && !dark
                             ? UpinoTokens.actionOnTint
                             : null,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    flex: 2,
-                    child: Text(
-                      info.name,
-                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    TextSpan(
+                      text: '  ${info.name}',
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              info.symbol,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontSize: 14.5,
-                color: selected ? accent : UpinoTokens.textSecondary,
+            // Code then symbol, each right-aligned in a fixed slot so they
+            // line up down the list rather than drifting with the text.
+            SizedBox(
+              width: 32,
+              child: Text(
+                info.code,
+                textAlign: TextAlign.right,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 11,
+                  letterSpacing: 0.3,
+                ),
               ),
             ),
             SizedBox(
-              width: 22,
-              child: selected
-                  ? Icon(Icons.check_rounded, size: 17, color: accent)
-                  : null,
+              width: 38,
+              child: Text(
+                // Fifty-four of these have no glyph of their own and carry
+                // the code as their symbol. Printing it twice would read as
+                // a mistake, so the slot is left empty for them.
+                info.symbol == info.code ? '' : info.symbol,
+                textAlign: TextAlign.right,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 13.5,
+                  color: selected ? accent : UpinoTokens.textSecondary,
+                ),
+              ),
             ),
+
           ],
         ),
       ),
