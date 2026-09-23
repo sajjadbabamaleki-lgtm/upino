@@ -49,17 +49,18 @@ class AppLocalizationsEs extends AppLocalizations {
       'Con dos respuestas basta para empezar. Lo demás puede esperar.';
 
   @override
-  String get onboardingBalanceLabel => '¿Cuánto tienes ahora mismo?';
+  String get onboardingBalanceLabel => '¿De cuánto dispones hoy?';
 
   @override
   String get onboardingBalanceHint =>
-      'Sumando las cuentas desde las que gastas';
+      'Cada cifra de tu plan se mide a partir de esta.';
 
   @override
-  String get onboardingIncomeLabel => '¿Cuánto será tu próximo ingreso?';
+  String get onboardingIncomeLabel => '¿Cuánto ingresas al mes?';
 
   @override
-  String get onboardingIncomeHint => 'Con tu importe habitual basta';
+  String get onboardingIncomeHint =>
+      'Si varía, indica el rango. Tu plan se construye sobre el extremo inferior.';
 
   @override
   String get onboardingPayDay => '¿Cuándo llega tu próximo ingreso?';
@@ -732,4 +733,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get receiptRemove => 'Quitar la foto';
+
+  @override
+  String get onboardingIncomeFrom => 'Al menos';
+
+  @override
+  String get onboardingIncomeTo => 'Hasta';
+
+  @override
+  String get onboardingIncomeToOptional => 'Opcional';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low a $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'Tu plan se construye sobre $low. Lo que venga por encima es tuyo cuando llegue.';
+  }
 }

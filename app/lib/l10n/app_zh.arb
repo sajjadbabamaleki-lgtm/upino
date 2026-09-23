@@ -12,10 +12,10 @@
   "onboardingBadge": "大约需要一分钟",
   "onboardingTitle": "创建你的计划",
   "onboardingBlurb": "两个答案就能开始，其余的可以稍后再说。",
-  "onboardingBalanceLabel": "你现在有多少钱？",
-  "onboardingBalanceHint": "把你平时花钱的账户加起来",
-  "onboardingIncomeLabel": "下次进账是多少？",
-  "onboardingIncomeHint": "填平常的金额就行",
+  "onboardingBalanceLabel": "你今天能动用多少？",
+  "onboardingBalanceHint": "计划里的每一个数字都以它为起点。",
+  "onboardingIncomeLabel": "你每月收入是多少？",
+  "onboardingIncomeHint": "如果不固定，填一个区间。计划按区间的下限来做。",
   "onboardingPayDay": "下次进账是什么时候？",
   "onboardingDays": "{count} 天",
   "onboardingCommitments": "添加你的固定支出",
@@ -216,5 +216,10 @@
   "receiptCamera": "拍照",
   "receiptGallery": "选择照片",
   "receiptAttached": "已附上票据",
-  "receiptRemove": "移除照片"
+  "receiptRemove": "移除照片",
+  "onboardingIncomeFrom": "至少",
+  "onboardingIncomeTo": "最多",
+  "onboardingIncomeToOptional": "可不填",
+  "incomeRange": "{low} 至 {high}",
+  "incomeRangeNote": "计划建立在 {low} 之上。高出的部分，到账时就是你的。"
 }

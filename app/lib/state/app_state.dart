@@ -23,6 +23,9 @@ class OnboardingDraft {
   String currency = 'EUR';
   Money? currentBalance;
   Money? incomeAmount;
+
+  /// The upper end when income varies. The plan is built on [incomeAmount].
+  Money? incomeUpperAmount;
   LocalDate? nextIncomeDate;
   Money? rent;
   Money? essentials;
@@ -439,6 +442,10 @@ class AppState extends ChangeNotifier {
         expectedAmount: incomeAmount,
         expectedDate: incomeDate,
         state: IncomeState.expected,
+        expectedUpperAmount:
+            (draft.incomeUpperAmount?.minor ?? 0) > incomeAmount.minor
+                ? draft.incomeUpperAmount
+                : null,
       ),);
     }
 
@@ -565,11 +572,22 @@ class AppState extends ChangeNotifier {
 
   /// Change what the next pay is expected to be. Still an expectation, so it
   /// stays out of safe_to_spend_now (INV-04).
-  void setExpectedIncome({Money? amount, LocalDate? date}) {
+  /// [upper] gives an income that varies. The plan is built on [amount], the
+  /// lower end, and the upper end is carried only so the user can see the
+  /// spread they entered. Pass [clearUpper] to go back to a fixed income.
+  void setExpectedIncome({
+    Money? amount,
+    LocalDate? date,
+    Money? upper,
+    bool clearUpper = false,
+  }) {
     final current = _incomeEvents.isEmpty ? null : _incomeEvents.first;
     final nextAmount = amount ?? current?.expectedAmount;
     final nextDate = date ?? current?.expectedDate;
     if (nextAmount == null || nextDate == null) return;
+
+    final nextUpper =
+        clearUpper ? null : (upper ?? current?.expectedUpperAmount);
 
     _incomeEvents
       ..clear()
@@ -578,6 +596,11 @@ class AppState extends ChangeNotifier {
         expectedAmount: nextAmount,
         expectedDate: nextDate,
         state: IncomeState.expected,
+        // A stored upper end below a newly lowered amount would be a range
+        // running backwards, so it is dropped rather than kept.
+        expectedUpperAmount: nextUpper != null && nextUpper > nextAmount
+            ? nextUpper
+            : null,
       ),);
     _persist();
     notifyListeners();

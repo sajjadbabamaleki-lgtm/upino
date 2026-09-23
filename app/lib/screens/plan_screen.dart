@@ -118,11 +118,25 @@ class PlanScreen extends StatelessWidget {
           title: l.planNextPay,
           subtitle: income == null
               ? l.planNotSet
-              : '${income.expectedAmount.display()}'
+              : '${income.isRange ? l.incomeRange(
+                  income.expectedAmount.display(),
+                  income.expectedUpperAmount!.display(),
+                ) : income.expectedAmount.display()}'
                   '${UpinoTokens.separator}'
                   '${formatDate(context, income.expectedDate)}',
           onTap: () => _editIncome(context),
         ),
+
+        if (income != null && income.isRange) ...[
+          const SizedBox(height: 10),
+          UpinoCard(
+            key: const Key('plan-income-range'),
+            child: Text(
+              l.incomeRangeNote(income.expectedAmount.display()),
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+        ],
 
         const SizedBox(height: 26),
         SectionHeading(

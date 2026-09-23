@@ -49,17 +49,18 @@ class AppLocalizationsFa extends AppLocalizations {
       'دو جواب برای شروع کافی است. بقیه می‌تواند صبر کند.';
 
   @override
-  String get onboardingBalanceLabel => 'الان چقدر پول دارید؟';
+  String get onboardingBalanceLabel => 'امروز به چه پولی دسترسی دارید؟';
 
   @override
   String get onboardingBalanceHint =>
-      'روی هم، در حساب‌هایی که از آن‌ها خرج می‌کنید';
+      'هر عددی در برنامهٔ شما از همین یکی اندازه گرفته می‌شود.';
 
   @override
-  String get onboardingIncomeLabel => 'حقوق بعدی‌تان چقدر است؟';
+  String get onboardingIncomeLabel => 'در ماه چقدر درآمد دارید؟';
 
   @override
-  String get onboardingIncomeHint => 'مبلغ همیشگی‌تان کافی است';
+  String get onboardingIncomeHint =>
+      'اگر ثابت نیست، بازه‌اش را بنویسید. برنامه روی کف بازه ساخته می‌شود.';
 
   @override
   String get onboardingPayDay => 'حقوق بعدی کی می‌رسد؟';
@@ -727,4 +728,23 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get receiptRemove => 'حذف عکس';
+
+  @override
+  String get onboardingIncomeFrom => 'دست‌کم';
+
+  @override
+  String get onboardingIncomeTo => 'تا';
+
+  @override
+  String get onboardingIncomeToOptional => 'اختیاری';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low تا $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'برنامه روی $low ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است.';
+  }
 }

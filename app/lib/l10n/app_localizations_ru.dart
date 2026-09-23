@@ -49,16 +49,18 @@ class AppLocalizationsRu extends AppLocalizations {
       'Для начала хватит двух ответов. Остальное может подождать.';
 
   @override
-  String get onboardingBalanceLabel => 'Сколько у вас сейчас?';
+  String get onboardingBalanceLabel => 'Чем вы располагаете сегодня?';
 
   @override
-  String get onboardingBalanceHint => 'На счетах, с которых вы тратите';
+  String get onboardingBalanceHint =>
+      'Каждая цифра в плане отсчитывается от этой.';
 
   @override
-  String get onboardingIncomeLabel => 'Каким будет следующий доход?';
+  String get onboardingIncomeLabel => 'Сколько вы зарабатываете в месяц?';
 
   @override
-  String get onboardingIncomeHint => 'Достаточно обычной суммы';
+  String get onboardingIncomeHint =>
+      'Если по-разному, укажите диапазон. План строится по нижней границе.';
 
   @override
   String get onboardingPayDay => 'Когда придёт следующий доход?';
@@ -729,4 +731,23 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get receiptRemove => 'Убрать фото';
+
+  @override
+  String get onboardingIncomeFrom => 'Не меньше';
+
+  @override
+  String get onboardingIncomeTo => 'До';
+
+  @override
+  String get onboardingIncomeToOptional => 'Необязательно';
+
+  @override
+  String incomeRange(String low, String high) {
+    return 'от $low до $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'План построен на $low. Всё, что придёт сверх этого, ваше.';
+  }
 }

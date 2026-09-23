@@ -53,11 +53,13 @@ void main() {
   /// Fields are addressed by name, so the test says what it means and does
   /// not silently pass when the form is reordered.
   Future<void> enterAmount(WidgetTester tester, String field, String value) async {
+    // Income is two fields on one card, so its keys sit on the TextFields
+    // themselves; the single-amount cards still key the wrapper.
+    final keyed = find.byKey(Key('field-$field'));
     await tester.enterText(
-      find.descendant(
-        of: find.byKey(Key('field-$field')),
-        matching: find.byType(TextField),
-      ),
+      tester.widget(keyed) is TextField
+          ? keyed
+          : find.descendant(of: keyed, matching: find.byType(TextField)),
       value,
     );
     await tester.pump();
@@ -221,13 +223,7 @@ void _reopenTests() {
         '3000.00',
       );
       await tester.pump();
-      await tester.enterText(
-        find.descendant(
-          of: find.byKey(const Key('field-income')),
-          matching: find.byType(TextField),
-        ),
-        '2000.00',
-      );
+      await tester.enterText(find.byKey(const Key('field-income')), '2000.00');
       await tester.pump();
       await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
       await tester.pumpAndSettle();
@@ -306,11 +302,11 @@ void _setupIsObviousTests() {
         (tester) async {
       await boot(tester);
       for (final field in ['balance', 'income']) {
+        final keyed = find.byKey(Key('field-$field'));
         await tester.enterText(
-          find.descendant(
-            of: find.byKey(Key('field-$field')),
-            matching: find.byType(TextField),
-          ),
+          tester.widget(keyed) is TextField
+              ? keyed
+              : find.descendant(of: keyed, matching: find.byType(TextField)),
           '100.00',
         );
         await tester.pump();

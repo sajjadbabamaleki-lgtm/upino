@@ -49,16 +49,18 @@ class AppLocalizationsTr extends AppLocalizations {
       'Başlamak için iki cevap yeter. Gerisi bekleyebilir.';
 
   @override
-  String get onboardingBalanceLabel => 'Şu anda ne kadar paranız var?';
+  String get onboardingBalanceLabel => 'Bugün hangi paraya erişebiliyorsunuz?';
 
   @override
-  String get onboardingBalanceHint => 'Harcama yaptığınız hesapların toplamı';
+  String get onboardingBalanceHint =>
+      'Planınızdaki her rakam bu rakamdan ölçülür.';
 
   @override
-  String get onboardingIncomeLabel => 'Bir sonraki maaşınız ne kadar?';
+  String get onboardingIncomeLabel => 'Ayda ne kadar kazanıyorsunuz?';
 
   @override
-  String get onboardingIncomeHint => 'Her zamanki tutarınız yeterli';
+  String get onboardingIncomeHint =>
+      'Değişkense aralığı yazın. Planınız alt uca göre kurulur.';
 
   @override
   String get onboardingPayDay => 'Bir sonraki maaşınız ne zaman?';
@@ -727,4 +729,23 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get receiptRemove => 'Fotoğrafı kaldır';
+
+  @override
+  String get onboardingIncomeFrom => 'En az';
+
+  @override
+  String get onboardingIncomeTo => 'En çok';
+
+  @override
+  String get onboardingIncomeToOptional => 'İsteğe bağlı';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low – $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'Planınız $low üzerine kurulu. Üstü, geldiğinde sizindir.';
+  }
 }

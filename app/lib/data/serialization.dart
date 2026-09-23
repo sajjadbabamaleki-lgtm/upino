@@ -115,6 +115,8 @@ Map<String, Object?> incomeToJson(IncomeEvent i) => {
       'state': i.state.name,
       if (i.confirmedAmount != null)
         'confirmedAmount': moneyToJson(i.confirmedAmount!),
+      if (i.expectedUpperAmount != null)
+        'expectedUpperAmount': moneyToJson(i.expectedUpperAmount!),
     };
 
 IncomeEvent incomeFromJson(Map<String, Object?> json) {
@@ -125,6 +127,9 @@ IncomeEvent incomeFromJson(Map<String, Object?> json) {
     expectedDate: localDateFromJson(json['expectedDate']),
     state: enumByName(IncomeState.values, json['state'], 'income state'),
     confirmedAmount: confirmed == null ? null : moneyFromJson(confirmed),
+    expectedUpperAmount: json['expectedUpperAmount'] == null
+        ? null
+        : moneyFromJson(json['expectedUpperAmount']),
   );
 }
 

@@ -196,19 +196,38 @@ class Claim {
 enum IncomeState { expected, confirmed, late, missed, adjusted, cancelled }
 
 class IncomeEvent {
-  const IncomeEvent({
+  IncomeEvent({
     required this.id,
     required this.expectedAmount,
     required this.expectedDate,
     required this.state,
     this.confirmedAmount,
-  });
+    this.expectedUpperAmount,
+  }) : assert(
+          expectedUpperAmount == null ||
+              expectedUpperAmount.minor >= expectedAmount.minor,
+          'the upper end of an income range cannot be below the lower end',
+        );
 
   final String id;
+
+  /// The amount the plan relies on. For an income given as a range this is
+  /// its lower end, never its midpoint: a plan built on an average breaks in
+  /// every month that comes in below average, and not breaking is the whole
+  /// claim this product makes.
   final Money expectedAmount;
   final LocalDate expectedDate;
   final IncomeState state;
   final Money? confirmedAmount;
+
+  /// The upper end of a range, or null for a fixed income. It is shown so the
+  /// user can see the spread they entered, and it enters no calculation —
+  /// INV-20 pins that.
+  final Money? expectedUpperAmount;
+
+  bool get isRange =>
+      expectedUpperAmount != null &&
+      expectedUpperAmount!.minor > expectedAmount.minor;
 
   bool get isProjectable =>
       state == IncomeState.expected || state == IncomeState.adjusted;
@@ -227,6 +246,7 @@ class IncomeEvent {
         expectedDate: expectedDate,
         state: IncomeState.late,
         confirmedAmount: confirmedAmount,
+        expectedUpperAmount: expectedUpperAmount,
       );
     }
     return this;

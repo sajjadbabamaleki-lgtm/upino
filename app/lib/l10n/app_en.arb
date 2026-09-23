@@ -19,10 +19,10 @@
   "onboardingBadge": "Takes about a minute",
   "onboardingTitle": "Set up your plan",
   "onboardingBlurb": "Two answers are enough to start. Everything else can wait.",
-  "onboardingBalanceLabel": "How much do you have right now?",
-  "onboardingBalanceHint": "Across the accounts you spend from",
-  "onboardingIncomeLabel": "How much is your next pay?",
-  "onboardingIncomeHint": "Your usual amount is fine",
+  "onboardingBalanceLabel": "What can you draw on today?",
+  "onboardingBalanceHint": "Every figure in your plan is measured from this one.",
+  "onboardingIncomeLabel": "What do you earn in a month?",
+  "onboardingIncomeHint": "If it varies, give the range. Your plan is built on the lower end.",
   "onboardingPayDay": "When is your next pay?",
   "onboardingDays": "{count} days",
   "@onboardingDays": {
@@ -368,5 +368,27 @@
   "receiptCamera": "Take a photo",
   "receiptGallery": "Choose a photo",
   "receiptAttached": "Receipt attached",
-  "receiptRemove": "Remove the photo"
+  "receiptRemove": "Remove the photo",
+  "onboardingIncomeFrom": "At least",
+  "onboardingIncomeTo": "Up to",
+  "onboardingIncomeToOptional": "Optional",
+  "incomeRange": "{low} to {high}",
+  "incomeRangeNote": "Your plan is built on {low}. Anything above it is yours when it arrives.",
+  "@incomeRange": {
+    "placeholders": {
+      "low": {
+        "type": "String"
+      },
+      "high": {
+        "type": "String"
+      }
+    }
+  },
+  "@incomeRangeNote": {
+    "placeholders": {
+      "low": {
+        "type": "String"
+      }
+    }
+  }
 }

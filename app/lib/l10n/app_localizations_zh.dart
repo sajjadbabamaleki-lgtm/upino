@@ -47,16 +47,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingBlurb => '两个答案就能开始，其余的可以稍后再说。';
 
   @override
-  String get onboardingBalanceLabel => '你现在有多少钱？';
+  String get onboardingBalanceLabel => '你今天能动用多少？';
 
   @override
-  String get onboardingBalanceHint => '把你平时花钱的账户加起来';
+  String get onboardingBalanceHint => '计划里的每一个数字都以它为起点。';
 
   @override
-  String get onboardingIncomeLabel => '下次进账是多少？';
+  String get onboardingIncomeLabel => '你每月收入是多少？';
 
   @override
-  String get onboardingIncomeHint => '填平常的金额就行';
+  String get onboardingIncomeHint => '如果不固定，填一个区间。计划按区间的下限来做。';
 
   @override
   String get onboardingPayDay => '下次进账是什么时候？';
@@ -700,4 +700,23 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get receiptRemove => '移除照片';
+
+  @override
+  String get onboardingIncomeFrom => '至少';
+
+  @override
+  String get onboardingIncomeTo => '最多';
+
+  @override
+  String get onboardingIncomeToOptional => '可不填';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low 至 $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return '计划建立在 $low 之上。高出的部分，到账时就是你的。';
+  }
 }

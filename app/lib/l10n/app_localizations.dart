@@ -189,25 +189,25 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingBalanceLabel.
   ///
   /// In en, this message translates to:
-  /// **'How much do you have right now?'**
+  /// **'What can you draw on today?'**
   String get onboardingBalanceLabel;
 
   /// No description provided for @onboardingBalanceHint.
   ///
   /// In en, this message translates to:
-  /// **'Across the accounts you spend from'**
+  /// **'Every figure in your plan is measured from this one.'**
   String get onboardingBalanceHint;
 
   /// No description provided for @onboardingIncomeLabel.
   ///
   /// In en, this message translates to:
-  /// **'How much is your next pay?'**
+  /// **'What do you earn in a month?'**
   String get onboardingIncomeLabel;
 
   /// No description provided for @onboardingIncomeHint.
   ///
   /// In en, this message translates to:
-  /// **'Your usual amount is fine'**
+  /// **'If it varies, give the range. Your plan is built on the lower end.'**
   String get onboardingIncomeHint;
 
   /// No description provided for @onboardingPayDay.
@@ -1415,6 +1415,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove the photo'**
   String get receiptRemove;
+
+  /// No description provided for @onboardingIncomeFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'At least'**
+  String get onboardingIncomeFrom;
+
+  /// No description provided for @onboardingIncomeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to'**
+  String get onboardingIncomeTo;
+
+  /// No description provided for @onboardingIncomeToOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get onboardingIncomeToOptional;
+
+  /// No description provided for @incomeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{low} to {high}'**
+  String incomeRange(String low, String high);
+
+  /// No description provided for @incomeRangeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan is built on {low}. Anything above it is yours when it arrives.'**
+  String incomeRangeNote(String low);
 }
 
 class _AppLocalizationsDelegate

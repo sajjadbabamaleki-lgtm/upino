@@ -49,17 +49,18 @@ class AppLocalizationsHi extends AppLocalizations {
       'शुरू करने के लिए दो जवाब काफ़ी हैं। बाक़ी बाद में हो सकता है।';
 
   @override
-  String get onboardingBalanceLabel => 'अभी आपके पास कितना है?';
+  String get onboardingBalanceLabel => 'आज आपके पास क्या उपलब्ध है?';
 
   @override
   String get onboardingBalanceHint =>
-      'उन खातों को मिलाकर जिनसे आप ख़र्च करते हैं';
+      'आपकी योजना का हर आँकड़ा इसी से नापा जाता है।';
 
   @override
-  String get onboardingIncomeLabel => 'अगली तनख़्वाह कितनी होगी?';
+  String get onboardingIncomeLabel => 'महीने में आप कितना कमाते हैं?';
 
   @override
-  String get onboardingIncomeHint => 'आपकी सामान्य रक़म ही काफ़ी है';
+  String get onboardingIncomeHint =>
+      'अगर बदलता है तो दायरा बताएँ। योजना निचले सिरे पर बनती है।';
 
   @override
   String get onboardingPayDay => 'अगली तनख़्वाह कब आएगी?';
@@ -729,4 +730,23 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get receiptRemove => 'फ़ोटो हटाएँ';
+
+  @override
+  String get onboardingIncomeFrom => 'कम से कम';
+
+  @override
+  String get onboardingIncomeTo => 'अधिकतम';
+
+  @override
+  String get onboardingIncomeToOptional => 'वैकल्पिक';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low से $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'आपकी योजना $low पर बनी है। उससे ऊपर जो आए वह आने पर आपका है।';
+  }
 }

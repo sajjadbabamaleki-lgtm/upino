@@ -12,10 +12,10 @@
   "onboardingBadge": "करीब एक मिनट लगेगा",
   "onboardingTitle": "अपनी योजना बनाएँ",
   "onboardingBlurb": "शुरू करने के लिए दो जवाब काफ़ी हैं। बाक़ी बाद में हो सकता है।",
-  "onboardingBalanceLabel": "अभी आपके पास कितना है?",
-  "onboardingBalanceHint": "उन खातों को मिलाकर जिनसे आप ख़र्च करते हैं",
-  "onboardingIncomeLabel": "अगली तनख़्वाह कितनी होगी?",
-  "onboardingIncomeHint": "आपकी सामान्य रक़म ही काफ़ी है",
+  "onboardingBalanceLabel": "आज आपके पास क्या उपलब्ध है?",
+  "onboardingBalanceHint": "आपकी योजना का हर आँकड़ा इसी से नापा जाता है।",
+  "onboardingIncomeLabel": "महीने में आप कितना कमाते हैं?",
+  "onboardingIncomeHint": "अगर बदलता है तो दायरा बताएँ। योजना निचले सिरे पर बनती है।",
   "onboardingPayDay": "अगली तनख़्वाह कब आएगी?",
   "onboardingDays": "{count} दिन",
   "onboardingCommitments": "अपनी प्रतिबद्धताएँ जोड़ें",
@@ -216,5 +216,10 @@
   "receiptCamera": "फ़ोटो लें",
   "receiptGallery": "फ़ोटो चुनें",
   "receiptAttached": "रसीद जुड़ी",
-  "receiptRemove": "फ़ोटो हटाएँ"
+  "receiptRemove": "फ़ोटो हटाएँ",
+  "onboardingIncomeFrom": "कम से कम",
+  "onboardingIncomeTo": "अधिकतम",
+  "onboardingIncomeToOptional": "वैकल्पिक",
+  "incomeRange": "{low} से {high}",
+  "incomeRangeNote": "आपकी योजना {low} पर बनी है। उससे ऊपर जो आए वह आने पर आपका है।"
 }

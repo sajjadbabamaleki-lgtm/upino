@@ -49,16 +49,17 @@ class AppLocalizationsAr extends AppLocalizations {
       'إجابتان تكفيان للبدء. كل ما عداهما يمكن أن ينتظر.';
 
   @override
-  String get onboardingBalanceLabel => 'كم لديك الآن؟';
+  String get onboardingBalanceLabel => 'ما المال المتاح لك اليوم؟';
 
   @override
-  String get onboardingBalanceHint => 'في الحسابات التي تنفق منها';
+  String get onboardingBalanceHint => 'كل رقم في خطتك يُقاس من هذا الرقم.';
 
   @override
-  String get onboardingIncomeLabel => 'كم راتبك القادم؟';
+  String get onboardingIncomeLabel => 'كم تكسب في الشهر؟';
 
   @override
-  String get onboardingIncomeHint => 'مبلغك المعتاد يكفي';
+  String get onboardingIncomeHint =>
+      'إن كان متغيّراً فاذكر المدى. تُبنى خطتك على الحد الأدنى.';
 
   @override
   String get onboardingPayDay => 'متى راتبك القادم؟';
@@ -714,4 +715,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get receiptRemove => 'إزالة الصورة';
+
+  @override
+  String get onboardingIncomeFrom => 'على الأقل';
+
+  @override
+  String get onboardingIncomeTo => 'حتى';
+
+  @override
+  String get onboardingIncomeToOptional => 'اختياري';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low إلى $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'خطتك مبنية على $low. وما زاد فهو لك حين يصل.';
+  }
 }

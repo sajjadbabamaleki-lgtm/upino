@@ -12,10 +12,10 @@
   "onboardingBadge": "Leva cerca de um minuto",
   "onboardingTitle": "Monte seu plano",
   "onboardingBlurb": "Duas respostas bastam para começar. O resto pode esperar.",
-  "onboardingBalanceLabel": "Quanto você tem agora?",
-  "onboardingBalanceHint": "Somando as contas de onde você gasta",
-  "onboardingIncomeLabel": "Quanto será o seu próximo pagamento?",
-  "onboardingIncomeHint": "O valor de sempre já serve",
+  "onboardingBalanceLabel": "De quanto você dispõe hoje?",
+  "onboardingBalanceHint": "Cada valor do seu plano é medido a partir deste.",
+  "onboardingIncomeLabel": "Quanto você ganha por mês?",
+  "onboardingIncomeHint": "Se varia, informe a faixa. Seu plano é construído sobre o limite inferior.",
   "onboardingPayDay": "Quando chega o próximo pagamento?",
   "onboardingDays": "{count} dias",
   "onboardingCommitments": "Adicione seus compromissos",
@@ -216,5 +216,10 @@
   "receiptCamera": "Tirar uma foto",
   "receiptGallery": "Escolher uma foto",
   "receiptAttached": "Recibo anexado",
-  "receiptRemove": "Remover a foto"
+  "receiptRemove": "Remover a foto",
+  "onboardingIncomeFrom": "Pelo menos",
+  "onboardingIncomeTo": "Até",
+  "onboardingIncomeToOptional": "Opcional",
+  "incomeRange": "{low} a {high}",
+  "incomeRangeNote": "Seu plano é construído sobre {low}. O que vier acima é seu quando chegar."
 }

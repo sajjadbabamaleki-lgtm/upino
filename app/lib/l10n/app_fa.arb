@@ -12,10 +12,10 @@
   "onboardingBadge": "حدود یک دقیقه وقت می‌برد",
   "onboardingTitle": "برنامه‌تان را بسازید",
   "onboardingBlurb": "دو جواب برای شروع کافی است. بقیه می‌تواند صبر کند.",
-  "onboardingBalanceLabel": "الان چقدر پول دارید؟",
-  "onboardingBalanceHint": "روی هم، در حساب‌هایی که از آن‌ها خرج می‌کنید",
-  "onboardingIncomeLabel": "حقوق بعدی‌تان چقدر است؟",
-  "onboardingIncomeHint": "مبلغ همیشگی‌تان کافی است",
+  "onboardingBalanceLabel": "امروز به چه پولی دسترسی دارید؟",
+  "onboardingBalanceHint": "هر عددی در برنامهٔ شما از همین یکی اندازه گرفته می‌شود.",
+  "onboardingIncomeLabel": "در ماه چقدر درآمد دارید؟",
+  "onboardingIncomeHint": "اگر ثابت نیست، بازه‌اش را بنویسید. برنامه روی کف بازه ساخته می‌شود.",
   "onboardingPayDay": "حقوق بعدی کی می‌رسد؟",
   "onboardingDays": "{count} روز",
   "onboardingCommitments": "تعهدهایتان را اضافه کنید",
@@ -216,5 +216,10 @@
   "receiptCamera": "گرفتن عکس",
   "receiptGallery": "انتخاب از گالری",
   "receiptAttached": "فاکتور پیوست شد",
-  "receiptRemove": "حذف عکس"
+  "receiptRemove": "حذف عکس",
+  "onboardingIncomeFrom": "دست‌کم",
+  "onboardingIncomeTo": "تا",
+  "onboardingIncomeToOptional": "اختیاری",
+  "incomeRange": "{low} تا {high}",
+  "incomeRangeNote": "برنامه روی {low} ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است."
 }

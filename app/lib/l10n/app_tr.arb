@@ -12,10 +12,10 @@
   "onboardingBadge": "Yaklaşık bir dakika sürer",
   "onboardingTitle": "Planınızı kurun",
   "onboardingBlurb": "Başlamak için iki cevap yeter. Gerisi bekleyebilir.",
-  "onboardingBalanceLabel": "Şu anda ne kadar paranız var?",
-  "onboardingBalanceHint": "Harcama yaptığınız hesapların toplamı",
-  "onboardingIncomeLabel": "Bir sonraki maaşınız ne kadar?",
-  "onboardingIncomeHint": "Her zamanki tutarınız yeterli",
+  "onboardingBalanceLabel": "Bugün hangi paraya erişebiliyorsunuz?",
+  "onboardingBalanceHint": "Planınızdaki her rakam bu rakamdan ölçülür.",
+  "onboardingIncomeLabel": "Ayda ne kadar kazanıyorsunuz?",
+  "onboardingIncomeHint": "Değişkense aralığı yazın. Planınız alt uca göre kurulur.",
   "onboardingPayDay": "Bir sonraki maaşınız ne zaman?",
   "onboardingDays": "{count} gün",
   "onboardingCommitments": "Yükümlülüklerinizi ekleyin",
@@ -216,5 +216,10 @@
   "receiptCamera": "Fotoğraf çek",
   "receiptGallery": "Fotoğraf seç",
   "receiptAttached": "Fiş eklendi",
-  "receiptRemove": "Fotoğrafı kaldır"
+  "receiptRemove": "Fotoğrafı kaldır",
+  "onboardingIncomeFrom": "En az",
+  "onboardingIncomeTo": "En çok",
+  "onboardingIncomeToOptional": "İsteğe bağlı",
+  "incomeRange": "{low} – {high}",
+  "incomeRangeNote": "Planınız {low} üzerine kurulu. Üstü, geldiğinde sizindir."
 }

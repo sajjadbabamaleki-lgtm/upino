@@ -33,6 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _draft = OnboardingDraft();
   final _balance = TextEditingController();
   final _income = TextEditingController();
+  final _incomeUpper = TextEditingController();
   final _rent = TextEditingController();
   final _essentials = TextEditingController();
   final _goal = TextEditingController();
@@ -52,7 +53,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void dispose() {
-    for (final c in [_balance, _income, _rent, _essentials, _goal]) {
+    for (final c in [
+      _balance,
+      _income,
+      _incomeUpper,
+      _rent,
+      _essentials,
+      _goal,
+    ]) {
       c.dispose();
     }
     super.dispose();
@@ -74,6 +82,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _draft
       ..currentBalance = _read(_balance)
       ..incomeAmount = _read(_income)
+      ..incomeUpperAmount = _read(_incomeUpper)
       ..nextIncomeDate = widget.state.today.addDays(_payDayOffset)
       ..rent = _read(_rent)
       ..essentials = _read(_essentials)
@@ -98,7 +107,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       if (changed) {
         // Amounts typed under the old currency would be reinterpreted at a
         // different scale, so they are cleared rather than silently rescaled.
-        for (final c in [_balance, _income, _rent, _essentials, _goal]) {
+        for (final c in [
+          _balance,
+          _income,
+          _incomeUpper,
+          _rent,
+          _essentials,
+          _goal,
+        ]) {
           c.clear();
         }
       }
@@ -181,12 +197,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               currency: _draft.currency,
               onChanged: () => setState(() {}),
             ),
-            _Field(
-              key: const Key('field-income'),
-              controller: _income,
+            // Income is a range because for most people it is one. Forcing a
+            // single number would make the plan look precise and be wrong in
+            // every month that came in under it.
+            _RangeField(
               label: l.onboardingIncomeLabel,
               hint: l.onboardingIncomeHint,
               currency: _draft.currency,
+              lowKey: const Key('field-income'),
+              highKey: const Key('field-income-upper'),
+              low: _income,
+              high: _incomeUpper,
+              lowLabel: l.onboardingIncomeFrom,
+              highLabel: l.onboardingIncomeTo,
+              highHint: l.onboardingIncomeToOptional,
               onChanged: () => setState(() {}),
             ),
             _PayDayField(
@@ -253,6 +277,162 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Two amounts on one card: the floor the plan is built on, and an optional
+/// ceiling that is shown but never calculated with (INV-20). Leaving the
+/// second empty is a fixed income, which is why it is not marked required.
+class _RangeField extends StatelessWidget {
+  const _RangeField({
+    required this.label,
+    required this.hint,
+    required this.currency,
+    required this.low,
+    required this.high,
+    required this.lowLabel,
+    required this.highLabel,
+    required this.highHint,
+    required this.lowKey,
+    required this.highKey,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String hint;
+  final String currency;
+  final TextEditingController low;
+  final TextEditingController high;
+  final String lowLabel;
+  final String highLabel;
+  final String highHint;
+  final Key lowKey;
+  final Key highKey;
+  final VoidCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: UpinoCard(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 2),
+            Text(
+              hint,
+              style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.5),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _RangeEnd(
+                    fieldKey: lowKey,
+                    caption: lowLabel,
+                    controller: low,
+                    currency: currency,
+                    hintText: null,
+                    onChanged: onChanged,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _RangeEnd(
+                    fieldKey: highKey,
+                    caption: highLabel,
+                    controller: high,
+                    currency: currency,
+                    hintText: highHint,
+                    onChanged: onChanged,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RangeEnd extends StatelessWidget {
+  const _RangeEnd({
+    required this.fieldKey,
+    required this.caption,
+    required this.controller,
+    required this.currency,
+    required this.hintText,
+    required this.onChanged,
+  });
+
+  final Key fieldKey;
+  final String caption;
+  final TextEditingController controller;
+  final String currency;
+  final String? hintText;
+  final VoidCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final decimals = Currency.of(currency).exponent;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          caption,
+          style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: sunkenColor(context),
+            borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                Currency.of(currency).symbol,
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(color: UpinoTokens.textTertiary),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: TextField(
+                  key: fieldKey,
+                  controller: controller,
+                  keyboardType:
+                      TextInputType.numberWithOptions(decimal: decimals > 0),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      decimals > 0 ? RegExp(r'[0-9.]') : RegExp(r'[0-9]'),
+                    ),
+                  ],
+                  onChanged: (_) => onChanged(),
+                  style: theme.textTheme.titleLarge,
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: theme.textTheme.bodySmall
+                        ?.copyWith(color: UpinoTokens.textTertiary),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 13),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

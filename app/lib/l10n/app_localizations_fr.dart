@@ -49,16 +49,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Deux réponses suffisent pour commencer. Le reste peut attendre.';
 
   @override
-  String get onboardingBalanceLabel => 'Combien avez-vous en ce moment ?';
+  String get onboardingBalanceLabel => 'De quoi disposez-vous aujourd’hui ?';
 
   @override
-  String get onboardingBalanceHint => 'Sur les comptes d’où vous dépensez';
+  String get onboardingBalanceHint =>
+      'Chaque chiffre de votre plan se mesure à partir de celui-ci.';
 
   @override
-  String get onboardingIncomeLabel => 'Quel sera votre prochain salaire ?';
+  String get onboardingIncomeLabel => 'Combien gagnez-vous par mois ?';
 
   @override
-  String get onboardingIncomeHint => 'Votre montant habituel suffit';
+  String get onboardingIncomeHint =>
+      'Si cela varie, donnez la fourchette. Votre plan repose sur le bas.';
 
   @override
   String get onboardingPayDay => 'Quand arrive votre prochain salaire ?';
@@ -745,4 +747,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get receiptRemove => 'Retirer la photo';
+
+  @override
+  String get onboardingIncomeFrom => 'Au moins';
+
+  @override
+  String get onboardingIncomeTo => 'Jusqu’à';
+
+  @override
+  String get onboardingIncomeToOptional => 'Facultatif';
+
+  @override
+  String incomeRange(String low, String high) {
+    return '$low à $high';
+  }
+
+  @override
+  String incomeRangeNote(String low) {
+    return 'Votre plan repose sur $low. Tout ce qui vient au-dessus est à vous quand il arrive.';
+  }
 }

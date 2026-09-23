@@ -12,10 +12,10 @@
   "onboardingBadge": "Займёт около минуты",
   "onboardingTitle": "Создайте свой план",
   "onboardingBlurb": "Для начала хватит двух ответов. Остальное может подождать.",
-  "onboardingBalanceLabel": "Сколько у вас сейчас?",
-  "onboardingBalanceHint": "На счетах, с которых вы тратите",
-  "onboardingIncomeLabel": "Каким будет следующий доход?",
-  "onboardingIncomeHint": "Достаточно обычной суммы",
+  "onboardingBalanceLabel": "Чем вы располагаете сегодня?",
+  "onboardingBalanceHint": "Каждая цифра в плане отсчитывается от этой.",
+  "onboardingIncomeLabel": "Сколько вы зарабатываете в месяц?",
+  "onboardingIncomeHint": "Если по-разному, укажите диапазон. План строится по нижней границе.",
   "onboardingPayDay": "Когда придёт следующий доход?",
   "onboardingDays": "{count} дн.",
   "onboardingCommitments": "Добавьте обязательства",
@@ -216,5 +216,10 @@
   "receiptCamera": "Сделать фото",
   "receiptGallery": "Выбрать фото",
   "receiptAttached": "Чек прикреплён",
-  "receiptRemove": "Убрать фото"
+  "receiptRemove": "Убрать фото",
+  "onboardingIncomeFrom": "Не меньше",
+  "onboardingIncomeTo": "До",
+  "onboardingIncomeToOptional": "Необязательно",
+  "incomeRange": "от {low} до {high}",
+  "incomeRangeNote": "План построен на {low}. Всё, что придёт сверх этого, ваше."
 }
