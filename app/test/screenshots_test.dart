@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/design/theme.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/domain.dart';
@@ -100,6 +101,8 @@ Future<void> shoot(
     RepaintBoundary(
       key: boundary,
       child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         theme: buildTheme(brightness: brightness, fontFamily: 'UpinoSans'),
         home: child,

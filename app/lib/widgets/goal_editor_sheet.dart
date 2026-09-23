@@ -11,6 +11,7 @@ import '../design/tokens.dart';
 import '../domain/goal.dart';
 import '../engine/clock.dart';
 import '../engine/money.dart';
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 
 class GoalDraft {
@@ -119,6 +120,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final editing = widget.goal != null;
 
     return Padding(
@@ -153,24 +155,24 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  editing ? 'Edit goal' : 'What are you saving for?',
+                  editing ? l.goalEditExisting : l.goalEditNew,
                   style: theme.textTheme.headlineMedium,
                 ),
 
                 const SizedBox(height: 18),
-                _Label('Name'),
+                _Label(l.goalName),
                 _Sunken(
                   child: TextField(
                     key: const Key('goal-name'),
                     controller: _name,
                     onChanged: (_) => setState(() {}),
                     style: theme.textTheme.titleMedium?.copyWith(fontSize: 18),
-                    decoration: _plain(theme, 'A trip, a deposit, a laptop'),
+                    decoration: _plain(theme, l.goalNameHint),
                   ),
                 ),
 
                 const SizedBox(height: 16),
-                _Label('How much in total'),
+                _Label(l.goalTotal),
                 _Sunken(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -195,7 +197,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                           onChanged: (_) => setState(() {}),
                           style: theme.textTheme.headlineSmall
                               ?.copyWith(fontFeatures: moneyFeatures),
-                          decoration: _plain(theme, 'Tap to type'),
+                          decoration: _plain(theme, l.tapToType),
                         ),
                       ),
                     ],
@@ -203,7 +205,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                 ),
 
                 const SizedBox(height: 16),
-                _Label('By when'),
+                _Label(l.goalByWhen),
                 Row(
                   children: [
                     for (final months in _horizons)
@@ -215,10 +217,10 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                           child: _Pill(
                             key: Key('goal-horizon-$months'),
                             label: months == 12
-                                ? '1 year'
+                                ? l.goalOneYear
                                 : months == 24
-                                    ? '2 years'
-                                    : '$months mo',
+                                    ? l.goalTwoYears
+                                    : l.goalMonths(months),
                             selected: _months == months,
                             onTap: () => setState(() => _months = months),
                           ),
@@ -228,7 +230,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                 ),
 
                 const SizedBox(height: 16),
-                _Label('How firm is it?'),
+                _Label(l.goalFirmness),
                 for (final kind in GoalKind.values)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
@@ -243,7 +245,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                 const SizedBox(height: 14),
                 FilledButton(
                   onPressed: _canSave ? _save : null,
-                  child: Text(editing ? 'Save changes' : 'Add this goal'),
+                  child: Text(editing ? l.goalSaveChanges : l.goalAddThis),
                 ),
                 if (editing) ...[
                   const SizedBox(height: 8),
@@ -260,7 +262,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                         ),
                       ),
                       child: Text(
-                        'Delete this goal',
+                        l.goalDelete,
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: isDark(context)
                               ? UpinoTokens.darkCritical
@@ -369,20 +371,17 @@ class _KindRow extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  static const _copy = <GoalKind, ({String title, String detail})>{
-    GoalKind.hard: (
-      title: 'Committed',
-      detail: 'Held back before anything is spendable',
-    ),
-    GoalKind.flexible: (
-      title: 'Flexible',
-      detail: 'Gives way to anything you must pay',
-    ),
-    GoalKind.paused: (
-      title: 'Paused',
-      detail: 'Stays visible, nothing held back',
-    ),
-  };
+  static ({String title, String detail}) _copy(
+    AppLocalizations l,
+    GoalKind kind,
+  ) =>
+      switch (kind) {
+        GoalKind.hard => (title: l.goalKindHard, detail: l.goalKindHardSub),
+        GoalKind.flexible =>
+          (title: l.goalKindFlexible, detail: l.goalKindFlexibleSub),
+        GoalKind.paused =>
+          (title: l.goalKindPaused, detail: l.goalKindPausedSub),
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -390,7 +389,7 @@ class _KindRow extends StatelessWidget {
     final dark = isDark(context);
     final active =
         dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
-    final copy = _copy[kind]!;
+    final copy = _copy(AppLocalizations.of(context), kind);
 
     return GestureDetector(
       onTap: onTap,

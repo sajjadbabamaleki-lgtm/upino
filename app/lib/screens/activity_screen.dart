@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 
 class ActivityScreen extends StatelessWidget {
@@ -31,6 +32,7 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final entries = state.activity;
 
     return ListView(
@@ -41,12 +43,10 @@ class ActivityScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Activity', style: theme.textTheme.headlineLarge),
+              Text(l.activityTitle, style: theme.textTheme.headlineLarge),
               const SizedBox(height: 2),
               Text(
-                entries.isEmpty
-                    ? 'Nothing recorded yet.'
-                    : 'Everything you have recorded, newest first.',
+                entries.isEmpty ? l.activityBlurbEmpty : l.activityBlurb,
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -55,8 +55,7 @@ class ActivityScreen extends StatelessWidget {
         if (entries.isEmpty)
           UpinoCard(
             child: Text(
-              'When you record a spend it will appear here, and you can '
-              'remove it if you got it wrong.',
+              l.activityEmpty,
               style: theme.textTheme.bodySmall,
             ),
           )
@@ -83,6 +82,19 @@ class ActivityScreen extends StatelessWidget {
   }
 }
 
+/// The state layer names the kind; the language belongs here.
+String labelFor(AppLocalizations l, ActivityKind kind) => switch (kind) {
+      ActivityKind.spend => l.activitySpent,
+      ActivityKind.cardPurchase => l.activityCardPurchase,
+      ActivityKind.cardPayment => l.activityCardPayment,
+      ActivityKind.income => l.activityIncome,
+      ActivityKind.refund => l.activityRefund,
+      ActivityKind.transfer => l.activityTransfer,
+      ActivityKind.loan => l.activityLoan,
+      ActivityKind.debtPayment => l.activityDebtPayment,
+      ActivityKind.balanceCorrected => l.activityBalanceCorrected,
+    };
+
 class _ActivityRow extends StatelessWidget {
   const _ActivityRow({required this.entry, required this.onRemove});
 
@@ -92,6 +104,7 @@ class _ActivityRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final dimmed = entry.removed;
     final muted = isDark(context)
         ? UpinoTokens.darkTextTertiary
@@ -108,7 +121,7 @@ class _ActivityRow extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      entry.label,
+                      labelFor(l, entry.kind),
                       style: theme.textTheme.bodyMedium
                           ?.copyWith(color: dimmed ? muted : null),
                     ),
@@ -116,7 +129,7 @@ class _ActivityRow extends StatelessWidget {
                   if (dimmed) ...[
                     const SizedBox(width: 8),
                     UpinoBadge(
-                      'Removed',
+                      l.activityRemoved,
                       background: sunkenColor(context),
                       foreground: muted,
                     ),
@@ -151,6 +164,7 @@ class _RemoveSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(22, 12, 22, 22),
       decoration: BoxDecoration(
@@ -179,26 +193,24 @@ class _RemoveSheet extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             Text(
-              'Remove ${entry.amount.display()}?',
+              l.activityRemoveAmount(entry.amount.display()),
               style: theme.textTheme.headlineMedium,
             ),
             const SizedBox(height: 6),
             Text(
-              'It stops counting toward your plan straight away. The entry '
-              'stays on this list marked as removed, so your record is still '
-              'complete.',
+              l.activityRemoveDetail,
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Remove it'),
+              child: Text(l.activityRemoveIt),
             ),
             const SizedBox(height: 8),
             Center(
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text('Keep it', style: theme.textTheme.titleMedium),
+                child: Text(l.activityKeepIt, style: theme.textTheme.titleMedium),
               ),
             ),
           ],

@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/engine/currencies.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
@@ -159,6 +160,8 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: CurrencyPicker(selected: null, onSelect: onSelect),
           ),

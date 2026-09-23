@@ -1,0 +1,635 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navPlan => 'Plan';
+
+  @override
+  String get navGoals => 'Goals';
+
+  @override
+  String get navActivity => 'Activity';
+
+  @override
+  String get navProfile => 'Profile';
+
+  @override
+  String get currencyTitle => 'Which currency?';
+
+  @override
+  String get currencyBlurb =>
+      'Everything in your plan is kept in this one. Pick the currency you are actually paid in.';
+
+  @override
+  String get currencySearchHint => 'Search country, currency or code';
+
+  @override
+  String currencyNoMatch(String query) {
+    return 'Nothing matches “$query”. Try the country, or the three-letter code.';
+  }
+
+  @override
+  String get onboardingBadge => 'Takes about a minute';
+
+  @override
+  String get onboardingTitle => 'Set up your plan';
+
+  @override
+  String get onboardingBlurb =>
+      'Two answers are enough to start. Everything else can wait.';
+
+  @override
+  String get onboardingBalanceLabel => 'How much do you have right now?';
+
+  @override
+  String get onboardingBalanceHint => 'Across the accounts you spend from';
+
+  @override
+  String get onboardingIncomeLabel => 'How much is your next pay?';
+
+  @override
+  String get onboardingIncomeHint => 'Your usual amount is fine';
+
+  @override
+  String get onboardingPayDay => 'When is your next pay?';
+
+  @override
+  String onboardingDays(int count) {
+    return '$count days';
+  }
+
+  @override
+  String get onboardingCommitments => 'Add your commitments';
+
+  @override
+  String get onboardingCommitmentsOpen => 'Rent, essentials and a goal';
+
+  @override
+  String get onboardingCommitmentsShut => 'Optional, and you can do it later';
+
+  @override
+  String get onboardingRentLabel => 'Rent and fixed bills';
+
+  @override
+  String get onboardingRentHint => 'Due before your next pay';
+
+  @override
+  String get onboardingEssentialsLabel => 'Food and transport';
+
+  @override
+  String get onboardingEssentialsHint =>
+      'What you need to get through the period';
+
+  @override
+  String get onboardingGoalLabel => 'Saving toward a goal';
+
+  @override
+  String get onboardingGoalHint => 'What you want to put aside this period';
+
+  @override
+  String get onboardingFinish => 'See what I can spend';
+
+  @override
+  String get onboardingIncomplete =>
+      'Fill in the first two answers to continue';
+
+  @override
+  String get tapToType => 'Tap to type';
+
+  @override
+  String get heroSafeToSpend => 'Safe to spend now';
+
+  @override
+  String get heroNotUpToDate => 'Not up to date';
+
+  @override
+  String get heroRecordSpend => 'Record a spend';
+
+  @override
+  String get heroSeeShort => 'See what is short';
+
+  @override
+  String get heroConfirmBalance => 'Confirm balance';
+
+  @override
+  String get heroReviewBlurb =>
+      'Check your balance so this number can be trusted again.';
+
+  @override
+  String heroUntilSetAside(String date, String amount) {
+    return 'Until $date · $amount set aside';
+  }
+
+  @override
+  String heroShort(String amount) {
+    return '$amount short';
+  }
+
+  @override
+  String heroUnfunded(String label, String amount) {
+    return '$label · $amount unfunded';
+  }
+
+  @override
+  String get heroBalanceNever => 'Balance not confirmed yet';
+
+  @override
+  String get heroBalanceToday => 'Balance confirmed today';
+
+  @override
+  String get heroBalanceYesterday => 'Balance confirmed yesterday';
+
+  @override
+  String heroBalanceDays(int count) {
+    return 'Balance confirmed $count days ago';
+  }
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get homeTitle => 'Your plan';
+
+  @override
+  String homeUntilTotal(String date, String amount) {
+    return 'Until $date · $amount in total';
+  }
+
+  @override
+  String homeRecorded(String amount) {
+    return '$amount recorded';
+  }
+
+  @override
+  String get homeAttention => 'Needs your attention';
+
+  @override
+  String homeNotCovered(String amount) {
+    return '$amount not covered';
+  }
+
+  @override
+  String get homeAfterNextPay => 'After your next pay';
+
+  @override
+  String homeOncePayArrives(String date) {
+    return 'Once your pay arrives on $date';
+  }
+
+  @override
+  String get homeSetAsideFirst => 'Set aside first';
+
+  @override
+  String get homeProtectedBlurb => 'Protected before anything is spendable.';
+
+  @override
+  String get homeNothingSetAside =>
+      'Nothing is set aside yet. Everything you have is spendable.';
+
+  @override
+  String get homeWhyThisNumber => 'Why this number';
+
+  @override
+  String get homeWhatIsShort => 'What is short';
+
+  @override
+  String get homeShortBlurb =>
+      'Nothing here is moved or delayed for you. These are the commitments your current money does not cover.';
+
+  @override
+  String get askSpendTitle => 'How much did you spend?';
+
+  @override
+  String get askBalanceTitle => 'What is your balance now?';
+
+  @override
+  String get askBalanceBlurb =>
+      'Any difference is recorded as a correction, never as spending.';
+
+  @override
+  String get whyNoChange => 'Nothing has changed since your last plan.';
+
+  @override
+  String get whyPayArrived => 'Your pay arrived, so the plan was refreshed.';
+
+  @override
+  String get whyBillPaid => 'A bill you had set money aside for was paid.';
+
+  @override
+  String get whyHeldForBill =>
+      'Money is held back for a bill due just after your next pay.';
+
+  @override
+  String get whyOvercommitted =>
+      'You have committed to more than you currently have.';
+
+  @override
+  String get whyStale => 'Your balance has not been confirmed recently.';
+
+  @override
+  String get whyCardLarger =>
+      'Your card balance is larger than the money you have.';
+
+  @override
+  String get whyPayLate => 'Your expected pay has not arrived yet.';
+
+  @override
+  String get whyOverdue => 'Something is past its due date.';
+
+  @override
+  String get whyBufferShort => 'Your savings buffer is not fully topped up.';
+
+  @override
+  String get whyGoalShort =>
+      'Your savings goal cannot be fully funded right now.';
+
+  @override
+  String get whyFlexibleLess => 'A flexible goal received less than planned.';
+
+  @override
+  String get whyDuplicate => 'A repeated transaction was counted only once.';
+
+  @override
+  String get planTitle => 'Plan';
+
+  @override
+  String get planBlurb =>
+      'What your money is promised to, before anything is spendable.';
+
+  @override
+  String get planMoneyAndIncome => 'Money and income';
+
+  @override
+  String get planMoneyYouHave => 'Money you have';
+
+  @override
+  String get planNextPay => 'Next pay';
+
+  @override
+  String get planYourNextPay => 'Your next pay';
+
+  @override
+  String get planNotSet => 'Not set';
+
+  @override
+  String get planExpectedBlurb =>
+      'This is only expected, so it stays out of what you can spend now.';
+
+  @override
+  String get planSetAsideFirst => 'Set aside first';
+
+  @override
+  String get planNothingSetAside =>
+      'Nothing is set aside, so everything you have is spendable.';
+
+  @override
+  String get planAddToPlan => 'Add to your plan';
+
+  @override
+  String get planGoals => 'Goals';
+
+  @override
+  String get planSaveToward => 'Save toward something';
+
+  @override
+  String get planSaveTowardSub => 'A trip, a deposit, a replacement laptop';
+
+  @override
+  String get planAllGoals => 'All goals';
+
+  @override
+  String get planAllGoalsSub => 'Add, edit or put money aside';
+
+  @override
+  String get planHowMuchSetAside =>
+      'How much do you need to set aside for this?';
+
+  @override
+  String get planChangeOrRemove =>
+      'Change the amount, or remove it from your plan.';
+
+  @override
+  String get planRemove => 'Remove from plan';
+
+  @override
+  String planDue(String date) {
+    return ' · due $date';
+  }
+
+  @override
+  String get priorityMandatory => 'Must be paid — comes first';
+
+  @override
+  String get priorityEssential => 'Day-to-day needs';
+
+  @override
+  String get priorityBuffer => 'Kept back for emergencies';
+
+  @override
+  String get priorityCard => 'Already spent on a card';
+
+  @override
+  String get prioritySinkingFund => 'Saving for a known bill';
+
+  @override
+  String get priorityGoal => 'A goal you have committed to';
+
+  @override
+  String get priorityDiscretionary => 'Nice to have — yields first';
+
+  @override
+  String get goalsTitle => 'Goals';
+
+  @override
+  String get goalsBlurbEmpty => 'Nothing saved toward yet.';
+
+  @override
+  String get goalsBlurb => 'What each goal needs from this pay period.';
+
+  @override
+  String get goalsEmptyCard =>
+      'Add something you are saving for — a trip, a deposit, a replacement laptop. Upino works out what to hold back each pay period so it arrives on time.';
+
+  @override
+  String get goalsNew => 'New goal';
+
+  @override
+  String get goalsNewSub => 'Something you are putting money aside for';
+
+  @override
+  String get goalsAddMoney => 'Add money';
+
+  @override
+  String goalsAddTo(String name) {
+    return 'Add to $name';
+  }
+
+  @override
+  String get goalsAddBlurb =>
+      'This records what you have put aside. It does not spend anything — it lowers what has to be held back from here on.';
+
+  @override
+  String get goalsEachPeriod => 'Each pay period';
+
+  @override
+  String get goalsTargetDate => 'Target date';
+
+  @override
+  String goalsOf(String amount) {
+    return 'of $amount';
+  }
+
+  @override
+  String goalsPeriodsToGo(int count) {
+    return '$count pay periods to go';
+  }
+
+  @override
+  String get goalsDone => 'Saved in full';
+
+  @override
+  String get goalsPausedStatus => 'Paused — nothing held back';
+
+  @override
+  String get goalsFlexibleStatus =>
+      'Flexible — gives way to anything you must pay';
+
+  @override
+  String get goalEditNew => 'What are you saving for?';
+
+  @override
+  String get goalEditExisting => 'Edit goal';
+
+  @override
+  String get goalName => 'Name';
+
+  @override
+  String get goalNameHint => 'A trip, a deposit, a laptop';
+
+  @override
+  String get goalTotal => 'How much in total';
+
+  @override
+  String get goalByWhen => 'By when';
+
+  @override
+  String goalMonths(int count) {
+    return '$count mo';
+  }
+
+  @override
+  String get goalOneYear => '1 year';
+
+  @override
+  String get goalTwoYears => '2 years';
+
+  @override
+  String get goalFirmness => 'How firm is it?';
+
+  @override
+  String get goalKindHard => 'Committed';
+
+  @override
+  String get goalKindHardSub => 'Held back before anything is spendable';
+
+  @override
+  String get goalKindFlexible => 'Flexible';
+
+  @override
+  String get goalKindFlexibleSub => 'Gives way to anything you must pay';
+
+  @override
+  String get goalKindPaused => 'Paused';
+
+  @override
+  String get goalKindPausedSub => 'Stays visible, nothing held back';
+
+  @override
+  String get goalSaveChanges => 'Save changes';
+
+  @override
+  String get goalAddThis => 'Add this goal';
+
+  @override
+  String get goalDelete => 'Delete this goal';
+
+  @override
+  String get activityTitle => 'Activity';
+
+  @override
+  String get activityBlurb => 'Everything you have recorded, newest first.';
+
+  @override
+  String get activityEmpty =>
+      'When you record a spend it will appear here, and you can remove it if you got it wrong.';
+
+  @override
+  String get activityRemoveIt => 'Remove it';
+
+  @override
+  String get activityKeepIt => 'Keep it';
+
+  @override
+  String get activitySpent => 'Spent';
+
+  @override
+  String get activityIncome => 'Pay';
+
+  @override
+  String get activityCorrection => 'Correction';
+
+  @override
+  String get activityRemoved => 'Removed';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profileConfirmBalance => 'Confirm your balance';
+
+  @override
+  String get profileTrustTitle => 'How trustworthy is the figure?';
+
+  @override
+  String get profileTrustFresh => 'Up to date. Nothing needs your attention.';
+
+  @override
+  String get profileTrustDegraded =>
+      'Your balance has not been confirmed for a while. The figure is still shown, just less certain.';
+
+  @override
+  String get profileTrustReview =>
+      'Too old or too uncertain to rely on. Confirm your balance to fix it.';
+
+  @override
+  String get profileConfirmedNever => 'Not confirmed yet';
+
+  @override
+  String get profileConfirmedToday => 'Confirmed today';
+
+  @override
+  String get profileConfirmedYesterday => 'Confirmed yesterday';
+
+  @override
+  String profileConfirmedDays(int count) {
+    return 'Confirmed $count days ago';
+  }
+
+  @override
+  String get profileAppearance => 'Appearance';
+
+  @override
+  String get profileTheme => 'Theme';
+
+  @override
+  String get profileThemeBlurb =>
+      'Following your phone is the default, so nothing is imposed.';
+
+  @override
+  String get themePhone => 'Phone';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get profileLanguage => 'Language';
+
+  @override
+  String get profileLanguageBlurb =>
+      'Following your phone is the default, so nothing is imposed.';
+
+  @override
+  String get languagePhone => 'Phone';
+
+  @override
+  String get profileCurrency => 'Currency';
+
+  @override
+  String get profileYourData => 'Your data';
+
+  @override
+  String get profileDelete => 'Delete my plan';
+
+  @override
+  String get profileDeleteSub => 'Clears everything and returns to setup';
+
+  @override
+  String get profileStartOver => 'Start over?';
+
+  @override
+  String get profileStartOverBlurb =>
+      'Your plan and everything you recorded are deleted. This cannot be undone.';
+
+  @override
+  String get profileDeleteEverything => 'Delete everything';
+
+  @override
+  String get profileKeepPlan => 'Keep my plan';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String activityRemoveAmount(String amount) {
+    return 'Remove $amount?';
+  }
+
+  @override
+  String get activityRemoveDetail =>
+      'It stops counting toward your plan straight away. The entry stays on this list marked as removed, so your record is still complete.';
+
+  @override
+  String get activityCardPurchase => 'Card purchase';
+
+  @override
+  String get activityCardPayment => 'Card payment';
+
+  @override
+  String get activityRefund => 'Refund';
+
+  @override
+  String get activityTransfer => 'Moved between accounts';
+
+  @override
+  String get activityLoan => 'Loan received';
+
+  @override
+  String get activityDebtPayment => 'Debt payment';
+
+  @override
+  String get activityBalanceCorrected => 'Balance corrected';
+
+  @override
+  String get activityBlurbEmpty => 'Nothing recorded yet.';
+
+  @override
+  String get profileStartAgain => 'Start again';
+
+  @override
+  String get claimRent => 'Rent and bills';
+
+  @override
+  String get claimCardMinimum => 'Card minimum due';
+
+  @override
+  String get claimEssentials => 'Food and transport';
+
+  @override
+  String get claimBuffer => 'Emergency buffer';
+}

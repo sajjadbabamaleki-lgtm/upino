@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
-import '../engine/clock.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/dates.dart';
+import '../l10n/labels.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
 
@@ -74,6 +76,7 @@ class _GradientHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
+    final l = AppLocalizations.of(context);
     return _HeroShell(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
@@ -89,24 +92,25 @@ class _GradientHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const UpinoBadge(
-            'Safe to spend now',
-            background: Color(0x2EFFFFFF),
+          UpinoBadge(
+            l.heroSafeToSpend,
+            background: const Color(0x2EFFFFFF),
             foreground: UpinoTokens.textOnInverse,
           ),
           const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
           const SizedBox(height: 14),
           _HeroMeta(
-            'Until ${formatDate(snapshot.decisionHorizonEnd)}'
-            '${UpinoTokens.separator}'
-            '${snapshot.protectedTotal.display()} set aside',
+            l.heroUntilSetAside(
+              formatDate(context, snapshot.decisionHorizonEnd),
+              snapshot.protectedTotal.display(),
+            ),
           ),
           const SizedBox(height: 26),
           if (degraded)
             _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
           else if (onQuickExpense != null)
-            _HeroButton(label: 'Record a spend', onPressed: onQuickExpense!),
+            _HeroButton(label: l.heroRecordSpend, onPressed: onQuickExpense!),
         ],
       ),
     );
@@ -124,6 +128,7 @@ class _GapHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final top = snapshot.topUnfundedClaim;
+    final l = AppLocalizations.of(context);
     return _HeroShell(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
@@ -132,9 +137,9 @@ class _GapHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const UpinoBadge(
-            'Safe to spend now',
-            background: Color(0x1FFFFFFF),
+          UpinoBadge(
+            l.heroSafeToSpend,
+            background: const Color(0x1FFFFFFF),
             foreground: UpinoTokens.textOnInverse,
           ),
           const SizedBox(height: 16),
@@ -156,7 +161,7 @@ class _GapHero extends StatelessWidget {
                     const SizedBox(width: 9),
                     Expanded(
                       child: Text(
-                        '${snapshot.mandatoryFundingGap.display()} short',
+                        l.heroShort(snapshot.mandatoryFundingGap.display()),
                         style: const TextStyle(
                           color: UpinoTokens.criticalOnInverse,
                           fontSize: 17,
@@ -171,8 +176,10 @@ class _GapHero extends StatelessWidget {
                 if (top != null) ...[
                   const SizedBox(height: 4),
                   Text(
-                    '${top.label}${UpinoTokens.separator}'
-                    '${top.shortfall.display()} unfunded',
+                    l.heroUnfunded(
+                      labelForClaim(l, top.claimId, top.label),
+                      top.shortfall.display(),
+                    ),
                     style: const TextStyle(color: Colors.white70, fontSize: 13),
                   ),
                 ],
@@ -180,7 +187,7 @@ class _GapHero extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          _HeroButton(label: 'See what is short', onPressed: onResolve),
+          _HeroButton(label: l.heroSeeShort, onPressed: onResolve),
         ],
       ),
     );
@@ -199,6 +206,7 @@ class _ReviewHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dark = isDark(context);
+    final l = AppLocalizations.of(context);
     return UpinoCard(
       radius: UpinoTokens.radiusHero,
       padding: const EdgeInsets.all(22),
@@ -206,7 +214,7 @@ class _ReviewHero extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UpinoBadge(
-            'Not up to date',
+            l.heroNotUpToDate,
             background: dark
                 ? UpinoTokens.darkCriticalSurface
                 : UpinoTokens.criticalSurface,
@@ -223,13 +231,13 @@ class _ReviewHero extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Check your balance so this number can be trusted again.',
+            l.heroReviewBlurb,
             style: theme.textTheme.bodySmall,
           ),
           const SizedBox(height: 18),
           FilledButton(
             onPressed: onConfirmBalance,
-            child: const Text('Confirm balance'),
+            child: Text(l.heroConfirmBalance),
           ),
         ],
       ),
@@ -297,6 +305,7 @@ class _FreshnessRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final days = snapshot.balanceAgeInDays;
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
       decoration: BoxDecoration(
@@ -308,10 +317,10 @@ class _FreshnessRow extends StatelessWidget {
         Expanded(
           child: Text(
             switch (days) {
-              null => 'Balance not confirmed yet',
-              0 => 'Balance confirmed today',
-              1 => 'Balance confirmed yesterday',
-              _ => 'Balance confirmed $days days ago',
+              null => l.heroBalanceNever,
+              0 => l.heroBalanceToday,
+              1 => l.heroBalanceYesterday,
+              _ => l.heroBalanceDays(days),
             },
             style: const TextStyle(color: Colors.white, fontSize: 13),
           ),
@@ -324,9 +333,9 @@ class _FreshnessRow extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
             ),
-            child: const Text(
-              'Confirm',
-              style: TextStyle(
+            child: Text(
+              l.confirm,
+              style: const TextStyle(
                 color: UpinoTokens.gradientStart,
                 fontSize: 13.5,
                 fontWeight: FontWeight.w700,
@@ -384,11 +393,6 @@ class _Figure extends StatelessWidget {
       );
 }
 
-const _months = <String>[
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
 
 /// Dates read as words. The engine's own `toString` is an ISO string meant
 /// for logs and fixtures, never for the person using the app.
-String formatDate(LocalDate date) => '${date.day} ${_months[date.month - 1]}';

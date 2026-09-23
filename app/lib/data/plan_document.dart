@@ -26,6 +26,7 @@ class PlanDocument {
     this.lastBalanceConfirmationAt,
     this.eventSequence = 0,
     this.themeChoice = ThemeChoice.system,
+    this.languageCode,
     this.goals = const [],
     this.payCycleDays = 30,
   });
@@ -45,6 +46,9 @@ class PlanDocument {
   /// A preference rather than plan data, but it lives here so there is one
   /// thing to save and one thing to read back.
   final ThemeChoice themeChoice;
+
+  /// Null follows the phone's language.
+  final String? languageCode;
   final List<Goal> goals;
 
   /// How long a pay period is, which is what a goal's contribution schedule
@@ -58,6 +62,7 @@ class PlanDocument {
         'onboarded': onboarded,
         'eventSequence': eventSequence,
         'themeChoice': themeChoice.name,
+        if (languageCode != null) 'languageCode': languageCode,
         'payCycleDays': payCycleDays,
         'goals': goals.map(goalToJson).toList(),
         if (lastBalanceConfirmationAt != null)
@@ -103,6 +108,7 @@ class PlanDocument {
       themeChoice: json['themeChoice'] == null
           ? ThemeChoice.system
           : enumByName(ThemeChoice.values, json['themeChoice'], 'theme choice'),
+      languageCode: json['languageCode'] as String?,
       lastBalanceConfirmationAt:
           confirmedAt == null ? null : DateTime.parse(confirmedAt as String),
     );

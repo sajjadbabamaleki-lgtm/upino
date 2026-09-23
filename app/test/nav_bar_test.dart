@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/design/parts.dart';
 import 'package:upino/design/theme.dart';
 import 'package:upino/design/tokens.dart';
@@ -18,10 +19,18 @@ Future<Rect> rectOf(WidgetTester tester, Finder finder) async {
 Future<void> pumpBar(
   WidgetTester tester,
   int index,
-  Brightness brightness,
-) async {
+  Brightness brightness, {
+  String language = 'en',
+}) async {
+  tester.view
+    ..physicalSize = const Size(400, 900)
+    ..devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
   await tester.pumpWidget(
     MaterialApp(
+      locale: Locale(language),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: buildTheme(brightness: brightness),
       home: Scaffold(
         body: Center(
@@ -91,9 +100,18 @@ void main() {
   });
 
   testWidgets('every destination fits on one row at phone width', (t) async {
-    for (var i = 0; i < UpinoNavBar.destinationCount; i++) {
-      await pumpBar(t, i, Brightness.light);
-      expect(didOverflow(), isFalse, reason: 'destination $i overflowed');
+    // In every language. The selected pill is the only one that carries a
+    // label, and how wide that label is depends on the language: this caught
+    // the bar overflowing in eight of the ten, English among them.
+    for (final language in ['ar', 'en', 'es', 'fa', 'fr', 'hi', 'pt', 'ru', 'tr', 'zh']) {
+      for (var i = 0; i < UpinoNavBar.destinationCount; i++) {
+        await pumpBar(t, i, Brightness.light, language: language);
+        expect(
+          didOverflow(),
+          isFalse,
+          reason: '$language destination $i overflowed',
+        );
+      }
     }
   });
 
@@ -129,6 +147,8 @@ void main() {
     const scrim = NavScrim(navHeight: 64, bottomGap: 22);
     await t.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildTheme(brightness: Brightness.light),
         home: const Scaffold(
           body: Align(alignment: Alignment.bottomCenter, child: scrim),

@@ -238,7 +238,18 @@ void main() {
         await fundedWithStore(InMemoryPlanStore()),
       );
 
-      await tester.tap(find.byKey(const Key('profile-start-over')));
+      // Profile grew a language card, so this row now sits below the fold.
+      // scrollUntilVisible stops as soon as the row exists, which can leave
+      // it flush with the bottom edge where a tap lands outside it.
+      final startOver = find.byKey(const Key('profile-start-over'));
+      await tester.scrollUntilVisible(
+        startOver,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.ensureVisible(startOver);
+      await tester.pumpAndSettle();
+      await tester.tap(startOver);
       await tester.pumpAndSettle();
       expect(find.text('Start over?'), findsOneWidget);
 

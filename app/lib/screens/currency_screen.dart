@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../engine/currencies.dart';
+import '../l10n/app_localizations.dart';
 
 class CurrencyPicker extends StatefulWidget {
   const CurrencyPicker({
@@ -49,6 +50,7 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final matches =
         currencyCatalogue.where((c) => c.matches(_query)).toList();
 
@@ -65,11 +67,10 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Which currency?', style: theme.textTheme.headlineLarge),
+              Text(l.currencyTitle, style: theme.textTheme.headlineLarge),
               const SizedBox(height: 6),
               Text(
-                'Everything in your plan is kept in this one. Pick the currency '
-                'you are actually paid in.',
+                l.currencyBlurb,
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -95,8 +96,7 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
                   ),
                   child: UpinoCard(
                     child: Text(
-                      'Nothing matches “$_query”. Try the country, or the '
-                      'three-letter code.',
+                      l.currencyNoMatch(_query),
                       style: theme.textTheme.bodySmall,
                     ),
                   ),
@@ -155,7 +155,7 @@ class _SearchField extends StatelessWidget {
               textInputAction: TextInputAction.search,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
-                hintText: 'Search country, currency or code',
+                hintText: AppLocalizations.of(context).currencySearchHint,
                 hintStyle: theme.textTheme.bodyMedium
                     ?.copyWith(color: UpinoTokens.textTertiary),
                 border: InputBorder.none,

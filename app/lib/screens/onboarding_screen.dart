@@ -12,6 +12,7 @@ import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../engine/currencies.dart';
 import '../engine/money.dart';
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import 'currency_screen.dart';
 
@@ -106,6 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
 
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final info = currencyCatalogue.firstWhere((c) => c.code == _draft.currency);
     return Scaffold(
       body: SafeArea(
@@ -117,11 +119,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             36,
           ),
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 4, bottom: 14),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, bottom: 14),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: UpinoBadge('Takes about a minute'),
+                child: UpinoBadge(l.onboardingBadge),
               ),
             ),
             Padding(
@@ -129,10 +131,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Set up your plan', style: theme.textTheme.headlineLarge),
+                  Text(l.onboardingTitle, style: theme.textTheme.headlineLarge),
                   const SizedBox(height: 6),
                   Text(
-                    'Two answers are enough to start. Everything else can wait.',
+                    l.onboardingBlurb,
                     style: theme.textTheme.bodySmall,
                   ),
                 ],
@@ -151,16 +153,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _Field(
               key: const Key('field-balance'),
               controller: _balance,
-              label: 'How much do you have right now?',
-              hint: 'Across the accounts you spend from',
+              label: l.onboardingBalanceLabel,
+              hint: l.onboardingBalanceHint,
               currency: _draft.currency,
               onChanged: () => setState(() {}),
             ),
             _Field(
               key: const Key('field-income'),
               controller: _income,
-              label: 'How much is your next pay?',
-              hint: 'Your usual amount is fine',
+              label: l.onboardingIncomeLabel,
+              hint: l.onboardingIncomeHint,
               currency: _draft.currency,
               onChanged: () => setState(() {}),
             ),
@@ -171,10 +173,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             const SizedBox(height: 6),
             ActionRow(
-              title: 'Add your commitments',
+              title: l.onboardingCommitments,
               subtitle: _showOptional
-                  ? 'Rent, essentials and a goal'
-                  : 'Optional, and you can do it later',
+                  ? l.onboardingCommitmentsOpen
+                  : l.onboardingCommitmentsShut,
               trailing: RowAffordance(
                 icon: _showOptional
                     ? Icons.keyboard_arrow_up_rounded
@@ -188,24 +190,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _Field(
                 key: const Key('field-rent'),
                 controller: _rent,
-                label: 'Rent and fixed bills',
-                hint: 'Due before your next pay',
+                label: l.onboardingRentLabel,
+                hint: l.onboardingRentHint,
                 currency: _draft.currency,
                 onChanged: () => setState(() {}),
               ),
               _Field(
                 key: const Key('field-essentials'),
                 controller: _essentials,
-                label: 'Food and transport',
-                hint: 'What you need to get through the period',
+                label: l.onboardingEssentialsLabel,
+                hint: l.onboardingEssentialsHint,
                 currency: _draft.currency,
                 onChanged: () => setState(() {}),
               ),
               _Field(
                 key: const Key('field-goal'),
                 controller: _goal,
-                label: 'Saving toward a goal',
-                hint: 'What you want to put aside this period',
+                label: l.onboardingGoalLabel,
+                hint: l.onboardingGoalHint,
                 currency: _draft.currency,
                 onChanged: () => setState(() {}),
               ),
@@ -214,13 +216,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             const SizedBox(height: 22),
             FilledButton(
               onPressed: _canFinish ? _finish : null,
-              child: const Text('See what I can spend'),
+              child: Text(l.onboardingFinish),
             ),
             if (!_canFinish) ...[
               const SizedBox(height: 10),
               Center(
                 child: Text(
-                  'Fill in the first two answers to continue',
+                  l.onboardingIncomplete,
                   style: theme.textTheme.bodySmall,
                 ),
               ),
@@ -299,7 +301,7 @@ class _Field extends StatelessWidget {
                       decoration: InputDecoration(
                         // "0.00" read as a filled value on a real phone, so
                         // the placeholder now says what to do instead.
-                        hintText: 'Tap to type',
+                        hintText: AppLocalizations.of(context).tapToType,
                         hintStyle: theme.textTheme.bodyMedium
                             ?.copyWith(color: UpinoTokens.textTertiary),
                         border: InputBorder.none,
@@ -334,7 +336,10 @@ class _PayDayField extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('When is your next pay?', style: theme.textTheme.titleMedium),
+            Text(
+              AppLocalizations.of(context).onboardingPayDay,
+              style: theme.textTheme.titleMedium,
+            ),
             const SizedBox(height: 14),
             Row(
               children: [
@@ -343,7 +348,7 @@ class _PayDayField extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(right: d == 30 ? 0 : 8),
                       child: _DayChip(
-                        label: '$d days',
+                        label: AppLocalizations.of(context).onboardingDays(d),
                         selected: days == d,
                         onTap: () => onChanged(d),
                       ),

@@ -10,21 +10,13 @@ import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../domain/goal.dart';
-import '../engine/clock.dart';
 import '../engine/domain.dart';
 import '../engine/money.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/dates.dart';
+import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
-import '../widgets/sts_hero.dart' show formatDate;
-
-const _shortMonths = <String>[
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
-
-/// `12 Mar 2027` — short enough to sit beside a figure.
-String formatDateShort(LocalDate date) =>
-    '${date.day} ${_shortMonths[date.month - 1]} ${date.year}';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({
@@ -52,11 +44,12 @@ class PlanScreen extends StatelessWidget {
       currency: state.currency,
       title: label,
       explanation: current == null
-          ? 'How much do you need to set aside for this?'
-          : 'Change the amount, or remove it from your plan.',
+          ? AppLocalizations.of(context).planHowMuchSetAside
+          : AppLocalizations.of(context).planChangeOrRemove,
       initial: current,
       allowZero: true,
-      removeLabel: current == null ? null : 'Remove from plan',
+      removeLabel:
+          current == null ? null : AppLocalizations.of(context).planRemove,
     );
     if (amount != null) state.setClaimAmount(id, amount);
   }
@@ -65,9 +58,8 @@ class PlanScreen extends StatelessWidget {
     final amount = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'Your next pay',
-      explanation:
-          'This is only expected, so it stays out of what you can spend now.',
+      title: AppLocalizations.of(context).planYourNextPay,
+      explanation: AppLocalizations.of(context).planExpectedBlurb,
       initial: state.nextIncome?.expectedAmount,
     );
     if (amount != null) state.setExpectedIncome(amount: amount);
@@ -77,9 +69,8 @@ class PlanScreen extends StatelessWidget {
     final observed = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'What is your balance now?',
-      explanation:
-          'Any difference is recorded as a correction, never as spending.',
+      title: AppLocalizations.of(context).askBalanceTitle,
+      explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
     if (observed != null) state.confirmBalance(observed);
@@ -88,6 +79,7 @@ class PlanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final claims = state.editableClaims;
     final existing = {for (final c in claims) c.id};
@@ -103,45 +95,45 @@ class PlanScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Plan', style: theme.textTheme.headlineLarge),
+              Text(l.planTitle, style: theme.textTheme.headlineLarge),
               const SizedBox(height: 2),
               Text(
-                'What your money is promised to, before anything is spendable.',
+                l.planBlurb,
                 style: theme.textTheme.bodySmall,
               ),
             ],
           ),
         ),
 
-        const SectionHeading('Money and income'),
+        SectionHeading(l.planMoneyAndIncome),
         ActionRow(
           key: const Key('plan-balance'),
-          title: 'Money you have',
+          title: l.planMoneyYouHave,
           subtitle: snapshot.trustedAllocatableLiquidity.display(),
           onTap: () => _confirmBalance(context),
         ),
         const SizedBox(height: 10),
         ActionRow(
           key: const Key('plan-income'),
-          title: 'Next pay',
+          title: l.planNextPay,
           subtitle: income == null
-              ? 'Not set'
+              ? l.planNotSet
               : '${income.expectedAmount.display()}'
                   '${UpinoTokens.separator}'
-                  '${formatDate(income.expectedDate)}',
+                  '${formatDate(context, income.expectedDate)}',
           onTap: () => _editIncome(context),
         ),
 
         const SizedBox(height: 26),
         SectionHeading(
-          'Goals',
+          l.planGoals,
           count: state.goals.isEmpty ? null : state.goals.length,
         ),
         if (state.goals.isEmpty)
           ActionRow(
             key: const Key('plan-goals'),
-            title: 'Save toward something',
-            subtitle: 'A trip, a deposit, a replacement laptop',
+            title: l.planSaveToward,
+            subtitle: l.planSaveTowardSub,
             trailing: const RowAffordance(icon: Icons.add_rounded),
             onTap: () => onOpenGoals(),
           )
@@ -151,8 +143,8 @@ class PlanScreen extends StatelessWidget {
               key: Key('plan-goal-${goal.id}'),
               title: goal.name,
               subtitle: goal.kind == GoalKind.paused
-                  ? 'Paused'
-                  : '${goal.saved.display()} of ${goal.target.display()}',
+                  ? l.goalKindPaused
+                  : '${goal.saved.display()} ${l.goalsOf(goal.target.display())}',
               trailing: _Amount(
                 goal.requiredThisCycle(state.today, state.payCycleDays),
               ),
@@ -162,18 +154,21 @@ class PlanScreen extends StatelessWidget {
           ],
           ActionRow(
             key: const Key('plan-goals'),
-            title: 'All goals',
-            subtitle: 'Add, edit or put money aside',
+            title: l.planAllGoals,
+            subtitle: l.planAllGoalsSub,
             onTap: () => onOpenGoals(),
           ),
         ],
 
         const SizedBox(height: 26),
-        SectionHeading('Set aside first', count: claims.isEmpty ? null : claims.length),
+        SectionHeading(
+          l.planSetAsideFirst,
+          count: claims.isEmpty ? null : claims.length,
+        ),
         if (claims.isEmpty)
           UpinoCard(
             child: Text(
-              'Nothing is set aside, so everything you have is spendable.',
+              l.planNothingSetAside,
               style: theme.textTheme.bodySmall,
             ),
           )
@@ -181,13 +176,13 @@ class PlanScreen extends StatelessWidget {
           for (final claim in claims) ...[
             ActionRow(
               key: Key('plan-claim-${claim.id}'),
-              title: claim.label,
-              subtitle: _subtitleFor(claim),
+              title: labelForClaim(l, claim.id, claim.label),
+              subtitle: _subtitleFor(context, claim),
               trailing: _Amount(claim.amount),
               onTap: () => _editClaim(
                 context,
                 id: claim.id,
-                label: claim.label,
+                label: labelForClaim(l, claim.id, claim.label),
                 current: claim.amount,
               ),
             ),
@@ -196,17 +191,17 @@ class PlanScreen extends StatelessWidget {
 
         if (addable.isNotEmpty) ...[
           const SizedBox(height: 16),
-          const SectionHeading('Add to your plan'),
+          SectionHeading(l.planAddToPlan),
           for (final option in addable) ...[
             ActionRow(
               key: Key('plan-add-${option.id}'),
-              title: option.label,
-              subtitle: _priorityExplanation(option.priority),
+              title: labelForClaim(l, option.id, option.label),
+              subtitle: _priorityExplanation(l, option.priority),
               trailing: const RowAffordance(icon: Icons.add_rounded),
               onTap: () => _editClaim(
                 context,
                 id: option.id,
-                label: option.label,
+                label: labelForClaim(l, option.id, option.label),
               ),
             ),
             const SizedBox(height: 10),
@@ -216,23 +211,25 @@ class PlanScreen extends StatelessWidget {
     );
   }
 
-  String _subtitleFor(Claim claim) {
+  String _subtitleFor(BuildContext context, Claim claim) {
+    final l = AppLocalizations.of(context);
     final due = claim.dueDate;
-    final when = due == null ? '' : '${UpinoTokens.separator}due ${formatDate(due)}';
-    return '${_priorityExplanation(claim.priority)}$when';
+    final when = due == null ? '' : l.planDue(formatDate(context, due));
+    return '${_priorityExplanation(l, claim.priority)}$when';
   }
 
   /// Plain language for where a commitment sits in the waterfall, so the
   /// order on screen is explained rather than just asserted.
-  static String _priorityExplanation(Priority priority) => switch (priority) {
-        Priority.p2HardObligation => 'Must be paid — comes first',
-        Priority.p3CardSpendReserve => 'Already spent on a card',
-        Priority.p4EssentialLiving => 'Day-to-day needs',
-        Priority.p5SinkingCatchup => 'Saving for a known bill',
-        Priority.p6Buffer => 'Kept back for emergencies',
-        Priority.p7HardGoal => 'A goal you have committed to',
-        Priority.p8Flexible => 'Nice to have — yields first',
-        _ => 'Protected',
+  static String _priorityExplanation(AppLocalizations l, Priority priority) =>
+      switch (priority) {
+        Priority.p2HardObligation => l.priorityMandatory,
+        Priority.p3CardSpendReserve => l.priorityCard,
+        Priority.p4EssentialLiving => l.priorityEssential,
+        Priority.p5SinkingCatchup => l.prioritySinkingFund,
+        Priority.p6Buffer => l.priorityBuffer,
+        Priority.p7HardGoal => l.priorityGoal,
+        Priority.p8Flexible => l.priorityDiscretionary,
+        _ => l.planSetAsideFirst,
       };
 }
 

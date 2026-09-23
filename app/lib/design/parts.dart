@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import 'tokens.dart';
 
 bool isDark(BuildContext context) =>
@@ -310,19 +311,23 @@ class UpinoNavBar extends StatelessWidget {
   static const inset = 9.0;
   static const itemHeight = 46.0;
 
-  static const _items = <({IconData icon, String label})>[
-    (icon: Icons.home_rounded, label: 'Home'),
-    (icon: Icons.account_balance_wallet_rounded, label: 'Plan'),
-    (icon: Icons.flag_rounded, label: 'Goals'),
-    (icon: Icons.receipt_long_rounded, label: 'Activity'),
-    (icon: Icons.grid_view_rounded, label: 'Profile'),
+  static const _icons = <IconData>[
+    Icons.home_rounded,
+    Icons.account_balance_wallet_rounded,
+    Icons.flag_rounded,
+    Icons.receipt_long_rounded,
+    Icons.grid_view_rounded,
   ];
 
-  static int get destinationCount => _items.length;
+  static List<String> labelsOf(AppLocalizations l) =>
+      [l.navHome, l.navPlan, l.navGoals, l.navActivity, l.navProfile];
+
+  static int get destinationCount => _icons.length;
 
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
+    final labels = labelsOf(AppLocalizations.of(context));
     return Container(
       key: const Key('nav-bar-surface'),
       padding: const EdgeInsets.all(inset),
@@ -336,13 +341,27 @@ class UpinoNavBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            for (var i = 0; i < _items.length; i++)
-              _NavItem(
-                icon: _items[i].icon,
-                label: _items[i].label,
-                selected: i == index,
-                onTap: () => onSelect(i),
-              ),
+            // Only the selected pill carries a label, and how wide that
+            // label is depends on the language: "Activity" is "Hareketler"
+            // in Turkish. It is the one item allowed to shrink, so a long
+            // word narrows the pill instead of pushing the row past the bar.
+            for (var i = 0; i < _icons.length; i++)
+              if (i == index)
+                Flexible(
+                  child: _NavItem(
+                    icon: _icons[i],
+                    label: labels[i],
+                    selected: true,
+                    onTap: () => onSelect(i),
+                  ),
+                )
+              else
+                _NavItem(
+                  icon: _icons[i],
+                  label: labels[i],
+                  selected: false,
+                  onTap: () => onSelect(i),
+                ),
           ],
         ),
       ),
@@ -392,13 +411,17 @@ class _NavItem extends StatelessWidget {
             ),
             if (selected) ...[
               const SizedBox(width: 9),
-              Text(
-                label,
-                style: TextStyle(
-                  color: onTint,
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.2,
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: onTint,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                  ),
                 ),
               ),
             ],

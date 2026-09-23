@@ -13,6 +13,9 @@ import '../engine/allocate.dart';
 import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/dates.dart';
+import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import 'activity_screen.dart';
@@ -42,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final amount = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'How much did you spend?',
+      title: AppLocalizations.of(context).askSpendTitle,
     );
     if (amount != null) state.recordExpense(amount);
   }
@@ -51,9 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final observed = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'What is your balance now?',
-      explanation:
-          'Any difference is recorded as a correction, never as spending.',
+      title: AppLocalizations.of(context).askBalanceTitle,
+      explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
     if (observed != null) state.confirmBalance(observed);
@@ -62,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final justRecorded = state.lastRecordedExpense;
     final attention = snapshot.allocations
@@ -102,12 +105,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Your plan', style: theme.textTheme.headlineLarge),
+                      Text(l.homeTitle, style: theme.textTheme.headlineLarge),
                       const SizedBox(height: 2),
                       Text(
-                        'Until ${formatDate(snapshot.decisionHorizonEnd)}'
-                        '${UpinoTokens.separator}'
-                        '${snapshot.trustedAllocatableLiquidity.display()} in total',
+                        l.homeUntilTotal(
+                          formatDate(context, snapshot.decisionHorizonEnd),
+                          snapshot.trustedAllocatableLiquidity.display(),
+                        ),
                         style: theme.textTheme.bodySmall,
                       ),
                     ],
@@ -135,11 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 26),
 
                 if (attention.isNotEmpty) ...[
-                  SectionHeading('Needs your attention', count: attention.length),
+                  SectionHeading(l.homeAttention, count: attention.length),
                   for (final a in attention) ...[
                     ActionRow(
-                      title: a.label,
-                      subtitle: '${a.shortfall.display()} not covered',
+                      title: labelForClaim(l, a.claimId, a.label),
+                      subtitle: l.homeNotCovered(a.shortfall.display()),
                       titleColor: a.priority.isMandatory
                           ? (isDark(context)
                               ? UpinoTokens.darkCritical
@@ -153,16 +157,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
 
                 if (snapshot.projectedSafeToSpend > snapshot.safeToSpendNow) ...[
-                  const SectionHeading('After your next pay'),
+                  SectionHeading(l.homeAfterNextPay),
                   _ProjectedCard(snapshot: snapshot),
                   const SizedBox(height: 26),
                 ],
 
-                const SectionHeading('Set aside first'),
+                SectionHeading(l.homeSetAsideFirst),
                 _ProtectedCard(snapshot: snapshot),
 
                     const SizedBox(height: 26),
-                    const SectionHeading('Why this number'),
+                    SectionHeading(l.homeWhyThisNumber),
                     _WhyCard(snapshot: snapshot),
                   ],
                 ),
@@ -215,7 +219,7 @@ class _ConfirmationBanner extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                '${amount.display()} recorded',
+                AppLocalizations.of(context).homeRecorded(amount.display()),
                 style: const TextStyle(
                   color: UpinoTokens.textPrimary,
                   fontWeight: FontWeight.w700,
@@ -257,14 +261,21 @@ class _ProjectedCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Once your pay arrives on '
-                  '${formatDate(snapshot.decisionHorizonEnd)}',
+                  AppLocalizations.of(context).homeOncePayArrives(
+                    formatDate(context, snapshot.decisionHorizonEnd),
+                  ),
                   style: theme.textTheme.bodySmall,
                 ),
               ],
             ),
           ),
-          const RowAffordance(icon: Icons.trending_up_rounded),
+          // The layout mirrors in Arabic and Persian, and a mirrored rising
+          // arrow reads as a falling one. The figure it sits beside is a
+          // forecast of more money, so this one glyph keeps its direction.
+          const Directionality(
+            textDirection: TextDirection.ltr,
+            child: RowAffordance(icon: Icons.trending_up_rounded),
+          ),
         ],
       ),
     );
@@ -284,7 +295,7 @@ class _ProtectedCard extends StatelessWidget {
     if (rows.isEmpty) {
       return UpinoCard(
         child: Text(
-          'Nothing is set aside yet. Everything you have is spendable.',
+          AppLocalizations.of(context).homeNothingSetAside,
           style: theme.textTheme.bodySmall,
         ),
       );
@@ -295,7 +306,7 @@ class _ProtectedCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Protected before anything is spendable.',
+            AppLocalizations.of(context).homeProtectedBlurb,
             style: theme.textTheme.bodySmall,
           ),
           const SizedBox(height: 16),
@@ -333,11 +344,19 @@ class _AllocationLine extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(allocation.label, style: theme.textTheme.bodyMedium),
+              Text(
+                labelForClaim(
+                  AppLocalizations.of(context),
+                  allocation.claimId,
+                  allocation.label,
+                ),
+                style: theme.textTheme.bodyMedium,
+              ),
               if (short) ...[
                 const SizedBox(height: 2),
                 Text(
-                  '${allocation.shortfall.display()} not covered',
+                  AppLocalizations.of(context)
+                      .homeNotCovered(allocation.shortfall.display()),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: critical ? criticalColor : null,
                     fontSize: 12.5,
@@ -365,36 +384,33 @@ class _WhyCard extends StatelessWidget {
 
   final PlanSnapshot snapshot;
 
-  static const _plainLanguage = <ReasonCode, String>{
-    ReasonCode.incomeConfirmed: 'Your pay arrived, so the plan was refreshed.',
-    ReasonCode.incomeLate: 'Your expected pay has not arrived yet.',
-    ReasonCode.fundingGap: 'You have committed to more than you currently have.',
-    ReasonCode.goalAtRisk: 'Your savings goal cannot be fully funded right now.',
-    ReasonCode.overdueHardClaim: 'Something is past its due date.',
-    ReasonCode.cardSpendFundingGap:
-        'Your card balance is larger than the money you have.',
-    ReasonCode.protectionHorizonExtended:
-        'Money is held back for a bill due just after your next pay.',
-    ReasonCode.reservationConsumed:
-        'A bill you had set money aside for was paid.',
-    ReasonCode.duplicateHold: 'A repeated transaction was counted only once.',
-    ReasonCode.balanceStale: 'Your balance has not been confirmed recently.',
-    ReasonCode.bufferShortfall: 'Your savings buffer is not fully topped up.',
-    ReasonCode.flexibleShortfall: 'A flexible goal received less than planned.',
-  };
+  /// Reason codes are engine output; this turns each into one sentence of
+  /// the reader's own language, with no accounting jargon (§18 step 6).
+  static String _plain(AppLocalizations l, ReasonCode code) => switch (code) {
+        ReasonCode.incomeConfirmed => l.whyPayArrived,
+        ReasonCode.incomeLate => l.whyPayLate,
+        ReasonCode.fundingGap => l.whyOvercommitted,
+        ReasonCode.goalAtRisk => l.whyGoalShort,
+        ReasonCode.overdueHardClaim => l.whyOverdue,
+        ReasonCode.cardSpendFundingGap => l.whyCardLarger,
+        ReasonCode.protectionHorizonExtended => l.whyHeldForBill,
+        ReasonCode.reservationConsumed => l.whyBillPaid,
+        ReasonCode.duplicateHold => l.whyDuplicate,
+        ReasonCode.balanceStale => l.whyStale,
+        ReasonCode.bufferShortfall => l.whyBufferShort,
+        ReasonCode.flexibleShortfall => l.whyFlexibleLess,
+      };
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final lines = snapshot.reasonCodes
-        .map((c) => _plainLanguage[c])
-        .whereType<String>()
-        .toList();
+    final l = AppLocalizations.of(context);
+    final lines = snapshot.reasonCodes.map((c) => _plain(l, c)).toList();
 
     if (lines.isEmpty) {
       return UpinoCard(
         child: Text(
-          'Nothing has changed since your last plan.',
+          l.whyNoChange,
           style: theme.textTheme.bodySmall,
         ),
       );
@@ -461,11 +477,13 @@ class _BreakdownSheet extends StatelessWidget {
           children: [
             Center(child: _Grabber()),
             const SizedBox(height: 20),
-            Text('What is short', style: theme.textTheme.headlineMedium),
+            Text(
+              AppLocalizations.of(context).homeWhatIsShort,
+              style: theme.textTheme.headlineMedium,
+            ),
             const SizedBox(height: 6),
             Text(
-              'Nothing here is moved or delayed for you. These are the '
-              'commitments your current money does not cover.',
+              AppLocalizations.of(context).homeShortBlurb,
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 20),

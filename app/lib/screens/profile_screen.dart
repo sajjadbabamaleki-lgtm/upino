@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../engine/plan.dart';
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 
@@ -61,9 +62,8 @@ class ProfileScreen extends StatelessWidget {
     final observed = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'What is your balance now?',
-      explanation:
-          'Any difference is recorded as a correction, never as spending.',
+      title: AppLocalizations.of(context).askBalanceTitle,
+      explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
     if (observed != null) state.confirmBalance(observed);
@@ -77,20 +77,19 @@ class ProfileScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
         ),
-        title: const Text('Start over?'),
-        content: const Text(
-          'Your plan and everything you recorded are deleted. This cannot be '
-          'undone.',
+        title: Text(AppLocalizations.of(dialogContext).profileStartOver),
+        content: Text(
+          AppLocalizations.of(dialogContext).profileStartOverBlurb,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Keep my plan'),
+            child: Text(AppLocalizations.of(dialogContext).profileKeepPlan),
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
             child: Text(
-              'Delete everything',
+              AppLocalizations.of(dialogContext).profileDeleteEverything,
               style: TextStyle(
                 color: isDark(dialogContext)
                     ? UpinoTokens.darkCritical
@@ -107,6 +106,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final age = snapshot.balanceAgeInDays;
 
@@ -115,18 +115,18 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Text('Profile', style: theme.textTheme.headlineLarge),
+          child: Text(l.profileTitle, style: theme.textTheme.headlineLarge),
         ),
 
-        const SectionHeading('Your data'),
+        SectionHeading(l.profileYourData),
         ActionRow(
           key: const Key('profile-confirm-balance'),
-          title: 'Confirm your balance',
+          title: l.profileConfirmBalance,
           subtitle: switch (age) {
-            null => 'Not confirmed yet',
-            0 => 'Confirmed today',
-            1 => 'Confirmed yesterday',
-            _ => 'Confirmed $age days ago',
+            null => l.profileConfirmedNever,
+            0 => l.profileConfirmedToday,
+            1 => l.profileConfirmedYesterday,
+            _ => l.profileConfirmedDays(age),
           },
           onTap: () => _confirmBalance(context),
         ),
@@ -135,19 +135,13 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('How trustworthy is the figure?',
-                  style: theme.textTheme.titleMedium,),
+              Text(l.profileTrustTitle, style: theme.textTheme.titleMedium),
               const SizedBox(height: 4),
               Text(
                 switch (snapshot.confidenceState) {
-                  ConfidenceState.trusted =>
-                    'Up to date. Nothing needs your attention.',
-                  ConfidenceState.degraded =>
-                    'Your balance has not been confirmed for a while. The '
-                        'figure is still shown, just less certain.',
-                  ConfidenceState.reviewRequired =>
-                    'Too old or too uncertain to rely on. Confirm your '
-                        'balance to fix it.',
+                  ConfidenceState.trusted => l.profileTrustFresh,
+                  ConfidenceState.degraded => l.profileTrustDegraded,
+                  ConfidenceState.reviewRequired => l.profileTrustReview,
                 },
                 style: theme.textTheme.bodySmall,
               ),
@@ -156,15 +150,15 @@ class ProfileScreen extends StatelessWidget {
         ),
 
         const SizedBox(height: 26),
-        const SectionHeading('Appearance'),
+        SectionHeading(l.profileAppearance),
         UpinoCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Theme', style: theme.textTheme.titleMedium),
+              Text(l.profileTheme, style: theme.textTheme.titleMedium),
               const SizedBox(height: 4),
               Text(
-                'Following your phone is the default, so nothing is imposed.',
+                l.profileThemeBlurb,
                 style: theme.textTheme.bodySmall,
               ),
               const SizedBox(height: 14),
@@ -179,9 +173,9 @@ class ProfileScreen extends StatelessWidget {
                         child: _ThemeOption(
                           key: Key('theme-${choice.name}'),
                           label: switch (choice) {
-                            ThemeChoice.system => 'Phone',
-                            ThemeChoice.light => 'Light',
-                            ThemeChoice.dark => 'Dark',
+                            ThemeChoice.system => l.themePhone,
+                            ThemeChoice.light => l.themeLight,
+                            ThemeChoice.dark => l.themeDark,
                           },
                           selected: state.themeChoice == choice,
                           onTap: () => state.setThemeChoice(choice),
@@ -194,17 +188,75 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
 
+        const SizedBox(height: 16),
+        _LanguageCard(state: state),
+
         const SizedBox(height: 26),
-        const SectionHeading('Start again'),
+        SectionHeading(l.profileStartAgain),
         ActionRow(
           key: const Key('profile-start-over'),
-          title: 'Delete my plan',
-          subtitle: 'Clears everything and returns to setup',
+          title: l.profileDelete,
+          subtitle: l.profileDeleteSub,
           titleColor:
               isDark(context) ? UpinoTokens.darkCritical : UpinoTokens.critical,
           onTap: () => _startOver(context),
         ),
       ],
+    );
+  }
+}
+
+/// Language sits beside the theme, and for the same reason: it is a
+/// preference, it is stored with the plan, and following the phone is the
+/// default so nothing is imposed. Each language is named in itself, because
+/// someone who cannot read the current one still has to find their own.
+class _LanguageCard extends StatelessWidget {
+  const _LanguageCard({required this.state});
+
+  final AppState state;
+
+  static const _names = <String, String>{
+    'en': 'English',
+    'zh': '中文',
+    'hi': 'हिन्दी',
+    'es': 'Español',
+    'fr': 'Français',
+    'ar': 'العربية',
+    'fa': 'فارسی',
+    'pt': 'Português',
+    'ru': 'Русский',
+    'tr': 'Türkçe',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final codes = <String?>[null, ..._names.keys];
+
+    return UpinoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l.profileLanguage, style: theme.textTheme.titleMedium),
+          const SizedBox(height: 4),
+          Text(l.profileLanguageBlurb, style: theme.textTheme.bodySmall),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final code in codes)
+                _ThemeOption(
+                  key: Key('language-${code ?? 'system'}'),
+                  label: code == null ? l.languagePhone : _names[code]!,
+                  selected: state.languageCode == code,
+                  onTap: () => state.setLanguageCode(code),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

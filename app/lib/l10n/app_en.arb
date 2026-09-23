@@ -1,0 +1,319 @@
+{
+  "@@locale": "en",
+  "navHome": "Home",
+  "navPlan": "Plan",
+  "navGoals": "Goals",
+  "navActivity": "Activity",
+  "navProfile": "Profile",
+  "currencyTitle": "Which currency?",
+  "currencyBlurb": "Everything in your plan is kept in this one. Pick the currency you are actually paid in.",
+  "currencySearchHint": "Search country, currency or code",
+  "currencyNoMatch": "Nothing matches “{query}”. Try the country, or the three-letter code.",
+  "@currencyNoMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingBadge": "Takes about a minute",
+  "onboardingTitle": "Set up your plan",
+  "onboardingBlurb": "Two answers are enough to start. Everything else can wait.",
+  "onboardingBalanceLabel": "How much do you have right now?",
+  "onboardingBalanceHint": "Across the accounts you spend from",
+  "onboardingIncomeLabel": "How much is your next pay?",
+  "onboardingIncomeHint": "Your usual amount is fine",
+  "onboardingPayDay": "When is your next pay?",
+  "onboardingDays": "{count} days",
+  "@onboardingDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingCommitments": "Add your commitments",
+  "onboardingCommitmentsOpen": "Rent, essentials and a goal",
+  "onboardingCommitmentsShut": "Optional, and you can do it later",
+  "onboardingRentLabel": "Rent and fixed bills",
+  "onboardingRentHint": "Due before your next pay",
+  "onboardingEssentialsLabel": "Food and transport",
+  "onboardingEssentialsHint": "What you need to get through the period",
+  "onboardingGoalLabel": "Saving toward a goal",
+  "onboardingGoalHint": "What you want to put aside this period",
+  "onboardingFinish": "See what I can spend",
+  "onboardingIncomplete": "Fill in the first two answers to continue",
+  "tapToType": "Tap to type",
+  "heroSafeToSpend": "Safe to spend now",
+  "heroNotUpToDate": "Not up to date",
+  "heroRecordSpend": "Record a spend",
+  "heroSeeShort": "See what is short",
+  "heroConfirmBalance": "Confirm balance",
+  "heroReviewBlurb": "Check your balance so this number can be trusted again.",
+  "heroUntilSetAside": "Until {date} · {amount} set aside",
+  "@heroUntilSetAside": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "heroShort": "{amount} short",
+  "@heroShort": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "heroUnfunded": "{label} · {amount} unfunded",
+  "@heroUnfunded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "heroBalanceNever": "Balance not confirmed yet",
+  "heroBalanceToday": "Balance confirmed today",
+  "heroBalanceYesterday": "Balance confirmed yesterday",
+  "heroBalanceDays": "Balance confirmed {count} days ago",
+  "@heroBalanceDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirm": "Confirm",
+  "homeTitle": "Your plan",
+  "homeUntilTotal": "Until {date} · {amount} in total",
+  "@homeUntilTotal": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeRecorded": "{amount} recorded",
+  "@homeRecorded": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeAttention": "Needs your attention",
+  "homeNotCovered": "{amount} not covered",
+  "@homeNotCovered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "homeAfterNextPay": "After your next pay",
+  "homeOncePayArrives": "Once your pay arrives on {date}",
+  "@homeOncePayArrives": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSetAsideFirst": "Set aside first",
+  "homeProtectedBlurb": "Protected before anything is spendable.",
+  "homeNothingSetAside": "Nothing is set aside yet. Everything you have is spendable.",
+  "homeWhyThisNumber": "Why this number",
+  "homeWhatIsShort": "What is short",
+  "homeShortBlurb": "Nothing here is moved or delayed for you. These are the commitments your current money does not cover.",
+  "askSpendTitle": "How much did you spend?",
+  "askBalanceTitle": "What is your balance now?",
+  "askBalanceBlurb": "Any difference is recorded as a correction, never as spending.",
+  "whyNoChange": "Nothing has changed since your last plan.",
+  "whyPayArrived": "Your pay arrived, so the plan was refreshed.",
+  "whyBillPaid": "A bill you had set money aside for was paid.",
+  "whyHeldForBill": "Money is held back for a bill due just after your next pay.",
+  "whyOvercommitted": "You have committed to more than you currently have.",
+  "whyStale": "Your balance has not been confirmed recently.",
+  "whyCardLarger": "Your card balance is larger than the money you have.",
+  "whyPayLate": "Your expected pay has not arrived yet.",
+  "whyOverdue": "Something is past its due date.",
+  "whyBufferShort": "Your savings buffer is not fully topped up.",
+  "whyGoalShort": "Your savings goal cannot be fully funded right now.",
+  "whyFlexibleLess": "A flexible goal received less than planned.",
+  "whyDuplicate": "A repeated transaction was counted only once.",
+  "planTitle": "Plan",
+  "planBlurb": "What your money is promised to, before anything is spendable.",
+  "planMoneyAndIncome": "Money and income",
+  "planMoneyYouHave": "Money you have",
+  "planNextPay": "Next pay",
+  "planYourNextPay": "Your next pay",
+  "planNotSet": "Not set",
+  "planExpectedBlurb": "This is only expected, so it stays out of what you can spend now.",
+  "planSetAsideFirst": "Set aside first",
+  "planNothingSetAside": "Nothing is set aside, so everything you have is spendable.",
+  "planAddToPlan": "Add to your plan",
+  "planGoals": "Goals",
+  "planSaveToward": "Save toward something",
+  "planSaveTowardSub": "A trip, a deposit, a replacement laptop",
+  "planAllGoals": "All goals",
+  "planAllGoalsSub": "Add, edit or put money aside",
+  "planHowMuchSetAside": "How much do you need to set aside for this?",
+  "planChangeOrRemove": "Change the amount, or remove it from your plan.",
+  "planRemove": "Remove from plan",
+  "planDue": " · due {date}",
+  "@planDue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "priorityMandatory": "Must be paid — comes first",
+  "priorityEssential": "Day-to-day needs",
+  "priorityBuffer": "Kept back for emergencies",
+  "priorityCard": "Already spent on a card",
+  "prioritySinkingFund": "Saving for a known bill",
+  "priorityGoal": "A goal you have committed to",
+  "priorityDiscretionary": "Nice to have — yields first",
+  "goalsTitle": "Goals",
+  "goalsBlurbEmpty": "Nothing saved toward yet.",
+  "goalsBlurb": "What each goal needs from this pay period.",
+  "goalsEmptyCard": "Add something you are saving for — a trip, a deposit, a replacement laptop. Upino works out what to hold back each pay period so it arrives on time.",
+  "goalsNew": "New goal",
+  "goalsNewSub": "Something you are putting money aside for",
+  "goalsAddMoney": "Add money",
+  "goalsAddTo": "Add to {name}",
+  "@goalsAddTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsAddBlurb": "This records what you have put aside. It does not spend anything — it lowers what has to be held back from here on.",
+  "goalsEachPeriod": "Each pay period",
+  "goalsTargetDate": "Target date",
+  "goalsOf": "of {amount}",
+  "@goalsOf": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsPeriodsToGo": "{count} pay periods to go",
+  "@goalsPeriodsToGo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsDone": "Saved in full",
+  "goalsPausedStatus": "Paused — nothing held back",
+  "goalsFlexibleStatus": "Flexible — gives way to anything you must pay",
+  "goalEditNew": "What are you saving for?",
+  "goalEditExisting": "Edit goal",
+  "goalName": "Name",
+  "goalNameHint": "A trip, a deposit, a laptop",
+  "goalTotal": "How much in total",
+  "goalByWhen": "By when",
+  "goalMonths": "{count} mo",
+  "@goalMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goalOneYear": "1 year",
+  "goalTwoYears": "2 years",
+  "goalFirmness": "How firm is it?",
+  "goalKindHard": "Committed",
+  "goalKindHardSub": "Held back before anything is spendable",
+  "goalKindFlexible": "Flexible",
+  "goalKindFlexibleSub": "Gives way to anything you must pay",
+  "goalKindPaused": "Paused",
+  "goalKindPausedSub": "Stays visible, nothing held back",
+  "goalSaveChanges": "Save changes",
+  "goalAddThis": "Add this goal",
+  "goalDelete": "Delete this goal",
+  "activityTitle": "Activity",
+  "activityBlurb": "Everything you have recorded, newest first.",
+  "activityEmpty": "When you record a spend it will appear here, and you can remove it if you got it wrong.",
+  "activityRemoveIt": "Remove it",
+  "activityKeepIt": "Keep it",
+  "activitySpent": "Spent",
+  "activityIncome": "Pay",
+  "activityCorrection": "Correction",
+  "activityRemoved": "Removed",
+  "profileTitle": "Profile",
+  "profileConfirmBalance": "Confirm your balance",
+  "profileTrustTitle": "How trustworthy is the figure?",
+  "profileTrustFresh": "Up to date. Nothing needs your attention.",
+  "profileTrustDegraded": "Your balance has not been confirmed for a while. The figure is still shown, just less certain.",
+  "profileTrustReview": "Too old or too uncertain to rely on. Confirm your balance to fix it.",
+  "profileConfirmedNever": "Not confirmed yet",
+  "profileConfirmedToday": "Confirmed today",
+  "profileConfirmedYesterday": "Confirmed yesterday",
+  "profileConfirmedDays": "Confirmed {count} days ago",
+  "@profileConfirmedDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAppearance": "Appearance",
+  "profileTheme": "Theme",
+  "profileThemeBlurb": "Following your phone is the default, so nothing is imposed.",
+  "themePhone": "Phone",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "profileLanguage": "Language",
+  "profileLanguageBlurb": "Following your phone is the default, so nothing is imposed.",
+  "languagePhone": "Phone",
+  "profileCurrency": "Currency",
+  "profileYourData": "Your data",
+  "profileDelete": "Delete my plan",
+  "profileDeleteSub": "Clears everything and returns to setup",
+  "profileStartOver": "Start over?",
+  "profileStartOverBlurb": "Your plan and everything you recorded are deleted. This cannot be undone.",
+  "profileDeleteEverything": "Delete everything",
+  "profileKeepPlan": "Keep my plan",
+  "save": "Save",
+  "cancel": "Cancel",
+  "activityRemoveAmount": "Remove {amount}?",
+  "activityRemoveDetail": "It stops counting toward your plan straight away. The entry stays on this list marked as removed, so your record is still complete.",
+  "activityCardPurchase": "Card purchase",
+  "activityCardPayment": "Card payment",
+  "activityRefund": "Refund",
+  "activityTransfer": "Moved between accounts",
+  "activityLoan": "Loan received",
+  "activityDebtPayment": "Debt payment",
+  "activityBalanceCorrected": "Balance corrected",
+  "activityBlurbEmpty": "Nothing recorded yet.",
+  "@activityRemoveAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "profileStartAgain": "Start again",
+  "claimRent": "Rent and bills",
+  "claimCardMinimum": "Card minimum due",
+  "claimEssentials": "Food and transport",
+  "claimBuffer": "Emergency buffer"
+}

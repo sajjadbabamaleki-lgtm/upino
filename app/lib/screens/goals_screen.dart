@@ -11,10 +11,11 @@ import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../domain/goal.dart';
 import '../engine/clock.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/goal_editor_sheet.dart';
-import 'plan_screen.dart' show formatDateShort;
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({required this.state, required this.padding, super.key});
@@ -53,9 +54,8 @@ class GoalsScreen extends StatelessWidget {
     final amount = await AmountSheet.show(
       context,
       currency: state.currency,
-      title: 'Add to ${goal.name}',
-      explanation: 'This records what you have put aside. It does not spend '
-          'anything — it lowers what has to be held back from here on.',
+      title: AppLocalizations.of(context).goalsAddTo(goal.name),
+      explanation: AppLocalizations.of(context).goalsAddBlurb,
     );
     if (amount != null) state.contributeToGoal(goal.id, amount);
   }
@@ -63,6 +63,7 @@ class GoalsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final goals = state.goals;
 
     return AnimatedBuilder(
@@ -75,12 +76,10 @@ class GoalsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Goals', style: theme.textTheme.headlineLarge),
+                Text(l.goalsTitle, style: theme.textTheme.headlineLarge),
                 const SizedBox(height: 2),
                 Text(
-                  goals.isEmpty
-                      ? 'Nothing saved toward yet.'
-                      : 'What each goal needs from this pay period.',
+                  goals.isEmpty ? l.goalsBlurbEmpty : l.goalsBlurb,
                   style: theme.textTheme.bodySmall,
                 ),
               ],
@@ -89,9 +88,7 @@ class GoalsScreen extends StatelessWidget {
           if (goals.isEmpty)
             UpinoCard(
               child: Text(
-                'Add something you are saving for — a trip, a deposit, a '
-                'replacement laptop. Upino works out what to hold back each '
-                'pay period so it arrives on time.',
+                l.goalsEmptyCard,
                 style: theme.textTheme.bodySmall,
               ),
             )
@@ -111,8 +108,8 @@ class GoalsScreen extends StatelessWidget {
           // action this tab has lives in the list like the Plan tab's adds.
           ActionRow(
             key: const Key('goals-new'),
-            title: 'New goal',
-            subtitle: 'Something you are putting money aside for',
+            title: l.goalsNew,
+            subtitle: l.goalsNewSub,
             trailing: const RowAffordance(icon: Icons.add_rounded),
             onTap: () => _create(context),
           ),
@@ -162,7 +159,7 @@ class _GoalCard extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            _status(goal, cycles),
+            _status(AppLocalizations.of(context), goal, cycles),
             style: theme.textTheme.bodySmall,
           ),
 
@@ -177,7 +174,7 @@ class _GoalCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'of ${goal.target.display()}',
+                AppLocalizations.of(context).goalsOf(goal.target.display()),
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -191,10 +188,10 @@ class _GoalCard extends StatelessWidget {
               Expanded(
                 child: _Fact(
                   label: goal.kind == GoalKind.paused
-                      ? 'Paused'
+                      ? AppLocalizations.of(context).goalKindPaused
                       : goal.isComplete
-                          ? 'Reached'
-                          : 'Each pay period',
+                          ? AppLocalizations.of(context).goalsDone
+                          : AppLocalizations.of(context).goalsEachPeriod,
                   value: goal.kind == GoalKind.paused || goal.isComplete
                       ? '—'
                       : required.display(),
@@ -203,8 +200,8 @@ class _GoalCard extends StatelessWidget {
               Container(width: 1, height: 34, color: borderColor(context)),
               Expanded(
                 child: _Fact(
-                  label: 'Target date',
-                  value: formatDateShort(goal.targetDate),
+                  label: AppLocalizations.of(context).goalsTargetDate,
+                  value: formatDateShort(context, goal.targetDate),
                 ),
               ),
             ],
@@ -222,7 +219,7 @@ class _GoalCard extends StatelessWidget {
                     dark ? UpinoTokens.darkTextPrimary : UpinoTokens.textPrimary,
                 minimumSize: const Size.fromHeight(48),
               ),
-              child: const Text('Add money'),
+              child: Text(AppLocalizations.of(context).goalsAddMoney),
             ),
           ),
         ],
@@ -230,12 +227,12 @@ class _GoalCard extends StatelessWidget {
     );
   }
 
-  static String _status(Goal goal, int cycles) => switch (goal.kind) {
-        GoalKind.paused => 'Paused — nothing is held back for it',
-        GoalKind.flexible => 'Flexible — gives way to anything you must pay',
-        GoalKind.hard when goal.isComplete => 'Reached',
-        GoalKind.hard =>
-          '$cycles pay ${cycles == 1 ? 'period' : 'periods'} to go',
+  static String _status(AppLocalizations l, Goal goal, int cycles) =>
+      switch (goal.kind) {
+        GoalKind.paused => l.goalsPausedStatus,
+        GoalKind.flexible => l.goalsFlexibleStatus,
+        GoalKind.hard when goal.isComplete => l.goalsDone,
+        GoalKind.hard => l.goalsPeriodsToGo(cycles),
       };
 }
 

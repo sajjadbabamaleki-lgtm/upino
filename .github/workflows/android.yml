@@ -56,6 +56,12 @@ jobs:
         working-directory: app
         run: flutter pub get
 
+      # The generated message classes are committed, but regenerating here
+      # means a stale one can never be what CI builds against.
+      - name: Messages
+        working-directory: app
+        run: flutter gen-l10n
+
       - name: Analyze
         working-directory: app
         run: flutter analyze

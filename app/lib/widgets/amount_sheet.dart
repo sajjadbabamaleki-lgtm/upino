@@ -10,6 +10,7 @@ import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../engine/money.dart';
+import '../l10n/app_localizations.dart';
 
 class AmountSheet extends StatefulWidget {
   const AmountSheet({
@@ -17,7 +18,7 @@ class AmountSheet extends StatefulWidget {
     required this.title,
     this.explanation,
     this.initial,
-    this.confirmLabel = 'Save',
+    this.confirmLabel,
     this.allowZero = false,
     this.onRemove,
     this.removeLabel,
@@ -28,7 +29,8 @@ class AmountSheet extends StatefulWidget {
   final String title;
   final String? explanation;
   final Money? initial;
-  final String confirmLabel;
+  /// Null takes the localized default.
+  final String? confirmLabel;
 
   /// Plan editors accept zero, which clears the commitment. Quick Expense
   /// does not, because recording nothing is never what was meant.
@@ -42,7 +44,7 @@ class AmountSheet extends StatefulWidget {
     required String title,
     String? explanation,
     Money? initial,
-    String confirmLabel = 'Save',
+    String? confirmLabel,
     bool allowZero = false,
     String? removeLabel,
   }) =>
@@ -201,7 +203,9 @@ class _AmountSheetState extends State<AmountSheet> {
               const SizedBox(height: 18),
               FilledButton(
                 onPressed: amount == null ? null : _save,
-                child: Text(widget.confirmLabel),
+                child: Text(
+                  widget.confirmLabel ?? AppLocalizations.of(context).save,
+                ),
               ),
               if (widget.onRemove != null) ...[
                 const SizedBox(height: 8),

@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/design/theme.dart';
 import 'package:upino/design/tokens.dart';
 import 'package:upino/engine/domain.dart';
@@ -49,6 +50,8 @@ PlanSnapshot snap({
 
 Future<void> pumpHero(WidgetTester tester, PlanSnapshot s) async {
   await tester.pumpWidget(MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
     theme: buildTheme(brightness: Brightness.light),
     home: Scaffold(
       body: StsHero(snapshot: s, onConfirmBalance: () {}, onResolve: () {}),
@@ -283,6 +286,8 @@ void main() {
         claims: [claim('rent', Priority.p2HardObligation, '500.00')],
       );
       await t.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildTheme(brightness: Brightness.dark),
         home: Scaffold(
           body: StsHero(snapshot: gap, onConfirmBalance: () {}, onResolve: () {}),
@@ -291,6 +296,8 @@ void main() {
       expect(paintedColors(t), isNot(contains(UpinoTokens.darkGradientStart)));
 
       await t.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: buildTheme(brightness: Brightness.dark),
         home: Scaffold(
           body: StsHero(

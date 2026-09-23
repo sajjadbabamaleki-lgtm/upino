@@ -139,7 +139,7 @@ void main() {
     test('a balance confirmation appears as a correction, not as spending', () {
       final state = funded()..confirmBalance(eur('950.00'));
       final entry = state.activity.single;
-      expect(entry.label, 'Balance corrected');
+      expect(entry.kind, ActivityKind.balanceCorrected);
       expect(entry.amount, eur('50.00'));
       expect(entry.increasesMoney, isFalse);
       expect(state.snapshot.ledger.cumulativeSpending, eur('0.00'));

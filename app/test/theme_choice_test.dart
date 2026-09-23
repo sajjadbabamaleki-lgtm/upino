@@ -128,9 +128,36 @@ void main() {
 
     testWidgets('all three options are offered', (tester) async {
       await openProfile(tester);
-      expect(find.text('Phone'), findsOneWidget);
-      expect(find.text('Light'), findsOneWidget);
-      expect(find.text('Dark'), findsOneWidget);
+      // By key, not by word: the language card offers its own "Phone" too,
+      // and both are right — each means "follow the phone".
+      for (final choice in ThemeChoice.values) {
+        expect(
+          find.byKey(Key('theme-${choice.name}')),
+          findsOneWidget,
+          reason: choice.name,
+        );
+      }
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('theme-system')),
+          matching: find.text('Phone'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('theme-light')),
+          matching: find.text('Light'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('theme-dark')),
+          matching: find.text('Dark'),
+        ),
+        findsOneWidget,
+      );
     });
   });
 }

@@ -38,18 +38,38 @@ class OnboardingDraft {
 /// to rather than imposing a choice.
 enum ThemeChoice { system, light, dark }
 
+/// Which language the app is shown in. Stored with the plan for the same
+/// reason as the theme: one thing to save and one thing to read back. Null
+/// means follow the phone, which is the default so nothing is imposed.
+typedef LanguageChoice = String?;
+
 /// One row of the Activity screen.
+/// What kind of thing a line on Activity is. The state layer has no
+/// BuildContext and so no language; naming the kind here and translating it
+/// at the screen keeps English out of the plan's own data.
+enum ActivityKind {
+  spend,
+  cardPurchase,
+  cardPayment,
+  income,
+  refund,
+  transfer,
+  loan,
+  debtPayment,
+  balanceCorrected,
+}
+
 class ActivityEntry {
   const ActivityEntry({
     required this.eventId,
-    required this.label,
+    required this.kind,
     required this.amount,
     required this.increasesMoney,
     required this.removed,
   });
 
   final String eventId;
-  final String label;
+  final ActivityKind kind;
   final Money amount;
   final bool increasesMoney;
 
@@ -80,6 +100,7 @@ class AppState extends ChangeNotifier {
 
   String _currency = 'EUR';
   ThemeChoice _themeChoice = ThemeChoice.system;
+  String? _languageCode;
   int _payCycleDays = 30;
   int _goalSeq = 0;
   Money? _openingBalance;
@@ -97,6 +118,16 @@ class AppState extends ChangeNotifier {
   void setThemeChoice(ThemeChoice choice) {
     if (choice == _themeChoice) return;
     _themeChoice = choice;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Null follows the phone's language.
+  String? get languageCode => _languageCode;
+
+  void setLanguageCode(String? code) {
+    if (code == _languageCode) return;
+    _languageCode = code;
     _persist();
     notifyListeners();
   }
@@ -137,6 +168,7 @@ class AppState extends ChangeNotifier {
     _onboarded = document.onboarded;
     _eventSeq = document.eventSequence;
     _themeChoice = document.themeChoice;
+    _languageCode = document.languageCode;
     _payCycleDays = document.payCycleDays;
     _goals
       ..clear()
@@ -180,6 +212,7 @@ class AppState extends ChangeNotifier {
         lastBalanceConfirmationAt: _lastBalanceConfirmation,
         eventSequence: _eventSeq,
         themeChoice: _themeChoice,
+        languageCode: _languageCode,
         goals: List.unmodifiable(_goals),
         payCycleDays: _payCycleDays,
       );
@@ -492,7 +525,7 @@ class AppState extends ChangeNotifier {
       if (described == null) continue;
       entries.add(ActivityEntry(
         eventId: e.id,
-        label: described.label,
+        kind: described.kind,
         amount: described.amount,
         increasesMoney: described.increasesMoney,
         removed: corrected.contains(e.id),
@@ -501,26 +534,37 @@ class AppState extends ChangeNotifier {
     return entries.reversed.toList();
   }
 
-  ({String label, Money amount, bool increasesMoney})? _describe(LedgerEvent e) =>
+  ({ActivityKind kind, Money amount, bool increasesMoney})? _describe(
+    LedgerEvent e,
+  ) =>
       switch (e) {
         ExpenseEvent(:final amount) =>
-          (label: 'Spent', amount: amount, increasesMoney: false),
-        CardPurchaseEvent(:final amount) =>
-          (label: 'Card purchase', amount: amount, increasesMoney: false),
-        CardSettlementEvent(:final amount) =>
-          (label: 'Card payment', amount: amount, increasesMoney: false),
+          (kind: ActivityKind.spend, amount: amount, increasesMoney: false),
+        CardPurchaseEvent(:final amount) => (
+            kind: ActivityKind.cardPurchase,
+            amount: amount,
+            increasesMoney: false,
+          ),
+        CardSettlementEvent(:final amount) => (
+            kind: ActivityKind.cardPayment,
+            amount: amount,
+            increasesMoney: false,
+          ),
         IncomeConfirmedEvent(:final amount) =>
-          (label: 'Income received', amount: amount, increasesMoney: true),
+          (kind: ActivityKind.income, amount: amount, increasesMoney: true),
         RefundEvent(:final amount) =>
-          (label: 'Refund', amount: amount, increasesMoney: true),
+          (kind: ActivityKind.refund, amount: amount, increasesMoney: true),
         TransferEvent(:final amount) =>
-          (label: 'Moved between accounts', amount: amount, increasesMoney: true),
+          (kind: ActivityKind.transfer, amount: amount, increasesMoney: true),
         LoanDrawdownEvent(:final amount) =>
-          (label: 'Loan received', amount: amount, increasesMoney: true),
-        DebtPaymentEvent(:final amount) =>
-          (label: 'Debt payment', amount: amount, increasesMoney: false),
+          (kind: ActivityKind.loan, amount: amount, increasesMoney: true),
+        DebtPaymentEvent(:final amount) => (
+            kind: ActivityKind.debtPayment,
+            amount: amount,
+            increasesMoney: false,
+          ),
         BalanceAdjustmentEvent(:final delta) => (
-            label: 'Balance corrected',
+            kind: ActivityKind.balanceCorrected,
             amount: delta.isNegative ? -delta : delta,
             increasesMoney: !delta.isNegative,
           ),
