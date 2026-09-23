@@ -113,6 +113,51 @@ void main() {
       expect(find.byType(LanguagePicker), findsNothing);
     });
 
+    testWidgets('sits low enough that the screen above it still reads',
+        (tester) async {
+      // Asked for after seeing it on a phone: a sheet that stops just under
+      // the status bar is a screen, not a sheet. Both pickers share one top
+      // edge, around two fifths down, which leaves the rows they answer in
+      // view above them.
+      await pumpSetup(tester);
+      final screen =
+          tester.view.physicalSize.height / tester.view.devicePixelRatio;
+
+      for (final row in ['change-language', 'change-currency']) {
+        await tester.tap(find.byKey(Key(row)));
+        await tester.pumpAndSettle();
+        final top = tester.getTopLeft(find.byKey(const Key('sheet-handle'))).dy;
+        expect(
+          top / screen,
+          closeTo(1 - UpinoSheet.defaultHeight, 0.03),
+          reason: '$row opened too high or too low on the screen',
+        );
+        expect(find.text('Set up your plan'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('sheet-close')));
+        await tester.pumpAndSettle();
+      }
+    });
+
+    testWidgets('keeps its height when the keyboard comes up', (tester) async {
+      // The currency sheet carries a search field. Measured against the room
+      // left over rather than the screen, the keyboard would shrink the list
+      // to a few rows at the moment it is being searched.
+      await pumpSetup(tester);
+      await tester.tap(find.byKey(const Key('change-currency')));
+      await tester.pumpAndSettle();
+      final before = tester.getSize(find.byType(CurrencyPicker)).height;
+
+      tester.view.viewInsets = FakeViewPadding(
+        bottom: 300 * tester.view.devicePixelRatio,
+      );
+      await tester.pumpAndSettle();
+      final after = tester.getSize(find.byType(CurrencyPicker)).height;
+
+      expect(after, before,
+          reason: 'the sheet had room and did not need to '
+              'give any of it back');
+    });
+
     testWidgets('is never taller than the screen it sits on', (tester) async {
       // The currency list is 149 rows long. Sized to its content it would
       // cover the whole screen and stop being a sheet.

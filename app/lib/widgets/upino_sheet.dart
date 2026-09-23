@@ -12,6 +12,8 @@
 /// quicker on the way in and read as a snap.
 library;
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../design/icon.dart';
@@ -37,10 +39,18 @@ class UpinoSheet extends StatelessWidget {
     reverseCurve: Easing.emphasizedAccelerate,
   );
 
-  /// Null lets the sheet take the height of its content; a factor between 0
-  /// and 1 fixes it to that share of the space above the status bar, which is
-  /// what a long list wants — a list that sized itself to its content would
-  /// cover the whole screen and stop being a sheet.
+  /// The share of the screen a picker sheet takes. Reached by measurement
+  /// rather than taste: at [defaultHeight] the top edge of the sheet sits
+  /// around two fifths of the way down a phone screen, which leaves the page
+  /// it belongs to plainly in view above it. Taller than this and the sheet
+  /// reads as a new screen that happened to slide, which is the thing it was
+  /// built to stop doing.
+  static const defaultHeight = 0.6;
+
+  /// Null lets the sheet take the height of its content, which only suits a
+  /// short one; a factor between 0 and 1 is that share of the whole screen.
+  /// It is measured against the screen, not against the room left over, so
+  /// the keyboard coming up does not change how tall the sheet wants to be.
   final double? heightFactor;
 
   /// Given a close button when there is one; a list that closes on choosing
@@ -89,12 +99,24 @@ class UpinoSheet extends StatelessWidget {
       ),
     );
 
+    final factor = heightFactor;
     return Padding(
       // The search field inside a picker must stay above the keyboard.
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
-      child: heightFactor == null
+      child: factor == null
           ? sheet
-          : FractionallySizedBox(heightFactor: heightFactor, child: sheet),
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final wanted = MediaQuery.sizeOf(context).height * factor;
+                // The keyboard eats into what is left; the sheet gives way to
+                // it rather than pushing its own top off the screen.
+                final room = constraints.maxHeight;
+                return SizedBox(
+                  height: room.isFinite ? math.min(wanted, room) : wanted,
+                  child: sheet,
+                );
+              },
+            ),
     );
   }
 }
