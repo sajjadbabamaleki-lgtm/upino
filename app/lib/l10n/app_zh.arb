@@ -298,5 +298,9 @@
   "reminderChannel": "晚间提醒",
   "widgetSpend": "+ 支出",
   "widgetAdd": "添加到主屏幕",
-  "widgetAddSub": "无需打开应用即可查看可花金额并记录支出"
+  "widgetAddSub": "无需打开应用即可查看可花金额并记录支出",
+  "voiceListening": "正在聆听…请说出金额和用途。",
+  "voiceHeard": "听到：“{text}”。请核对金额后保存。",
+  "voiceNothing": "没有听到金额，请重试或手动输入。",
+  "voicePrivacy": "手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。"
 }

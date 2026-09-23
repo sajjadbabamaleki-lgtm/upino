@@ -298,5 +298,9 @@
   "reminderChannel": "Lembrete ao fim do dia",
   "widgetSpend": "+ Gasto",
   "widgetAdd": "Adicionar ao ecrã principal",
-  "widgetAddSub": "O que pode gastar e um botão para registar, sem abrir a app"
+  "widgetAddSub": "O que pode gastar e um botão para registar, sem abrir a app",
+  "voiceListening": "A ouvir… diga o valor e para quê foi.",
+  "voiceHeard": "Ouvido: “{text}”. Confira o valor e guarde.",
+  "voiceNothing": "Nenhum valor ouvido. Tente de novo ou escreva-o.",
+  "voicePrivacy": "O telemóvel converte voz em texto. Sem reconhecimento offline, passa pelo serviço de voz do telemóvel."
 }

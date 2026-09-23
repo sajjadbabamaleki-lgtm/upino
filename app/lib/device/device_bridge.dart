@@ -21,6 +21,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../engine/clock.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import 'voice.dart';
 
 class DeviceBridge {
   DeviceBridge._(this.state);
@@ -60,6 +61,7 @@ class DeviceBridge {
     if (kIsWeb || !Platform.isAndroid) return;
     final bridge = DeviceBridge._(state);
     instance = bridge;
+    VoiceInput.instance = SpeechVoiceInput();
     try {
       await bridge._init();
     } on Object catch (error) {

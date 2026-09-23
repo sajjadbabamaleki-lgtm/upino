@@ -1017,4 +1017,20 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'Сколько можно тратить и кнопка записи — без открытия приложения';
+
+  @override
+  String get voiceListening => 'Слушаю… назовите сумму и на что.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Услышано: «$text». Проверьте сумму и сохраните.';
+  }
+
+  @override
+  String get voiceNothing =>
+      'Сумма не распознана. Попробуйте ещё раз или введите.';
+
+  @override
+  String get voicePrivacy =>
+      'Телефон превращает речь в текст. Без офлайн-распознавания это идёт через речевой сервис телефона.';
 }

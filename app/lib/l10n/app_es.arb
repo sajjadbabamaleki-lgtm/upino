@@ -298,5 +298,9 @@
   "reminderChannel": "Recordatorio por la noche",
   "widgetSpend": "+ Gasto",
   "widgetAdd": "Añadir a la pantalla de inicio",
-  "widgetAddSub": "Lo que puedes gastar y un botón para registrar, sin abrir la app"
+  "widgetAddSub": "Lo que puedes gastar y un botón para registrar, sin abrir la app",
+  "voiceListening": "Escuchando… di el importe y en qué fue.",
+  "voiceHeard": "Oído: «{text}». Revisa el importe y guarda.",
+  "voiceNothing": "No se oyó ningún importe. Inténtalo de nuevo o escríbelo.",
+  "voicePrivacy": "Tu teléfono convierte la voz en texto. Sin reconocimiento sin conexión, pasa por el servicio de voz del teléfono."
 }

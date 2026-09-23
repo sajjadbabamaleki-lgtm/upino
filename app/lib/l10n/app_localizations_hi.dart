@@ -1015,4 +1015,19 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'कितना खर्च कर सकते हैं, और खर्च दर्ज करने का बटन, ऐप खोले बिना';
+
+  @override
+  String get voiceListening => 'सुन रहा है… रकम और किस लिए था, बोलें।';
+
+  @override
+  String voiceHeard(String text) {
+    return 'सुना: “$text”। रकम जाँचें, फिर सहेजें।';
+  }
+
+  @override
+  String get voiceNothing => 'कोई रकम नहीं सुनी। फिर कोशिश करें या टाइप करें।';
+
+  @override
+  String get voicePrivacy =>
+      'आपका फ़ोन बोली को टेक्स्ट में बदलता है। ऑफ़लाइन पहचान न हो तो यह फ़ोन की स्पीच सेवा से होता है।';
 }

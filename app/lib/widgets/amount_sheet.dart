@@ -14,7 +14,9 @@ import '../design/tokens.dart';
 import 'dart:io';
 
 import '../data/receipt_store.dart';
+import '../device/voice.dart';
 import '../domain/category.dart';
+import '../domain/spoken_spend.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 
@@ -43,6 +45,7 @@ class AmountSheet extends StatefulWidget {
     this.removeLabel,
     this.allowReceipt = false,
     this.allowCategory = false,
+    this.allowVoice = false,
     super.key,
   });
 
@@ -67,6 +70,10 @@ class AmountSheet extends StatefulWidget {
   /// the same, so the question must not stand between a person and Save.
   final bool allowCategory;
 
+  /// A microphone beside the amount, where the phone offers one. What is
+  /// heard only fills the fields; Save is still the person's tap.
+  final bool allowVoice;
+
   static Future<RecordedAmount?> show(
     BuildContext context, {
     required String currency,
@@ -78,6 +85,7 @@ class AmountSheet extends StatefulWidget {
     String? removeLabel,
     bool allowReceipt = false,
     bool allowCategory = false,
+    bool allowVoice = false,
   }) =>
       showModalBottomSheet<RecordedAmount>(
         context: context,
@@ -91,6 +99,7 @@ class AmountSheet extends StatefulWidget {
           confirmLabel: confirmLabel,
           allowReceipt: allowReceipt,
           allowCategory: allowCategory,
+          allowVoice: allowVoice,
           allowZero: allowZero,
           removeLabel: removeLabel,
           onRemove: removeLabel == null
@@ -143,6 +152,69 @@ class _AmountSheetState extends State<AmountSheet> {
   String? _receipt;
   SpendCategory? _category;
   bool _busy = false;
+
+  bool _listening = false;
+
+  /// What the recogniser heard, shown so the person can check it against
+  /// the figure it produced. Null before the microphone is used.
+  String? _heard;
+  bool _heardNothing = false;
+
+  Future<void> _listen() async {
+    final voice = VoiceInput.instance;
+    if (voice == null) return;
+    if (_listening) {
+      await voice.stop();
+      return;
+    }
+    final language = Localizations.localeOf(context).languageCode;
+    setState(() {
+      _listening = true;
+      _heard = '';
+      _heardNothing = false;
+    });
+    final text = await voice.listen(
+      localeId: switch (language) {
+        'fa' => 'fa_IR',
+        'ar' => 'ar_SA',
+        'en' => 'en_US',
+        'es' => 'es_ES',
+        'fr' => 'fr_FR',
+        'hi' => 'hi_IN',
+        'pt' => 'pt_BR',
+        'ru' => 'ru_RU',
+        'tr' => 'tr_TR',
+        'zh' => 'zh_CN',
+        _ => language,
+      },
+      onPartial: (words) {
+        if (mounted) setState(() => _heard = words);
+      },
+    );
+    if (!mounted) return;
+    applySpoken(text);
+  }
+
+  /// Fill the fields from what was said. Public to the sheet's tests, which
+  /// have no microphone.
+  @visibleForTesting
+  void applySpoken(String? text) {
+    final spoken = text == null
+        ? const SpokenSpend()
+        : parseSpokenSpend(text, planCurrency: widget.currency);
+    setState(() {
+      _listening = false;
+      _heard = text ?? '';
+      _heardNothing = spoken.amount == null;
+      final amount = spoken.amount;
+      if (amount != null) {
+        _controller.text = amount.display(withSymbol: false, grouped: false);
+      }
+      if (spoken.category != null && widget.allowCategory) {
+        _category = spoken.category;
+      }
+    });
+  }
 
   Future<void> _addReceipt(ImageSource source) async {
     setState(() => _busy = true);
@@ -249,9 +321,48 @@ class _AmountSheetState extends State<AmountSheet> {
                         ),
                       ),
                     ),
+                    if (widget.allowVoice && VoiceInput.instance != null)
+                      IconButton(
+                        key: const Key('amount-voice'),
+                        onPressed: _listen,
+                        icon: UpinoIcon(
+                          'mic',
+                          size: 24,
+                          color: _listening
+                              ? (isDark(context)
+                                  ? UpinoTokens.darkActionPrimary
+                                  : UpinoTokens.actionPrimary)
+                              : UpinoTokens.textTertiary,
+                        ),
+                      ),
                   ],
                 ),
               ),
+              if (_heard != null) ...[
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    _listening
+                        ? (_heard!.isEmpty
+                            ? AppLocalizations.of(context).voiceListening
+                            : _heard!)
+                        : _heardNothing
+                            ? AppLocalizations.of(context).voiceNothing
+                            : AppLocalizations.of(context).voiceHeard(_heard!),
+                    key: const Key('amount-voice-heard'),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+                if (!_listening)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+                    child: Text(
+                      AppLocalizations.of(context).voicePrivacy,
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
+                    ),
+                  ),
+              ],
               if (widget.allowCategory) ...[
                 const SizedBox(height: 14),
                 CategoryChips(

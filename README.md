@@ -166,6 +166,7 @@ table is untouched by all of them.
 | Bank messages | Profile, Home | Read on the phone, parsed into suggestions; nothing is recorded without a tap |
 | Evening reminder | Profile | 21:00, skipped on days that already have a spend |
 | Home-screen widget | Android launcher | Safe-to-Spend and a button that opens Quick Expense |
+| Voice entry | Quick Expense | Persian and English amounts and categories; on-device first; fills the sheet, never saves |
 
 ### Corrections
 
@@ -218,8 +219,9 @@ key. A store build needs its own signing config.
 
 The app talks to no network: the plan lives in a file in the app's own
 storage. It asks for a permission only when the matching feature is switched
-on in Profile — reading SMS for bank messages, notifications for the evening
-reminder — and never at install or first launch. `READ_SMS` is a restricted
+on — reading SMS for bank messages, notifications for the evening reminder,
+the microphone on the first tap of the voice button — and never at install or
+first launch. `READ_SMS` is a restricted
 permission on Google Play, so a Play build would need a policy declaration or
 the feature removed; the APK installed from the release link is unaffected.
 

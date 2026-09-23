@@ -298,5 +298,9 @@
   "reminderChannel": "Akşam hatırlatıcısı",
   "widgetSpend": "+ Harcama",
   "widgetAdd": "Ana ekrana ekle",
-  "widgetAddSub": "Uygulamayı açmadan harcayabileceğiniz tutar ve kayıt düğmesi"
+  "widgetAddSub": "Uygulamayı açmadan harcayabileceğiniz tutar ve kayıt düğmesi",
+  "voiceListening": "Dinleniyor… tutarı ve ne için olduğunu söyleyin.",
+  "voiceHeard": "Duyulan: “{text}”. Tutarı kontrol edip kaydedin.",
+  "voiceNothing": "Tutar duyulmadı. Tekrar deneyin ya da yazın.",
+  "voicePrivacy": "Telefonunuz konuşmayı metne çevirir. Çevrimdışı tanıma yoksa bu, telefonun konuşma hizmetinden geçer."
 }

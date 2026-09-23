@@ -1023,4 +1023,19 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'O que pode gastar e um botão para registar, sem abrir a app';
+
+  @override
+  String get voiceListening => 'A ouvir… diga o valor e para quê foi.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Ouvido: “$text”. Confira o valor e guarde.';
+  }
+
+  @override
+  String get voiceNothing => 'Nenhum valor ouvido. Tente de novo ou escreva-o.';
+
+  @override
+  String get voicePrivacy =>
+      'O telemóvel converte voz em texto. Sem reconhecimento offline, passa pelo serviço de voz do telemóvel.';
 }

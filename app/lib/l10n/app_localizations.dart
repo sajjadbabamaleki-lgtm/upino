@@ -1907,6 +1907,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What you can spend, and a button to record a spend, without opening the app'**
   String get widgetAddSub;
+
+  /// No description provided for @voiceListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening… say the amount and what it was for.'**
+  String get voiceListening;
+
+  /// No description provided for @voiceHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard: “{text}”. Check the amount, then save.'**
+  String voiceHeard(String text);
+
+  /// No description provided for @voiceNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No amount heard. Try again, or type it.'**
+  String get voiceNothing;
+
+  /// No description provided for @voicePrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone turns speech into text. On phones without offline speech, that goes through the phone\'s speech service.'**
+  String get voicePrivacy;
 }
 
 class _AppLocalizationsDelegate

@@ -90,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       title: AppLocalizations.of(context).askSpendTitle,
       allowReceipt: true,
       allowCategory: true,
+      allowVoice: true,
     );
     if (amount != null) {
       state.recordExpense(

@@ -1018,4 +1018,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'What you can spend, and a button to record a spend, without opening the app';
+
+  @override
+  String get voiceListening => 'Listening… say the amount and what it was for.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Heard: “$text”. Check the amount, then save.';
+  }
+
+  @override
+  String get voiceNothing => 'No amount heard. Try again, or type it.';
+
+  @override
+  String get voicePrivacy =>
+      'Your phone turns speech into text. On phones without offline speech, that goes through the phone\'s speech service.';
 }

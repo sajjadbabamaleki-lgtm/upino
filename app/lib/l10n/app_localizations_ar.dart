@@ -999,4 +999,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get widgetAddSub => 'ما يمكنك إنفاقه وزر لتسجيل مصروف دون فتح التطبيق';
+
+  @override
+  String get voiceListening => 'أستمع… قل المبلغ وفيمَ كان.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'سُمع: «$text». راجع المبلغ ثم احفظ.';
+  }
+
+  @override
+  String get voiceNothing => 'لم يُسمع مبلغ. حاول مجددًا أو اكتبه.';
+
+  @override
+  String get voicePrivacy =>
+      'يحوّل هاتفك الكلام إلى نص. في الهواتف دون تعرّف دون اتصال، يمر ذلك عبر خدمة الكلام في الهاتف.';
 }

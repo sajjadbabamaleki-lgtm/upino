@@ -1018,4 +1018,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'Lo que puedes gastar y un botón para registrar, sin abrir la app';
+
+  @override
+  String get voiceListening => 'Escuchando… di el importe y en qué fue.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Oído: «$text». Revisa el importe y guarda.';
+  }
+
+  @override
+  String get voiceNothing =>
+      'No se oyó ningún importe. Inténtalo de nuevo o escríbelo.';
+
+  @override
+  String get voicePrivacy =>
+      'Tu teléfono convierte la voz en texto. Sin reconocimiento sin conexión, pasa por el servicio de voz del teléfono.';
 }

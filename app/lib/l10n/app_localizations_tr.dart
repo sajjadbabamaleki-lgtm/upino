@@ -1012,4 +1012,20 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'Uygulamayı açmadan harcayabileceğiniz tutar ve kayıt düğmesi';
+
+  @override
+  String get voiceListening =>
+      'Dinleniyor… tutarı ve ne için olduğunu söyleyin.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Duyulan: “$text”. Tutarı kontrol edip kaydedin.';
+  }
+
+  @override
+  String get voiceNothing => 'Tutar duyulmadı. Tekrar deneyin ya da yazın.';
+
+  @override
+  String get voicePrivacy =>
+      'Telefonunuz konuşmayı metne çevirir. Çevrimdışı tanıma yoksa bu, telefonun konuşma hizmetinden geçer.';
 }

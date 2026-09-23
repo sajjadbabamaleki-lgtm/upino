@@ -298,5 +298,9 @@
   "reminderChannel": "Rappel du soir",
   "widgetSpend": "+ Dépense",
   "widgetAdd": "Ajouter à l’écran d’accueil",
-  "widgetAddSub": "Ce que vous pouvez dépenser, et un bouton pour noter une dépense, sans ouvrir l’app"
+  "widgetAddSub": "Ce que vous pouvez dépenser, et un bouton pour noter une dépense, sans ouvrir l’app",
+  "voiceListening": "J’écoute… dites le montant et à quoi il a servi.",
+  "voiceHeard": "Entendu : « {text} ». Vérifiez le montant, puis enregistrez.",
+  "voiceNothing": "Aucun montant entendu. Réessayez ou tapez-le.",
+  "voicePrivacy": "Votre téléphone transforme la voix en texte. Sans reconnaissance hors ligne, cela passe par son service vocal."
 }

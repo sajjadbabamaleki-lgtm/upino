@@ -969,4 +969,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get widgetAddSub => '无需打开应用即可查看可花金额并记录支出';
+
+  @override
+  String get voiceListening => '正在聆听…请说出金额和用途。';
+
+  @override
+  String voiceHeard(String text) {
+    return '听到：“$text”。请核对金额后保存。';
+  }
+
+  @override
+  String get voiceNothing => '没有听到金额，请重试或手动输入。';
+
+  @override
+  String get voicePrivacy => '手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。';
 }

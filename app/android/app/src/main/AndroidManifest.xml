@@ -6,6 +6,9 @@
     <!-- The evening reminder, and putting it back after a restart. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Saying a spend instead of typing it; asked for on the first tap of
+         the microphone. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:label="@string/app_name"
         android:name="${applicationName}"
@@ -72,6 +75,9 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 </manifest>

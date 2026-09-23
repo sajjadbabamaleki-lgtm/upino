@@ -1008,4 +1008,21 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get widgetAddSub => 'مبلغ قابل خرج و دکمهٔ ثبت خرج، بدون باز کردن اپ';
+
+  @override
+  String get voiceListening =>
+      'در حال شنیدن… مبلغ و اینکه برای چه بود را بگویید.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'شنیده شد: «$text». مبلغ را بررسی و بعد ذخیره کنید.';
+  }
+
+  @override
+  String get voiceNothing =>
+      'مبلغی شنیده نشد. دوباره امتحان کنید یا تایپ کنید.';
+
+  @override
+  String get voicePrivacy =>
+      'گوشی شما گفتار را به متن تبدیل می‌کند. در گوشی‌هایی که تشخیص آفلاین ندارند، این کار از سرویس گفتار گوشی انجام می‌شود.';
 }

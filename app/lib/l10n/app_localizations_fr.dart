@@ -1033,4 +1033,20 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get widgetAddSub =>
       'Ce que vous pouvez dépenser, et un bouton pour noter une dépense, sans ouvrir l’app';
+
+  @override
+  String get voiceListening =>
+      'J’écoute… dites le montant et à quoi il a servi.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'Entendu : « $text ». Vérifiez le montant, puis enregistrez.';
+  }
+
+  @override
+  String get voiceNothing => 'Aucun montant entendu. Réessayez ou tapez-le.';
+
+  @override
+  String get voicePrivacy =>
+      'Votre téléphone transforme la voix en texte. Sans reconnaissance hors ligne, cela passe par son service vocal.';
 }
