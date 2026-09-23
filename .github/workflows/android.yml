@@ -18,6 +18,24 @@ env:
   FLUTTER_HOME: ${{ github.workspace }}/.flutter
 
 jobs:
+  # The TypeScript engine is the reference the Dart port is checked against.
+  # Both run the same §24 fixture table, so a divergence is only caught if
+  # both suites run — this one as much as `flutter test`.
+  engine:
+    name: Engine tests (TypeScript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
   build:
     name: Test and build APK
     runs-on: ubuntu-latest

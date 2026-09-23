@@ -1,13 +1,14 @@
 # Upino — Financial Engine
 
 Deterministic implementation of the financial engine specified in
-**Upino Product Foundation v3.5 (Frozen G0)**.
+**Upino Product Foundation v3.5 (Frozen G0)**, plus the §15.3 ledger-integrity
+addendum (engine spec v3.6, `docs/engine-v3.6-ledger-integrity.md`).
 
 The engine owns every monetary calculation. It is pure: given identical inputs
 and an identical engine version it returns identical allocations, Safe-to-Spend,
 funding gap, confidence state and reason codes (INV-07).
 
-## Status — gate G1
+## Status
 
 §30 defines G1 as *"T01–T12 executable and passing, including protection-horizon
 and timezone boundaries; deterministic snapshots and reason codes."*
@@ -16,13 +17,16 @@ and timezone boundaries; deterministic snapshots and reason codes."*
 |---|---|---|
 | G0 | Domain contracts internally consistent | Closed by the v3.4 specification |
 | **G1** | **T01–T12 executable and passing** | **Met — all 36 fixtures pass** |
-| G2 | Vertical slice end to end | Not started (needs a client) |
+| G2 | Vertical slice end to end | In progress — the Flutter client in `app/` |
 
 ```
 npm install
-npm test        # 53 tests: 36 acceptance fixtures, 15 invariants, 2 formula guards
+npm test        # 65 tests: 36 acceptance fixtures, 15 invariants, 12 ledger integrity, 2 formula guards
 npm run typecheck
 ```
+
+CI runs this suite on every push alongside `flutter test`, so the two engines
+are checked against the fixture table together.
 
 ## Layout
 

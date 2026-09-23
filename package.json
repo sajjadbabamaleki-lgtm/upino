@@ -2,7 +2,7 @@
   "name": "@upino/engine",
   "version": "0.1.0",
   "private": true,
-  "description": "Upino financial engine — deterministic implementation of Product Foundation v3.4 (Frozen G0)",
+  "description": "Upino financial engine — deterministic implementation of Product Foundation v3.6 (G0 + §15.3)",
   "type": "module",
   "engines": {
     "node": ">=22"
