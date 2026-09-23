@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "حتى",
   "onboardingIncomeToOptional": "اختياري",
   "incomeRange": "{low} إلى {high}",
-  "incomeRangeNote": "خطتك مبنية على {low}. وما زاد فهو لك حين يصل."
+  "incomeRangeNote": "خطتك مبنية على {low}. وما زاد فهو لك حين يصل.",
+  "categoryFood": "طعام",
+  "categoryTransport": "مواصلات",
+  "categoryBills": "فواتير",
+  "categoryShopping": "تسوّق",
+  "categoryHealth": "صحة",
+  "categoryFun": "ترفيه",
+  "categoryOther": "أخرى",
+  "categoryUnsorted": "غير مصنّف",
+  "categoryPrompt": "لأيّ شيء كان؟",
+  "spendingTitle": "أين ذهب المال",
+  "spendingWindow": "المصروفات المسجلة في آخر 30 يومًا"
 }

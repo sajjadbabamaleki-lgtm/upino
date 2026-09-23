@@ -407,5 +407,16 @@
         "type": "String"
       }
     }
-  }
+  },
+  "categoryFood": "Food",
+  "categoryTransport": "Transport",
+  "categoryBills": "Bills",
+  "categoryShopping": "Shopping",
+  "categoryHealth": "Health",
+  "categoryFun": "Going out",
+  "categoryOther": "Other",
+  "categoryUnsorted": "Not sorted",
+  "categoryPrompt": "What was it for?",
+  "spendingTitle": "Where it went",
+  "spendingWindow": "Spends recorded in the last 30 days"
 }

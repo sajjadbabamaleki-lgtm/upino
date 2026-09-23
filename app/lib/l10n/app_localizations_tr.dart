@@ -761,4 +761,37 @@ class AppLocalizationsTr extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'Planınız $low üzerine kurulu. Üstü, geldiğinde sizindir.';
   }
+
+  @override
+  String get categoryFood => 'Yemek';
+
+  @override
+  String get categoryTransport => 'Ulaşım';
+
+  @override
+  String get categoryBills => 'Faturalar';
+
+  @override
+  String get categoryShopping => 'Alışveriş';
+
+  @override
+  String get categoryHealth => 'Sağlık';
+
+  @override
+  String get categoryFun => 'Eğlence';
+
+  @override
+  String get categoryOther => 'Diğer';
+
+  @override
+  String get categoryUnsorted => 'Sınıflanmamış';
+
+  @override
+  String get categoryPrompt => 'Ne içindi?';
+
+  @override
+  String get spendingTitle => 'Para nereye gitti';
+
+  @override
+  String get spendingWindow => 'Son 30 günde kaydedilen harcamalar';
 }

@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "Jusqu’à",
   "onboardingIncomeToOptional": "Facultatif",
   "incomeRange": "{low} à {high}",
-  "incomeRangeNote": "Votre plan repose sur {low}. Tout ce qui vient au-dessus est à vous quand il arrive."
+  "incomeRangeNote": "Votre plan repose sur {low}. Tout ce qui vient au-dessus est à vous quand il arrive.",
+  "categoryFood": "Alimentation",
+  "categoryTransport": "Transport",
+  "categoryBills": "Factures",
+  "categoryShopping": "Achats",
+  "categoryHealth": "Santé",
+  "categoryFun": "Loisirs",
+  "categoryOther": "Autre",
+  "categoryUnsorted": "Non classé",
+  "categoryPrompt": "C’était pour quoi ?",
+  "spendingTitle": "Où est-il passé",
+  "spendingWindow": "Dépenses notées ces 30 derniers jours"
 }

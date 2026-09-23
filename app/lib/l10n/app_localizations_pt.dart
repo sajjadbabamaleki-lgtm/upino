@@ -771,4 +771,37 @@ class AppLocalizationsPt extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'Seu plano é construído sobre $low. O que vier acima é seu quando chegar.';
   }
+
+  @override
+  String get categoryFood => 'Alimentação';
+
+  @override
+  String get categoryTransport => 'Transporte';
+
+  @override
+  String get categoryBills => 'Contas';
+
+  @override
+  String get categoryShopping => 'Compras';
+
+  @override
+  String get categoryHealth => 'Saúde';
+
+  @override
+  String get categoryFun => 'Lazer';
+
+  @override
+  String get categoryOther => 'Outros';
+
+  @override
+  String get categoryUnsorted => 'Sem categoria';
+
+  @override
+  String get categoryPrompt => 'Foi para quê?';
+
+  @override
+  String get spendingTitle => 'Para onde foi';
+
+  @override
+  String get spendingWindow => 'Gastos registados nos últimos 30 dias';
 }

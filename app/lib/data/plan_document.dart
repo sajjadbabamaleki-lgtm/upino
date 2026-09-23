@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
+import '../domain/category.dart';
 import '../domain/goal.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart' show ThemeChoice;
@@ -28,6 +29,8 @@ class PlanDocument {
     this.themeChoice = ThemeChoice.system,
     this.languageCode,
     this.receipts = const {},
+    this.categories = const {},
+    this.recordedAt = const {},
     this.goals = const [],
     this.payCycleDays = 30,
   });
@@ -56,6 +59,15 @@ class PlanDocument {
   /// and a photograph is evidence about a transaction, not part of the
   /// money arithmetic (§15.3, Purchase Lifecycle).
   final Map<String, String> receipts;
+
+  /// Event id to what the spend was for. Kept beside the ledger for the same
+  /// reason as a receipt: it describes a transaction without changing the
+  /// arithmetic.
+  final Map<String, SpendCategory> categories;
+
+  /// Event id to when it was recorded, which is what lets spending be
+  /// grouped by period. Ledger events carry no time of their own.
+  final Map<String, DateTime> recordedAt;
   final List<Goal> goals;
 
   /// How long a pay period is, which is what a goal's contribution schedule
@@ -73,6 +85,15 @@ class PlanDocument {
         'payCycleDays': payCycleDays,
         'goals': goals.map(goalToJson).toList(),
         if (receipts.isNotEmpty) 'receipts': receipts,
+        if (categories.isNotEmpty)
+          'categories': {
+            for (final e in categories.entries) e.key: e.value.name,
+          },
+        if (recordedAt.isNotEmpty)
+          'recordedAt': {
+            for (final e in recordedAt.entries)
+              e.key: e.value.toUtc().toIso8601String(),
+          },
         if (lastBalanceConfirmationAt != null)
           'lastBalanceConfirmationAt':
               lastBalanceConfirmationAt!.toUtc().toIso8601String(),
@@ -120,6 +141,15 @@ class PlanDocument {
       receipts: json['receipts'] == null
           ? const {}
           : Map<String, String>.from(json['receipts'] as Map),
+      categories: {
+        for (final e in ((json['categories'] as Map?) ?? const {}).entries)
+          e.key as String:
+              enumByName(SpendCategory.values, e.value, 'spend category'),
+      },
+      recordedAt: {
+        for (final e in ((json['recordedAt'] as Map?) ?? const {}).entries)
+          e.key as String: DateTime.parse(e.value as String),
+      },
       lastBalanceConfirmationAt:
           confirmedAt == null ? null : DateTime.parse(confirmedAt as String),
     );

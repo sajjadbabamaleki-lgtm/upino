@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../data/plan_document.dart';
+import '../domain/category.dart';
 import '../domain/goal.dart';
 import '../data/plan_store.dart';
 import '../engine/allocate.dart';
@@ -156,6 +157,8 @@ class AppState extends ChangeNotifier {
   ThemeChoice _themeChoice = ThemeChoice.system;
   String? _languageCode;
   final Map<String, String> _receipts = {};
+  final Map<String, SpendCategory> _categories = {};
+  final Map<String, DateTime> _recordedAt = {};
   int _payCycleDays = 30;
   int _goalSeq = 0;
   Money? _openingBalance;
@@ -227,6 +230,12 @@ class AppState extends ChangeNotifier {
     _receipts
       ..clear()
       ..addAll(document.receipts);
+    _categories
+      ..clear()
+      ..addAll(document.categories);
+    _recordedAt
+      ..clear()
+      ..addAll(document.recordedAt);
     _payCycleDays = document.payCycleDays;
     _goals
       ..clear()
@@ -272,6 +281,8 @@ class AppState extends ChangeNotifier {
         themeChoice: _themeChoice,
         languageCode: _languageCode,
         receipts: Map.of(_receipts),
+        categories: Map.of(_categories),
+        recordedAt: Map.of(_recordedAt),
         goals: List.unmodifiable(_goals),
         payCycleDays: _payCycleDays,
       );
@@ -592,7 +603,11 @@ class AppState extends ChangeNotifier {
   /// it means for Safe-to-Spend.
   /// [receipt] is a filename inside the app's own directory, already copied
   /// there by the caller. Null when no photograph was taken.
-  void recordExpense(Money amount, {String? receipt}) {
+  void recordExpense(
+    Money amount, {
+    String? receipt,
+    SpendCategory? category,
+  }) {
     final id = 'e${++_eventSeq}';
     _events.add(ExpenseEvent(
       id: id,
@@ -600,6 +615,8 @@ class AppState extends ChangeNotifier {
       amount: amount,
     ),);
     if (receipt != null) _receipts[id] = receipt;
+    if (category != null) _categories[id] = category;
+    _recordedAt[id] = _now;
     lastRecordedExpense = amount;
     _persist();
     notifyListeners();
@@ -609,6 +626,49 @@ class AppState extends ChangeNotifier {
   /// receipt in place: §21 says a correction adds to the record rather than
   /// erasing it, and the photograph is part of that record.
   String? receiptFor(String eventId) => _receipts[eventId];
+
+  SpendCategory? categoryFor(String eventId) => _categories[eventId];
+
+  /// Sorting a spend afterwards, or changing its sort. Not a correction: the
+  /// amount and the plan are untouched, only the label on the entry changes.
+  void setCategory(String eventId, SpendCategory? category) {
+    if (_events.every((e) => e.id != eventId)) return;
+    if (category == null) {
+      _categories.remove(eventId);
+    } else {
+      _categories[eventId] = category;
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  /// Where the money went over the last [days], largest first. Only spends
+  /// that still count are included, and only those recorded with a time —
+  /// entries from before times were kept cannot be placed in a window.
+  /// A null category is spending nobody sorted, shown as such rather than
+  /// quietly folded into "other".
+  List<({SpendCategory? category, Money total})> spendingByCategory({
+    int days = 30,
+  }) {
+    final voided = <String>{
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final since = _now.subtract(Duration(days: days));
+    final totals = <SpendCategory?, Money>{};
+    for (final e in _events) {
+      if (e is! ExpenseEvent || voided.contains(e.id)) continue;
+      final at = _recordedAt[e.id];
+      if (at == null || at.isBefore(since)) continue;
+      final key = _categories[e.id];
+      totals[key] = (totals[key] ?? Money.zero(_currency)) + e.amount;
+    }
+    final out = [
+      for (final entry in totals.entries)
+        (category: entry.key, total: entry.value),
+    ]..sort((a, b) => b.total.compareTo(a.total));
+    return out;
+  }
 
   void attachReceipt(String eventId, String filename) {
     _receipts[eventId] = filename;
@@ -747,6 +807,11 @@ class AppState extends ChangeNotifier {
     _claims.clear();
     _incomeEvents.clear();
     _goals.clear();
+    // Event ids restart from e1, so anything keyed by id has to go with the
+    // log or it would attach itself to the next plan's first entries.
+    _receipts.clear();
+    _categories.clear();
+    _recordedAt.clear();
     _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;

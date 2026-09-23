@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "अधिकतम",
   "onboardingIncomeToOptional": "वैकल्पिक",
   "incomeRange": "{low} से {high}",
-  "incomeRangeNote": "आपकी योजना {low} पर बनी है। उससे ऊपर जो आए वह आने पर आपका है।"
+  "incomeRangeNote": "आपकी योजना {low} पर बनी है। उससे ऊपर जो आए वह आने पर आपका है।",
+  "categoryFood": "खाना",
+  "categoryTransport": "आवागमन",
+  "categoryBills": "बिल",
+  "categoryShopping": "खरीदारी",
+  "categoryHealth": "स्वास्थ्य",
+  "categoryFun": "मनोरंजन",
+  "categoryOther": "अन्य",
+  "categoryUnsorted": "बिना श्रेणी",
+  "categoryPrompt": "यह किस लिए था?",
+  "spendingTitle": "पैसा कहाँ गया",
+  "spendingWindow": "पिछले 30 दिनों में दर्ज खर्च"
 }

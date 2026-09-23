@@ -11,13 +11,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../data/receipt_store.dart';
+import '../domain/category.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
 import '../design/tokens.dart';
+import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import '../widgets/amount_sheet.dart' show CategoryChips, categoryLabel;
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({required this.state, required this.padding, super.key});
@@ -32,7 +35,16 @@ class ActivityScreen extends StatelessWidget {
     final removed = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => _RemoveSheet(entry: entry),
+      builder: (_) => _RemoveSheet(
+        entry: entry,
+        category: state.categoryFor(entry.eventId),
+        onCategory: entry.kind == ActivityKind.spend
+            ? (c) => state.setCategory(
+                  entry.eventId,
+                  c == state.categoryFor(entry.eventId) ? null : c,
+                )
+            : null,
+      ),
     );
     if (removed ?? false) state.removeEvent(entry.eventId);
   }
@@ -42,6 +54,7 @@ class ActivityScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     final entries = state.activity;
+    final spending = state.spendingByCategory();
 
     return ListView(
       padding: padding,
@@ -60,6 +73,12 @@ class ActivityScreen extends StatelessWidget {
             ],
           ),
         ),
+        // Only once something has been sorted: a card that says "Not sorted"
+        // and nothing else tells the person nothing they did not know.
+        if (spending.any((r) => r.category != null)) ...[
+          _WhereItWent(spending: spending),
+          const SizedBox(height: 10),
+        ],
         if (entries.isEmpty)
           UpinoCard(
             child: Text(
@@ -76,6 +95,7 @@ class ActivityScreen extends StatelessWidget {
                   _ActivityRow(
                     entry: entries[i],
                     receipt: state.receiptFor(entries[i].eventId),
+                    category: state.categoryFor(entries[i].eventId),
                     onRemove: entries[i].removed
                         ? null
                         : () => _confirmRemoval(context, entries[i]),
@@ -109,9 +129,11 @@ class _ActivityRow extends StatelessWidget {
     required this.entry,
     required this.receipt,
     required this.onRemove,
+    this.category,
   });
 
   final ActivityEntry entry;
+  final SpendCategory? category;
 
   /// A photograph taken when the spend was recorded, if there was one.
   final String? receipt;
@@ -140,10 +162,21 @@ class _ActivityRow extends StatelessWidget {
                     const SizedBox(width: 10),
                   ],
                   Flexible(
-                    child: Text(
-                      labelFor(l, entry.kind),
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: dimmed ? muted : null),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          labelFor(l, entry.kind),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: dimmed ? muted : null),
+                        ),
+                        if (category != null)
+                          Text(
+                            categoryLabel(l, category),
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(fontSize: 12),
+                          ),
+                      ],
                     ),
                   ),
                   if (dimmed) ...[
@@ -176,10 +209,27 @@ class _ActivityRow extends StatelessWidget {
   }
 }
 
-class _RemoveSheet extends StatelessWidget {
-  const _RemoveSheet({required this.entry});
+class _RemoveSheet extends StatefulWidget {
+  const _RemoveSheet({
+    required this.entry,
+    this.category,
+    this.onCategory,
+  });
 
   final ActivityEntry entry;
+  final SpendCategory? category;
+
+  /// Null for anything that is not a spend, which has no category to give.
+  final ValueChanged<SpendCategory>? onCategory;
+
+  @override
+  State<_RemoveSheet> createState() => _RemoveSheetState();
+}
+
+class _RemoveSheetState extends State<_RemoveSheet> {
+  late SpendCategory? _category = widget.category;
+
+  ActivityEntry get entry => widget.entry;
 
   @override
   Widget build(BuildContext context) {
@@ -221,6 +271,18 @@ class _RemoveSheet extends StatelessWidget {
               l.activityRemoveDetail,
               style: theme.textTheme.bodySmall,
             ),
+            if (widget.onCategory != null) ...[
+              const SizedBox(height: 18),
+              Text(l.categoryPrompt, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              CategoryChips(
+                selected: _category,
+                onSelect: (c) {
+                  widget.onCategory!(c);
+                  setState(() => _category = c == _category ? null : c);
+                },
+              ),
+            ],
             const SizedBox(height: 20),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -302,4 +364,63 @@ class _ReceiptView extends StatelessWidget {
           ),
         ),
       );
+}
+
+/// Where the money went, as bars rather than a pie: lengths compare at a
+/// glance and the amounts sit beside them, never abbreviated (§32.8).
+class _WhereItWent extends StatelessWidget {
+  const _WhereItWent({required this.spending});
+
+  final List<({SpendCategory? category, Money total})> spending;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    final largest = spending.first.total.minor;
+    final bar = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    return UpinoCard(
+      key: const Key('where-it-went'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l.spendingTitle, style: theme.textTheme.titleMedium),
+          const SizedBox(height: 2),
+          Text(l.spendingWindow, style: theme.textTheme.bodySmall),
+          const SizedBox(height: 14),
+          for (final row in spending) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    categoryLabel(l, row.category),
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Text(
+                  row.total.display(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontFeatures: moneyFeatures),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              child: LinearProgressIndicator(
+                value: largest <= 0 ? 0 : row.total.minor / largest,
+                minHeight: 6,
+                backgroundColor: sunkenColor(context),
+                color: row.category == null
+                    ? UpinoTokens.textTertiary
+                    : bar,
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ],
+      ),
+    );
+  }
 }

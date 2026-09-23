@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "最多",
   "onboardingIncomeToOptional": "可不填",
   "incomeRange": "{low} 至 {high}",
-  "incomeRangeNote": "计划建立在 {low} 之上。高出的部分，到账时就是你的。"
+  "incomeRangeNote": "计划建立在 {low} 之上。高出的部分，到账时就是你的。",
+  "categoryFood": "餐饮",
+  "categoryTransport": "交通",
+  "categoryBills": "账单",
+  "categoryShopping": "购物",
+  "categoryHealth": "医疗",
+  "categoryFun": "娱乐",
+  "categoryOther": "其他",
+  "categoryUnsorted": "未分类",
+  "categoryPrompt": "用在了哪里？",
+  "spendingTitle": "钱花在哪了",
+  "spendingWindow": "最近 30 天记录的支出"
 }

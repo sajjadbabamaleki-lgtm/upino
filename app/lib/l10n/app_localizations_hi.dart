@@ -762,4 +762,37 @@ class AppLocalizationsHi extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'आपकी योजना $low पर बनी है। उससे ऊपर जो आए वह आने पर आपका है।';
   }
+
+  @override
+  String get categoryFood => 'खाना';
+
+  @override
+  String get categoryTransport => 'आवागमन';
+
+  @override
+  String get categoryBills => 'बिल';
+
+  @override
+  String get categoryShopping => 'खरीदारी';
+
+  @override
+  String get categoryHealth => 'स्वास्थ्य';
+
+  @override
+  String get categoryFun => 'मनोरंजन';
+
+  @override
+  String get categoryOther => 'अन्य';
+
+  @override
+  String get categoryUnsorted => 'बिना श्रेणी';
+
+  @override
+  String get categoryPrompt => 'यह किस लिए था?';
+
+  @override
+  String get spendingTitle => 'पैसा कहाँ गया';
+
+  @override
+  String get spendingWindow => 'पिछले 30 दिनों में दर्ज खर्च';
 }

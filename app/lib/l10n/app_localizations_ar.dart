@@ -748,4 +748,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'خطتك مبنية على $low. وما زاد فهو لك حين يصل.';
   }
+
+  @override
+  String get categoryFood => 'طعام';
+
+  @override
+  String get categoryTransport => 'مواصلات';
+
+  @override
+  String get categoryBills => 'فواتير';
+
+  @override
+  String get categoryShopping => 'تسوّق';
+
+  @override
+  String get categoryHealth => 'صحة';
+
+  @override
+  String get categoryFun => 'ترفيه';
+
+  @override
+  String get categoryOther => 'أخرى';
+
+  @override
+  String get categoryUnsorted => 'غير مصنّف';
+
+  @override
+  String get categoryPrompt => 'لأيّ شيء كان؟';
+
+  @override
+  String get spendingTitle => 'أين ذهب المال';
+
+  @override
+  String get spendingWindow => 'المصروفات المسجلة في آخر 30 يومًا';
 }

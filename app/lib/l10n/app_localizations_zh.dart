@@ -732,4 +732,37 @@ class AppLocalizationsZh extends AppLocalizations {
   String incomeRangeNote(String low) {
     return '计划建立在 $low 之上。高出的部分，到账时就是你的。';
   }
+
+  @override
+  String get categoryFood => '餐饮';
+
+  @override
+  String get categoryTransport => '交通';
+
+  @override
+  String get categoryBills => '账单';
+
+  @override
+  String get categoryShopping => '购物';
+
+  @override
+  String get categoryHealth => '医疗';
+
+  @override
+  String get categoryFun => '娱乐';
+
+  @override
+  String get categoryOther => '其他';
+
+  @override
+  String get categoryUnsorted => '未分类';
+
+  @override
+  String get categoryPrompt => '用在了哪里？';
+
+  @override
+  String get spendingTitle => '钱花在哪了';
+
+  @override
+  String get spendingWindow => '最近 30 天记录的支出';
 }

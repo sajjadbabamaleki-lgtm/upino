@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "En çok",
   "onboardingIncomeToOptional": "İsteğe bağlı",
   "incomeRange": "{low} – {high}",
-  "incomeRangeNote": "Planınız {low} üzerine kurulu. Üstü, geldiğinde sizindir."
+  "incomeRangeNote": "Planınız {low} üzerine kurulu. Üstü, geldiğinde sizindir.",
+  "categoryFood": "Yemek",
+  "categoryTransport": "Ulaşım",
+  "categoryBills": "Faturalar",
+  "categoryShopping": "Alışveriş",
+  "categoryHealth": "Sağlık",
+  "categoryFun": "Eğlence",
+  "categoryOther": "Diğer",
+  "categoryUnsorted": "Sınıflanmamış",
+  "categoryPrompt": "Ne içindi?",
+  "spendingTitle": "Para nereye gitti",
+  "spendingWindow": "Son 30 günde kaydedilen harcamalar"
 }

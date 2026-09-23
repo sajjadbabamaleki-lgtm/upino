@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "Até",
   "onboardingIncomeToOptional": "Opcional",
   "incomeRange": "{low} a {high}",
-  "incomeRangeNote": "Seu plano é construído sobre {low}. O que vier acima é seu quando chegar."
+  "incomeRangeNote": "Seu plano é construído sobre {low}. O que vier acima é seu quando chegar.",
+  "categoryFood": "Alimentação",
+  "categoryTransport": "Transporte",
+  "categoryBills": "Contas",
+  "categoryShopping": "Compras",
+  "categoryHealth": "Saúde",
+  "categoryFun": "Lazer",
+  "categoryOther": "Outros",
+  "categoryUnsorted": "Sem categoria",
+  "categoryPrompt": "Foi para quê?",
+  "spendingTitle": "Para onde foi",
+  "spendingWindow": "Gastos registados nos últimos 30 dias"
 }

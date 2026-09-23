@@ -763,4 +763,37 @@ class AppLocalizationsRu extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'План построен на $low. Всё, что придёт сверх этого, ваше.';
   }
+
+  @override
+  String get categoryFood => 'Еда';
+
+  @override
+  String get categoryTransport => 'Транспорт';
+
+  @override
+  String get categoryBills => 'Счета';
+
+  @override
+  String get categoryShopping => 'Покупки';
+
+  @override
+  String get categoryHealth => 'Здоровье';
+
+  @override
+  String get categoryFun => 'Досуг';
+
+  @override
+  String get categoryOther => 'Другое';
+
+  @override
+  String get categoryUnsorted => 'Без категории';
+
+  @override
+  String get categoryPrompt => 'На что это было?';
+
+  @override
+  String get spendingTitle => 'Куда ушли деньги';
+
+  @override
+  String get spendingWindow => 'Траты за последние 30 дней';
 }

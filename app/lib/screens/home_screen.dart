@@ -52,9 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
       currency: state.currency,
       title: AppLocalizations.of(context).askSpendTitle,
       allowReceipt: true,
+      allowCategory: true,
     );
     if (amount != null) {
-      state.recordExpense(amount.amount, receipt: amount.receipt);
+      state.recordExpense(
+        amount.amount,
+        receipt: amount.receipt,
+        category: amount.category,
+      );
     }
   }
 

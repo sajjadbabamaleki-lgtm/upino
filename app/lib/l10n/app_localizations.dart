@@ -1463,6 +1463,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your plan is built on {low}. Anything above it is yours when it arrives.'**
   String incomeRangeNote(String low);
+
+  /// No description provided for @categoryFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get categoryFood;
+
+  /// No description provided for @categoryTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryTransport;
+
+  /// No description provided for @categoryBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get categoryBills;
+
+  /// No description provided for @categoryShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get categoryShopping;
+
+  /// No description provided for @categoryHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get categoryHealth;
+
+  /// No description provided for @categoryFun.
+  ///
+  /// In en, this message translates to:
+  /// **'Going out'**
+  String get categoryFun;
+
+  /// No description provided for @categoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
+
+  /// No description provided for @categoryUnsorted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sorted'**
+  String get categoryUnsorted;
+
+  /// No description provided for @categoryPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What was it for?'**
+  String get categoryPrompt;
+
+  /// No description provided for @spendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it went'**
+  String get spendingTitle;
+
+  /// No description provided for @spendingWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Spends recorded in the last 30 days'**
+  String get spendingWindow;
 }
 
 class _AppLocalizationsDelegate

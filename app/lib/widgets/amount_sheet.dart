@@ -14,14 +14,18 @@ import '../design/tokens.dart';
 import 'dart:io';
 
 import '../data/receipt_store.dart';
+import '../domain/category.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 
 /// What the sheet hands back: the amount, and the receipt photographed for
 /// it if there was one.
 class RecordedAmount {
-  const RecordedAmount(this.amount, {this.receipt});
+  const RecordedAmount(this.amount, {this.receipt, this.category});
   final Money amount;
+
+  /// What the spend was for, when the person said.
+  final SpendCategory? category;
 
   /// A filename inside the app's own directory, already copied there.
   final String? receipt;
@@ -38,6 +42,7 @@ class AmountSheet extends StatefulWidget {
     this.onRemove,
     this.removeLabel,
     this.allowReceipt = false,
+    this.allowCategory = false,
     super.key,
   });
 
@@ -58,6 +63,10 @@ class AmountSheet extends StatefulWidget {
   /// not a plan figure being edited.
   final bool allowReceipt;
 
+  /// Offered for a spend, never required: an unsorted spend counts exactly
+  /// the same, so the question must not stand between a person and Save.
+  final bool allowCategory;
+
   static Future<RecordedAmount?> show(
     BuildContext context, {
     required String currency,
@@ -68,6 +77,7 @@ class AmountSheet extends StatefulWidget {
     bool allowZero = false,
     String? removeLabel,
     bool allowReceipt = false,
+    bool allowCategory = false,
   }) =>
       showModalBottomSheet<RecordedAmount>(
         context: context,
@@ -80,6 +90,7 @@ class AmountSheet extends StatefulWidget {
           initial: initial,
           confirmLabel: confirmLabel,
           allowReceipt: allowReceipt,
+          allowCategory: allowCategory,
           allowZero: allowZero,
           removeLabel: removeLabel,
           onRemove: removeLabel == null
@@ -130,6 +141,7 @@ class _AmountSheetState extends State<AmountSheet> {
   }
 
   String? _receipt;
+  SpendCategory? _category;
   bool _busy = false;
 
   Future<void> _addReceipt(ImageSource source) async {
@@ -145,7 +157,9 @@ class _AmountSheetState extends State<AmountSheet> {
   void _save() {
     final amount = _parsed;
     if (amount != null) {
-      Navigator.of(context).pop(RecordedAmount(amount, receipt: _receipt));
+      Navigator.of(context).pop(
+        RecordedAmount(amount, receipt: _receipt, category: _category),
+      );
     }
   }
 
@@ -238,6 +252,15 @@ class _AmountSheetState extends State<AmountSheet> {
                   ],
                 ),
               ),
+              if (widget.allowCategory) ...[
+                const SizedBox(height: 14),
+                CategoryChips(
+                  selected: _category,
+                  // A second tap on the chosen one takes the answer back.
+                  onSelect: (c) =>
+                      setState(() => _category = c == _category ? null : c),
+                ),
+              ],
               const SizedBox(height: 18),
               FilledButton(
                 onPressed: amount == null ? null : _save,
@@ -417,6 +440,69 @@ class _ReceiptButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// The words for a category, which belong to the screen and not the state.
+String categoryLabel(AppLocalizations l, SpendCategory? c) => switch (c) {
+      SpendCategory.food => l.categoryFood,
+      SpendCategory.transport => l.categoryTransport,
+      SpendCategory.bills => l.categoryBills,
+      SpendCategory.shopping => l.categoryShopping,
+      SpendCategory.health => l.categoryHealth,
+      SpendCategory.fun => l.categoryFun,
+      SpendCategory.other => l.categoryOther,
+      null => l.categoryUnsorted,
+    };
+
+/// One tap to say what a spend was for. Pills rather than a dropdown, so the
+/// whole choice is visible at once and costs a single touch.
+class CategoryChips extends StatelessWidget {
+  const CategoryChips({
+    required this.selected,
+    required this.onSelect,
+    super.key,
+  });
+
+  final SpendCategory? selected;
+  final ValueChanged<SpendCategory> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    final active =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: [
+        for (final c in SpendCategory.values)
+          GestureDetector(
+            key: Key('category-${c.name}'),
+            onTap: () => onSelect(c),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              decoration: BoxDecoration(
+                color: c == selected ? active : sunkenColor(context),
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              ),
+              child: Text(
+                categoryLabel(l, c),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: c == selected
+                      ? Colors.white
+                      : (dark
+                          ? UpinoTokens.darkTextSecondary
+                          : UpinoTokens.textSecondary),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

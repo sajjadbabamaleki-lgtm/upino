@@ -760,4 +760,37 @@ class AppLocalizationsFa extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'برنامه روی $low ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است.';
   }
+
+  @override
+  String get categoryFood => 'خوراک';
+
+  @override
+  String get categoryTransport => 'رفت‌وآمد';
+
+  @override
+  String get categoryBills => 'قبض‌ها';
+
+  @override
+  String get categoryShopping => 'خرید';
+
+  @override
+  String get categoryHealth => 'سلامت';
+
+  @override
+  String get categoryFun => 'تفریح';
+
+  @override
+  String get categoryOther => 'سایر';
+
+  @override
+  String get categoryUnsorted => 'بدون دسته';
+
+  @override
+  String get categoryPrompt => 'برای چه بود؟';
+
+  @override
+  String get spendingTitle => 'پول کجا رفت';
+
+  @override
+  String get spendingWindow => 'خرج‌های ثبت‌شده در ۳۰ روز گذشته';
 }

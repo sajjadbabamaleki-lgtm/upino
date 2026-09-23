@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "До",
   "onboardingIncomeToOptional": "Необязательно",
   "incomeRange": "от {low} до {high}",
-  "incomeRangeNote": "План построен на {low}. Всё, что придёт сверх этого, ваше."
+  "incomeRangeNote": "План построен на {low}. Всё, что придёт сверх этого, ваше.",
+  "categoryFood": "Еда",
+  "categoryTransport": "Транспорт",
+  "categoryBills": "Счета",
+  "categoryShopping": "Покупки",
+  "categoryHealth": "Здоровье",
+  "categoryFun": "Досуг",
+  "categoryOther": "Другое",
+  "categoryUnsorted": "Без категории",
+  "categoryPrompt": "На что это было?",
+  "spendingTitle": "Куда ушли деньги",
+  "spendingWindow": "Траты за последние 30 дней"
 }

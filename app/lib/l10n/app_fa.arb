@@ -224,5 +224,16 @@
   "onboardingIncomeTo": "تا",
   "onboardingIncomeToOptional": "اختیاری",
   "incomeRange": "{low} تا {high}",
-  "incomeRangeNote": "برنامه روی {low} ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است."
+  "incomeRangeNote": "برنامه روی {low} ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است.",
+  "categoryFood": "خوراک",
+  "categoryTransport": "رفت‌وآمد",
+  "categoryBills": "قبض‌ها",
+  "categoryShopping": "خرید",
+  "categoryHealth": "سلامت",
+  "categoryFun": "تفریح",
+  "categoryOther": "سایر",
+  "categoryUnsorted": "بدون دسته",
+  "categoryPrompt": "برای چه بود؟",
+  "spendingTitle": "پول کجا رفت",
+  "spendingWindow": "خرج‌های ثبت‌شده در ۳۰ روز گذشته"
 }
