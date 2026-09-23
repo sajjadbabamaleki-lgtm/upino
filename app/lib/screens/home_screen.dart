@@ -4,6 +4,8 @@
 /// recorded here updates the figure immediately, with its reason code (§14).
 library;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../design/motion.dart';
@@ -16,10 +18,12 @@ import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
+import '../device/device_bridge.dart';
 import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/bank_suggestions_sheet.dart';
 import 'activity_screen.dart';
 import 'ask_screen.dart';
 import 'goals_screen.dart';
@@ -36,7 +40,40 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  StreamSubscription<void>? _spendRequests;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    final bridge = DeviceBridge.instance;
+    if (bridge != null) {
+      // The widget's button and the evening reminder both land here.
+      _spendRequests = bridge.spendRequests.listen((_) => _recordExpense());
+      if (bridge.takePendingSpend()) {
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => unawaited(_recordExpense()));
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_spendRequests?.cancel());
+    super.dispose();
+  }
+
+  /// Coming back to the app is when a new bank message is most likely to be
+  /// waiting, usually from the payment just made.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState lifecycle) {
+    if (lifecycle == AppLifecycleState.resumed) {
+      unawaited(DeviceBridge.instance?.readInbox());
+    }
+  }
+
   /// Above the gesture bar, not against it. 7 put the pill's shadow on the
   /// edge of the display.
   static const _navBottomGap = 15.0;
@@ -162,6 +199,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       _ConfirmationBanner(
                         amount: justRecorded,
                         onDismiss: state.clearExpenseConfirmation,
+                      ),
+                    ],
+
+                    if (state.bankSuggestions.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      ActionRow(
+                        key: const Key('home-sms'),
+                        title: l.smsWaiting(state.bankSuggestions.length),
+                        subtitle: l.smsWaitingSub,
+                        trailing: const RowAffordance(icon: 'receipt'),
+                        onTap: () => BankSuggestionsSheet.show(context, state),
                       ),
                     ],
 

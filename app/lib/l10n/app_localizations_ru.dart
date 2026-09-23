@@ -941,4 +941,80 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Удалить';
+
+  @override
+  String get fasterTitle => 'Быстрый ввод';
+
+  @override
+  String get smsTitle => 'Читать SMS банка';
+
+  @override
+  String get smsDetail =>
+      'Траты из SMS банка предлагаются к записи одним касанием. Сообщения читаются только на этом телефоне и никуда не отправляются.';
+
+  @override
+  String get smsDenied =>
+      'Upino не разрешено читать SMS. Разрешение можно дать в настройках телефона.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count SMS банка на проверку',
+      many: '$count SMS банка на проверку',
+      few: '$count SMS банка на проверку',
+      one: '1 SMS банка на проверку',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Запишите каждое одним касанием или пропустите';
+
+  @override
+  String get smsReviewTitle => 'От вашего банка';
+
+  @override
+  String get smsReviewBlurb =>
+      'Ничего не записывается, пока вы не нажмёте «Записать». Сверьте сумму с сообщением.';
+
+  @override
+  String get smsReviewDone => 'Всё просмотрено.';
+
+  @override
+  String get smsRecord => 'Записать';
+
+  @override
+  String get smsSkip => 'Пропустить';
+
+  @override
+  String get reminderTitleSetting => 'Вечернее напоминание';
+
+  @override
+  String get reminderDetail => 'В 21:00, только в дни без записей.';
+
+  @override
+  String get reminderDenied =>
+      'Upino не разрешено показывать уведомления. Разрешение можно дать в настройках.';
+
+  @override
+  String get reminderTitle => 'Были траты сегодня?';
+
+  @override
+  String get reminderBody =>
+      'Запишите за пару секунд, чтобы завтрашняя цифра была верной.';
+
+  @override
+  String get reminderChannel => 'Вечернее напоминание';
+
+  @override
+  String get widgetSpend => '+ Трата';
+
+  @override
+  String get widgetAdd => 'Добавить на главный экран';
+
+  @override
+  String get widgetAddSub =>
+      'Сколько можно тратить и кнопка записи — без открытия приложения';
 }

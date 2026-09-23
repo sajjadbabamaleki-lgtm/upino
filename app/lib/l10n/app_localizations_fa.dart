@@ -937,4 +937,75 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get holdingDelete => 'حذف این دارایی';
+
+  @override
+  String get fasterTitle => 'ثبت سریع‌تر';
+
+  @override
+  String get smsTitle => 'خواندن پیامک‌های بانک';
+
+  @override
+  String get smsDetail =>
+      'خرج‌هایی که بانک پیامکش را می‌فرستد با یک لمس برای ثبت پیشنهاد می‌شوند. پیامک‌ها فقط روی همین گوشی خوانده می‌شوند و به هیچ‌جا فرستاده نمی‌شوند.';
+
+  @override
+  String get smsDenied =>
+      'اجازهٔ خواندن پیامک داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count پیامک بانک برای بررسی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'هرکدام را با یک لمس ثبت یا رد کنید';
+
+  @override
+  String get smsReviewTitle => 'از بانک شما';
+
+  @override
+  String get smsReviewBlurb =>
+      'تا «ثبت» را نزنید چیزی ثبت نمی‌شود. مبلغ را با متن پیامک مقایسه کنید.';
+
+  @override
+  String get smsReviewDone => 'همه بررسی شد.';
+
+  @override
+  String get smsRecord => 'ثبت';
+
+  @override
+  String get smsSkip => 'رد کردن';
+
+  @override
+  String get reminderTitleSetting => 'یادآوری شبانه';
+
+  @override
+  String get reminderDetail => 'ساعت ۹ شب، فقط روزهایی که چیزی ثبت نشده.';
+
+  @override
+  String get reminderDenied =>
+      'اجازهٔ نمایش اعلان داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String get reminderTitle => 'امروز خرجی داشتید؟';
+
+  @override
+  String get reminderBody => 'در چند ثانیه ثبتش کنید تا عدد فردا درست باشد.';
+
+  @override
+  String get reminderChannel => 'یادآوری شبانه';
+
+  @override
+  String get widgetSpend => '+ خرج';
+
+  @override
+  String get widgetAdd => 'افزودن به صفحهٔ اصلی گوشی';
+
+  @override
+  String get widgetAddSub => 'مبلغ قابل خرج و دکمهٔ ثبت خرج، بدون باز کردن اپ';
 }

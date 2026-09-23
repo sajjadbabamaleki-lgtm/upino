@@ -1787,6 +1787,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove this holding'**
   String get holdingDelete;
+
+  /// No description provided for @fasterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Faster entry'**
+  String get fasterTitle;
+
+  /// No description provided for @smsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read bank messages'**
+  String get smsTitle;
+
+  /// No description provided for @smsDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Spends your bank texts you about are offered to record with one tap. Messages are read on this phone only and never sent anywhere.'**
+  String get smsDetail;
+
+  /// No description provided for @smsDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino was not allowed to read messages. You can allow it in the phone\'s settings.'**
+  String get smsDenied;
+
+  /// No description provided for @smsWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 bank message to review} other{{count} bank messages to review}}'**
+  String smsWaiting(int count);
+
+  /// No description provided for @smsWaitingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Record each with one tap, or skip it'**
+  String get smsWaitingSub;
+
+  /// No description provided for @smsReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'From your bank'**
+  String get smsReviewTitle;
+
+  /// No description provided for @smsReviewBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is recorded until you tap Record. Check the amount against the message.'**
+  String get smsReviewBlurb;
+
+  /// No description provided for @smsReviewDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up.'**
+  String get smsReviewDone;
+
+  /// No description provided for @smsRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get smsRecord;
+
+  /// No description provided for @smsSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get smsSkip;
+
+  /// No description provided for @reminderTitleSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reminder'**
+  String get reminderTitleSetting;
+
+  /// No description provided for @reminderDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'At 9 in the evening, only on days nothing was recorded.'**
+  String get reminderDetail;
+
+  /// No description provided for @reminderDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino was not allowed to show notifications. You can allow it in the phone\'s settings.'**
+  String get reminderDenied;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything spent today?'**
+  String get reminderTitle;
+
+  /// No description provided for @reminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Record it in a few seconds, so tomorrow\'s figure is right.'**
+  String get reminderBody;
+
+  /// No description provided for @reminderChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reminder'**
+  String get reminderChannel;
+
+  /// No description provided for @widgetSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'+ Spend'**
+  String get widgetSpend;
+
+  /// No description provided for @widgetAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to home screen'**
+  String get widgetAdd;
+
+  /// No description provided for @widgetAddSub.
+  ///
+  /// In en, this message translates to:
+  /// **'What you can spend, and a button to record a spend, without opening the app'**
+  String get widgetAddSub;
 }
 
 class _AppLocalizationsDelegate

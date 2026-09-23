@@ -943,4 +943,79 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Quitar este ahorro';
+
+  @override
+  String get fasterTitle => 'Registro más rápido';
+
+  @override
+  String get smsTitle => 'Leer mensajes del banco';
+
+  @override
+  String get smsDetail =>
+      'Los gastos que te avisa el banco se ofrecen para registrar con un toque. Los mensajes se leen solo en este teléfono y no se envían a ningún sitio.';
+
+  @override
+  String get smsDenied =>
+      'Upino no tiene permiso para leer mensajes. Puedes darlo en los ajustes del teléfono.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mensajes del banco por revisar',
+      one: '1 mensaje del banco por revisar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Registra cada uno con un toque o sáltalo';
+
+  @override
+  String get smsReviewTitle => 'De tu banco';
+
+  @override
+  String get smsReviewBlurb =>
+      'No se registra nada hasta que pulses Registrar. Comprueba el importe con el mensaje.';
+
+  @override
+  String get smsReviewDone => 'Todo al día.';
+
+  @override
+  String get smsRecord => 'Registrar';
+
+  @override
+  String get smsSkip => 'Saltar';
+
+  @override
+  String get reminderTitleSetting => 'Recordatorio por la noche';
+
+  @override
+  String get reminderDetail =>
+      'A las 9 de la noche, solo los días sin nada registrado.';
+
+  @override
+  String get reminderDenied =>
+      'Upino no tiene permiso para mostrar notificaciones. Puedes darlo en los ajustes.';
+
+  @override
+  String get reminderTitle => '¿Has gastado algo hoy?';
+
+  @override
+  String get reminderBody =>
+      'Regístralo en segundos para que la cifra de mañana sea correcta.';
+
+  @override
+  String get reminderChannel => 'Recordatorio por la noche';
+
+  @override
+  String get widgetSpend => '+ Gasto';
+
+  @override
+  String get widgetAdd => 'Añadir a la pantalla de inicio';
+
+  @override
+  String get widgetAddSub =>
+      'Lo que puedes gastar y un botón para registrar, sin abrir la app';
 }

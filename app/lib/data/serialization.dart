@@ -26,7 +26,8 @@ import '../engine/money.dart';
 /// 4 — added spend categories and when each spend was recorded.
 /// 5 — added the expected yearly inflation.
 /// 6 — added holdings outside the plan.
-const int schemaVersion = 6;
+/// 7 — added bank-message suggestions and the evening reminder.
+const int schemaVersion = 7;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);

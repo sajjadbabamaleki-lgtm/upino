@@ -958,4 +958,79 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Retirer cet avoir';
+
+  @override
+  String get fasterTitle => 'Saisie plus rapide';
+
+  @override
+  String get smsTitle => 'Lire les SMS de la banque';
+
+  @override
+  String get smsDetail =>
+      'Les dépenses signalées par SMS de la banque sont proposées en un geste. Les messages sont lus sur ce téléphone uniquement et jamais envoyés.';
+
+  @override
+  String get smsDenied =>
+      'Upino n’a pas l’autorisation de lire les messages. Vous pouvez l’accorder dans les réglages.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages de la banque à vérifier',
+      one: '1 message de la banque à vérifier',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Enregistrez chacun d’un geste, ou passez';
+
+  @override
+  String get smsReviewTitle => 'De votre banque';
+
+  @override
+  String get smsReviewBlurb =>
+      'Rien n’est enregistré avant que vous touchiez Enregistrer. Vérifiez le montant dans le message.';
+
+  @override
+  String get smsReviewDone => 'Tout est à jour.';
+
+  @override
+  String get smsRecord => 'Enregistrer';
+
+  @override
+  String get smsSkip => 'Passer';
+
+  @override
+  String get reminderTitleSetting => 'Rappel du soir';
+
+  @override
+  String get reminderDetail =>
+      'À 21 h, seulement les jours où rien n’a été noté.';
+
+  @override
+  String get reminderDenied =>
+      'Upino n’a pas l’autorisation d’afficher des notifications. Vous pouvez l’accorder dans les réglages.';
+
+  @override
+  String get reminderTitle => 'Une dépense aujourd’hui ?';
+
+  @override
+  String get reminderBody =>
+      'Notez-la en quelques secondes pour que le chiffre de demain soit juste.';
+
+  @override
+  String get reminderChannel => 'Rappel du soir';
+
+  @override
+  String get widgetSpend => '+ Dépense';
+
+  @override
+  String get widgetAdd => 'Ajouter à l’écran d’accueil';
+
+  @override
+  String get widgetAddSub =>
+      'Ce que vous pouvez dépenser, et un bouton pour noter une dépense, sans ouvrir l’app';
 }

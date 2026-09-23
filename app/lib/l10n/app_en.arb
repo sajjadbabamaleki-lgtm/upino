@@ -498,5 +498,32 @@
       }
     }
   },
-  "holdingDelete": "Remove this holding"
+  "holdingDelete": "Remove this holding",
+  "fasterTitle": "Faster entry",
+  "smsTitle": "Read bank messages",
+  "smsDetail": "Spends your bank texts you about are offered to record with one tap. Messages are read on this phone only and never sent anywhere.",
+  "smsDenied": "Upino was not allowed to read messages. You can allow it in the phone's settings.",
+  "smsWaiting": "{count, plural, =1{1 bank message to review} other{{count} bank messages to review}}",
+  "@smsWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "smsWaitingSub": "Record each with one tap, or skip it",
+  "smsReviewTitle": "From your bank",
+  "smsReviewBlurb": "Nothing is recorded until you tap Record. Check the amount against the message.",
+  "smsReviewDone": "All caught up.",
+  "smsRecord": "Record",
+  "smsSkip": "Skip",
+  "reminderTitleSetting": "Evening reminder",
+  "reminderDetail": "At 9 in the evening, only on days nothing was recorded.",
+  "reminderDenied": "Upino was not allowed to show notifications. You can allow it in the phone's settings.",
+  "reminderTitle": "Anything spent today?",
+  "reminderBody": "Record it in a few seconds, so tomorrow's figure is right.",
+  "reminderChannel": "Evening reminder",
+  "widgetSpend": "+ Spend",
+  "widgetAdd": "Add to home screen",
+  "widgetAddSub": "What you can spend, and a button to record a spend, without opening the app"
 }

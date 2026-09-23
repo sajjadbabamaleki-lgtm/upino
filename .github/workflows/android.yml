@@ -121,7 +121,8 @@ jobs:
           Download **upino.apk** below and open it on an Android phone.
           Android asks once to allow installing from this source.
 
-          The app requests no permissions and makes no network calls." \
+          The app makes no network calls. It asks for SMS or notification
+          access only if you turn those features on in Profile." \
             --target "${{ github.sha }}" 
 
       # Any other branch publishes to its own moving pre-release, so a change

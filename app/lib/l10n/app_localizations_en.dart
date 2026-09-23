@@ -943,4 +943,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Remove this holding';
+
+  @override
+  String get fasterTitle => 'Faster entry';
+
+  @override
+  String get smsTitle => 'Read bank messages';
+
+  @override
+  String get smsDetail =>
+      'Spends your bank texts you about are offered to record with one tap. Messages are read on this phone only and never sent anywhere.';
+
+  @override
+  String get smsDenied =>
+      'Upino was not allowed to read messages. You can allow it in the phone\'s settings.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bank messages to review',
+      one: '1 bank message to review',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Record each with one tap, or skip it';
+
+  @override
+  String get smsReviewTitle => 'From your bank';
+
+  @override
+  String get smsReviewBlurb =>
+      'Nothing is recorded until you tap Record. Check the amount against the message.';
+
+  @override
+  String get smsReviewDone => 'All caught up.';
+
+  @override
+  String get smsRecord => 'Record';
+
+  @override
+  String get smsSkip => 'Skip';
+
+  @override
+  String get reminderTitleSetting => 'Evening reminder';
+
+  @override
+  String get reminderDetail =>
+      'At 9 in the evening, only on days nothing was recorded.';
+
+  @override
+  String get reminderDenied =>
+      'Upino was not allowed to show notifications. You can allow it in the phone\'s settings.';
+
+  @override
+  String get reminderTitle => 'Anything spent today?';
+
+  @override
+  String get reminderBody =>
+      'Record it in a few seconds, so tomorrow\'s figure is right.';
+
+  @override
+  String get reminderChannel => 'Evening reminder';
+
+  @override
+  String get widgetSpend => '+ Spend';
+
+  @override
+  String get widgetAdd => 'Add to home screen';
+
+  @override
+  String get widgetAddSub =>
+      'What you can spend, and a button to record a spend, without opening the app';
 }

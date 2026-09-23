@@ -36,6 +36,10 @@ class PlanDocument {
     this.payCycleDays = 30,
     this.inflationBasisPoints,
     this.holdings = const [],
+    this.smsEnabled = false,
+    this.smsSince,
+    this.smsHandled = const [],
+    this.reminderEnabled = false,
   });
 
   final String currency;
@@ -85,6 +89,15 @@ class PlanDocument {
   /// counted in it.
   final List<Holding> holdings;
 
+  /// Whether bank messages are read to suggest spends, from when, and which
+  /// messages have already been answered so none is offered twice.
+  final bool smsEnabled;
+  final DateTime? smsSince;
+  final List<String> smsHandled;
+
+  /// Whether the evening reminder is on.
+  final bool reminderEnabled;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -99,6 +112,10 @@ class PlanDocument {
         'goals': goals.map(goalToJson).toList(),
         if (holdings.isNotEmpty)
           'holdings': holdings.map(holdingToJson).toList(),
+        if (smsEnabled) 'smsEnabled': true,
+        if (smsSince != null) 'smsSince': smsSince!.toUtc().toIso8601String(),
+        if (smsHandled.isNotEmpty) 'smsHandled': smsHandled,
+        if (reminderEnabled) 'reminderEnabled': true,
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
           'categories': {
@@ -149,6 +166,14 @@ class PlanDocument {
       // Absent in a version 1 document, which simply means "follow the phone".
       goals: listOf(json['goals'], goalFromJson),
       holdings: listOf(json['holdings'], holdingFromJson),
+      smsEnabled: json['smsEnabled'] as bool? ?? false,
+      smsSince: json['smsSince'] == null
+          ? null
+          : DateTime.parse(json['smsSince']! as String),
+      smsHandled: [
+        for (final id in (json['smsHandled'] as List?) ?? const []) id as String,
+      ],
+      reminderEnabled: json['reminderEnabled'] as bool? ?? false,
       payCycleDays: json['payCycleDays'] as int? ?? 30,
       inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null

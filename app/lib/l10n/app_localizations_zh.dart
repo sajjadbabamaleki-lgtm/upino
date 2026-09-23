@@ -902,4 +902,71 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get holdingDelete => '移除此资产';
+
+  @override
+  String get fasterTitle => '更快记录';
+
+  @override
+  String get smsTitle => '读取银行短信';
+
+  @override
+  String get smsDetail => '银行短信通知的支出会被提议一键记录。短信只在本机读取，绝不外传。';
+
+  @override
+  String get smsDenied => 'Upino 未获读取短信的权限，可在手机设置中开启。';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count 条银行短信待确认',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => '一键记录或跳过';
+
+  @override
+  String get smsReviewTitle => '来自银行';
+
+  @override
+  String get smsReviewBlurb => '点“记录”前不会记录任何内容。请对照短信核对金额。';
+
+  @override
+  String get smsReviewDone => '已全部处理。';
+
+  @override
+  String get smsRecord => '记录';
+
+  @override
+  String get smsSkip => '跳过';
+
+  @override
+  String get reminderTitleSetting => '晚间提醒';
+
+  @override
+  String get reminderDetail => '晚上 9 点，仅在当天没有记录时提醒。';
+
+  @override
+  String get reminderDenied => 'Upino 未获通知权限，可在手机设置中开启。';
+
+  @override
+  String get reminderTitle => '今天有花钱吗？';
+
+  @override
+  String get reminderBody => '几秒钟记下来，明天的数字才准确。';
+
+  @override
+  String get reminderChannel => '晚间提醒';
+
+  @override
+  String get widgetSpend => '+ 支出';
+
+  @override
+  String get widgetAdd => '添加到主屏幕';
+
+  @override
+  String get widgetAddSub => '无需打开应用即可查看可花金额并记录支出';
 }

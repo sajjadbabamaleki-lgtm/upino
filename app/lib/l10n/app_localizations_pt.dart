@@ -949,4 +949,78 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Remover esta reserva';
+
+  @override
+  String get fasterTitle => 'Registo mais rápido';
+
+  @override
+  String get smsTitle => 'Ler mensagens do banco';
+
+  @override
+  String get smsDetail =>
+      'Os gastos que o banco lhe envia por SMS são sugeridos para registar com um toque. As mensagens são lidas só neste telemóvel e nunca enviadas.';
+
+  @override
+  String get smsDenied =>
+      'O Upino não tem permissão para ler mensagens. Pode dá-la nas definições do telemóvel.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mensagens do banco por rever',
+      one: '1 mensagem do banco por rever',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Registe cada uma com um toque, ou ignore';
+
+  @override
+  String get smsReviewTitle => 'Do seu banco';
+
+  @override
+  String get smsReviewBlurb =>
+      'Nada é registado até tocar em Registar. Confira o valor com a mensagem.';
+
+  @override
+  String get smsReviewDone => 'Tudo em dia.';
+
+  @override
+  String get smsRecord => 'Registar';
+
+  @override
+  String get smsSkip => 'Ignorar';
+
+  @override
+  String get reminderTitleSetting => 'Lembrete ao fim do dia';
+
+  @override
+  String get reminderDetail => 'Às 21h, só nos dias em que nada foi registado.';
+
+  @override
+  String get reminderDenied =>
+      'O Upino não tem permissão para mostrar notificações. Pode dá-la nas definições.';
+
+  @override
+  String get reminderTitle => 'Gastou alguma coisa hoje?';
+
+  @override
+  String get reminderBody =>
+      'Registe em segundos para que o valor de amanhã esteja certo.';
+
+  @override
+  String get reminderChannel => 'Lembrete ao fim do dia';
+
+  @override
+  String get widgetSpend => '+ Gasto';
+
+  @override
+  String get widgetAdd => 'Adicionar ao ecrã principal';
+
+  @override
+  String get widgetAddSub =>
+      'O que pode gastar e um botão para registar, sem abrir a app';
 }

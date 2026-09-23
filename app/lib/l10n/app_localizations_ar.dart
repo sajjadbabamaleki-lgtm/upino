@@ -926,4 +926,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get holdingDelete => 'إزالة هذه المدخرات';
+
+  @override
+  String get fasterTitle => 'إدخال أسرع';
+
+  @override
+  String get smsTitle => 'قراءة رسائل البنك';
+
+  @override
+  String get smsDetail =>
+      'تُعرض عليك المصروفات التي يرسل بها البنك رسائل لتسجيلها بلمسة. تُقرأ الرسائل على هذا الهاتف فقط ولا تُرسل إلى أي مكان.';
+
+  @override
+  String get smsDenied =>
+      'لم يُسمح لـ Upino بقراءة الرسائل. يمكنك السماح بذلك من إعدادات الهاتف.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count رسائل بنكية للمراجعة',
+      one: 'رسالة بنكية واحدة للمراجعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'سجّل كلًا منها بلمسة أو تخطَّه';
+
+  @override
+  String get smsReviewTitle => 'من بنكك';
+
+  @override
+  String get smsReviewBlurb =>
+      'لا يُسجَّل شيء حتى تضغط «تسجيل». طابق المبلغ مع الرسالة.';
+
+  @override
+  String get smsReviewDone => 'لا شيء متبقٍ.';
+
+  @override
+  String get smsRecord => 'تسجيل';
+
+  @override
+  String get smsSkip => 'تخطٍّ';
+
+  @override
+  String get reminderTitleSetting => 'تذكير مسائي';
+
+  @override
+  String get reminderDetail =>
+      'في التاسعة مساءً، فقط في الأيام التي لم يُسجَّل فيها شيء.';
+
+  @override
+  String get reminderDenied =>
+      'لم يُسمح لـ Upino بعرض الإشعارات. يمكنك السماح بذلك من الإعدادات.';
+
+  @override
+  String get reminderTitle => 'هل أنفقت شيئًا اليوم؟';
+
+  @override
+  String get reminderBody => 'سجّله في ثوانٍ ليكون رقم الغد صحيحًا.';
+
+  @override
+  String get reminderChannel => 'تذكير مسائي';
+
+  @override
+  String get widgetSpend => '+ مصروف';
+
+  @override
+  String get widgetAdd => 'إضافة إلى الشاشة الرئيسية';
+
+  @override
+  String get widgetAddSub => 'ما يمكنك إنفاقه وزر لتسجيل مصروف دون فتح التطبيق';
 }

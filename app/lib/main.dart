@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'l10n/app_localizations.dart';
 
 import 'data/plan_store.dart';
+import 'device/device_bridge.dart';
 import 'design/motion.dart';
 import 'design/theme.dart';
 import 'design/tokens.dart';
@@ -21,8 +22,11 @@ Future<void> main() async {
   // moves up; nothing lands under the status icons.
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   final state = AppState(store: await FilePlanStore.inAppDirectory());
-  unawaited(state.restore());
   runApp(UpinoApp(state: state));
+  await state.restore();
+  // After the plan is back, so the widget and the reminder describe the
+  // real plan and not an empty one.
+  await DeviceBridge.start(state);
 }
 
 class UpinoApp extends StatelessWidget {

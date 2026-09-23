@@ -938,4 +938,78 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get holdingDelete => 'Bu birikimi kaldır';
+
+  @override
+  String get fasterTitle => 'Daha hızlı kayıt';
+
+  @override
+  String get smsTitle => 'Banka mesajlarını oku';
+
+  @override
+  String get smsDetail =>
+      'Bankanın mesajla bildirdiği harcamalar tek dokunuşla kaydetmeniz için önerilir. Mesajlar yalnızca bu telefonda okunur, hiçbir yere gönderilmez.';
+
+  @override
+  String get smsDenied =>
+      'Upino\'nun mesajları okumasına izin verilmedi. Telefon ayarlarından izin verebilirsiniz.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'İncelenecek $count banka mesajı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'Her birini tek dokunuşla kaydedin ya da geçin';
+
+  @override
+  String get smsReviewTitle => 'Bankanızdan';
+
+  @override
+  String get smsReviewBlurb =>
+      'Kaydet\'e dokunana kadar hiçbir şey kaydedilmez. Tutarı mesajla karşılaştırın.';
+
+  @override
+  String get smsReviewDone => 'Hepsi tamam.';
+
+  @override
+  String get smsRecord => 'Kaydet';
+
+  @override
+  String get smsSkip => 'Geç';
+
+  @override
+  String get reminderTitleSetting => 'Akşam hatırlatıcısı';
+
+  @override
+  String get reminderDetail =>
+      'Akşam 9\'da, yalnızca hiçbir şey kaydedilmeyen günlerde.';
+
+  @override
+  String get reminderDenied =>
+      'Upino\'nun bildirim göstermesine izin verilmedi. Ayarlardan izin verebilirsiniz.';
+
+  @override
+  String get reminderTitle => 'Bugün harcama yaptınız mı?';
+
+  @override
+  String get reminderBody =>
+      'Yarının rakamı doğru olsun diye birkaç saniyede kaydedin.';
+
+  @override
+  String get reminderChannel => 'Akşam hatırlatıcısı';
+
+  @override
+  String get widgetSpend => '+ Harcama';
+
+  @override
+  String get widgetAdd => 'Ana ekrana ekle';
+
+  @override
+  String get widgetAddSub =>
+      'Uygulamayı açmadan harcayabileceğiniz tutar ve kayıt düğmesi';
 }

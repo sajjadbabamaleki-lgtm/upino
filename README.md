@@ -151,6 +151,22 @@ in the app, and a guessed one would put a made-up figure on Home, so the
 confirmation says plainly that this corrects the currency and does not convert
 money.
 
+### Beyond the plan
+
+These sit beside the engine and never change its arithmetic; the §24 fixture
+table is untouched by all of them.
+
+| Feature | Where | Notes |
+|---|---|---|
+| Jalali calendar | every date, in Persian | Local conversion, checked over fifteen years of days |
+| Spend categories | Quick Expense, Activity | Optional; "where it went" over the last 30 days |
+| Encrypted backup | Profile | AES-256-GCM, PBKDF2 key; shared through the phone's share sheet |
+| Inflation | Goals | The person's own yearly rate; shows what a goal will cost on its date |
+| Other holdings | Plan | Dollars, gold, coins at the person's own price; never in Safe-to-Spend |
+| Bank messages | Profile, Home | Read on the phone, parsed into suggestions; nothing is recorded without a tap |
+| Evening reminder | Profile | 21:00, skipped on days that already have a spend |
+| Home-screen widget | Android launcher | Safe-to-Spend and a button that opens Quick Expense |
+
 ### Corrections
 
 Removing a recorded entry appends a `CorrectionEvent` beside it rather than
@@ -200,8 +216,12 @@ meant to run on. The artifact is still uploaded for CI debugging.
 The APK is debug-signed, which is what makes it installable without a release
 key. A store build needs its own signing config.
 
-The app declares no permissions and talks to no network: the plan lives in a
-file in the app's own storage.
+The app talks to no network: the plan lives in a file in the app's own
+storage. It asks for a permission only when the matching feature is switched
+on in Profile — reading SMS for bank messages, notifications for the evening
+reminder — and never at install or first launch. `READ_SMS` is a restricted
+permission on Google Play, so a Play build would need a policy declaration or
+the feature removed; the APK installed from the release link is unaffected.
 
 Building locally instead, which needs no CI at all:
 

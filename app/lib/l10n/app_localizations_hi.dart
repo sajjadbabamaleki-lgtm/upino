@@ -940,4 +940,79 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get holdingDelete => 'यह बचत हटाएँ';
+
+  @override
+  String get fasterTitle => 'तेज़ एंट्री';
+
+  @override
+  String get smsTitle => 'बैंक संदेश पढ़ें';
+
+  @override
+  String get smsDetail =>
+      'बैंक जिन खर्चों का संदेश भेजता है, उन्हें एक टैप में दर्ज करने के लिए दिखाया जाता है। संदेश सिर्फ़ इसी फ़ोन पर पढ़े जाते हैं, कहीं भेजे नहीं जाते।';
+
+  @override
+  String get smsDenied =>
+      'Upino को संदेश पढ़ने की अनुमति नहीं मिली। फ़ोन की सेटिंग में अनुमति दे सकते हैं।';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'देखने को $count बैंक संदेश',
+      one: 'देखने को 1 बैंक संदेश',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'हर एक को एक टैप में दर्ज करें या छोड़ें';
+
+  @override
+  String get smsReviewTitle => 'आपके बैंक से';
+
+  @override
+  String get smsReviewBlurb =>
+      'जब तक आप \'दर्ज करें\' न दबाएँ, कुछ दर्ज नहीं होता। रकम संदेश से मिलाएँ।';
+
+  @override
+  String get smsReviewDone => 'सब देख लिया।';
+
+  @override
+  String get smsRecord => 'दर्ज करें';
+
+  @override
+  String get smsSkip => 'छोड़ें';
+
+  @override
+  String get reminderTitleSetting => 'शाम का रिमाइंडर';
+
+  @override
+  String get reminderDetail =>
+      'रात 9 बजे, सिर्फ़ उन दिनों जब कुछ दर्ज न हुआ हो।';
+
+  @override
+  String get reminderDenied =>
+      'Upino को सूचनाएँ दिखाने की अनुमति नहीं मिली। सेटिंग में अनुमति दे सकते हैं।';
+
+  @override
+  String get reminderTitle => 'आज कुछ खर्च किया?';
+
+  @override
+  String get reminderBody =>
+      'कुछ सेकंड में दर्ज करें, ताकि कल का आँकड़ा सही रहे।';
+
+  @override
+  String get reminderChannel => 'शाम का रिमाइंडर';
+
+  @override
+  String get widgetSpend => '+ खर्च';
+
+  @override
+  String get widgetAdd => 'होम स्क्रीन पर जोड़ें';
+
+  @override
+  String get widgetAddSub =>
+      'कितना खर्च कर सकते हैं, और खर्च दर्ज करने का बटन, ऐप खोले बिना';
 }

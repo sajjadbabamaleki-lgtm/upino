@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../data/plan_document.dart';
+import '../domain/bank_sms.dart';
 import '../domain/category.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
@@ -90,6 +91,38 @@ class SpendScenarios {
       buyAfterIncome != null && breaksNow && !breaksAfterIncome;
 }
 
+/// A message on the phone, as the device layer hands it over.
+class InboxMessage {
+  const InboxMessage({
+    required this.id,
+    required this.body,
+    required this.receivedAt,
+    this.sender,
+  });
+
+  final String id;
+  final String body;
+  final DateTime receivedAt;
+  final String? sender;
+}
+
+/// A spend a bank message describes, waiting for the person to say yes.
+class BankSuggestion {
+  const BankSuggestion({
+    required this.messageId,
+    required this.amount,
+    required this.receivedAt,
+    required this.body,
+    this.sender,
+  });
+
+  final String messageId;
+  final Money amount;
+  final DateTime receivedAt;
+  final String body;
+  final String? sender;
+}
+
 /// Which theme the app follows. Stored with the plan so it survives a
 /// reinstall on the same device, and defaults to whatever the phone is set
 /// to rather than imposing a choice.
@@ -165,6 +198,11 @@ class AppState extends ChangeNotifier {
   final Map<String, DateTime> _recordedAt = {};
   int _payCycleDays = 30;
   int? _inflationBasisPoints;
+  bool _smsEnabled = false;
+  DateTime? _smsSince;
+  final List<String> _smsHandled = [];
+  final List<BankSuggestion> _suggestions = [];
+  bool _reminderEnabled = false;
   int _goalSeq = 0;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
@@ -243,6 +281,12 @@ class AppState extends ChangeNotifier {
       ..addAll(document.recordedAt);
     _payCycleDays = document.payCycleDays;
     _inflationBasisPoints = document.inflationBasisPoints;
+    _smsEnabled = document.smsEnabled;
+    _smsSince = document.smsSince;
+    _smsHandled
+      ..clear()
+      ..addAll(document.smsHandled);
+    _reminderEnabled = document.reminderEnabled;
     _goals
       ..clear()
       ..addAll(document.goals);
@@ -311,6 +355,10 @@ class AppState extends ChangeNotifier {
         payCycleDays: _payCycleDays,
         inflationBasisPoints: _inflationBasisPoints,
         holdings: List.unmodifiable(_holdings),
+        smsEnabled: _smsEnabled,
+        smsSince: _smsSince,
+        smsHandled: List.unmodifiable(_smsHandled),
+        reminderEnabled: _reminderEnabled,
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -503,6 +551,110 @@ class AppState extends ChangeNotifier {
       ];
 
   List<Goal> get goals => List.unmodifiable(_goals);
+
+  // --- faster entry ---------------------------------------------------------
+
+  bool get smsEnabled => _smsEnabled;
+
+  /// Turning it on looks back three days, not through years of messages:
+  /// old spends are long since in the balance, and offering them now would
+  /// count them twice.
+  void setSmsEnabled(bool enabled) {
+    if (enabled == _smsEnabled) return;
+    _smsEnabled = enabled;
+    if (enabled) {
+      _smsSince ??= _now.subtract(const Duration(days: 3));
+    } else {
+      _suggestions.clear();
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  /// Where the device layer should start reading from.
+  DateTime? get smsSince => _smsEnabled ? _smsSince : null;
+
+  List<BankSuggestion> get bankSuggestions => List.unmodifiable(_suggestions);
+
+  /// Messages read from the phone. Only those that describe a spend this plan
+  /// can record, that arrived after the feature was turned on, and that the
+  /// person has not already answered become suggestions.
+  void offerBankMessages(Iterable<InboxMessage> messages) {
+    if (!_smsEnabled) return;
+    final since = _smsSince;
+    final known = {for (final s in _suggestions) s.messageId, ..._smsHandled};
+    var added = false;
+    for (final m in messages) {
+      if (known.contains(m.id)) continue;
+      if (since != null && !m.receivedAt.isAfter(since)) continue;
+      final spend = parseBankSms(m.body, planCurrency: _currency);
+      if (spend == null) continue;
+      _suggestions.add(BankSuggestion(
+        messageId: m.id,
+        amount: spend.amount,
+        receivedAt: m.receivedAt,
+        body: m.body,
+        sender: m.sender,
+      ),);
+      known.add(m.id);
+      added = true;
+    }
+    if (!added) return;
+    _suggestions.sort((a, b) => b.receivedAt.compareTo(a.receivedAt));
+    notifyListeners();
+  }
+
+  /// Record what the bank said was spent. The one path from a message to
+  /// the ledger, and it goes through the person.
+  void acceptSuggestion(String messageId, {SpendCategory? category}) {
+    final index = _suggestions.indexWhere((s) => s.messageId == messageId);
+    if (index < 0) return;
+    final s = _suggestions.removeAt(index);
+    _markHandled(messageId);
+    recordExpense(s.amount, category: category);
+  }
+
+  void dismissSuggestion(String messageId) {
+    final index = _suggestions.indexWhere((s) => s.messageId == messageId);
+    if (index < 0) return;
+    _suggestions.removeAt(index);
+    _markHandled(messageId);
+    _persist();
+    notifyListeners();
+  }
+
+  /// Answered messages are remembered by id so they are never offered
+  /// twice. Only the recent ones are kept: anything older has fallen behind
+  /// the reading window anyway.
+  void _markHandled(String id) {
+    _smsHandled.add(id);
+    if (_smsHandled.length > 300) {
+      _smsHandled.removeRange(0, _smsHandled.length - 300);
+    }
+  }
+
+  bool get reminderEnabled => _reminderEnabled;
+
+  void setReminderEnabled(bool enabled) {
+    if (enabled == _reminderEnabled) return;
+    _reminderEnabled = enabled;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Whether a spend was recorded today, local time. The evening reminder
+  /// skips a day that already has one.
+  bool get spentToday {
+    for (final e in _events) {
+      if (e is! ExpenseEvent) continue;
+      final at = _recordedAt[e.id];
+      if (at != null && LocalDate.at(at, _utcOffset) == today) return true;
+    }
+    return false;
+  }
+
+  Duration get utcOffset => _utcOffset;
+  DateTime get now => _now;
 
   List<Holding> get holdings => List.unmodifiable(_holdings);
 
@@ -920,6 +1072,7 @@ class AppState extends ChangeNotifier {
     _recordedAt.clear();
     _holdings.clear();
     _holdingSeq = 0;
+    _suggestions.clear();
     _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;
