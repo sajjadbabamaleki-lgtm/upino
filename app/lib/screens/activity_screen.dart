@@ -6,8 +6,11 @@
 /// way.
 library;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import '../data/receipt_store.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
@@ -67,6 +70,7 @@ class ActivityScreen extends StatelessWidget {
                 for (var i = 0; i < entries.length; i++) ...[
                   _ActivityRow(
                     entry: entries[i],
+                    receipt: state.receiptFor(entries[i].eventId),
                     onRemove: entries[i].removed
                         ? null
                         : () => _confirmRemoval(context, entries[i]),
@@ -96,9 +100,16 @@ String labelFor(AppLocalizations l, ActivityKind kind) => switch (kind) {
     };
 
 class _ActivityRow extends StatelessWidget {
-  const _ActivityRow({required this.entry, required this.onRemove});
+  const _ActivityRow({
+    required this.entry,
+    required this.receipt,
+    required this.onRemove,
+  });
 
   final ActivityEntry entry;
+
+  /// A photograph taken when the spend was recorded, if there was one.
+  final String? receipt;
   final VoidCallback? onRemove;
 
   @override
@@ -119,6 +130,10 @@ class _ActivityRow extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
+                  if (receipt != null) ...[
+                    _ReceiptThumb(name: receipt!),
+                    const SizedBox(width: 10),
+                  ],
                   Flexible(
                     child: Text(
                       labelFor(l, entry.kind),
@@ -218,4 +233,68 @@ class _RemoveSheet extends StatelessWidget {
       ),
     );
   }
+}
+
+
+/// A receipt on the row it belongs to, opening full screen on a tap. The
+/// photograph stays with the entry even once it is removed: §21 says a
+/// correction adds to the record rather than erasing it.
+class _ReceiptThumb extends StatelessWidget {
+  const _ReceiptThumb({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<File?>(
+        future: const ReceiptStore().file(name),
+        builder: (context, snap) {
+          final file = snap.data;
+          if (file == null) return const SizedBox.shrink();
+          return GestureDetector(
+            key: Key('receipt-thumb-$name'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => _ReceiptView(file: file),
+              ),
+            ),
+            child: Container(
+              width: 30,
+              height: 30,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: sunkenColor(context),
+              ),
+              child: Image.file(file, fit: BoxFit.cover),
+            ),
+          );
+        },
+      );
+}
+
+class _ReceiptView extends StatelessWidget {
+  const _ReceiptView({required this.file});
+
+  final File file;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Text(
+            AppLocalizations.of(context).receipt,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+        body: Center(
+          child: InteractiveViewer(
+            maxScale: 5,
+            child: Image.file(file),
+          ),
+        ),
+      );
 }

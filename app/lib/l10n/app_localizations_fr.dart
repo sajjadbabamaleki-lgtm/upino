@@ -100,7 +100,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ce que vous voulez mettre de côté cette période';
 
   @override
-  String get onboardingFinish => 'Voir ce que je peux dépenser';
+  String get onboardingFinish => 'Créer mon plan';
 
   @override
   String get onboardingIncomplete =>
@@ -727,4 +727,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get askNoVerdict =>
       'Upino ne dit ni oui ni non. L’arbitrage vous revient.';
+
+  @override
+  String get receipt => 'Reçu';
+
+  @override
+  String get receiptAdd => 'Ajouter un reçu';
+
+  @override
+  String get receiptCamera => 'Prendre une photo';
+
+  @override
+  String get receiptGallery => 'Choisir une photo';
+
+  @override
+  String get receiptAttached => 'Reçu joint';
+
+  @override
+  String get receiptRemove => 'Retirer la photo';
 }

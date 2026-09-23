@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "Lo que necesitas para pasar el periodo",
   "onboardingGoalLabel": "Ahorro para una meta",
   "onboardingGoalHint": "Lo que quieres apartar este periodo",
-  "onboardingFinish": "Ver cuánto puedo gastar",
+  "onboardingFinish": "Crear mi plan",
   "onboardingIncomplete": "Completa las dos primeras respuestas para continuar",
   "tapToType": "Toca para escribir",
   "heroSafeToSpend": "Puedes gastar ahora",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "Esperar a que llegue tu ingreso lo cubre todo.",
   "askNoIncome": "Aún no se espera ningún ingreso, así que no hay un momento posterior con el que comparar.",
   "askAssumption": "Supone que tu ingreso llega como se espera el {date}.",
-  "askNoVerdict": "Upino no dice sí ni no. La decisión es tuya."
+  "askNoVerdict": "Upino no dice sí ni no. La decisión es tuya.",
+  "receipt": "Recibo",
+  "receiptAdd": "Añadir un recibo",
+  "receiptCamera": "Hacer una foto",
+  "receiptGallery": "Elegir una foto",
+  "receiptAttached": "Recibo adjuntado",
+  "receiptRemove": "Quitar la foto"
 }

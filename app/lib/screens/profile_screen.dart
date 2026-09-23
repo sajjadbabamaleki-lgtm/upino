@@ -67,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
       explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
-    if (observed != null) state.confirmBalance(observed);
+    if (observed != null) state.confirmBalance(observed.amount);
   }
 
   Future<void> _startOver(BuildContext context) async {

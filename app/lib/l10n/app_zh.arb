@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "度过这段时间所需要的",
   "onboardingGoalLabel": "为某个目标储蓄",
   "onboardingGoalHint": "这段时间你想留出多少",
-  "onboardingFinish": "看看我能花多少",
+  "onboardingFinish": "生成我的计划",
   "onboardingIncomplete": "填好前两个答案才能继续",
   "tapToType": "点击输入",
   "heroSafeToSpend": "现在可以花的钱",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "等到收入到账再买，一切都能覆盖。",
   "askNoIncome": "目前没有预期的收入，因此没有更晚的时间点可比较。",
   "askAssumption": "假设你的收入按预期在 {date} 到账。",
-  "askNoVerdict": "Upino 不说该或不该。取舍在你。"
+  "askNoVerdict": "Upino 不说该或不该。取舍在你。",
+  "receipt": "票据",
+  "receiptAdd": "添加票据",
+  "receiptCamera": "拍照",
+  "receiptGallery": "选择照片",
+  "receiptAttached": "已附上票据",
+  "receiptRemove": "移除照片"
 }

@@ -70,7 +70,7 @@ void main() {
     // 1. Onboarding opens, and the action stays disabled until the two
     //    required answers are in.
     expect(find.text('Set up your plan'), findsOneWidget);
-    final cta = find.widgetWithText(FilledButton, 'See what I can spend');
+    final cta = find.widgetWithText(FilledButton, 'Build my plan');
     expect(tester.widget<FilledButton>(cta).onPressed, isNull);
 
     await enterAmount(tester, 'balance', '3000.00');
@@ -115,7 +115,7 @@ void main() {
     await boot(tester);
     await enterAmount(tester, 'balance', '2040.00');
     await enterAmount(tester, 'income', '2000.00');
-    await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
     await tester.pumpAndSettle();
 
     expect(find.text('€2,040.00'), findsOneWidget);
@@ -137,7 +137,7 @@ void main() {
     await enterAmount(tester, 'rent', '500.00');
     await enterAmount(tester, 'essentials', '300.00');
     await enterAmount(tester, 'goal', '300.00');
-    await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
     await tester.pumpAndSettle();
 
     final s = state.snapshot;
@@ -161,7 +161,7 @@ void main() {
     await enterAmount(tester, 'income', '2000.00');
     await openCommitments(tester);
     await enterAmount(tester, 'rent', '400.00');
-    await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
     await tester.pumpAndSettle();
 
     expect(state.snapshot.safeToSpendNow.toString(), '600.00 EUR');
@@ -229,7 +229,7 @@ void _reopenTests() {
         '2000.00',
       );
       await tester.pump();
-      await tester.tap(find.widgetWithText(FilledButton, 'See what I can spend'));
+      await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
       await tester.pumpAndSettle();
 
       expect(find.text('€3,000.00'), findsOneWidget);
@@ -294,7 +294,7 @@ void _setupIsObviousTests() {
 
     testWidgets('a disabled button explains what is missing', (tester) async {
       await boot(tester);
-      final cta = find.widgetWithText(FilledButton, 'See what I can spend');
+      final cta = find.widgetWithText(FilledButton, 'Build my plan');
       expect(tester.widget<FilledButton>(cta).onPressed, isNull);
       expect(
         find.text('Fill in the first two answers to continue'),
@@ -315,7 +315,7 @@ void _setupIsObviousTests() {
         );
         await tester.pump();
       }
-      final cta = find.widgetWithText(FilledButton, 'See what I can spend');
+      final cta = find.widgetWithText(FilledButton, 'Build my plan');
       expect(tester.widget<FilledButton>(cta).onPressed, isNotNull);
       expect(
         find.text('Fill in the first two answers to continue'),

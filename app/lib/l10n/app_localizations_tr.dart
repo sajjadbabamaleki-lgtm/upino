@@ -97,7 +97,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get onboardingGoalHint => 'Bu dönem ne kadar ayırmak istiyorsunuz';
 
   @override
-  String get onboardingFinish => 'Ne kadar harcayabileceğimi gör';
+  String get onboardingFinish => 'Planımı oluştur';
 
   @override
   String get onboardingIncomplete => 'Devam etmek için ilk iki cevabı doldurun';
@@ -709,4 +709,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'Upino evet ya da hayır demez. Karar sizin.';
+
+  @override
+  String get receipt => 'Fiş';
+
+  @override
+  String get receiptAdd => 'Fiş ekle';
+
+  @override
+  String get receiptCamera => 'Fotoğraf çek';
+
+  @override
+  String get receiptGallery => 'Fotoğraf seç';
+
+  @override
+  String get receiptAttached => 'Fiş eklendi';
+
+  @override
+  String get receiptRemove => 'Fotoğrafı kaldır';
 }

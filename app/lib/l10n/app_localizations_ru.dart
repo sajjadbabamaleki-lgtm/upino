@@ -96,7 +96,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get onboardingGoalHint => 'Сколько хотите отложить за этот период';
 
   @override
-  String get onboardingFinish => 'Показать, сколько я могу потратить';
+  String get onboardingFinish => 'Составить план';
 
   @override
   String get onboardingIncomplete =>
@@ -711,4 +711,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'Upino не говорит «да» или «нет». Выбор за вами.';
+
+  @override
+  String get receipt => 'Чек';
+
+  @override
+  String get receiptAdd => 'Добавить чек';
+
+  @override
+  String get receiptCamera => 'Сделать фото';
+
+  @override
+  String get receiptGallery => 'Выбрать фото';
+
+  @override
+  String get receiptAttached => 'Чек прикреплён';
+
+  @override
+  String get receiptRemove => 'Убрать фото';
 }

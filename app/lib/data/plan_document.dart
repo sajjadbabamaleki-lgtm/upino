@@ -27,6 +27,7 @@ class PlanDocument {
     this.eventSequence = 0,
     this.themeChoice = ThemeChoice.system,
     this.languageCode,
+    this.receipts = const {},
     this.goals = const [],
     this.payCycleDays = 30,
   });
@@ -49,6 +50,12 @@ class PlanDocument {
 
   /// Null follows the phone's language.
   final String? languageCode;
+
+  /// Event id to the receipt image stored for it, as a filename inside the
+  /// app's own directory. Kept out of the ledger because the engine is pure
+  /// and a photograph is evidence about a transaction, not part of the
+  /// money arithmetic (§15.3, Purchase Lifecycle).
+  final Map<String, String> receipts;
   final List<Goal> goals;
 
   /// How long a pay period is, which is what a goal's contribution schedule
@@ -65,6 +72,7 @@ class PlanDocument {
         if (languageCode != null) 'languageCode': languageCode,
         'payCycleDays': payCycleDays,
         'goals': goals.map(goalToJson).toList(),
+        if (receipts.isNotEmpty) 'receipts': receipts,
         if (lastBalanceConfirmationAt != null)
           'lastBalanceConfirmationAt':
               lastBalanceConfirmationAt!.toUtc().toIso8601String(),
@@ -109,6 +117,9 @@ class PlanDocument {
           ? ThemeChoice.system
           : enumByName(ThemeChoice.values, json['themeChoice'], 'theme choice'),
       languageCode: json['languageCode'] as String?,
+      receipts: json['receipts'] == null
+          ? const {}
+          : Map<String, String>.from(json['receipts'] as Map),
       lastBalanceConfirmationAt:
           confirmedAt == null ? null : DateTime.parse(confirmedAt as String),
     );

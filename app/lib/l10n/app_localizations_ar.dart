@@ -96,7 +96,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingGoalHint => 'ما تريد تجنيبه هذه الفترة';
 
   @override
-  String get onboardingFinish => 'أرني كم أستطيع أن أنفق';
+  String get onboardingFinish => 'أنشئ خطتي';
 
   @override
   String get onboardingIncomplete => 'املأ الإجابتين الأوليين للمتابعة';
@@ -696,4 +696,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'لا يقول أوبينو نعم أو لا. المفاضلة لك.';
+
+  @override
+  String get receipt => 'الإيصال';
+
+  @override
+  String get receiptAdd => 'أضف إيصالاً';
+
+  @override
+  String get receiptCamera => 'التقاط صورة';
+
+  @override
+  String get receiptGallery => 'اختيار صورة';
+
+  @override
+  String get receiptAttached => 'أُرفق الإيصال';
+
+  @override
+  String get receiptRemove => 'إزالة الصورة';
 }

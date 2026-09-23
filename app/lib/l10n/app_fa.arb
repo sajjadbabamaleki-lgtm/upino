@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "چیزی که برای گذران این دوره لازم دارید",
   "onboardingGoalLabel": "پس‌انداز برای یک هدف",
   "onboardingGoalHint": "چقدر می‌خواهید این دوره کنار بگذارید",
-  "onboardingFinish": "ببین چقدر می‌توانم خرج کنم",
+  "onboardingFinish": "برنامه‌ام را بساز",
   "onboardingIncomplete": "برای ادامه، دو جواب اول را پر کنید",
   "tapToType": "بزنید و بنویسید",
   "heroSafeToSpend": "الان می‌توانید خرج کنید",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "اگر تا رسیدن حقوق صبر کنید، همه‌چیز پوشش داده می‌شود.",
   "askNoIncome": "هنوز حقوقی انتظار نمی‌رود، پس زمان بعدی‌ای برای مقایسه نیست.",
   "askAssumption": "با این فرض که حقوقتان طبق انتظار در {date} برسد.",
-  "askNoVerdict": "اوپینو بله یا خیر نمی‌گوید. انتخاب با شماست."
+  "askNoVerdict": "اوپینو بله یا خیر نمی‌گوید. انتخاب با شماست.",
+  "receipt": "فاکتور",
+  "receiptAdd": "افزودن فاکتور",
+  "receiptCamera": "گرفتن عکس",
+  "receiptGallery": "انتخاب از گالری",
+  "receiptAttached": "فاکتور پیوست شد",
+  "receiptRemove": "حذف عکس"
 }

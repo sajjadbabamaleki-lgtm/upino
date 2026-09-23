@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "O que você precisa para atravessar o período",
   "onboardingGoalLabel": "Poupança para uma meta",
   "onboardingGoalHint": "Quanto quer separar neste período",
-  "onboardingFinish": "Ver quanto posso gastar",
+  "onboardingFinish": "Criar meu plano",
   "onboardingIncomplete": "Preencha as duas primeiras respostas para continuar",
   "tapToType": "Toque para digitar",
   "heroSafeToSpend": "Você pode gastar agora",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "Esperar seu pagamento chegar cobre tudo.",
   "askNoIncome": "Nenhum pagamento é esperado ainda, então não há um momento posterior para comparar.",
   "askAssumption": "Supõe que seu pagamento chegue como esperado em {date}.",
-  "askNoVerdict": "O Upino não diz sim nem não. A escolha é sua."
+  "askNoVerdict": "O Upino não diz sim nem não. A escolha é sua.",
+  "receipt": "Recibo",
+  "receiptAdd": "Adicionar um recibo",
+  "receiptCamera": "Tirar uma foto",
+  "receiptGallery": "Escolher uma foto",
+  "receiptAttached": "Recibo anexado",
+  "receiptRemove": "Remover a foto"
 }

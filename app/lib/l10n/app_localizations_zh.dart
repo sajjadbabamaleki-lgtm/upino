@@ -94,7 +94,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingGoalHint => '这段时间你想留出多少';
 
   @override
-  String get onboardingFinish => '看看我能花多少';
+  String get onboardingFinish => '生成我的计划';
 
   @override
   String get onboardingIncomplete => '填好前两个答案才能继续';
@@ -682,4 +682,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'Upino 不说该或不该。取舍在你。';
+
+  @override
+  String get receipt => '票据';
+
+  @override
+  String get receiptAdd => '添加票据';
+
+  @override
+  String get receiptCamera => '拍照';
+
+  @override
+  String get receiptGallery => '选择照片';
+
+  @override
+  String get receiptAttached => '已附上票据';
+
+  @override
+  String get receiptRemove => '移除照片';
 }

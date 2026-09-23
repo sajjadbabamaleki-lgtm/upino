@@ -115,6 +115,24 @@ void main() {
     }
   });
 
+  testWidgets('the pill hugs its label rather than the space offered',
+      (t) async {
+    // A Container given an alignment expands to its whole constraint, and
+    // the selected item is Flexible, so the pill was taking the row's spare
+    // width and centring inside it — wide empty margins either side of the
+    // icon and label.
+    await pumpBar(t, 0, Brightness.light);
+    final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));
+    final icon = await rectOf(t, find.byIcon(Icons.home_rounded));
+    final label = await rectOf(t, find.text('Home'));
+
+    const padding = 12.0;
+    expect(icon.left - pill.left, closeTo(padding, 0.5),
+        reason: 'gap before the icon',);
+    expect(pill.right - label.right, closeTo(padding, 0.5),
+        reason: 'gap after the label',);
+  });
+
   testWidgets('the pill fills the row height', (t) async {
     await pumpBar(t, 3, Brightness.light);
     final pill = await rectOf(t, find.byKey(const Key('nav-selected-pill')));

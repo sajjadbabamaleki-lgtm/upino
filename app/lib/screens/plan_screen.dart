@@ -51,7 +51,7 @@ class PlanScreen extends StatelessWidget {
       removeLabel:
           current == null ? null : AppLocalizations.of(context).planRemove,
     );
-    if (amount != null) state.setClaimAmount(id, amount);
+    if (amount != null) state.setClaimAmount(id, amount.amount);
   }
 
   Future<void> _editIncome(BuildContext context) async {
@@ -62,7 +62,7 @@ class PlanScreen extends StatelessWidget {
       explanation: AppLocalizations.of(context).planExpectedBlurb,
       initial: state.nextIncome?.expectedAmount,
     );
-    if (amount != null) state.setExpectedIncome(amount: amount);
+    if (amount != null) state.setExpectedIncome(amount: amount.amount);
   }
 
   Future<void> _confirmBalance(BuildContext context) async {
@@ -73,7 +73,7 @@ class PlanScreen extends StatelessWidget {
       explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
-    if (observed != null) state.confirmBalance(observed);
+    if (observed != null) state.confirmBalance(observed.amount);
   }
 
   @override

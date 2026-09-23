@@ -41,7 +41,7 @@
   "onboardingEssentialsHint": "What you need to get through the period",
   "onboardingGoalLabel": "Saving toward a goal",
   "onboardingGoalHint": "What you want to put aside this period",
-  "onboardingFinish": "See what I can spend",
+  "onboardingFinish": "Build my plan",
   "onboardingIncomplete": "Fill in the first two answers to continue",
   "tapToType": "Tap to type",
   "heroSafeToSpend": "Safe to spend now",
@@ -362,5 +362,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "receipt": "Receipt",
+  "receiptAdd": "Add a receipt",
+  "receiptCamera": "Take a photo",
+  "receiptGallery": "Choose a photo",
+  "receiptAttached": "Receipt attached",
+  "receiptRemove": "Remove the photo"
 }

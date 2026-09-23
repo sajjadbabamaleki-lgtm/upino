@@ -35,7 +35,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const _navBottomGap = 22.0;
+  static const _navBottomGap = 7.0;
   static const _navHeight = UpinoNavBar.itemHeight + UpinoNavBar.inset * 2;
 
   int _tab = 0;
@@ -47,8 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       currency: state.currency,
       title: AppLocalizations.of(context).askSpendTitle,
+      allowReceipt: true,
     );
-    if (amount != null) state.recordExpense(amount);
+    if (amount != null) {
+      state.recordExpense(amount.amount, receipt: amount.receipt);
+    }
   }
 
   Future<void> _confirmBalance() async {
@@ -59,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       explanation: AppLocalizations.of(context).askBalanceBlurb,
       initial: state.snapshot.trustedAllocatableLiquidity,
     );
-    if (observed != null) state.confirmBalance(observed);
+    if (observed != null) state.confirmBalance(observed.amount);
   }
 
   @override
@@ -91,14 +94,28 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: false,
             child: switch (_tab) {
               1 => PlanScreen(
+                  key: const PageStorageKey('tab-plan'),
                   state: state,
                   padding: contentPadding,
                   onOpenGoals: () => setState(() => _tab = 2),
                 ),
-              2 => GoalsScreen(state: state, padding: contentPadding),
-              3 => ActivityScreen(state: state, padding: contentPadding),
-              4 => ProfileScreen(state: state, padding: contentPadding),
+              2 => GoalsScreen(
+                  key: const PageStorageKey('tab-goals'),
+                  state: state,
+                  padding: contentPadding,
+                ),
+              3 => ActivityScreen(
+                  key: const PageStorageKey('tab-activity'),
+                  state: state,
+                  padding: contentPadding,
+                ),
+              4 => ProfileScreen(
+                  key: const PageStorageKey('tab-profile'),
+                  state: state,
+                  padding: contentPadding,
+                ),
               _ => ListView(
+                  key: const PageStorageKey('tab-home'),
                   padding: contentPadding,
                   children: [
                 Padding(

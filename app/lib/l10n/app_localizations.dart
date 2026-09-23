@@ -279,7 +279,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingFinish.
   ///
   /// In en, this message translates to:
-  /// **'See what I can spend'**
+  /// **'Build my plan'**
   String get onboardingFinish;
 
   /// No description provided for @onboardingIncomplete.
@@ -1379,6 +1379,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upino does not say yes or no. The trade-off is yours.'**
   String get askNoVerdict;
+
+  /// No description provided for @receipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get receipt;
+
+  /// No description provided for @receiptAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a receipt'**
+  String get receiptAdd;
+
+  /// No description provided for @receiptCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get receiptCamera;
+
+  /// No description provided for @receiptGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a photo'**
+  String get receiptGallery;
+
+  /// No description provided for @receiptAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt attached'**
+  String get receiptAttached;
+
+  /// No description provided for @receiptRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the photo'**
+  String get receiptRemove;
 }
 
 class _AppLocalizationsDelegate

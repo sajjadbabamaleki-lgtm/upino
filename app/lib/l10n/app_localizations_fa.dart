@@ -98,7 +98,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get onboardingGoalHint => 'چقدر می‌خواهید این دوره کنار بگذارید';
 
   @override
-  String get onboardingFinish => 'ببین چقدر می‌توانم خرج کنم';
+  String get onboardingFinish => 'برنامه‌ام را بساز';
 
   @override
   String get onboardingIncomplete => 'برای ادامه، دو جواب اول را پر کنید';
@@ -709,4 +709,22 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'اوپینو بله یا خیر نمی‌گوید. انتخاب با شماست.';
+
+  @override
+  String get receipt => 'فاکتور';
+
+  @override
+  String get receiptAdd => 'افزودن فاکتور';
+
+  @override
+  String get receiptCamera => 'گرفتن عکس';
+
+  @override
+  String get receiptGallery => 'انتخاب از گالری';
+
+  @override
+  String get receiptAttached => 'فاکتور پیوست شد';
+
+  @override
+  String get receiptRemove => 'حذف عکس';
 }

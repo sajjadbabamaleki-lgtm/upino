@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "Bu dönemi geçirmek için gerekenler",
   "onboardingGoalLabel": "Bir hedef için birikim",
   "onboardingGoalHint": "Bu dönem ne kadar ayırmak istiyorsunuz",
-  "onboardingFinish": "Ne kadar harcayabileceğimi gör",
+  "onboardingFinish": "Planımı oluştur",
   "onboardingIncomplete": "Devam etmek için ilk iki cevabı doldurun",
   "tapToType": "Dokunup yazın",
   "heroSafeToSpend": "Şimdi harcayabilirsiniz",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "Maaşınız gelene kadar beklemek her şeyi karşılıyor.",
   "askNoIncome": "Henüz beklenen bir maaş yok, bu yüzden karşılaştırılacak ileri bir an yok.",
   "askAssumption": "Maaşınızın {date} tarihinde beklendiği gibi geleceği varsayılır.",
-  "askNoVerdict": "Upino evet ya da hayır demez. Karar sizin."
+  "askNoVerdict": "Upino evet ya da hayır demez. Karar sizin.",
+  "receipt": "Fiş",
+  "receiptAdd": "Fiş ekle",
+  "receiptCamera": "Fotoğraf çek",
+  "receiptGallery": "Fotoğraf seç",
+  "receiptAttached": "Fiş eklendi",
+  "receiptRemove": "Fotoğrafı kaldır"
 }

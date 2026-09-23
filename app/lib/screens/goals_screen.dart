@@ -57,7 +57,7 @@ class GoalsScreen extends StatelessWidget {
       title: AppLocalizations.of(context).goalsAddTo(goal.name),
       explanation: AppLocalizations.of(context).goalsAddBlurb,
     );
-    if (amount != null) state.contributeToGoal(goal.id, amount);
+    if (amount != null) state.contributeToGoal(goal.id, amount.amount);
   }
 
   @override

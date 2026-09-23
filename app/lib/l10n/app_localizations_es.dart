@@ -98,7 +98,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onboardingGoalHint => 'Lo que quieres apartar este periodo';
 
   @override
-  String get onboardingFinish => 'Ver cuánto puedo gastar';
+  String get onboardingFinish => 'Crear mi plan';
 
   @override
   String get onboardingIncomplete =>
@@ -714,4 +714,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get askNoVerdict => 'Upino no dice sí ni no. La decisión es tuya.';
+
+  @override
+  String get receipt => 'Recibo';
+
+  @override
+  String get receiptAdd => 'Añadir un recibo';
+
+  @override
+  String get receiptCamera => 'Hacer una foto';
+
+  @override
+  String get receiptGallery => 'Elegir una foto';
+
+  @override
+  String get receiptAttached => 'Recibo adjuntado';
+
+  @override
+  String get receiptRemove => 'Quitar la foto';
 }

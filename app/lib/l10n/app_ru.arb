@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "То, что нужно, чтобы прожить период",
   "onboardingGoalLabel": "Накопление на цель",
   "onboardingGoalHint": "Сколько хотите отложить за этот период",
-  "onboardingFinish": "Показать, сколько я могу потратить",
+  "onboardingFinish": "Составить план",
   "onboardingIncomplete": "Заполните первые два ответа, чтобы продолжить",
   "tapToType": "Нажмите и введите",
   "heroSafeToSpend": "Можно потратить сейчас",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "Если дождаться дохода, покрывается всё.",
   "askNoIncome": "Дохода пока не ожидается, поэтому не с чем сравнивать позже.",
   "askAssumption": "Предполагается, что доход придёт как ожидается {date}.",
-  "askNoVerdict": "Upino не говорит «да» или «нет». Выбор за вами."
+  "askNoVerdict": "Upino не говорит «да» или «нет». Выбор за вами.",
+  "receipt": "Чек",
+  "receiptAdd": "Добавить чек",
+  "receiptCamera": "Сделать фото",
+  "receiptGallery": "Выбрать фото",
+  "receiptAttached": "Чек прикреплён",
+  "receiptRemove": "Убрать фото"
 }

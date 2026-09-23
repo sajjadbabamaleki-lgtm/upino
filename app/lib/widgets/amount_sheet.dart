@@ -5,12 +5,26 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
+import 'dart:io';
+
+import '../data/receipt_store.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
+
+/// What the sheet hands back: the amount, and the receipt photographed for
+/// it if there was one.
+class RecordedAmount {
+  const RecordedAmount(this.amount, {this.receipt});
+  final Money amount;
+
+  /// A filename inside the app's own directory, already copied there.
+  final String? receipt;
+}
 
 class AmountSheet extends StatefulWidget {
   const AmountSheet({
@@ -22,6 +36,7 @@ class AmountSheet extends StatefulWidget {
     this.allowZero = false,
     this.onRemove,
     this.removeLabel,
+    this.allowReceipt = false,
     super.key,
   });
 
@@ -38,7 +53,11 @@ class AmountSheet extends StatefulWidget {
   final VoidCallback? onRemove;
   final String? removeLabel;
 
-  static Future<Money?> show(
+  /// Offered only where a photograph means something: a spend that happened,
+  /// not a plan figure being edited.
+  final bool allowReceipt;
+
+  static Future<RecordedAmount?> show(
     BuildContext context, {
     required String currency,
     required String title,
@@ -47,8 +66,9 @@ class AmountSheet extends StatefulWidget {
     String? confirmLabel,
     bool allowZero = false,
     String? removeLabel,
+    bool allowReceipt = false,
   }) =>
-      showModalBottomSheet<Money>(
+      showModalBottomSheet<RecordedAmount>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -58,11 +78,13 @@ class AmountSheet extends StatefulWidget {
           explanation: explanation,
           initial: initial,
           confirmLabel: confirmLabel,
+          allowReceipt: allowReceipt,
           allowZero: allowZero,
           removeLabel: removeLabel,
           onRemove: removeLabel == null
               ? null
-              : () => Navigator.of(sheetContext).pop(Money.zero(currency)),
+              : () => Navigator.of(sheetContext)
+                  .pop(RecordedAmount(Money.zero(currency))),
         ),
       );
 
@@ -106,9 +128,24 @@ class _AmountSheetState extends State<AmountSheet> {
     }
   }
 
+  String? _receipt;
+  bool _busy = false;
+
+  Future<void> _addReceipt(ImageSource source) async {
+    setState(() => _busy = true);
+    try {
+      final name = await const ReceiptStore().capture(source: source);
+      if (name != null && mounted) setState(() => _receipt = name);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   void _save() {
     final amount = _parsed;
-    if (amount != null) Navigator.of(context).pop(amount);
+    if (amount != null) {
+      Navigator.of(context).pop(RecordedAmount(amount, receipt: _receipt));
+    }
   }
 
   @override
@@ -207,6 +244,16 @@ class _AmountSheetState extends State<AmountSheet> {
                   widget.confirmLabel ?? AppLocalizations.of(context).save,
                 ),
               ),
+              if (widget.allowReceipt) ...[
+                const SizedBox(height: 12),
+                _ReceiptRow(
+                  receipt: _receipt,
+                  busy: _busy,
+                  onCamera: () => _addReceipt(ImageSource.camera),
+                  onGallery: () => _addReceipt(ImageSource.gallery),
+                  onClear: () => setState(() => _receipt = null),
+                ),
+              ],
               if (widget.onRemove != null) ...[
                 const SizedBox(height: 8),
                 Center(
@@ -225,6 +272,149 @@ class _AmountSheetState extends State<AmountSheet> {
               ],
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+/// Adding a receipt is offered, never required. A spend with no photograph
+/// is still a complete record of the money; the photograph is evidence about
+/// the purchase, which is a separate thing (§5, Purchase Lifecycle).
+class _ReceiptRow extends StatelessWidget {
+  const _ReceiptRow({
+    required this.receipt,
+    required this.busy,
+    required this.onCamera,
+    required this.onGallery,
+    required this.onClear,
+  });
+
+  final String? receipt;
+  final bool busy;
+  final VoidCallback onCamera;
+  final VoidCallback onGallery;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+
+    if (busy) {
+      return const SizedBox(
+        height: 46,
+        child: Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2.2),
+          ),
+        ),
+      );
+    }
+
+    if (receipt != null) {
+      return Row(
+        key: const Key('receipt-attached'),
+        children: [
+          FutureBuilder<File?>(
+            future: const ReceiptStore().file(receipt!),
+            builder: (context, snap) => Container(
+              width: 46,
+              height: 46,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: sunkenColor(context),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: snap.data == null
+                  ? const Icon(Icons.receipt_long_rounded, size: 20)
+                  : Image.file(snap.data!, fit: BoxFit.cover),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(l.receiptAttached, style: theme.textTheme.bodyMedium),
+          ),
+          GestureDetector(
+            key: const Key('receipt-clear'),
+            onTap: onClear,
+            child: Icon(
+              Icons.close_rounded,
+              size: 19,
+              color: isDark(context)
+                  ? UpinoTokens.darkTextTertiary
+                  : UpinoTokens.textTertiary,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          child: _ReceiptButton(
+            key: const Key('receipt-camera'),
+            icon: Icons.photo_camera_rounded,
+            label: l.receiptCamera,
+            onTap: onCamera,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _ReceiptButton(
+            key: const Key('receipt-gallery'),
+            icon: Icons.photo_library_rounded,
+            label: l.receiptGallery,
+            onTap: onGallery,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ReceiptButton extends StatelessWidget {
+  const _ReceiptButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    super.key,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: 46,
+        decoration: BoxDecoration(
+          color: sunkenColor(context),
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 18, color: UpinoTokens.textSecondary),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium,
+              ),
+            ),
+          ],
         ),
       ),
     );

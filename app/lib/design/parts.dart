@@ -395,8 +395,12 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         key: selected ? const Key('nav-selected-pill') : null,
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: selected ? 14 : 12),
+        // No alignment: a Container that is given one expands to the whole
+        // constraint it is offered, and the selected item is Flexible, so it
+        // was being handed the spare width in the row and centring its icon
+        // and label inside it. That is where the space either side of the
+        // pill came from — not from this padding.
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: selected ? tint : Colors.transparent,
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),

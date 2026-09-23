@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "ما تحتاجه لتمضية هذه الفترة",
   "onboardingGoalLabel": "ادخار لهدف",
   "onboardingGoalHint": "ما تريد تجنيبه هذه الفترة",
-  "onboardingFinish": "أرني كم أستطيع أن أنفق",
+  "onboardingFinish": "أنشئ خطتي",
   "onboardingIncomplete": "املأ الإجابتين الأوليين للمتابعة",
   "tapToType": "اضغط واكتب",
   "heroSafeToSpend": "يمكنك إنفاقه الآن",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "الانتظار حتى وصول راتبك يغطّي كل شيء.",
   "askNoIncome": "لا راتب متوقّع بعد، فلا وقت لاحق للمقارنة.",
   "askAssumption": "بافتراض وصول راتبك كما هو متوقّع في {date}.",
-  "askNoVerdict": "لا يقول أوبينو نعم أو لا. المفاضلة لك."
+  "askNoVerdict": "لا يقول أوبينو نعم أو لا. المفاضلة لك.",
+  "receipt": "الإيصال",
+  "receiptAdd": "أضف إيصالاً",
+  "receiptCamera": "التقاط صورة",
+  "receiptGallery": "اختيار صورة",
+  "receiptAttached": "أُرفق الإيصال",
+  "receiptRemove": "إزالة الصورة"
 }

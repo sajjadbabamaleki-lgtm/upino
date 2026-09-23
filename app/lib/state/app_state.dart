@@ -152,6 +152,7 @@ class AppState extends ChangeNotifier {
   String _currency = 'EUR';
   ThemeChoice _themeChoice = ThemeChoice.system;
   String? _languageCode;
+  final Map<String, String> _receipts = {};
   int _payCycleDays = 30;
   int _goalSeq = 0;
   Money? _openingBalance;
@@ -220,6 +221,9 @@ class AppState extends ChangeNotifier {
     _eventSeq = document.eventSequence;
     _themeChoice = document.themeChoice;
     _languageCode = document.languageCode;
+    _receipts
+      ..clear()
+      ..addAll(document.receipts);
     _payCycleDays = document.payCycleDays;
     _goals
       ..clear()
@@ -264,6 +268,7 @@ class AppState extends ChangeNotifier {
         eventSequence: _eventSeq,
         themeChoice: _themeChoice,
         languageCode: _languageCode,
+        receipts: Map.of(_receipts),
         goals: List.unmodifiable(_goals),
         payCycleDays: _payCycleDays,
       );
@@ -272,6 +277,7 @@ class AppState extends ChangeNotifier {
   /// stays within the §18 three-second target; the in-memory state is already
   /// correct when the UI rebuilds.
   void _persist() {
+    _cachedSnapshot = null;
     unawaited(_store?.save(toDocument()));
   }
   String get currency => _currency;
@@ -280,7 +286,24 @@ class AppState extends ChangeNotifier {
 
   /// Recomputed from scratch on every read; the engine is pure, so there is
   /// no derived state to keep in sync (§13, INV-07).
-  PlanSnapshot get snapshot => computePlan(PlanInput(
+  /// The engine is pure and the clock is captured once at construction, so
+  /// the same inputs give the same snapshot until something mutates. Reading
+  /// it was recomputing the whole waterfall every time, and one screen build
+  /// reads it several times: measured at 0.25ms with 40 events and 0.58ms
+  /// with 600, which is most of a frame on a phone and grows with use.
+  PlanSnapshot? _cachedSnapshot;
+
+  PlanSnapshot get snapshot => _cachedSnapshot ??= _computeSnapshot();
+
+  /// Every mutator ends in one of these two, so the cache cannot outlive the
+  /// state it describes.
+  @override
+  void notifyListeners() {
+    _cachedSnapshot = null;
+    super.notifyListeners();
+  }
+
+  PlanSnapshot _computeSnapshot() => computePlan(PlanInput(
         currency: _currency,
         now: _now,
         utcOffset: _utcOffset,
@@ -426,13 +449,28 @@ class AppState extends ChangeNotifier {
 
   /// RecordExpense (§22). The UI issues the command; the engine decides what
   /// it means for Safe-to-Spend.
-  void recordExpense(Money amount) {
+  /// [receipt] is a filename inside the app's own directory, already copied
+  /// there by the caller. Null when no photograph was taken.
+  void recordExpense(Money amount, {String? receipt}) {
+    final id = 'e${++_eventSeq}';
     _events.add(ExpenseEvent(
-      id: 'e${++_eventSeq}',
+      id: id,
       accountId: _accountId,
       amount: amount,
     ),);
+    if (receipt != null) _receipts[id] = receipt;
     lastRecordedExpense = amount;
+    _persist();
+    notifyListeners();
+  }
+
+  /// The receipt stored for an event, or null. Removing an entry leaves the
+  /// receipt in place: §21 says a correction adds to the record rather than
+  /// erasing it, and the photograph is part of that record.
+  String? receiptFor(String eventId) => _receipts[eventId];
+
+  void attachReceipt(String eventId, String filename) {
+    _receipts[eventId] = filename;
     _persist();
     notifyListeners();
   }

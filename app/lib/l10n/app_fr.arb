@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "Ce qu’il vous faut pour tenir la période",
   "onboardingGoalLabel": "Épargne pour un objectif",
   "onboardingGoalHint": "Ce que vous voulez mettre de côté cette période",
-  "onboardingFinish": "Voir ce que je peux dépenser",
+  "onboardingFinish": "Créer mon plan",
   "onboardingIncomplete": "Remplissez les deux premières réponses pour continuer",
   "tapToType": "Touchez pour saisir",
   "heroSafeToSpend": "Vous pouvez dépenser maintenant",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "Attendre votre salaire couvre tout.",
   "askNoIncome": "Aucun salaire n’est attendu, il n’y a donc pas de moment ultérieur à comparer.",
   "askAssumption": "En supposant que votre salaire arrive comme prévu le {date}.",
-  "askNoVerdict": "Upino ne dit ni oui ni non. L’arbitrage vous revient."
+  "askNoVerdict": "Upino ne dit ni oui ni non. L’arbitrage vous revient.",
+  "receipt": "Reçu",
+  "receiptAdd": "Ajouter un reçu",
+  "receiptCamera": "Prendre une photo",
+  "receiptGallery": "Choisir une photo",
+  "receiptAttached": "Reçu joint",
+  "receiptRemove": "Retirer la photo"
 }

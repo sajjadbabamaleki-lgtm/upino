@@ -27,7 +27,7 @@
   "onboardingEssentialsHint": "इस अवधि को निकालने के लिए जो चाहिए",
   "onboardingGoalLabel": "किसी लक्ष्य के लिए बचत",
   "onboardingGoalHint": "इस अवधि में कितना अलग रखना चाहते हैं",
-  "onboardingFinish": "देखें मैं कितना ख़र्च कर सकता हूँ",
+  "onboardingFinish": "मेरी योजना बनाएँ",
   "onboardingIncomplete": "आगे बढ़ने के लिए पहले दो जवाब भरें",
   "tapToType": "टैप करके लिखें",
   "heroSafeToSpend": "अभी ख़र्च कर सकते हैं",
@@ -210,5 +210,11 @@
   "askWaitingHelps": "तनख़्वाह आने तक रुकने से सब कुछ पूरा हो जाता है।",
   "askNoIncome": "अभी कोई तनख़्वाह अपेक्षित नहीं, इसलिए तुलना के लिए आगे कोई समय नहीं है।",
   "askAssumption": "यह मानकर कि आपकी तनख़्वाह {date} को अपेक्षित रूप से आएगी।",
-  "askNoVerdict": "Upino हाँ या ना नहीं कहता। फ़ैसला आपका है।"
+  "askNoVerdict": "Upino हाँ या ना नहीं कहता। फ़ैसला आपका है।",
+  "receipt": "रसीद",
+  "receiptAdd": "रसीद जोड़ें",
+  "receiptCamera": "फ़ोटो लें",
+  "receiptGallery": "फ़ोटो चुनें",
+  "receiptAttached": "रसीद जुड़ी",
+  "receiptRemove": "फ़ोटो हटाएँ"
 }

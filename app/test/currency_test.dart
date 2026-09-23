@@ -448,7 +448,7 @@ void main() {
       await tester.enterText(find.byKey(const Key('field-balance')), '1.500');
       await tester.enterText(find.byKey(const Key('field-income')), '1000');
       await tester.pumpAndSettle();
-      await tester.tap(find.text('See what I can spend'));
+      await tester.tap(find.text('Build my plan'));
       await tester.pumpAndSettle();
 
       expect(state.currency, 'OMR');
