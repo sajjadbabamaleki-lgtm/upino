@@ -460,5 +460,43 @@
         "type": "String"
       }
     }
-  }
+  },
+  "holdingsTitle": "Other holdings",
+  "holdingsBlurb": "Dollars, gold, coins. Shown beside your plan and never counted in what you can spend.",
+  "holdingsAdd": "Add a holding",
+  "holdingsAddSub": "Not counted in what you can spend",
+  "holdingsTotal": "Together",
+  "holdingSummary": "{quantity} × {price} · priced {date}",
+  "@holdingSummary": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "holdingEditNew": "New holding",
+  "holdingEditExisting": "Change holding",
+  "holdingName": "What is it?",
+  "holdingNameHint": "US dollar, gold…",
+  "holdingUsd": "US dollar",
+  "holdingEur": "Euro",
+  "holdingGold": "Gold (gram)",
+  "holdingCoin": "Gold coin",
+  "holdingQuantity": "How many",
+  "holdingUnitPrice": "What one is worth today",
+  "holdingWorth": "Worth {amount} together",
+  "@holdingWorth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "holdingDelete": "Remove this holding"
 }

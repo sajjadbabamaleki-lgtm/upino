@@ -884,4 +884,63 @@ class AppLocalizationsEs extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'Al $rate % anual, costará unos $amount para entonces.';
   }
+
+  @override
+  String get holdingsTitle => 'Otros ahorros';
+
+  @override
+  String get holdingsBlurb =>
+      'Dólares, oro, monedas. Se muestran junto al plan y nunca cuentan en lo que puedes gastar.';
+
+  @override
+  String get holdingsAdd => 'Añadir un ahorro';
+
+  @override
+  String get holdingsAddSub => 'No cuenta en lo que puedes gastar';
+
+  @override
+  String get holdingsTotal => 'En total';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · precio del $date';
+  }
+
+  @override
+  String get holdingEditNew => 'Nuevo ahorro';
+
+  @override
+  String get holdingEditExisting => 'Cambiar ahorro';
+
+  @override
+  String get holdingName => '¿Qué es?';
+
+  @override
+  String get holdingNameHint => 'Dólar, oro…';
+
+  @override
+  String get holdingUsd => 'Dólar';
+
+  @override
+  String get holdingEur => 'Euro';
+
+  @override
+  String get holdingGold => 'Oro (gramo)';
+
+  @override
+  String get holdingCoin => 'Moneda de oro';
+
+  @override
+  String get holdingQuantity => 'Cuántos';
+
+  @override
+  String get holdingUnitPrice => 'Cuánto vale uno hoy';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Vale $amount en total';
+  }
+
+  @override
+  String get holdingDelete => 'Quitar este ahorro';
 }

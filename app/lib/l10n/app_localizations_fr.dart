@@ -899,4 +899,63 @@ class AppLocalizationsFr extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'À $rate % par an, cela coûtera environ $amount à l’échéance.';
   }
+
+  @override
+  String get holdingsTitle => 'Autres avoirs';
+
+  @override
+  String get holdingsBlurb =>
+      'Dollars, or, pièces. Affichés à côté du plan, jamais comptés dans ce que vous pouvez dépenser.';
+
+  @override
+  String get holdingsAdd => 'Ajouter un avoir';
+
+  @override
+  String get holdingsAddSub => 'Pas compté dans ce que vous pouvez dépenser';
+
+  @override
+  String get holdingsTotal => 'Au total';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · prix du $date';
+  }
+
+  @override
+  String get holdingEditNew => 'Nouvel avoir';
+
+  @override
+  String get holdingEditExisting => 'Modifier l’avoir';
+
+  @override
+  String get holdingName => 'Qu’est-ce que c’est ?';
+
+  @override
+  String get holdingNameHint => 'Dollar, or…';
+
+  @override
+  String get holdingUsd => 'Dollar';
+
+  @override
+  String get holdingEur => 'Euro';
+
+  @override
+  String get holdingGold => 'Or (gramme)';
+
+  @override
+  String get holdingCoin => 'Pièce d’or';
+
+  @override
+  String get holdingQuantity => 'Combien';
+
+  @override
+  String get holdingUnitPrice => 'Valeur d’une unité aujourd’hui';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Vaut $amount au total';
+  }
+
+  @override
+  String get holdingDelete => 'Retirer cet avoir';
 }

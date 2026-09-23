@@ -878,4 +878,63 @@ class AppLocalizationsFa extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'با تورم $rate٪ در سال، این هدف تا آن موقع حدود $amount هزینه خواهد داشت.';
   }
+
+  @override
+  String get holdingsTitle => 'دارایی‌های دیگر';
+
+  @override
+  String get holdingsBlurb =>
+      'دلار، طلا، سکه. کنار برنامه نشان داده می‌شود و هرگز جزو پول قابل خرج حساب نمی‌شود.';
+
+  @override
+  String get holdingsAdd => 'افزودن دارایی';
+
+  @override
+  String get holdingsAddSub => 'جزو پول قابل خرج حساب نمی‌شود';
+
+  @override
+  String get holdingsTotal => 'جمع';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · قیمت $date';
+  }
+
+  @override
+  String get holdingEditNew => 'دارایی جدید';
+
+  @override
+  String get holdingEditExisting => 'ویرایش دارایی';
+
+  @override
+  String get holdingName => 'چه چیزی است؟';
+
+  @override
+  String get holdingNameHint => 'دلار، طلا…';
+
+  @override
+  String get holdingUsd => 'دلار';
+
+  @override
+  String get holdingEur => 'یورو';
+
+  @override
+  String get holdingGold => 'طلا (گرم)';
+
+  @override
+  String get holdingCoin => 'سکه';
+
+  @override
+  String get holdingQuantity => 'چه مقدار';
+
+  @override
+  String get holdingUnitPrice => 'قیمت امروزِ هر واحد';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'در مجموع $amount';
+  }
+
+  @override
+  String get holdingDelete => 'حذف این دارایی';
 }

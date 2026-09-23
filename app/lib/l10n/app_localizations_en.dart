@@ -884,4 +884,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'At $rate% a year, this will cost about $amount by then.';
   }
+
+  @override
+  String get holdingsTitle => 'Other holdings';
+
+  @override
+  String get holdingsBlurb =>
+      'Dollars, gold, coins. Shown beside your plan and never counted in what you can spend.';
+
+  @override
+  String get holdingsAdd => 'Add a holding';
+
+  @override
+  String get holdingsAddSub => 'Not counted in what you can spend';
+
+  @override
+  String get holdingsTotal => 'Together';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · priced $date';
+  }
+
+  @override
+  String get holdingEditNew => 'New holding';
+
+  @override
+  String get holdingEditExisting => 'Change holding';
+
+  @override
+  String get holdingName => 'What is it?';
+
+  @override
+  String get holdingNameHint => 'US dollar, gold…';
+
+  @override
+  String get holdingUsd => 'US dollar';
+
+  @override
+  String get holdingEur => 'Euro';
+
+  @override
+  String get holdingGold => 'Gold (gram)';
+
+  @override
+  String get holdingCoin => 'Gold coin';
+
+  @override
+  String get holdingQuantity => 'How many';
+
+  @override
+  String get holdingUnitPrice => 'What one is worth today';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Worth $amount together';
+  }
+
+  @override
+  String get holdingDelete => 'Remove this holding';
 }

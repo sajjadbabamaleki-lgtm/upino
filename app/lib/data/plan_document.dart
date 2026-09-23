@@ -12,6 +12,7 @@ import '../engine/domain.dart';
 import '../engine/ledger.dart';
 import '../domain/category.dart';
 import '../domain/goal.dart';
+import '../domain/holding.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart' show ThemeChoice;
 import 'serialization.dart';
@@ -34,6 +35,7 @@ class PlanDocument {
     this.goals = const [],
     this.payCycleDays = 30,
     this.inflationBasisPoints,
+    this.holdings = const [],
   });
 
   final String currency;
@@ -79,6 +81,10 @@ class PlanDocument {
   /// number rather than a percentage so no binary fraction is involved.
   final int? inflationBasisPoints;
 
+  /// Savings kept outside the plan's currency, shown beside it and never
+  /// counted in it.
+  final List<Holding> holdings;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -91,6 +97,8 @@ class PlanDocument {
         if (inflationBasisPoints != null)
           'inflationBasisPoints': inflationBasisPoints,
         'goals': goals.map(goalToJson).toList(),
+        if (holdings.isNotEmpty)
+          'holdings': holdings.map(holdingToJson).toList(),
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
           'categories': {
@@ -140,6 +148,7 @@ class PlanDocument {
       eventSequence: json['eventSequence'] as int? ?? 0,
       // Absent in a version 1 document, which simply means "follow the phone".
       goals: listOf(json['goals'], goalFromJson),
+      holdings: listOf(json['holdings'], holdingFromJson),
       payCycleDays: json['payCycleDays'] as int? ?? 30,
       inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null

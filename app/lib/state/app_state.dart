@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import '../data/plan_document.dart';
 import '../domain/category.dart';
 import '../domain/goal.dart';
+import '../domain/holding.dart';
 import '../domain/inflation.dart';
 import '../data/plan_store.dart';
 import '../engine/allocate.dart';
@@ -153,6 +154,8 @@ class AppState extends ChangeNotifier {
   final List<Claim> _claims = [];
   final List<IncomeEvent> _incomeEvents = [];
   final List<Goal> _goals = [];
+  final List<Holding> _holdings = [];
+  int _holdingSeq = 0;
 
   String _currency = 'EUR';
   ThemeChoice _themeChoice = ThemeChoice.system;
@@ -244,6 +247,13 @@ class AppState extends ChangeNotifier {
       ..clear()
       ..addAll(document.goals);
     _goalSeq = _goals.length;
+    _holdings
+      ..clear()
+      ..addAll(document.holdings);
+    _holdingSeq = _holdings.fold(0, (seq, h) {
+      final n = int.tryParse(h.id.replaceFirst('h', '')) ?? 0;
+      return n > seq ? n : seq;
+    });
 
     _events
       ..clear()
@@ -300,6 +310,7 @@ class AppState extends ChangeNotifier {
         goals: List.unmodifiable(_goals),
         payCycleDays: _payCycleDays,
         inflationBasisPoints: _inflationBasisPoints,
+        holdings: List.unmodifiable(_holdings),
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -370,6 +381,10 @@ class AppState extends ChangeNotifier {
     for (var i = 0; i < _goals.length; i++) {
       final g = _goals[i];
       _goals[i] = g.copyWith(target: r(g.target), saved: r(g.saved));
+    }
+    for (var i = 0; i < _holdings.length; i++) {
+      final h = _holdings[i];
+      _holdings[i] = h.copyWith(unitPrice: r(h.unitPrice));
     }
 
     _persist();
@@ -488,6 +503,55 @@ class AppState extends ChangeNotifier {
       ];
 
   List<Goal> get goals => List.unmodifiable(_goals);
+
+  List<Holding> get holdings => List.unmodifiable(_holdings);
+
+  /// What the holdings are worth together, at the prices last given.
+  Money get holdingsTotal =>
+      Money.sum(_holdings.map((h) => h.value), _currency);
+
+  void addHolding({
+    required String name,
+    required int quantityMilli,
+    required Money unitPrice,
+  }) {
+    _holdings.add(Holding(
+      id: 'h${++_holdingSeq}',
+      name: name,
+      quantityMilli: quantityMilli,
+      unitPrice: unitPrice,
+      pricedOn: today,
+    ),);
+    _persist();
+    notifyListeners();
+  }
+
+  /// A new price restamps the date, because the date is what says how far
+  /// to trust the figure.
+  void updateHolding(
+    String id, {
+    String? name,
+    int? quantityMilli,
+    Money? unitPrice,
+  }) {
+    final index = _holdings.indexWhere((h) => h.id == id);
+    if (index < 0) return;
+    final h = _holdings[index];
+    _holdings[index] = h.copyWith(
+      name: name,
+      quantityMilli: quantityMilli,
+      unitPrice: unitPrice,
+      pricedOn: unitPrice != null && unitPrice != h.unitPrice ? today : null,
+    );
+    _persist();
+    notifyListeners();
+  }
+
+  void removeHolding(String id) {
+    _holdings.removeWhere((h) => h.id == id);
+    _persist();
+    notifyListeners();
+  }
 
   /// The yearly inflation the person expects, in basis points, or null when
   /// they have not said. A preference like the theme, so starting over
@@ -854,6 +918,8 @@ class AppState extends ChangeNotifier {
     _receipts.clear();
     _categories.clear();
     _recordedAt.clear();
+    _holdings.clear();
+    _holdingSeq = 0;
     _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;

@@ -1679,6 +1679,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At {rate}% a year, this will cost about {amount} by then.'**
   String goalsInflated(String rate, String amount);
+
+  /// No description provided for @holdingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Other holdings'**
+  String get holdingsTitle;
+
+  /// No description provided for @holdingsBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Dollars, gold, coins. Shown beside your plan and never counted in what you can spend.'**
+  String get holdingsBlurb;
+
+  /// No description provided for @holdingsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a holding'**
+  String get holdingsAdd;
+
+  /// No description provided for @holdingsAddSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Not counted in what you can spend'**
+  String get holdingsAddSub;
+
+  /// No description provided for @holdingsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Together'**
+  String get holdingsTotal;
+
+  /// No description provided for @holdingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity} × {price} · priced {date}'**
+  String holdingSummary(String quantity, String price, String date);
+
+  /// No description provided for @holdingEditNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New holding'**
+  String get holdingEditNew;
+
+  /// No description provided for @holdingEditExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Change holding'**
+  String get holdingEditExisting;
+
+  /// No description provided for @holdingName.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it?'**
+  String get holdingName;
+
+  /// No description provided for @holdingNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'US dollar, gold…'**
+  String get holdingNameHint;
+
+  /// No description provided for @holdingUsd.
+  ///
+  /// In en, this message translates to:
+  /// **'US dollar'**
+  String get holdingUsd;
+
+  /// No description provided for @holdingEur.
+  ///
+  /// In en, this message translates to:
+  /// **'Euro'**
+  String get holdingEur;
+
+  /// No description provided for @holdingGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold (gram)'**
+  String get holdingGold;
+
+  /// No description provided for @holdingCoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold coin'**
+  String get holdingCoin;
+
+  /// No description provided for @holdingQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'How many'**
+  String get holdingQuantity;
+
+  /// No description provided for @holdingUnitPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'What one is worth today'**
+  String get holdingUnitPrice;
+
+  /// No description provided for @holdingWorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Worth {amount} together'**
+  String holdingWorth(String amount);
+
+  /// No description provided for @holdingDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this holding'**
+  String get holdingDelete;
 }
 
 class _AppLocalizationsDelegate

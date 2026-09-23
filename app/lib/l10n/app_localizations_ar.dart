@@ -867,4 +867,63 @@ class AppLocalizationsAr extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'بمعدل $rate% سنويًا، سيكلف هذا نحو $amount بحلول ذلك الوقت.';
   }
+
+  @override
+  String get holdingsTitle => 'مدخرات أخرى';
+
+  @override
+  String get holdingsBlurb =>
+      'دولارات، ذهب، عملات. تُعرض بجانب خطتك ولا تُحسب أبدًا ضمن ما يمكنك إنفاقه.';
+
+  @override
+  String get holdingsAdd => 'إضافة مدخرات';
+
+  @override
+  String get holdingsAddSub => 'لا تُحسب ضمن ما يمكنك إنفاقه';
+
+  @override
+  String get holdingsTotal => 'المجموع';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · سعر $date';
+  }
+
+  @override
+  String get holdingEditNew => 'مدخرات جديدة';
+
+  @override
+  String get holdingEditExisting => 'تعديل المدخرات';
+
+  @override
+  String get holdingName => 'ما هي؟';
+
+  @override
+  String get holdingNameHint => 'دولار، ذهب…';
+
+  @override
+  String get holdingUsd => 'دولار';
+
+  @override
+  String get holdingEur => 'يورو';
+
+  @override
+  String get holdingGold => 'ذهب (غرام)';
+
+  @override
+  String get holdingCoin => 'جنيه ذهب';
+
+  @override
+  String get holdingQuantity => 'كم';
+
+  @override
+  String get holdingUnitPrice => 'قيمة الواحد اليوم';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'القيمة الإجمالية $amount';
+  }
+
+  @override
+  String get holdingDelete => 'إزالة هذه المدخرات';
 }

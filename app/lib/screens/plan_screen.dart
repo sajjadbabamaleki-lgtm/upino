@@ -11,6 +11,7 @@ import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../domain/goal.dart';
+import '../domain/holding.dart';
 import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
@@ -18,6 +19,7 @@ import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/holding_editor_sheet.dart';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({
@@ -64,6 +66,31 @@ class PlanScreen extends StatelessWidget {
       initial: state.nextIncome?.expectedAmount,
     );
     if (amount != null) state.setExpectedIncome(amount: amount.amount);
+  }
+
+  Future<void> _editHolding(BuildContext context, Holding? holding) async {
+    final draft = await HoldingEditorSheet.show(
+      context,
+      currency: state.currency,
+      holding: holding,
+    );
+    if (draft == null) return;
+    if (holding == null) {
+      state.addHolding(
+        name: draft.name,
+        quantityMilli: draft.quantityMilli,
+        unitPrice: draft.unitPrice,
+      );
+    } else if (draft.deleted) {
+      state.removeHolding(holding.id);
+    } else {
+      state.updateHolding(
+        holding.id,
+        name: draft.name,
+        quantityMilli: draft.quantityMilli,
+        unitPrice: draft.unitPrice,
+      );
+    }
   }
 
   Future<void> _confirmBalance(BuildContext context) async {
@@ -217,6 +244,53 @@ class PlanScreen extends StatelessWidget {
             const SizedBox(height: 10),
           ],
         ],
+        // Last, because the screen reads in the order money is assigned and
+        // holdings are assigned nothing: they sit beside the plan.
+        const SizedBox(height: 26),
+        SectionHeading(
+          l.holdingsTitle,
+          count: state.holdings.isEmpty ? null : state.holdings.length,
+        ),
+        for (final h in state.holdings) ...[
+          ActionRow(
+            key: Key('plan-holding-${h.id}'),
+            title: h.name,
+            subtitle: l.holdingSummary(
+              formatQuantity(h.quantityMilli),
+              h.unitPrice.display(),
+              formatDateShort(context, h.pricedOn),
+            ),
+            trailing: _Amount(h.value),
+            onTap: () => _editHolding(context, h),
+          ),
+          const SizedBox(height: 10),
+        ],
+        if (state.holdings.length > 1) ...[
+          UpinoCard(
+            key: const Key('plan-holdings-total'),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(l.holdingsTotal,
+                      style: theme.textTheme.titleMedium,),
+                ),
+                Text(
+                  state.holdingsTotal.display(),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontFeatures: moneyFeatures),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+        ActionRow(
+          key: const Key('plan-holding-add'),
+          title: l.holdingsAdd,
+          subtitle: state.holdings.isEmpty ? l.holdingsBlurb : l.holdingsAddSub,
+          trailing: const RowAffordance(icon: 'add'),
+          onTap: () => _editHolding(context, null),
+        ),
       ]),
     );
   }

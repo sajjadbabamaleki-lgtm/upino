@@ -882,4 +882,63 @@ class AppLocalizationsRu extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'При $rate% в год к сроку это будет стоить около $amount.';
   }
+
+  @override
+  String get holdingsTitle => 'Другие сбережения';
+
+  @override
+  String get holdingsBlurb =>
+      'Доллары, золото, монеты. Показываются рядом с планом и не входят в то, что можно тратить.';
+
+  @override
+  String get holdingsAdd => 'Добавить сбережение';
+
+  @override
+  String get holdingsAddSub => 'Не входит в то, что можно тратить';
+
+  @override
+  String get holdingsTotal => 'Всего';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · цена на $date';
+  }
+
+  @override
+  String get holdingEditNew => 'Новое сбережение';
+
+  @override
+  String get holdingEditExisting => 'Изменить сбережение';
+
+  @override
+  String get holdingName => 'Что это?';
+
+  @override
+  String get holdingNameHint => 'Доллар, золото…';
+
+  @override
+  String get holdingUsd => 'Доллар';
+
+  @override
+  String get holdingEur => 'Евро';
+
+  @override
+  String get holdingGold => 'Золото (грамм)';
+
+  @override
+  String get holdingCoin => 'Золотая монета';
+
+  @override
+  String get holdingQuantity => 'Сколько';
+
+  @override
+  String get holdingUnitPrice => 'Сколько стоит одна единица сегодня';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Всего $amount';
+  }
+
+  @override
+  String get holdingDelete => 'Удалить';
 }

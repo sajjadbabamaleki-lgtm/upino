@@ -879,4 +879,63 @@ class AppLocalizationsTr extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'Yıllık %$rate ile, o zamana kadar yaklaşık $amount tutacak.';
   }
+
+  @override
+  String get holdingsTitle => 'Diğer birikimler';
+
+  @override
+  String get holdingsBlurb =>
+      'Dolar, altın, sikke. Planın yanında gösterilir, harcanabilir paraya asla katılmaz.';
+
+  @override
+  String get holdingsAdd => 'Birikim ekle';
+
+  @override
+  String get holdingsAddSub => 'Harcanabilir paraya katılmaz';
+
+  @override
+  String get holdingsTotal => 'Toplam';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · fiyat $date';
+  }
+
+  @override
+  String get holdingEditNew => 'Yeni birikim';
+
+  @override
+  String get holdingEditExisting => 'Birikimi değiştir';
+
+  @override
+  String get holdingName => 'Nedir?';
+
+  @override
+  String get holdingNameHint => 'Dolar, altın…';
+
+  @override
+  String get holdingUsd => 'Dolar';
+
+  @override
+  String get holdingEur => 'Euro';
+
+  @override
+  String get holdingGold => 'Altın (gram)';
+
+  @override
+  String get holdingCoin => 'Altın sikke';
+
+  @override
+  String get holdingQuantity => 'Ne kadar';
+
+  @override
+  String get holdingUnitPrice => 'Bugün bir tanesinin değeri';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Toplam değeri $amount';
+  }
+
+  @override
+  String get holdingDelete => 'Bu birikimi kaldır';
 }

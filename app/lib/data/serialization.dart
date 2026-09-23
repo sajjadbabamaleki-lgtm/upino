@@ -11,6 +11,7 @@
 library;
 
 import '../domain/goal.dart';
+import '../domain/holding.dart';
 import '../engine/clock.dart';
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
@@ -24,7 +25,8 @@ import '../engine/money.dart';
 /// 3 — added goals and the pay-cycle length.
 /// 4 — added spend categories and when each spend was recorded.
 /// 5 — added the expected yearly inflation.
-const int schemaVersion = 5;
+/// 6 — added holdings outside the plan.
+const int schemaVersion = 6;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);
@@ -318,3 +320,27 @@ Goal goalFromJson(Map<String, Object?> json) => Goal(
       saved: moneyFromJson(json['saved']),
       kind: enumByName(GoalKind.values, json['kind'], 'goal kind'),
     );
+
+// --- holdings --------------------------------------------------------------
+
+Map<String, Object?> holdingToJson(Holding h) => {
+      'id': h.id,
+      'name': h.name,
+      'quantityMilli': h.quantityMilli,
+      'unitPrice': moneyToJson(h.unitPrice),
+      'pricedOn': localDateToJson(h.pricedOn),
+    };
+
+Holding holdingFromJson(Map<String, Object?> json) {
+  final quantity = json['quantityMilli'];
+  if (quantity is! int) {
+    throw const UnreadablePlanDocument('holding quantity is not a whole number');
+  }
+  return Holding(
+    id: json['id']! as String,
+    name: json['name']! as String,
+    quantityMilli: quantity,
+    unitPrice: moneyFromJson(json['unitPrice']),
+    pricedOn: localDateFromJson(json['pricedOn']),
+  );
+}

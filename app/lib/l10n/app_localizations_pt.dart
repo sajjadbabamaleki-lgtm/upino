@@ -890,4 +890,63 @@ class AppLocalizationsPt extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return 'A $rate% ao ano, vai custar cerca de $amount nessa altura.';
   }
+
+  @override
+  String get holdingsTitle => 'Outras reservas';
+
+  @override
+  String get holdingsBlurb =>
+      'Dólares, ouro, moedas. Mostrados ao lado do plano e nunca contados no que pode gastar.';
+
+  @override
+  String get holdingsAdd => 'Adicionar uma reserva';
+
+  @override
+  String get holdingsAddSub => 'Não conta no que pode gastar';
+
+  @override
+  String get holdingsTotal => 'No total';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · preço de $date';
+  }
+
+  @override
+  String get holdingEditNew => 'Nova reserva';
+
+  @override
+  String get holdingEditExisting => 'Alterar reserva';
+
+  @override
+  String get holdingName => 'O que é?';
+
+  @override
+  String get holdingNameHint => 'Dólar, ouro…';
+
+  @override
+  String get holdingUsd => 'Dólar';
+
+  @override
+  String get holdingEur => 'Euro';
+
+  @override
+  String get holdingGold => 'Ouro (grama)';
+
+  @override
+  String get holdingCoin => 'Moeda de ouro';
+
+  @override
+  String get holdingQuantity => 'Quantos';
+
+  @override
+  String get holdingUnitPrice => 'Quanto vale um hoje';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'Vale $amount no total';
+  }
+
+  @override
+  String get holdingDelete => 'Remover esta reserva';
 }

@@ -844,4 +844,62 @@ class AppLocalizationsZh extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return '按每年 $rate% 计算，届时约需 $amount。';
   }
+
+  @override
+  String get holdingsTitle => '其他资产';
+
+  @override
+  String get holdingsBlurb => '美元、黄金、金币。显示在计划旁，从不计入可花的钱。';
+
+  @override
+  String get holdingsAdd => '添加资产';
+
+  @override
+  String get holdingsAddSub => '不计入可花的钱';
+
+  @override
+  String get holdingsTotal => '合计';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · $date 价格';
+  }
+
+  @override
+  String get holdingEditNew => '新资产';
+
+  @override
+  String get holdingEditExisting => '修改资产';
+
+  @override
+  String get holdingName => '是什么？';
+
+  @override
+  String get holdingNameHint => '美元、黄金…';
+
+  @override
+  String get holdingUsd => '美元';
+
+  @override
+  String get holdingEur => '欧元';
+
+  @override
+  String get holdingGold => '黄金（克）';
+
+  @override
+  String get holdingCoin => '金币';
+
+  @override
+  String get holdingQuantity => '数量';
+
+  @override
+  String get holdingUnitPrice => '今天每单位价值';
+
+  @override
+  String holdingWorth(String amount) {
+    return '合计价值 $amount';
+  }
+
+  @override
+  String get holdingDelete => '移除此资产';
 }

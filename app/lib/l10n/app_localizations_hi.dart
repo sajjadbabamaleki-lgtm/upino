@@ -881,4 +881,63 @@ class AppLocalizationsHi extends AppLocalizations {
   String goalsInflated(String rate, String amount) {
     return '$rate% सालाना से, तब तक इसकी लागत लगभग $amount होगी।';
   }
+
+  @override
+  String get holdingsTitle => 'अन्य बचत';
+
+  @override
+  String get holdingsBlurb =>
+      'डॉलर, सोना, सिक्के। योजना के साथ दिखते हैं, खर्च करने योग्य रकम में कभी नहीं गिने जाते।';
+
+  @override
+  String get holdingsAdd => 'बचत जोड़ें';
+
+  @override
+  String get holdingsAddSub => 'खर्च योग्य रकम में नहीं गिना जाता';
+
+  @override
+  String get holdingsTotal => 'कुल';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · दाम $date';
+  }
+
+  @override
+  String get holdingEditNew => 'नई बचत';
+
+  @override
+  String get holdingEditExisting => 'बचत बदलें';
+
+  @override
+  String get holdingName => 'यह क्या है?';
+
+  @override
+  String get holdingNameHint => 'डॉलर, सोना…';
+
+  @override
+  String get holdingUsd => 'डॉलर';
+
+  @override
+  String get holdingEur => 'यूरो';
+
+  @override
+  String get holdingGold => 'सोना (ग्राम)';
+
+  @override
+  String get holdingCoin => 'सोने का सिक्का';
+
+  @override
+  String get holdingQuantity => 'कितने';
+
+  @override
+  String get holdingUnitPrice => 'आज एक की क़ीमत';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'कुल क़ीमत $amount';
+  }
+
+  @override
+  String get holdingDelete => 'यह बचत हटाएँ';
 }
