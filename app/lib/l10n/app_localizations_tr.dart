@@ -794,4 +794,65 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Son 30 günde kaydedilen harcamalar';
+
+  @override
+  String get backupSection => 'Yedek';
+
+  @override
+  String get backupSave => 'Yedek kaydet';
+
+  @override
+  String get backupSaveSub =>
+      'Parolayla kilitlenir. Bulut depolama gibi güvenli bir yere gönderin.';
+
+  @override
+  String get backupRestore => 'Yedekten geri yükle';
+
+  @override
+  String get backupRestoreSub => 'Bu telefondaki planın yerini alır';
+
+  @override
+  String get backupPassword => 'Parola';
+
+  @override
+  String get backupPasswordRepeat => 'Parolayı tekrarlayın';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'Geri yüklemek için bu parola gerekir. Unutursanız kurtarılamaz. Fiş fotoğrafları dahil değildir.';
+
+  @override
+  String get backupPasswordOpenBlurb => 'Bu yedeğin kaydedildiği parola.';
+
+  @override
+  String get backupPasswordShort => 'En az 6 karakter';
+
+  @override
+  String get backupPasswordMismatch => 'İkisi eşleşmiyor';
+
+  @override
+  String get backupOpen => 'Aç';
+
+  @override
+  String get backupReplaceTitle => 'Bu plan değiştirilsin mi?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Bu telefondaki her şey yedektekiyle değiştirilir. Geri alınamaz.';
+
+  @override
+  String get backupReplace => 'Değiştir';
+
+  @override
+  String get backupRestored => 'Yedek geri yüklendi';
+
+  @override
+  String get backupWrongPassword => 'Bu parola yedeği açmıyor.';
+
+  @override
+  String get backupNotABackup => 'Bu dosya bir Upino yedeği değil.';
+
+  @override
+  String get backupUnreadable =>
+      'Bu yedek Upino\'nun daha yeni bir sürümüyle yapılmış. Uygulamayı güncelleyip tekrar deneyin.';
 }

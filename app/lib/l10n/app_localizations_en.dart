@@ -798,4 +798,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Spends recorded in the last 30 days';
+
+  @override
+  String get backupSection => 'Backup';
+
+  @override
+  String get backupSave => 'Save a backup';
+
+  @override
+  String get backupSaveSub =>
+      'Locked with a password. Send it somewhere safe, like your cloud drive.';
+
+  @override
+  String get backupRestore => 'Restore from a backup';
+
+  @override
+  String get backupRestoreSub => 'Replaces the plan on this phone';
+
+  @override
+  String get backupPassword => 'Password';
+
+  @override
+  String get backupPasswordRepeat => 'Repeat the password';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'You will need this password to restore the backup. It cannot be recovered if you forget it. Receipt photos are not included.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'The password this backup was saved with.';
+
+  @override
+  String get backupPasswordShort => 'At least 6 characters';
+
+  @override
+  String get backupPasswordMismatch => 'The two do not match';
+
+  @override
+  String get backupOpen => 'Open';
+
+  @override
+  String get backupReplaceTitle => 'Replace this plan?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Everything on this phone is replaced by what is in the backup. This cannot be undone.';
+
+  @override
+  String get backupReplace => 'Replace';
+
+  @override
+  String get backupRestored => 'Backup restored';
+
+  @override
+  String get backupWrongPassword => 'That password does not open this backup.';
+
+  @override
+  String get backupNotABackup => 'That file is not an Upino backup.';
+
+  @override
+  String get backupUnreadable =>
+      'This backup was made by a newer version of Upino. Update the app and try again.';
 }

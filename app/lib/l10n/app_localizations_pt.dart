@@ -804,4 +804,66 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Gastos registados nos últimos 30 dias';
+
+  @override
+  String get backupSection => 'Cópia de segurança';
+
+  @override
+  String get backupSave => 'Guardar uma cópia';
+
+  @override
+  String get backupSaveSub =>
+      'Protegida por palavra-passe. Envie-a para um lugar seguro, como a sua nuvem.';
+
+  @override
+  String get backupRestore => 'Restaurar uma cópia';
+
+  @override
+  String get backupRestoreSub => 'Substitui o plano deste telemóvel';
+
+  @override
+  String get backupPassword => 'Palavra-passe';
+
+  @override
+  String get backupPasswordRepeat => 'Repita a palavra-passe';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'Vai precisar desta palavra-passe para restaurar. Não pode ser recuperada se a esquecer. As fotos de recibos não são incluídas.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'A palavra-passe com que esta cópia foi guardada.';
+
+  @override
+  String get backupPasswordShort => 'Pelo menos 6 caracteres';
+
+  @override
+  String get backupPasswordMismatch => 'Não coincidem';
+
+  @override
+  String get backupOpen => 'Abrir';
+
+  @override
+  String get backupReplaceTitle => 'Substituir este plano?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Tudo neste telemóvel é substituído pela cópia. Não pode ser desfeito.';
+
+  @override
+  String get backupReplace => 'Substituir';
+
+  @override
+  String get backupRestored => 'Cópia restaurada';
+
+  @override
+  String get backupWrongPassword => 'Essa palavra-passe não abre esta cópia.';
+
+  @override
+  String get backupNotABackup => 'Esse ficheiro não é uma cópia do Upino.';
+
+  @override
+  String get backupUnreadable =>
+      'Esta cópia foi feita por uma versão mais recente do Upino. Atualize a app e tente de novo.';
 }

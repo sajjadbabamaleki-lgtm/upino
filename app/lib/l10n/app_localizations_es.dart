@@ -798,4 +798,66 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Gastos registrados en los últimos 30 días';
+
+  @override
+  String get backupSection => 'Copia de seguridad';
+
+  @override
+  String get backupSave => 'Guardar una copia';
+
+  @override
+  String get backupSaveSub =>
+      'Protegida con contraseña. Envíala a un lugar seguro, como tu nube.';
+
+  @override
+  String get backupRestore => 'Restaurar una copia';
+
+  @override
+  String get backupRestoreSub => 'Sustituye el plan de este teléfono';
+
+  @override
+  String get backupPassword => 'Contraseña';
+
+  @override
+  String get backupPasswordRepeat => 'Repite la contraseña';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'Necesitarás esta contraseña para restaurar. Si la olvidas no se puede recuperar. Las fotos de recibos no se incluyen.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'La contraseña con la que se guardó esta copia.';
+
+  @override
+  String get backupPasswordShort => 'Al menos 6 caracteres';
+
+  @override
+  String get backupPasswordMismatch => 'No coinciden';
+
+  @override
+  String get backupOpen => 'Abrir';
+
+  @override
+  String get backupReplaceTitle => '¿Sustituir este plan?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Todo lo de este teléfono se sustituye por la copia. No se puede deshacer.';
+
+  @override
+  String get backupReplace => 'Sustituir';
+
+  @override
+  String get backupRestored => 'Copia restaurada';
+
+  @override
+  String get backupWrongPassword => 'Esa contraseña no abre esta copia.';
+
+  @override
+  String get backupNotABackup => 'Ese archivo no es una copia de Upino.';
+
+  @override
+  String get backupUnreadable =>
+      'Esta copia es de una versión más nueva de Upino. Actualiza la app e inténtalo de nuevo.';
 }

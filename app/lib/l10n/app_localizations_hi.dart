@@ -795,4 +795,66 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get spendingWindow => 'पिछले 30 दिनों में दर्ज खर्च';
+
+  @override
+  String get backupSection => 'बैकअप';
+
+  @override
+  String get backupSave => 'बैकअप सहेजें';
+
+  @override
+  String get backupSaveSub =>
+      'पासवर्ड से सुरक्षित। इसे किसी सुरक्षित जगह, जैसे क्लाउड ड्राइव में भेजें।';
+
+  @override
+  String get backupRestore => 'बैकअप से वापस लाएँ';
+
+  @override
+  String get backupRestoreSub => 'इस फ़ोन की योजना बदल देता है';
+
+  @override
+  String get backupPassword => 'पासवर्ड';
+
+  @override
+  String get backupPasswordRepeat => 'पासवर्ड दोहराएँ';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'वापस लाने के लिए यह पासवर्ड चाहिए होगा। भूलने पर यह वापस नहीं मिल सकता। रसीदों की तस्वीरें शामिल नहीं हैं।';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'वह पासवर्ड जिससे यह बैकअप सहेजा गया था।';
+
+  @override
+  String get backupPasswordShort => 'कम से कम 6 अक्षर';
+
+  @override
+  String get backupPasswordMismatch => 'दोनों मेल नहीं खाते';
+
+  @override
+  String get backupOpen => 'खोलें';
+
+  @override
+  String get backupReplaceTitle => 'यह योजना बदलें?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'इस फ़ोन का सब कुछ बैकअप से बदल जाएगा। इसे पलटा नहीं जा सकता।';
+
+  @override
+  String get backupReplace => 'बदलें';
+
+  @override
+  String get backupRestored => 'बैकअप वापस आ गया';
+
+  @override
+  String get backupWrongPassword => 'यह पासवर्ड इस बैकअप को नहीं खोलता।';
+
+  @override
+  String get backupNotABackup => 'यह फ़ाइल Upino बैकअप नहीं है।';
+
+  @override
+  String get backupUnreadable =>
+      'यह बैकअप Upino के नए संस्करण से बना है। ऐप अपडेट करके फिर कोशिश करें।';
 }

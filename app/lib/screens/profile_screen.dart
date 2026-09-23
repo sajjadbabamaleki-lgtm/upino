@@ -11,6 +11,7 @@ import '../engine/currencies.dart';
 import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import 'backup_section.dart';
 import 'currency_screen.dart';
 import 'language_screen.dart';
 import '../widgets/amount_sheet.dart';
@@ -222,6 +223,9 @@ class ProfileScreen extends StatelessWidget {
 
         const SizedBox(height: 10),
         _LanguageRow(state: state),
+
+        const SizedBox(height: 26),
+        BackupSection(state: state),
 
         const SizedBox(height: 26),
         SectionHeading(l.profileStartAgain),

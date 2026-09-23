@@ -269,6 +269,17 @@ class AppState extends ChangeNotifier {
       ..addAll(document.incomeEvents);
   }
 
+  /// Replace the whole plan with one from a backup. Nothing of the current
+  /// plan is merged in: two logs cannot be interleaved without inventing an
+  /// order for them, so the backup is taken as it stands.
+  void replaceWith(PlanDocument document) {
+    _apply(document);
+    _restoreFailure = null;
+    lastRecordedExpense = null;
+    _persist();
+    notifyListeners();
+  }
+
   PlanDocument toDocument() => PlanDocument(
         currency: _currency,
         openingBalance: _openingBalance ?? Money.zero(_currency),

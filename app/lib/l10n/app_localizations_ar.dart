@@ -781,4 +781,66 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get spendingWindow => 'المصروفات المسجلة في آخر 30 يومًا';
+
+  @override
+  String get backupSection => 'نسخة احتياطية';
+
+  @override
+  String get backupSave => 'حفظ نسخة احتياطية';
+
+  @override
+  String get backupSaveSub =>
+      'مقفلة بكلمة مرور. أرسلها إلى مكان آمن مثل تخزينك السحابي.';
+
+  @override
+  String get backupRestore => 'الاستعادة من نسخة احتياطية';
+
+  @override
+  String get backupRestoreSub => 'تستبدل الخطة على هذا الهاتف';
+
+  @override
+  String get backupPassword => 'كلمة المرور';
+
+  @override
+  String get backupPasswordRepeat => 'أعد كتابة كلمة المرور';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'ستحتاج كلمة المرور هذه للاستعادة، ولا يمكن استرجاعها إن نسيتها. صور الإيصالات غير مشمولة.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'كلمة المرور التي حُفظت بها هذه النسخة.';
+
+  @override
+  String get backupPasswordShort => '6 أحرف على الأقل';
+
+  @override
+  String get backupPasswordMismatch => 'الكلمتان غير متطابقتين';
+
+  @override
+  String get backupOpen => 'فتح';
+
+  @override
+  String get backupReplaceTitle => 'استبدال هذه الخطة؟';
+
+  @override
+  String get backupReplaceBlurb =>
+      'يُستبدل كل ما على هذا الهاتف بمحتوى النسخة الاحتياطية. لا يمكن التراجع.';
+
+  @override
+  String get backupReplace => 'استبدال';
+
+  @override
+  String get backupRestored => 'تمت الاستعادة';
+
+  @override
+  String get backupWrongPassword => 'كلمة المرور هذه لا تفتح النسخة.';
+
+  @override
+  String get backupNotABackup => 'هذا الملف ليس نسخة احتياطية من Upino.';
+
+  @override
+  String get backupUnreadable =>
+      'أُنشئت هذه النسخة بإصدار أحدث من Upino. حدّث التطبيق وحاول مجددًا.';
 }

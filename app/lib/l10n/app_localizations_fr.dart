@@ -812,4 +812,67 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Dépenses notées ces 30 derniers jours';
+
+  @override
+  String get backupSection => 'Sauvegarde';
+
+  @override
+  String get backupSave => 'Enregistrer une sauvegarde';
+
+  @override
+  String get backupSaveSub =>
+      'Protégée par un mot de passe. Envoyez-la en lieu sûr, comme votre cloud.';
+
+  @override
+  String get backupRestore => 'Restaurer une sauvegarde';
+
+  @override
+  String get backupRestoreSub => 'Remplace le plan de ce téléphone';
+
+  @override
+  String get backupPassword => 'Mot de passe';
+
+  @override
+  String get backupPasswordRepeat => 'Répétez le mot de passe';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'Ce mot de passe sera nécessaire pour restaurer. Il est irrécupérable en cas d’oubli. Les photos de reçus ne sont pas incluses.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'Le mot de passe utilisé pour cette sauvegarde.';
+
+  @override
+  String get backupPasswordShort => 'Au moins 6 caractères';
+
+  @override
+  String get backupPasswordMismatch => 'Les deux ne correspondent pas';
+
+  @override
+  String get backupOpen => 'Ouvrir';
+
+  @override
+  String get backupReplaceTitle => 'Remplacer ce plan ?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Tout ce qui est sur ce téléphone est remplacé par la sauvegarde. C’est irréversible.';
+
+  @override
+  String get backupReplace => 'Remplacer';
+
+  @override
+  String get backupRestored => 'Sauvegarde restaurée';
+
+  @override
+  String get backupWrongPassword =>
+      'Ce mot de passe n’ouvre pas cette sauvegarde.';
+
+  @override
+  String get backupNotABackup => 'Ce fichier n’est pas une sauvegarde Upino.';
+
+  @override
+  String get backupUnreadable =>
+      'Cette sauvegarde vient d’une version plus récente d’Upino. Mettez l’app à jour et réessayez.';
 }

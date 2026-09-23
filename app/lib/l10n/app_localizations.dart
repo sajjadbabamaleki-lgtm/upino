@@ -1529,6 +1529,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spends recorded in the last 30 days'**
   String get spendingWindow;
+
+  /// No description provided for @backupSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backupSection;
+
+  /// No description provided for @backupSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save a backup'**
+  String get backupSave;
+
+  /// No description provided for @backupSaveSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked with a password. Send it somewhere safe, like your cloud drive.'**
+  String get backupSaveSub;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a backup'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaces the plan on this phone'**
+  String get backupRestoreSub;
+
+  /// No description provided for @backupPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get backupPassword;
+
+  /// No description provided for @backupPasswordRepeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat the password'**
+  String get backupPasswordRepeat;
+
+  /// No description provided for @backupPasswordSaveBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'You will need this password to restore the backup. It cannot be recovered if you forget it. Receipt photos are not included.'**
+  String get backupPasswordSaveBlurb;
+
+  /// No description provided for @backupPasswordOpenBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'The password this backup was saved with.'**
+  String get backupPasswordOpenBlurb;
+
+  /// No description provided for @backupPasswordShort.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 6 characters'**
+  String get backupPasswordShort;
+
+  /// No description provided for @backupPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two do not match'**
+  String get backupPasswordMismatch;
+
+  /// No description provided for @backupOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get backupOpen;
+
+  /// No description provided for @backupReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace this plan?'**
+  String get backupReplaceTitle;
+
+  /// No description provided for @backupReplaceBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything on this phone is replaced by what is in the backup. This cannot be undone.'**
+  String get backupReplaceBlurb;
+
+  /// No description provided for @backupReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get backupReplace;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get backupRestored;
+
+  /// No description provided for @backupWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'That password does not open this backup.'**
+  String get backupWrongPassword;
+
+  /// No description provided for @backupNotABackup.
+  ///
+  /// In en, this message translates to:
+  /// **'That file is not an Upino backup.'**
+  String get backupNotABackup;
+
+  /// No description provided for @backupUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'This backup was made by a newer version of Upino. Update the app and try again.'**
+  String get backupUnreadable;
 }
 
 class _AppLocalizationsDelegate

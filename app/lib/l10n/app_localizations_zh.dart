@@ -765,4 +765,61 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get spendingWindow => '最近 30 天记录的支出';
+
+  @override
+  String get backupSection => '备份';
+
+  @override
+  String get backupSave => '保存备份';
+
+  @override
+  String get backupSaveSub => '用密码加密。请发送到安全的地方，例如云盘。';
+
+  @override
+  String get backupRestore => '从备份恢复';
+
+  @override
+  String get backupRestoreSub => '将替换此手机上的计划';
+
+  @override
+  String get backupPassword => '密码';
+
+  @override
+  String get backupPasswordRepeat => '再次输入密码';
+
+  @override
+  String get backupPasswordSaveBlurb => '恢复时需要此密码，忘记后无法找回。备份不包含收据照片。';
+
+  @override
+  String get backupPasswordOpenBlurb => '保存此备份时使用的密码。';
+
+  @override
+  String get backupPasswordShort => '至少 6 个字符';
+
+  @override
+  String get backupPasswordMismatch => '两次输入不一致';
+
+  @override
+  String get backupOpen => '打开';
+
+  @override
+  String get backupReplaceTitle => '替换当前计划？';
+
+  @override
+  String get backupReplaceBlurb => '此手机上的所有内容将被备份替换，且无法撤销。';
+
+  @override
+  String get backupReplace => '替换';
+
+  @override
+  String get backupRestored => '备份已恢复';
+
+  @override
+  String get backupWrongPassword => '该密码无法打开此备份。';
+
+  @override
+  String get backupNotABackup => '该文件不是 Upino 备份。';
+
+  @override
+  String get backupUnreadable => '此备份由更新版本的 Upino 创建。请更新应用后重试。';
 }

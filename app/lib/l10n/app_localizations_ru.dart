@@ -796,4 +796,66 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get spendingWindow => 'Траты за последние 30 дней';
+
+  @override
+  String get backupSection => 'Резервная копия';
+
+  @override
+  String get backupSave => 'Сохранить копию';
+
+  @override
+  String get backupSaveSub =>
+      'Защищена паролем. Отправьте её в надёжное место, например в облако.';
+
+  @override
+  String get backupRestore => 'Восстановить из копии';
+
+  @override
+  String get backupRestoreSub => 'Заменяет план на этом телефоне';
+
+  @override
+  String get backupPassword => 'Пароль';
+
+  @override
+  String get backupPasswordRepeat => 'Повторите пароль';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'Этот пароль понадобится для восстановления. Если его забыть, восстановить нельзя. Фото чеков не входят.';
+
+  @override
+  String get backupPasswordOpenBlurb =>
+      'Пароль, с которым была сохранена копия.';
+
+  @override
+  String get backupPasswordShort => 'Не меньше 6 символов';
+
+  @override
+  String get backupPasswordMismatch => 'Пароли не совпадают';
+
+  @override
+  String get backupOpen => 'Открыть';
+
+  @override
+  String get backupReplaceTitle => 'Заменить этот план?';
+
+  @override
+  String get backupReplaceBlurb =>
+      'Всё на этом телефоне заменится содержимым копии. Отменить нельзя.';
+
+  @override
+  String get backupReplace => 'Заменить';
+
+  @override
+  String get backupRestored => 'Копия восстановлена';
+
+  @override
+  String get backupWrongPassword => 'Этот пароль не открывает копию.';
+
+  @override
+  String get backupNotABackup => 'Это не резервная копия Upino.';
+
+  @override
+  String get backupUnreadable =>
+      'Копия создана более новой версией Upino. Обновите приложение и попробуйте снова.';
 }

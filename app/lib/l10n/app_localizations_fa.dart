@@ -793,4 +793,65 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get spendingWindow => 'خرج‌های ثبت‌شده در ۳۰ روز گذشته';
+
+  @override
+  String get backupSection => 'پشتیبان';
+
+  @override
+  String get backupSave => 'ذخیرهٔ نسخهٔ پشتیبان';
+
+  @override
+  String get backupSaveSub =>
+      'با رمز قفل می‌شود. آن را جای امنی مثل فضای ابری خود بفرستید.';
+
+  @override
+  String get backupRestore => 'بازگردانی از نسخهٔ پشتیبان';
+
+  @override
+  String get backupRestoreSub => 'برنامهٔ روی این گوشی جایگزین می‌شود';
+
+  @override
+  String get backupPassword => 'رمز';
+
+  @override
+  String get backupPasswordRepeat => 'تکرار رمز';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'برای بازگردانی به این رمز نیاز دارید و اگر فراموشش کنید قابل بازیابی نیست. عکس رسیدها در پشتیبان نیستند.';
+
+  @override
+  String get backupPasswordOpenBlurb => 'رمزی که پشتیبان با آن ذخیره شده است.';
+
+  @override
+  String get backupPasswordShort => 'دست‌کم ۶ نویسه';
+
+  @override
+  String get backupPasswordMismatch => 'دو رمز یکسان نیستند';
+
+  @override
+  String get backupOpen => 'باز کردن';
+
+  @override
+  String get backupReplaceTitle => 'برنامهٔ فعلی جایگزین شود؟';
+
+  @override
+  String get backupReplaceBlurb =>
+      'همهٔ داده‌های این گوشی با محتوای پشتیبان جایگزین می‌شود. این کار برگشت‌پذیر نیست.';
+
+  @override
+  String get backupReplace => 'جایگزین کن';
+
+  @override
+  String get backupRestored => 'پشتیبان بازگردانی شد';
+
+  @override
+  String get backupWrongPassword => 'این رمز پشتیبان را باز نمی‌کند.';
+
+  @override
+  String get backupNotABackup => 'این فایل پشتیبان Upino نیست.';
+
+  @override
+  String get backupUnreadable =>
+      'این پشتیبان با نسخهٔ جدیدتری از Upino ساخته شده. اپ را به‌روز کنید و دوباره امتحان کنید.';
 }
