@@ -81,7 +81,8 @@ void main() {
     expect(right, closeTo(UpinoNavBar.inset, 0.01), reason: 'top $top');
   });
 
-  testWidgets('a pill on the left is inset equally on its three sides', (t) async {
+  testWidgets('a pill on the left is inset equally on its three sides',
+      (t) async {
     await pumpBar(t, 0, Brightness.light);
 
     final bar = await rectOf(t, find.byType(UpinoNavBar));
@@ -104,7 +105,18 @@ void main() {
     // In every language. The selected pill is the only one that carries a
     // label, and how wide that label is depends on the language: this caught
     // the bar overflowing in eight of the ten, English among them.
-    for (final language in ['ar', 'en', 'es', 'fa', 'fr', 'hi', 'pt', 'ru', 'tr', 'zh']) {
+    for (final language in [
+      'ar',
+      'en',
+      'es',
+      'fa',
+      'fr',
+      'hi',
+      'pt',
+      'ru',
+      'tr',
+      'zh',
+    ]) {
       for (var i = 0; i < UpinoNavBar.destinationCount; i++) {
         await pumpBar(t, i, Brightness.light, language: language);
         expect(
@@ -134,10 +146,16 @@ void main() {
     final label = await rectOf(t, find.text('Home'));
 
     const padding = 12.0;
-    expect(icon.left - pill.left, closeTo(padding, 0.5),
-        reason: 'gap before the icon',);
-    expect(pill.right - label.right, closeTo(padding, 0.5),
-        reason: 'gap after the label',);
+    expect(
+      icon.left - pill.left,
+      closeTo(padding, 0.5),
+      reason: 'gap before the icon',
+    );
+    expect(
+      pill.right - label.right,
+      closeTo(padding, 0.5),
+      reason: 'gap after the label',
+    );
   });
 
   testWidgets('the pill fills the row height', (t) async {
@@ -155,10 +173,9 @@ void main() {
     expect(find.text('Activity'), findsNothing);
   });
 
-  BoxDecoration barDecoration(WidgetTester tester) =>
-      tester
-          .widget<Container>(find.byKey(const Key('nav-bar-surface')))
-          .decoration! as BoxDecoration;
+  BoxDecoration barDecoration(WidgetTester tester) => tester
+      .widget<Container>(find.byKey(const Key('nav-bar-surface')))
+      .decoration! as BoxDecoration;
 
   testWidgets('the bar casts no shadow in either mode', (t) async {
     await pumpBar(t, 3, Brightness.light);
@@ -182,14 +199,21 @@ void main() {
     );
 
     final decorated = t.widget<DecoratedBox>(
-      find.descendant(of: find.byType(NavScrim), matching: find.byType(DecoratedBox)),
+      find.descendant(
+        of: find.byType(NavScrim),
+        matching: find.byType(DecoratedBox),
+      ),
     );
     final gradient =
         (decorated.decoration as BoxDecoration).gradient! as LinearGradient;
 
     expect(gradient.begin, Alignment.topCenter);
     expect(gradient.end, Alignment.bottomCenter);
-    expect(gradient.colors.first.a, 0, reason: 'the top edge must be invisible');
+    expect(
+      gradient.colors.first.a,
+      0,
+      reason: 'the top edge must be invisible',
+    );
     expect(gradient.colors.last, UpinoTokens.surfacePage);
 
     // Solid page colour from the bar's top edge down, transparent 15 above it.
@@ -205,7 +229,9 @@ void main() {
   test('the idle glyph clears the 3:1 minimum for a UI component', () {
     double channel(int v) {
       final c = v / 255.0;
-      return c <= 0.03928 ? c / 12.92 : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
+      return c <= 0.03928
+          ? c / 12.92
+          : math.pow((c + 0.055) / 1.055, 2.4).toDouble();
     }
 
     double luminance(Color c) =>
@@ -229,5 +255,25 @@ void main() {
       ratio(UpinoTokens.actionOnTint, UpinoTokens.actionTint),
       greaterThanOrEqualTo(4.5),
     );
+  });
+
+  testWidgets('the label sits close to the glyph it belongs to',
+      (tester) async {
+    // The icon and the word are one label, not two things side by side, so
+    // the space between them is smaller than the space around the pair.
+    await pumpBar(tester, 0, Brightness.light);
+
+    final glyph = await rectOf(tester, find.byType(UpinoIcon).first);
+    final word = await rectOf(tester, find.text('Home'));
+    final gap = word.left - glyph.right;
+
+    expect(gap, lessThanOrEqualTo(5));
+    expect(gap, greaterThan(0), reason: 'they must not touch');
+
+    // And still further from the pill's own edge than from each other, or
+    // the pair stops reading as one thing.
+    final pill =
+        await rectOf(tester, find.byKey(const Key('nav-selected-pill')));
+    expect(glyph.left - pill.left, greaterThan(gap));
   });
 }

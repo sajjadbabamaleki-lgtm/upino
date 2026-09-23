@@ -224,7 +224,8 @@ class SegmentedProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final active = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final active =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     return Row(
       children: List.generate(total, (i) {
         final on = i < filled;
@@ -392,7 +393,8 @@ class _NavItem extends StatelessWidget {
     final tint = dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint;
     final onTint =
         dark ? UpinoTokens.darkTextPrimary : UpinoTokens.actionOnTint;
-    final glyph = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final glyph =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
 
     return GestureDetector(
       onTap: onTap,
@@ -418,7 +420,11 @@ class _NavItem extends StatelessWidget {
               color: selected ? glyph : UpinoTokens.navIdle,
             ),
             if (selected) ...[
-              const SizedBox(width: 9),
+              // 4, not 9: the glyph carries about 3px of its own margin
+              // inside the 21px box, so the gap the eye sees is 3 wider than
+              // whatever is set here. 4 puts 7px between the ink and the
+              // word, which is where it was asked to sit.
+              const SizedBox(width: 4),
               Flexible(
                 child: Text(
                   label,
@@ -462,9 +468,8 @@ class NavScrim extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final page = isDark(context)
-        ? UpinoTokens.darkSurfacePage
-        : UpinoTokens.surfacePage;
+    final page =
+        isDark(context) ? UpinoTokens.darkSurfacePage : UpinoTokens.surfacePage;
     return IgnorePointer(
       child: SizedBox(
         height: height,
