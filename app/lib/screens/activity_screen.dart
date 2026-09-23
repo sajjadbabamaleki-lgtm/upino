@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../data/receipt_store.dart';
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
@@ -24,7 +25,10 @@ class ActivityScreen extends StatelessWidget {
   final AppState state;
   final EdgeInsets padding;
 
-  Future<void> _confirmRemoval(BuildContext context, ActivityEntry entry) async {
+  Future<void> _confirmRemoval(
+    BuildContext context,
+    ActivityEntry entry,
+  ) async {
     final removed = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: Colors.transparent,
@@ -41,7 +45,7 @@ class ActivityScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: [
+      children: revealed([
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
           child: Column(
@@ -82,7 +86,7 @@ class ActivityScreen extends StatelessWidget {
               ],
             ),
           ),
-      ],
+      ]),
     );
   }
 }
@@ -226,7 +230,8 @@ class _RemoveSheet extends StatelessWidget {
             Center(
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text(l.activityKeepIt, style: theme.textTheme.titleMedium),
+                child:
+                    Text(l.activityKeepIt, style: theme.textTheme.titleMedium),
               ),
             ),
           ],
@@ -235,7 +240,6 @@ class _RemoveSheet extends StatelessWidget {
     );
   }
 }
-
 
 /// A receipt on the row it belongs to, opening full screen on a tap. The
 /// photograph stays with the entry even once it is removed: §21 says a

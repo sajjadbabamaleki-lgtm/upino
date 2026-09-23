@@ -45,11 +45,11 @@ class UpinoSheet extends StatelessWidget {
   /// language you cannot pick. The currency list, at 149 rows, could never
   /// be shown whole, so it takes the same height rather than one of its own:
   /// two pickers opening to two different heights read as two components.
-  static const pickerHeight = 704.0;
+  static const pickerHeight = 714.0;
 
   /// …but never more of the screen than this. On a small phone the sheet
   /// gives up height rather than the page behind it, and the list scrolls.
-  static const maxShare = 0.88;
+  static const maxShare = 0.9;
 
   /// Fixed in pixels rather than as a share of the screen, so a bigger phone
   /// shows the same sheet with more page above it instead of a taller sheet
@@ -131,7 +131,7 @@ class _SheetHead extends StatelessWidget {
 
   final VoidCallback? onClose;
 
-  static const height = 34.0;
+  static const height = 44.0;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -143,7 +143,7 @@ class _SheetHead extends StatelessWidget {
                 key: const Key('sheet-handle'),
                 width: 42,
                 height: 4,
-                margin: const EdgeInsets.only(top: 12),
+                margin: const EdgeInsets.only(top: 14),
                 decoration: BoxDecoration(
                   color: borderColor(context),
                   borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
@@ -151,16 +151,20 @@ class _SheetHead extends StatelessWidget {
               ),
             ),
             if (onClose != null)
+              // 36, not 30, and held further in from the edge: at 30 it was
+              // under the 44px a finger actually covers, and it sat close
+              // enough to the corner to be reached by accident while
+              // scrolling the list.
               Positioned(
-                top: 2,
-                right: UpinoTokens.gutter,
+                top: 4,
+                right: UpinoTokens.gutter + 6,
                 child: GestureDetector(
                   key: const Key('sheet-close'),
                   onTap: onClose,
                   behavior: HitTestBehavior.opaque,
                   child: Container(
-                    width: 30,
-                    height: 30,
+                    width: 36,
+                    height: 36,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: sunkenColor(context),
@@ -168,7 +172,7 @@ class _SheetHead extends StatelessWidget {
                     ),
                     child: const UpinoIcon(
                       'close',
-                      size: 16,
+                      size: 19,
                       color: UpinoTokens.textTertiary,
                     ),
                   ),

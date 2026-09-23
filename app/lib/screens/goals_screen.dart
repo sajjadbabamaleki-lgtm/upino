@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
@@ -70,7 +71,7 @@ class GoalsScreen extends StatelessWidget {
       animation: state,
       builder: (context, _) => ListView(
         padding: padding,
-        children: [
+        children: revealed([
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
             child: Column(
@@ -113,7 +114,7 @@ class GoalsScreen extends StatelessWidget {
             trailing: const RowAffordance(icon: 'add'),
             onTap: () => _create(context),
           ),
-        ],
+        ]),
       ),
     );
   }
@@ -162,7 +163,6 @@ class _GoalCard extends StatelessWidget {
             _status(AppLocalizations.of(context), goal, cycles),
             style: theme.textTheme.bodySmall,
           ),
-
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -180,8 +180,10 @@ class _GoalCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          _ProgressBar(value: goal.progress, muted: goal.kind == GoalKind.paused),
-
+          _ProgressBar(
+            value: goal.progress,
+            muted: goal.kind == GoalKind.paused,
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -206,7 +208,6 @@ class _GoalCard extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
@@ -215,8 +216,9 @@ class _GoalCard extends StatelessWidget {
               onPressed: onContribute,
               style: FilledButton.styleFrom(
                 backgroundColor: sunkenColor(context),
-                foregroundColor:
-                    dark ? UpinoTokens.darkTextPrimary : UpinoTokens.textPrimary,
+                foregroundColor: dark
+                    ? UpinoTokens.darkTextPrimary
+                    : UpinoTokens.textPrimary,
                 minimumSize: const Size.fromHeight(48),
               ),
               child: Text(AppLocalizations.of(context).goalsAddMoney),

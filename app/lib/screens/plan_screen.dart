@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
@@ -89,7 +90,7 @@ class PlanScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: [
+      children: revealed([
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
           child: Column(
@@ -104,7 +105,6 @@ class PlanScreen extends StatelessWidget {
             ],
           ),
         ),
-
         SectionHeading(l.planMoneyAndIncome),
         ActionRow(
           key: const Key('plan-balance'),
@@ -119,14 +119,13 @@ class PlanScreen extends StatelessWidget {
           subtitle: income == null
               ? l.planNotSet
               : '${income.isRange ? l.incomeRange(
-                  income.expectedAmount.display(),
-                  income.expectedUpperAmount!.display(),
-                ) : income.expectedAmount.display()}'
+                      income.expectedAmount.display(),
+                      income.expectedUpperAmount!.display(),
+                    ) : income.expectedAmount.display()}'
                   '${UpinoTokens.separator}'
                   '${formatDate(context, income.expectedDate)}',
           onTap: () => _editIncome(context),
         ),
-
         if (income != null && income.isRange) ...[
           const SizedBox(height: 10),
           UpinoCard(
@@ -137,7 +136,6 @@ class PlanScreen extends StatelessWidget {
             ),
           ),
         ],
-
         const SizedBox(height: 26),
         SectionHeading(
           l.planGoals,
@@ -173,7 +171,6 @@ class PlanScreen extends StatelessWidget {
             onTap: () => onOpenGoals(),
           ),
         ],
-
         const SizedBox(height: 26),
         SectionHeading(
           l.planSetAsideFirst,
@@ -202,7 +199,6 @@ class PlanScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
           ],
-
         if (addable.isNotEmpty) ...[
           const SizedBox(height: 16),
           SectionHeading(l.planAddToPlan),
@@ -221,7 +217,7 @@ class PlanScreen extends StatelessWidget {
             const SizedBox(height: 10),
           ],
         ],
-      ],
+      ]),
     );
   }
 

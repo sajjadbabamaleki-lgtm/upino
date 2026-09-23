@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../engine/plan.dart';
@@ -115,7 +116,7 @@ class ProfileScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: [
+      children: revealed([
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
           child: Text(l.profileTitle, style: theme.textTheme.headlineLarge),
@@ -227,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
               isDark(context) ? UpinoTokens.darkCritical : UpinoTokens.critical,
           onTap: () => _startOver(context),
         ),
-      ],
+      ]),
     );
   }
 }

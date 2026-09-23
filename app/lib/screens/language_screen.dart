@@ -13,6 +13,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
 import '../l10n/app_localizations.dart';
@@ -91,10 +92,13 @@ class LanguagePicker extends StatelessWidget {
             ),
             itemCount: codes.length,
             separatorBuilder: (_, __) => const SizedBox(height: 4),
-            itemBuilder: (context, i) => _LanguageRow(
-              code: codes[i],
-              selected: codes[i] == selected,
-              onTap: () => onSelect(codes[i]),
+            itemBuilder: (context, i) => Reveal(
+              index: i,
+              child: _LanguageRow(
+                code: codes[i],
+                selected: codes[i] == selected,
+                onTap: () => onSelect(codes[i]),
+              ),
             ),
           ),
         ),

@@ -8,6 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/icon.dart';
 import '../design/tokens.dart';
@@ -110,10 +111,13 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
                   ),
                   itemCount: matches.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 6),
-                  itemBuilder: (context, i) => _CurrencyRow(
-                    info: matches[i],
-                    selected: matches[i].code == widget.selected,
-                    onTap: () => widget.onSelect(matches[i].code),
+                  itemBuilder: (context, i) => Reveal(
+                    index: i,
+                    child: _CurrencyRow(
+                      info: matches[i],
+                      selected: matches[i].code == widget.selected,
+                      onTap: () => widget.onSelect(matches[i].code),
+                    ),
                   ),
                 ),
         ),

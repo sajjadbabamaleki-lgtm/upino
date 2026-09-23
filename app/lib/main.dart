@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'l10n/app_localizations.dart';
 
 import 'data/plan_store.dart';
+import 'design/motion.dart';
 import 'design/theme.dart';
 import 'design/tokens.dart';
 import 'screens/home_screen.dart';
@@ -41,15 +42,14 @@ class UpinoApp extends StatelessWidget {
   Widget _app(BuildContext context) => MaterialApp(
         title: 'Upino',
         debugShowCheckedModeBanner: false,
+        scrollBehavior: const UpinoScrollBehavior(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         // Null follows the phone; Flutter then resolves to the closest
         // supported language, falling back to English. Arabic and Persian
         // flip the whole layout, which Directionality handles from the
         // locale alone — no screen asks which way it is running.
-        locale: state.languageCode == null
-            ? null
-            : Locale(state.languageCode!),
+        locale: state.languageCode == null ? null : Locale(state.languageCode!),
         theme: _themed(Brightness.light),
         darkTheme: _themed(Brightness.dark),
         themeMode: switch (state.themeChoice) {

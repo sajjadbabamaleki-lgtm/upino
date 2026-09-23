@@ -109,7 +109,9 @@ Future<void> shoot(
       ),
     ),
   );
-  await tester.pump();
+  // Settled, not pumped once: the cards fade and lift into place, and a
+  // single frame catches them part of the way there.
+  await tester.pumpAndSettle();
   await expectLater(
     find.byKey(boundary),
     matchesGoldenFile('screenshots/$name.png'),
@@ -130,8 +132,9 @@ Future<void> shootApp(
   await tester.pumpWidget(
     RepaintBoundary(key: boundary, child: UpinoApp(state: state, fontFamily: 'UpinoSans')),
   );
-  await tester.pump();
+  await tester.pumpAndSettle();
   if (after != null) await after(tester);
+  await tester.pumpAndSettle();
   await expectLater(
     find.byKey(boundary),
     matchesGoldenFile('screenshots/$name.png'),
@@ -242,7 +245,7 @@ void main() {
         child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-3')));
     await tester.pumpAndSettle();
     await expectLater(
@@ -263,7 +266,7 @@ void main() {
         child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-1')));
     await tester.pumpAndSettle();
     await expectLater(
@@ -307,7 +310,7 @@ void main() {
         child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-4')));
     await tester.pumpAndSettle();
     await expectLater(
@@ -358,7 +361,7 @@ void main() {
         child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-2')));
     await tester.pumpAndSettle();
     await expectLater(

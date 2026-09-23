@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
@@ -36,7 +37,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const _navBottomGap = 7.0;
+  /// Above the gesture bar, not against it. 7 put the pill's shadow on the
+  /// edge of the display.
+  static const _navBottomGap = 15.0;
   static const _navHeight = UpinoNavBar.itemHeight + UpinoNavBar.inset * 2;
 
   int _tab = 0;
@@ -72,9 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final justRecorded = state.lastRecordedExpense;
-    final attention = snapshot.allocations
-        .where((a) => a.shortfall.minor > 0)
-        .toList();
+    final attention =
+        snapshot.allocations.where((a) => a.shortfall.minor > 0).toList();
 
     // Edge to edge, so the view now extends under the gesture bar. Everything
     // that was measured from the bottom of the screen has to clear it.
@@ -118,85 +120,89 @@ class _HomeScreenState extends State<HomeScreen> {
               _ => ListView(
                   key: const PageStorageKey('tab-home'),
                   padding: contentPadding,
-                  children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l.homeTitle, style: theme.textTheme.headlineLarge),
-                      const SizedBox(height: 2),
-                      Text(
-                        l.homeUntilTotal(
-                          formatDate(context, snapshot.decisionHorizonEnd),
-                          snapshot.trustedAllocatableLiquidity.display(),
-                        ),
-                        style: theme.textTheme.bodySmall,
+                  children: revealed([
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l.homeTitle,
+                            style: theme.textTheme.headlineLarge,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            l.homeUntilTotal(
+                              formatDate(context, snapshot.decisionHorizonEnd),
+                              snapshot.trustedAllocatableLiquidity.display(),
+                            ),
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    StsHero(
+                      snapshot: snapshot,
+                      onConfirmBalance: _confirmBalance,
+                      onResolve: () => _showBreakdown(snapshot),
+                      onQuickExpense: _recordExpense,
+                    ),
+
+                    // A confirmation marks a moment that just happened; it never
+                    // becomes a persistent state and never touches the figure
+                    // (§32.7).
+                    if (justRecorded != null) ...[
+                      const SizedBox(height: 12),
+                      _ConfirmationBanner(
+                        amount: justRecorded,
+                        onDismiss: state.clearExpenseConfirmation,
                       ),
                     ],
-                  ),
-                ),
 
-                StsHero(
-                  snapshot: snapshot,
-                  onConfirmBalance: _confirmBalance,
-                  onResolve: () => _showBreakdown(snapshot),
-                  onQuickExpense: _recordExpense,
-                ),
-
-                // A confirmation marks a moment that just happened; it never
-                // becomes a persistent state and never touches the figure
-                // (§32.7).
-                if (justRecorded != null) ...[
-                  const SizedBox(height: 12),
-                  _ConfirmationBanner(
-                    amount: justRecorded,
-                    onDismiss: state.clearExpenseConfirmation,
-                  ),
-                ],
-
-                const SizedBox(height: 14),
-                ActionRow(
-                  key: const Key('home-ask'),
-                  title: l.askTitle,
-                  subtitle: l.askBlurb,
-                  trailing: const RowAffordance(icon: 'ask'),
-                  onTap: () => AskScreen.open(context, state),
-                ),
-
-                const SizedBox(height: 26),
-
-                if (attention.isNotEmpty) ...[
-                  SectionHeading(l.homeAttention, count: attention.length),
-                  for (final a in attention) ...[
+                    const SizedBox(height: 14),
                     ActionRow(
-                      title: labelForClaim(l, a.claimId, a.label),
-                      subtitle: l.homeNotCovered(a.shortfall.display()),
-                      titleColor: a.priority.isMandatory
-                          ? (isDark(context)
-                              ? UpinoTokens.darkCritical
-                              : UpinoTokens.critical)
-                          : null,
-                      onTap: () => _showBreakdown(snapshot),
+                      key: const Key('home-ask'),
+                      title: l.askTitle,
+                      subtitle: l.askBlurb,
+                      trailing: const RowAffordance(icon: 'ask'),
+                      onTap: () => AskScreen.open(context, state),
                     ),
-                    const SizedBox(height: 10),
-                  ],
-                  const SizedBox(height: 16),
-                ],
 
-                if (snapshot.projectedSafeToSpend > snapshot.safeToSpendNow) ...[
-                  SectionHeading(l.homeAfterNextPay),
-                  _ProjectedCard(snapshot: snapshot),
-                  const SizedBox(height: 26),
-                ],
+                    const SizedBox(height: 26),
 
-                SectionHeading(l.homeSetAsideFirst),
-                _ProtectedCard(snapshot: snapshot),
+                    if (attention.isNotEmpty) ...[
+                      SectionHeading(l.homeAttention, count: attention.length),
+                      for (final a in attention) ...[
+                        ActionRow(
+                          title: labelForClaim(l, a.claimId, a.label),
+                          subtitle: l.homeNotCovered(a.shortfall.display()),
+                          titleColor: a.priority.isMandatory
+                              ? (isDark(context)
+                                  ? UpinoTokens.darkCritical
+                                  : UpinoTokens.critical)
+                              : null,
+                          onTap: () => _showBreakdown(snapshot),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                      const SizedBox(height: 16),
+                    ],
+
+                    if (snapshot.projectedSafeToSpend >
+                        snapshot.safeToSpendNow) ...[
+                      SectionHeading(l.homeAfterNextPay),
+                      _ProjectedCard(snapshot: snapshot),
+                      const SizedBox(height: 26),
+                    ],
+
+                    SectionHeading(l.homeSetAsideFirst),
+                    _ProtectedCard(snapshot: snapshot),
 
                     const SizedBox(height: 26),
                     SectionHeading(l.homeWhyThisNumber),
                     _WhyCard(snapshot: snapshot),
-                  ],
+                  ]),
                 ),
             },
           ),
@@ -242,8 +248,11 @@ class _ConfirmationBanner extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         child: Row(
           children: [
-            const UpinoIcon('confirmed',
-                size: 19, color: UpinoTokens.textPrimary,),
+            const UpinoIcon(
+              'confirmed',
+              size: 19,
+              color: UpinoTokens.textPrimary,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -258,8 +267,11 @@ class _ConfirmationBanner extends StatelessWidget {
             ),
             GestureDetector(
               onTap: onDismiss,
-              child: const UpinoIcon('close',
-                  size: 18, color: UpinoTokens.textPrimary,),
+              child: const UpinoIcon(
+                'close',
+                size: 18,
+                color: UpinoTokens.textPrimary,
+              ),
             ),
           ],
         ),
