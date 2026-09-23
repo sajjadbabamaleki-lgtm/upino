@@ -52,8 +52,7 @@ class _CurrencyPickerState extends State<CurrencyPicker> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final matches =
-        currencyCatalogue.where((c) => c.matches(_query)).toList();
+    final matches = currencyCatalogue.where((c) => c.matches(_query)).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -142,7 +141,8 @@ class _SearchField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const UpinoIcon('search',
+          const UpinoIcon(
+            'search',
             size: 20,
             color: UpinoTokens.textTertiary,
           ),
@@ -191,7 +191,8 @@ class _CurrencyRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dark = isDark(context);
-    final accent = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final accent =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -222,9 +223,8 @@ class _CurrencyRow extends StatelessWidget {
                       text: info.country,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontSize: 14,
-                        color: selected && !dark
-                            ? UpinoTokens.actionOnTint
-                            : null,
+                        color:
+                            selected && !dark ? UpinoTokens.actionOnTint : null,
                       ),
                     ),
                     TextSpan(
@@ -251,21 +251,27 @@ class _CurrencyRow extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: 38,
-              child: Text(
-                // Fifty-four of these have no glyph of their own and carry
-                // the code as their symbol. Printing it twice would read as
-                // a mistake, so the slot is left empty for them.
-                info.symbol == info.code ? '' : info.symbol,
-                textAlign: TextAlign.right,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontSize: 13.5,
-                  color: selected ? accent : UpinoTokens.textSecondary,
+            // Held off the right edge: flush against it the symbol read as
+            // pinned to the side of the card rather than as the last column
+            // of the row. The slot keeps its fixed width, so the symbols
+            // still line up down the list.
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: SizedBox(
+                width: 38,
+                child: Text(
+                  // Fifty-four of these have no glyph of their own and carry
+                  // the code as their symbol. Printing it twice would read as
+                  // a mistake, so the slot is left empty for them.
+                  info.symbol == info.code ? '' : info.symbol,
+                  textAlign: TextAlign.right,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 13.5,
+                    color: selected ? accent : UpinoTokens.textSecondary,
+                  ),
                 ),
               ),
             ),
-
           ],
         ),
       ),

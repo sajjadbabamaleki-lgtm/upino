@@ -161,7 +161,10 @@ void main() {
   });
 
   group('the picker', () {
-    Future<void> pump(WidgetTester tester, void Function(String) onSelect) async {
+    Future<void> pump(
+      WidgetTester tester,
+      void Function(String) onSelect,
+    ) async {
       tester.view
         ..physicalSize = const Size(400, 900)
         ..devicePixelRatio = 1.0;
@@ -182,10 +185,12 @@ void main() {
     /// back as the spans of that run rather than as separate widgets.
     List<String> labelSpans(WidgetTester tester, String code) {
       final text = tester.widget<Text>(
-        find.descendant(
-          of: find.byKey(Key('currency-$code')),
-          matching: find.byType(Text),
-        ).first,
+        find
+            .descendant(
+              of: find.byKey(Key('currency-$code')),
+              matching: find.byType(Text),
+            )
+            .first,
       );
       final out = <String>[];
       (text.textSpan! as TextSpan).visitChildren((span) {
@@ -225,17 +230,20 @@ void main() {
         (tester) async {
       await pump(tester, (_) {});
 
-      final search = tester.getSize(find.byKey(const Key('currency-search-bar')));
+      final search =
+          tester.getSize(find.byKey(const Key('currency-search-bar')));
       final row = tester.getSize(find.byKey(const Key('currency-USD')));
       expect(row.height, closeTo(search.height, 0.01));
 
       // One line: the country and the currency name are one run, and the run
       // is capped at a single line rather than wrapping.
       final text = tester.widget<Text>(
-        find.descendant(
-          of: find.byKey(const Key('currency-USD')),
-          matching: find.byType(Text),
-        ).first,
+        find
+            .descendant(
+              of: find.byKey(const Key('currency-USD')),
+              matching: find.byType(Text),
+            )
+            .first,
       );
       expect(text.maxLines, 1);
       expect(text.overflow, TextOverflow.ellipsis);
@@ -255,10 +263,12 @@ void main() {
         ),
       );
       final label = tester.getRect(
-        find.descendant(
-          of: find.byKey(const Key('currency-USD')),
-          matching: find.byType(Text),
-        ).first,
+        find
+            .descendant(
+              of: find.byKey(const Key('currency-USD')),
+              matching: find.byType(Text),
+            )
+            .first,
       );
       final code = tester.getRect(
         find.descendant(
@@ -280,22 +290,41 @@ void main() {
       );
     });
 
+    testWidgets('the symbol is held off the right edge of the row',
+        (tester) async {
+      // Flush against the edge it read as pinned to the side of the card
+      // rather than as the row's last column.
+      await pump(tester, (_) {});
+      final row = tester.getRect(find.byKey(const Key('currency-USD')));
+      final symbol = tester.getRect(
+        find.descendant(
+          of: find.byKey(const Key('currency-USD')),
+          matching: find.text(r'$'),
+        ),
+      );
+      expect(row.right - symbol.right, greaterThanOrEqualTo(20));
+    });
+
     testWidgets('a name is not clipped while there is room beside it',
         (tester) async {
       // Two flexed boxes split the width by ratio, which clipped
       // "Australian dollar" although the row was half empty.
       await pump(tester, (_) {});
       final text = tester.widget<Text>(
-        find.descendant(
-          of: find.byKey(const Key('currency-AUD')),
-          matching: find.byType(Text),
-        ).first,
+        find
+            .descendant(
+              of: find.byKey(const Key('currency-AUD')),
+              matching: find.byType(Text),
+            )
+            .first,
       );
       final painter = TextPainter(
         text: text.textSpan,
         maxLines: 1,
         textDirection: TextDirection.ltr,
-      )..layout(maxWidth: tester.getSize(find.byKey(const Key('currency-AUD'))).width);
+      )..layout(
+          maxWidth: tester.getSize(find.byKey(const Key('currency-AUD'))).width,
+        );
       expect(painter.didExceedMaxLines, isFalse);
       expect(labelSpans(tester, 'AUD'), ['Australia', '  Australian dollar']);
     });
@@ -468,7 +497,8 @@ void main() {
       expect(state.openingBalance.minor, 1500);
     });
 
-    testWidgets('going back and changing it clears the amounts', (tester) async {
+    testWidgets('going back and changing it clears the amounts',
+        (tester) async {
       await pumpOnboarding(tester);
       await pickCurrency(tester, 'USD');
       await tester.enterText(find.byKey(const Key('field-balance')), '2000');

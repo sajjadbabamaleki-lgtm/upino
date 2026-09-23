@@ -153,9 +153,11 @@ void main() {
       await tester.pumpAndSettle();
       final after = tester.getSize(find.byType(CurrencyPicker)).height;
 
-      expect(after, before,
-          reason: 'the sheet had room and did not need to '
-              'give any of it back');
+      expect(
+        after,
+        before,
+        reason: 'the sheet had room and did not need to give any of it back',
+      );
     });
 
     testWidgets('is never taller than the screen it sits on', (tester) async {
