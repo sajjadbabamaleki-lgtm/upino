@@ -8,6 +8,7 @@ import '../design/tokens.dart';
 import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import 'language_screen.dart';
 import '../widgets/amount_sheet.dart';
 
 class _ThemeOption extends StatelessWidget {
@@ -188,8 +189,8 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 16),
-        _LanguageCard(state: state),
+        const SizedBox(height: 10),
+        _LanguageRow(state: state),
 
         const SizedBox(height: 26),
         SectionHeading(l.profileStartAgain),
@@ -208,55 +209,58 @@ class ProfileScreen extends StatelessWidget {
 
 /// Language sits beside the theme, and for the same reason: it is a
 /// preference, it is stored with the plan, and following the phone is the
-/// default so nothing is imposed. Each language is named in itself, because
-/// someone who cannot read the current one still has to find their own.
-class _LanguageCard extends StatelessWidget {
-  const _LanguageCard({required this.state});
+/// default so nothing is imposed.
+///
+/// The row opens the same picker onboarding opens, rather than a second
+/// layout that would have to be kept in step with it.
+class _LanguageRow extends StatelessWidget {
+  const _LanguageRow({required this.state});
 
   final AppState state;
 
-  static const _names = <String, String>{
-    'en': 'English',
-    'zh': '中文',
-    'hi': 'हिन्दी',
-    'es': 'Español',
-    'fr': 'Français',
-    'ar': 'العربية',
-    'fa': 'فارسی',
-    'pt': 'Português',
-    'ru': 'Русский',
-    'tr': 'Türkçe',
-  };
+  Future<void> _open(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => FractionallySizedBox(
+        heightFactor: 0.82,
+        child: Container(
+          decoration: BoxDecoration(
+            color: isDark(context)
+                ? UpinoTokens.darkSurfacePage
+                : UpinoTokens.surfacePage,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(UpinoTokens.radiusHero),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: LanguagePicker(
+              selected: state.languageCode,
+              onSelect: (code) {
+                state.setLanguageCode(code);
+                Navigator.of(sheetContext).pop();
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final codes = <String?>[null, ..._names.keys];
-
-    return UpinoCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l.profileLanguage, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 4),
-          Text(l.profileLanguageBlurb, style: theme.textTheme.bodySmall),
-          const SizedBox(height: 14),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final code in codes)
-                _ThemeOption(
-                  key: Key('language-${code ?? 'system'}'),
-                  label: code == null ? l.languagePhone : _names[code]!,
-                  selected: state.languageCode == code,
-                  onTap: () => state.setLanguageCode(code),
-                ),
-            ],
-          ),
-        ],
-      ),
+    final code = state.languageCode;
+    return ActionRow(
+      key: const Key('profile-language'),
+      title: l.profileLanguage,
+      subtitle: code == null
+          ? l.languagePhone
+          : languageNames[code]!.native,
+      trailing: const RowAffordance(icon: Icons.chevron_right_rounded),
+      onTap: () => _open(context),
     );
   }
 }

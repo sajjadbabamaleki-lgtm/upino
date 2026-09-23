@@ -607,4 +607,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get claimBuffer => '应急储备';
+
+  @override
+  String get languageTitle => '使用哪种语言？';
+
+  @override
+  String get languageBlurb => '之后可以在「我的」里更改。';
 }

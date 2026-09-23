@@ -629,4 +629,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Acil durum rezervi';
+
+  @override
+  String get languageTitle => 'Hangi dil?';
+
+  @override
+  String get languageBlurb => 'Bunu sonra Profil’den değiştirebilirsiniz.';
 }

@@ -630,4 +630,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get claimBuffer => 'आपातकालीन कोष';
+
+  @override
+  String get languageTitle => 'कौन-सी भाषा?';
+
+  @override
+  String get languageBlurb => 'आप इसे बाद में प्रोफ़ाइल में बदल सकते हैं।';
 }

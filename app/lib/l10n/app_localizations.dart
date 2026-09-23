@@ -1241,6 +1241,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Emergency buffer'**
   String get claimBuffer;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which language?'**
+  String get languageTitle;
+
+  /// No description provided for @languageBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later in Profile.'**
+  String get languageBlurb;
 }
 
 class _AppLocalizationsDelegate

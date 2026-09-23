@@ -315,5 +315,7 @@
   "claimRent": "Rent and bills",
   "claimCardMinimum": "Card minimum due",
   "claimEssentials": "Food and transport",
-  "claimBuffer": "Emergency buffer"
+  "claimBuffer": "Emergency buffer",
+  "languageTitle": "Which language?",
+  "languageBlurb": "You can change this later in Profile."
 }

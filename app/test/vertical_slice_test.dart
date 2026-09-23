@@ -34,7 +34,10 @@ void main() {
     addTearDown(tester.view.reset);
     await tester.pumpWidget(UpinoApp(state: state));
     await tester.pumpAndSettle();
-    if (currency != null && find.text('Which currency?').evaluate().isNotEmpty) {
+    if (currency != null && find.text('Which language?').evaluate().isNotEmpty) {
+      // Language first, then currency; these tests are about what follows.
+      await tester.tap(find.byKey(const Key('language-system')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('currency-$currency')));
       await tester.pumpAndSettle();
     }
@@ -197,6 +200,8 @@ void _reopenTests() {
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
       if (currency != null) {
+        await tester.tap(find.byKey(const Key('language-system')));
+        await tester.pumpAndSettle();
         await tester.tap(find.byKey(Key('currency-$currency')));
         await tester.pumpAndSettle();
       }
@@ -235,7 +240,7 @@ void _reopenTests() {
       // Close and reopen against the same storage.
       final second = await boot(tester);
       expect(second.isOnboarded, isTrue);
-      expect(find.text('Which currency?'), findsNothing);
+      expect(find.text('Which language?'), findsNothing);
       expect(find.text('Set up your plan'), findsNothing);
       expect(find.text('Your plan'), findsOneWidget);
       expect(find.text('€2,975.00'), findsOneWidget);
@@ -248,8 +253,8 @@ void _reopenTests() {
       store = InMemoryPlanStore('{{{ truncated');
       final state = await boot(tester, currency: null);
       expect(state.restoreFailure, isNotNull);
-      // Onboarding from the top, which starts at the currency question.
-      expect(find.text('Which currency?'), findsOneWidget);
+      // Onboarding from the top, which starts at the language question.
+      expect(find.text('Which language?'), findsOneWidget);
     });
   });
 }
@@ -271,7 +276,10 @@ void _setupIsObviousTests() {
         ),
       ),);
       await tester.pumpAndSettle();
-      // Past the currency question; these tests are about the form after it.
+      // Past the language and currency questions; these tests are about the
+      // form that follows them.
+      await tester.tap(find.byKey(const Key('language-system')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('currency-EUR')));
       await tester.pumpAndSettle();
     }

@@ -13,6 +13,7 @@ import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/main.dart';
+import 'package:upino/screens/language_screen.dart';
 import 'package:upino/state/app_state.dart';
 
 Money eur(String v) => Money.parse(v, 'EUR');
@@ -164,6 +165,61 @@ void main() {
 
       expect(ltr, lessThan(210));
       expect(rtl, greaterThan(210));
+    });
+  });
+
+  group('the picker', () {
+    testWidgets('is the first thing the app asks', (tester) async {
+      // Before currency, because the currency question is made of words.
+      final state = AppState(now: DateTime.utc(2026, 10, 1, 10));
+      await pumpApp(tester, state);
+      expect(find.text('Which language?'), findsOneWidget);
+      expect(find.text('Which currency?'), findsNothing);
+
+      await tester.tap(find.byKey(const Key('language-fa')));
+      await tester.pumpAndSettle();
+      expect(state.languageCode, 'fa');
+      // And the currency question arrives in the language just chosen.
+      expect(find.text('کدام واحد پول؟'), findsOneWidget);
+    });
+
+    testWidgets('names every language in itself', (tester) async {
+      // Someone who cannot read the language currently showing still has to
+      // find their own, so no row depends on the current one.
+      await pumpApp(tester, AppState(now: DateTime.utc(2026, 10, 1, 10)));
+      for (final entry in languageNames.entries) {
+        expect(
+          find.byKey(Key('language-${entry.key}')),
+          findsOneWidget,
+          reason: entry.key,
+        );
+      }
+      expect(find.textContaining('فارسی'), findsOneWidget);
+      expect(find.textContaining('中文'), findsOneWidget);
+      expect(find.textContaining('Русский'), findsOneWidget);
+    });
+
+    testWidgets('is reachable again from Profile', (tester) async {
+      await pumpApp(tester, funded());
+      await tester.tap(find.byIcon(Icons.grid_view_rounded));
+      await tester.pumpAndSettle();
+
+      final row = find.byKey(const Key('profile-language'));
+      await tester.scrollUntilVisible(
+        row,
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.ensureVisible(row);
+      await tester.pumpAndSettle();
+      await tester.tap(row);
+      await tester.pumpAndSettle();
+
+      // The same picker, not a second layout kept in step by hand.
+      expect(find.byType(LanguagePicker), findsOneWidget);
+      await tester.tap(find.byKey(const Key('language-tr')));
+      await tester.pumpAndSettle();
+      expect(find.text('Profil'), findsWidgets);
     });
   });
 

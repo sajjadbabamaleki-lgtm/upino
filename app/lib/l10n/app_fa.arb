@@ -187,5 +187,7 @@
   "claimRent": "اجاره و قبض‌ها",
   "claimCardMinimum": "حداقل پرداخت کارت",
   "claimEssentials": "خوراک و رفت‌وآمد",
-  "claimBuffer": "ذخیرهٔ اضطراری"
+  "claimBuffer": "ذخیرهٔ اضطراری",
+  "languageTitle": "کدام زبان؟",
+  "languageBlurb": "بعداً می‌توانید از پروفایل عوضش کنید."
 }

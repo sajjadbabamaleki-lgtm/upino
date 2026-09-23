@@ -187,5 +187,7 @@
   "claimRent": "किराया और बिल",
   "claimCardMinimum": "कार्ड का न्यूनतम बकाया",
   "claimEssentials": "खाना और आवागमन",
-  "claimBuffer": "आपातकालीन कोष"
+  "claimBuffer": "आपातकालीन कोष",
+  "languageTitle": "कौन-सी भाषा?",
+  "languageBlurb": "आप इसे बाद में प्रोफ़ाइल में बदल सकते हैं।"
 }

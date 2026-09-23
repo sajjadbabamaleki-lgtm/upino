@@ -632,4 +632,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Emergency buffer';
+
+  @override
+  String get languageTitle => 'Which language?';
+
+  @override
+  String get languageBlurb => 'You can change this later in Profile.';
 }

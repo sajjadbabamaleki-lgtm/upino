@@ -187,5 +187,7 @@
   "claimRent": "Kira ve faturalar",
   "claimCardMinimum": "Kart asgari ödemesi",
   "claimEssentials": "Yemek ve ulaşım",
-  "claimBuffer": "Acil durum rezervi"
+  "claimBuffer": "Acil durum rezervi",
+  "languageTitle": "Hangi dil?",
+  "languageBlurb": "Bunu sonra Profil’den değiştirebilirsiniz."
 }

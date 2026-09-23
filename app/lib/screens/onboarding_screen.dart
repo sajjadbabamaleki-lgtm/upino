@@ -15,6 +15,10 @@ import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import 'currency_screen.dart';
+import 'language_screen.dart';
+
+/// Language, then currency, then the two amounts.
+enum _Step { language, currency, details }
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({required this.state, super.key});
@@ -36,12 +40,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _payDayOffset = 30;
   bool _showOptional = false;
 
-  /// Currency first: every amount below is stored in minor units of it, and
-  /// currencies disagree about how many minor units there are. Null until the
-  /// user picks one, so nothing on the list looks already chosen on the way
-  /// in — the highlight is for coming back to change it.
+  /// Language, then currency, then the form. Language is first because the
+  /// currency question is made of words; currency is before the amounts
+  /// because every amount is stored in minor units of it, and currencies
+  /// disagree about how many minor units there are.
+  ///
+  /// The currency is null until the user picks one, so nothing on that list
+  /// looks already chosen on the way in.
   String? _currency;
-  bool _picking = true;
+  _Step _step = _Step.language;
 
   @override
   void dispose() {
@@ -74,6 +81,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     widget.state.completeOnboarding(_draft);
   }
 
+  void _chooseLanguage(String? code) {
+    widget.state.setLanguageCode(code);
+    setState(() => _step = _Step.currency);
+  }
+
   void _chooseCurrency(String code) {
     // Picking closes the list and hands the form back; the search keyboard
     // would otherwise still be up over it.
@@ -82,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final changed = code != _currency;
       _currency = code;
       _draft.currency = code;
-      _picking = false;
+      _step = _Step.details;
       if (changed) {
         // Amounts typed under the old currency would be reinterpreted at a
         // different scale, so they are cleared rather than silently rescaled.
@@ -95,7 +107,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_picking) {
+    if (_step == _Step.language) {
+      return Scaffold(
+        body: SafeArea(
+          child: LanguagePicker(
+            selected: widget.state.languageCode,
+            onSelect: _chooseLanguage,
+          ),
+        ),
+      );
+    }
+
+    if (_step == _Step.currency) {
       return Scaffold(
         body: SafeArea(
           child: CurrencyPicker(
@@ -146,7 +169,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               title: '${info.flag}  ${info.country}',
               subtitle: '${info.name} · ${info.code}',
               trailing: const RowAffordance(icon: Icons.swap_horiz_rounded),
-              onTap: () => setState(() => _picking = true),
+              onTap: () => setState(() => _step = _Step.currency),
             ),
             const SizedBox(height: 18),
 

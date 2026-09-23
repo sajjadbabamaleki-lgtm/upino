@@ -187,5 +187,7 @@
   "claimRent": "Aluguel e contas",
   "claimCardMinimum": "Pagamento mínimo do cartão",
   "claimEssentials": "Comida e transporte",
-  "claimBuffer": "Reserva de emergência"
+  "claimBuffer": "Reserva de emergência",
+  "languageTitle": "Qual idioma?",
+  "languageBlurb": "Você pode mudar isso depois em Perfil."
 }

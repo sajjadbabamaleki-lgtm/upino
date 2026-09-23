@@ -646,4 +646,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Réserve d’urgence';
+
+  @override
+  String get languageTitle => 'Quelle langue ?';
+
+  @override
+  String get languageBlurb => 'Vous pourrez la changer plus tard dans Profil.';
 }

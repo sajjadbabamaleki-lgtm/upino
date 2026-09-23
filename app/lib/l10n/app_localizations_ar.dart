@@ -620,4 +620,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get claimBuffer => 'احتياطي الطوارئ';
+
+  @override
+  String get languageTitle => 'أي لغة؟';
+
+  @override
+  String get languageBlurb => 'يمكنك تغييرها لاحقاً من الملف.';
 }

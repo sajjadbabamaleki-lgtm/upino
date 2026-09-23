@@ -632,4 +632,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Резерв на непредвиденное';
+
+  @override
+  String get languageTitle => 'Какой язык?';
+
+  @override
+  String get languageBlurb => 'Это можно изменить позже в профиле.';
 }

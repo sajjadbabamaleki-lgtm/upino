@@ -263,8 +263,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.isOnboarded, isFalse);
-      // Back to the top of onboarding, which is the currency question.
-      expect(find.text('Which currency?'), findsOneWidget);
+      // Back to the top of onboarding, which is the language question.
+      expect(find.text('Which language?'), findsOneWidget);
     });
   });
 }

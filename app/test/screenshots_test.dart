@@ -158,25 +158,42 @@ Future<void> loadFonts() async {
 void main() {
   setUpAll(loadFonts);
 
-  testWidgets('01 currency', (tester) async {
-    // The first screen onboarding shows. The flags render as boxes here: the
-    // harness loads Roboto and the icon face, and no emoji font ships with the
-    // test binding. On a phone the system emoji font draws them.
+  testWidgets('01 language', (tester) async {
+    // The first screen the app shows. Each language is named in itself, so
+    // this one list is readable whatever the phone is set to.
     await shootApp(
       tester,
-      '01-currency',
+      '01-language',
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 900),
     );
   });
 
-  testWidgets('01b onboarding', (tester) async {
+  testWidgets('01b currency', (tester) async {
+    // The first screen onboarding shows. The flags render as boxes here: the
+    // harness loads Roboto and the icon face, and no emoji font ships with the
+    // test binding. On a phone the system emoji font draws them.
     await shootApp(
       tester,
-      '01b-onboarding',
+      '01b-currency',
+      AppState(now: now, utcOffset: cest),
+      size: const Size(400, 900),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('language-system')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
+  testWidgets('01c onboarding', (tester) async {
+    await shootApp(
+      tester,
+      '01c-onboarding',
       AppState(now: now, utcOffset: cest),
       size: const Size(400, 1400),
       after: (tester) async {
+        await tester.tap(find.byKey(const Key('language-system')));
+        await tester.pumpAndSettle();
         await tester.tap(find.byKey(const Key('currency-EUR')));
         await tester.pumpAndSettle();
       },
@@ -235,6 +252,29 @@ void main() {
     await expectLater(
       find.byKey(boundary),
       matchesGoldenFile('screenshots/03c-plan.png'),
+    );
+  });
+
+  testWidgets('03f the language picker inside Profile', (tester) async {
+    await shootApp(
+      tester,
+      '03f-language-in-profile',
+      fundedState(),
+      size: const Size(400, 900),
+      after: (tester) async {
+        await tester.tap(find.byIcon(Icons.grid_view_rounded));
+        await tester.pumpAndSettle();
+        final row = find.byKey(const Key('profile-language'));
+        await tester.scrollUntilVisible(
+          row,
+          200,
+          scrollable: find.byType(Scrollable).first,
+        );
+        await tester.ensureVisible(row);
+        await tester.pumpAndSettle();
+        await tester.tap(row);
+        await tester.pumpAndSettle();
+      },
     );
   });
 

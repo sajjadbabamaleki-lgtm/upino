@@ -629,4 +629,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get claimBuffer => 'ذخیرهٔ اضطراری';
+
+  @override
+  String get languageTitle => 'کدام زبان؟';
+
+  @override
+  String get languageBlurb => 'بعداً می‌توانید از پروفایل عوضش کنید.';
 }

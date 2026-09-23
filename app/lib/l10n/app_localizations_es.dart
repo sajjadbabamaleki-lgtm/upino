@@ -634,4 +634,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Colchón de emergencia';
+
+  @override
+  String get languageTitle => '¿Qué idioma?';
+
+  @override
+  String get languageBlurb => 'Puedes cambiarlo luego en Perfil.';
 }

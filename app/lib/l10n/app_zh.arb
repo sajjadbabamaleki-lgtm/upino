@@ -187,5 +187,7 @@
   "claimRent": "房租和账单",
   "claimCardMinimum": "信用卡最低还款",
   "claimEssentials": "饮食和交通",
-  "claimBuffer": "应急储备"
+  "claimBuffer": "应急储备",
+  "languageTitle": "使用哪种语言？",
+  "languageBlurb": "之后可以在「我的」里更改。"
 }

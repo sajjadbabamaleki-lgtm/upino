@@ -187,5 +187,7 @@
   "claimRent": "Аренда и счета",
   "claimCardMinimum": "Минимальный платёж по карте",
   "claimEssentials": "Еда и транспорт",
-  "claimBuffer": "Резерв на непредвиденное"
+  "claimBuffer": "Резерв на непредвиденное",
+  "languageTitle": "Какой язык?",
+  "languageBlurb": "Это можно изменить позже в профиле."
 }

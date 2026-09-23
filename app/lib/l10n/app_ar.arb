@@ -187,5 +187,7 @@
   "claimRent": "الإيجار والفواتير",
   "claimCardMinimum": "الحد الأدنى للبطاقة",
   "claimEssentials": "الطعام والتنقل",
-  "claimBuffer": "احتياطي الطوارئ"
+  "claimBuffer": "احتياطي الطوارئ",
+  "languageTitle": "أي لغة؟",
+  "languageBlurb": "يمكنك تغييرها لاحقاً من الملف."
 }

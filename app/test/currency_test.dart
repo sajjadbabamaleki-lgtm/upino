@@ -365,6 +365,11 @@ void main() {
       final state = AppState(now: DateTime.utc(2026, 10, 1, 10));
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
+      // Language comes before currency: the currency question is made of
+      // words, so it is asked second.
+      expect(find.text('Which language?'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('language-system')));
+      await tester.pumpAndSettle();
       return state;
     }
 

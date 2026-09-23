@@ -187,5 +187,7 @@
   "claimRent": "Alquiler y recibos",
   "claimCardMinimum": "Pago mínimo de tarjeta",
   "claimEssentials": "Comida y transporte",
-  "claimBuffer": "Colchón de emergencia"
+  "claimBuffer": "Colchón de emergencia",
+  "languageTitle": "¿Qué idioma?",
+  "languageBlurb": "Puedes cambiarlo luego en Perfil."
 }

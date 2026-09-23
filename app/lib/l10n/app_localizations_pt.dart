@@ -639,4 +639,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get claimBuffer => 'Reserva de emergência';
+
+  @override
+  String get languageTitle => 'Qual idioma?';
+
+  @override
+  String get languageBlurb => 'Você pode mudar isso depois em Perfil.';
 }
