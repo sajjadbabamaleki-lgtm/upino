@@ -267,7 +267,7 @@ void main() {
     final word = await rectOf(tester, find.text('Home'));
     final gap = word.left - glyph.right;
 
-    expect(gap, lessThanOrEqualTo(5));
+    expect(gap, lessThanOrEqualTo(7));
     expect(gap, greaterThan(0), reason: 'they must not touch');
 
     // And still further from the pill's own edge than from each other, or

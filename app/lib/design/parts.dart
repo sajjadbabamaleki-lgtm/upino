@@ -420,11 +420,11 @@ class _NavItem extends StatelessWidget {
               color: selected ? glyph : UpinoTokens.navIdle,
             ),
             if (selected) ...[
-              // 4, not 9: the glyph carries about 3px of its own margin
+              // 6, not 9: the glyph carries about 3px of its own margin
               // inside the 21px box, so the gap the eye sees is 3 wider than
-              // whatever is set here. 4 puts 7px between the ink and the
+              // whatever is set here. 6 puts 9px between the ink and the
               // word, which is where it was asked to sit.
-              const SizedBox(width: 4),
+              const SizedBox(width: 6),
               Flexible(
                 child: Text(
                   label,
