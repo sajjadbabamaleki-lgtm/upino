@@ -307,5 +307,7 @@
   "voiceUnavailable": "Este teléfono no tiene reconocimiento de voz que la app pueda usar. Escribe el importe.",
   "voiceNoPermission": "Upino no tiene permiso para usar el micrófono. Puedes darlo en los ajustes.",
   "voiceNetwork": "El reconocimiento de voz de este teléfono necesita internet y no pudo conectarse.",
-  "voiceNoAmount": "Se oyó «{text}», pero sin importe. Inténtalo de nuevo o escríbelo."
+  "voiceNoAmount": "Se oyó «{text}», pero sin importe. Inténtalo de nuevo o escríbelo.",
+  "yes": "Sí",
+  "no": "No"
 }

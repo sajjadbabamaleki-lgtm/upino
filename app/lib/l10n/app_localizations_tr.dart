@@ -1048,4 +1048,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String voiceNoAmount(String text) {
     return '“$text” duyuldu ama tutar yok. Tekrar deneyin ya da yazın.';
   }
+
+  @override
+  String get yes => 'Evet';
+
+  @override
+  String get no => 'Hayır';
 }

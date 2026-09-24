@@ -1054,4 +1054,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'Se oyó «$text», pero sin importe. Inténtalo de nuevo o escríbelo.';
   }
+
+  @override
+  String get yes => 'Sí';
+
+  @override
+  String get no => 'No';
 }

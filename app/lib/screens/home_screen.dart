@@ -202,6 +202,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         key: ObjectKey(justRecorded),
                         amount: justRecorded,
                         onDismiss: state.clearExpenseConfirmation,
+                        onRemove: state.undoLastExpense,
                       ),
                     ],
 
@@ -291,21 +292,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 }
 
-/// Says a spend was recorded, then goes by itself. It has no close button:
-/// a cross beside an amount reads as "delete this spend", and removing a
-/// spend belongs on Activity, where it is confirmed and stays on the record.
+/// Says a spend was recorded, then goes by itself. Its cross takes that
+/// spend back, the moment a mistyped amount is most likely to be noticed,
+/// but only after asking: a cross beside an amount is easy to hit by
+/// accident. What is removed stays on Activity, marked, like any correction.
 class _ConfirmationBanner extends StatefulWidget {
   const _ConfirmationBanner({
     required this.amount,
     required this.onDismiss,
+    required this.onRemove,
     super.key,
   });
 
   final Money amount;
   final VoidCallback onDismiss;
+  final VoidCallback onRemove;
 
-  /// Long enough to read, short enough not to become a fixture (§32.7).
-  static const showFor = Duration(seconds: 4);
+  /// Long enough to read and to reach the cross, short enough not to
+  /// become a fixture (§32.7).
+  static const showFor = Duration(seconds: 6);
 
   @override
   State<_ConfirmationBanner> createState() => _ConfirmationBannerState();
@@ -317,7 +322,54 @@ class _ConfirmationBannerState extends State<_ConfirmationBanner> {
   @override
   void initState() {
     super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
     _timer = Timer(_ConfirmationBanner.showFor, widget.onDismiss);
+  }
+
+  Future<void> _confirmRemove() async {
+    // The banner must not vanish from under the question.
+    _timer?.cancel();
+    final l = AppLocalizations.of(context);
+    final remove = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: cardColor(dialogContext),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+        ),
+        title: Text(l.activityRemoveAmount(widget.amount.display())),
+        content: Text(l.activityRemoveDetail),
+        actions: [
+          TextButton(
+            key: const Key('banner-remove-no'),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l.no),
+          ),
+          TextButton(
+            key: const Key('banner-remove-yes'),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              l.yes,
+              style: TextStyle(
+                color: isDark(dialogContext)
+                    ? UpinoTokens.darkCritical
+                    : UpinoTokens.critical,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (!mounted) return;
+    if (remove ?? false) {
+      widget.onRemove();
+    } else {
+      _startTimer();
+    }
   }
 
   @override
@@ -351,6 +403,19 @@ class _ConfirmationBannerState extends State<_ConfirmationBanner> {
                     fontWeight: FontWeight.w700,
                     fontSize: 14.5,
                     fontFeatures: moneyFeatures,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                key: const Key('banner-remove'),
+                onTap: _confirmRemove,
+                behavior: HitTestBehavior.opaque,
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: UpinoIcon(
+                    'close',
+                    size: 18,
+                    color: UpinoTokens.textPrimary,
                   ),
                 ),
               ),

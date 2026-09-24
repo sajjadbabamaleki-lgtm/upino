@@ -1034,4 +1034,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'سُمع «$text» لكن دون مبلغ. حاول مجددًا أو اكتبه.';
   }
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get no => 'لا';
 }

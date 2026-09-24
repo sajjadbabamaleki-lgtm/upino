@@ -1053,4 +1053,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'Услышано «$text», но суммы нет. Попробуйте ещё раз или введите.';
   }
+
+  @override
+  String get yes => 'Да';
+
+  @override
+  String get no => 'Нет';
 }

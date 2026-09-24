@@ -307,5 +307,7 @@
   "voiceUnavailable": "此手机没有可用的语音识别，请手动输入金额。",
   "voiceNoPermission": "Upino 未获麦克风权限，可在手机设置中开启。",
   "voiceNetwork": "此手机的语音识别需要联网，但无法连接。",
-  "voiceNoAmount": "听到“{text}”，但没有金额。请重试或手动输入。"
+  "voiceNoAmount": "听到“{text}”，但没有金额。请重试或手动输入。",
+  "yes": "是",
+  "no": "否"
 }

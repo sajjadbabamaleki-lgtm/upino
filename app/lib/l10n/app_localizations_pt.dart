@@ -1058,4 +1058,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'Ouvido “$text”, mas sem valor. Tente de novo ou escreva-o.';
   }
+
+  @override
+  String get yes => 'Sim';
+
+  @override
+  String get no => 'Não';
 }

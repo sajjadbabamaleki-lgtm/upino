@@ -1050,4 +1050,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String voiceNoAmount(String text) {
     return '“$text” सुना, पर उसमें रकम नहीं थी। फिर कोशिश करें या टाइप करें।';
   }
+
+  @override
+  String get yes => 'हाँ';
+
+  @override
+  String get no => 'नहीं';
 }

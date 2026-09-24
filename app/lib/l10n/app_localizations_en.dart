@@ -1053,4 +1053,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'Heard “$text”, but no amount in it. Try again, or type it.';
   }
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
 }

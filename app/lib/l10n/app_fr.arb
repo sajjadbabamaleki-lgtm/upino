@@ -307,5 +307,7 @@
   "voiceUnavailable": "Ce téléphone n’a pas de reconnaissance vocale utilisable. Tapez le montant.",
   "voiceNoPermission": "Upino n’a pas accès au micro. Vous pouvez l’autoriser dans les réglages.",
   "voiceNetwork": "La reconnaissance vocale de ce téléphone a besoin d’internet et n’a pas pu s’y connecter.",
-  "voiceNoAmount": "Entendu « {text} », mais sans montant. Réessayez ou tapez-le."
+  "voiceNoAmount": "Entendu « {text} », mais sans montant. Réessayez ou tapez-le.",
+  "yes": "Oui",
+  "no": "Non"
 }

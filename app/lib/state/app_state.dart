@@ -213,6 +213,10 @@ class AppState extends ChangeNotifier {
   /// badge without the accent ever becoming a persistent state (§32.7).
   Money? lastRecordedExpense;
 
+  /// The event behind [lastRecordedExpense], so the confirmation can offer to
+  /// take that exact spend back.
+  String? lastRecordedEventId;
+
   bool get isOnboarded => _onboarded;
   ThemeChoice get themeChoice => _themeChoice;
 
@@ -876,6 +880,7 @@ class AppState extends ChangeNotifier {
     if (category != null) _categories[id] = category;
     _recordedAt[id] = _now;
     lastRecordedExpense = amount;
+    lastRecordedEventId = id;
     _persist();
     notifyListeners();
   }
@@ -954,7 +959,22 @@ class AppState extends ChangeNotifier {
 
   void clearExpenseConfirmation() {
     lastRecordedExpense = null;
+    lastRecordedEventId = null;
     notifyListeners();
+  }
+
+  /// Take back the spend just recorded, from its confirmation. The same
+  /// correction Activity makes: the entry stays on the record, marked
+  /// removed, and stops counting (§15, §21).
+  void undoLastExpense() {
+    final id = lastRecordedEventId;
+    lastRecordedExpense = null;
+    lastRecordedEventId = null;
+    if (id == null) {
+      notifyListeners();
+      return;
+    }
+    removeEvent(id);
   }
 
   /// The commitments a person can edit, in the order the waterfall funds

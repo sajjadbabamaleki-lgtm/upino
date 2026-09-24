@@ -1000,4 +1000,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String voiceNoAmount(String text) {
     return '听到“$text”，但没有金额。请重试或手动输入。';
   }
+
+  @override
+  String get yes => '是';
+
+  @override
+  String get no => '否';
 }

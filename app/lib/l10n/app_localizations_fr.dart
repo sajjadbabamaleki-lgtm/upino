@@ -1069,4 +1069,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String voiceNoAmount(String text) {
     return 'Entendu « $text », mais sans montant. Réessayez ou tapez-le.';
   }
+
+  @override
+  String get yes => 'Oui';
+
+  @override
+  String get no => 'Non';
 }

@@ -307,5 +307,7 @@
   "voiceUnavailable": "Bu telefonda uygulamanın kullanabileceği konuşma tanıma yok. Tutarı yazın.",
   "voiceNoPermission": "Upino'nun mikrofonu kullanmasına izin verilmedi. Ayarlardan izin verebilirsiniz.",
   "voiceNetwork": "Bu telefondaki konuşma tanıma internete ihtiyaç duyuyor ve bağlanamadı.",
-  "voiceNoAmount": "“{text}” duyuldu ama tutar yok. Tekrar deneyin ya da yazın."
+  "voiceNoAmount": "“{text}” duyuldu ama tutar yok. Tekrar deneyin ya da yazın.",
+  "yes": "Evet",
+  "no": "Hayır"
 }

@@ -548,5 +548,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "yes": "Yes",
+  "no": "No"
 }

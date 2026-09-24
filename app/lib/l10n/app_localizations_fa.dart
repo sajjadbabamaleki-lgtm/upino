@@ -1045,4 +1045,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String voiceNoAmount(String text) {
     return '«$text» شنیده شد، ولی مبلغی در آن نبود. دوباره امتحان کنید یا تایپ کنید.';
   }
+
+  @override
+  String get yes => 'بله';
+
+  @override
+  String get no => 'خیر';
 }
