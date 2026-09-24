@@ -1929,4 +1929,43 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get quickPayDue => 'Maaş zamanı geldi. Gelip gelmediğini söyleyin.';
+
+  @override
+  String get chartAvg => 'Ort.';
+
+  @override
+  String get flowsTitle => 'Giren ve çıkan para';
+
+  @override
+  String get flowsBlurb =>
+      'Haftadan haftaya: maaş ve iadeler çizginin üstünde, harcama ve taksitler altında.';
+
+  @override
+  String flowsWeek(String date) {
+    return '$date haftası';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'Giren $moneyIn · Çıkan $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'Zaman içinde bakiyeniz';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count ay';
+  }
+
+  @override
+  String get rangeYear => '1 yıl';
+
+  @override
+  String get weekSpentTitle => 'Son 7 gün';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount harcandı';
+  }
 }

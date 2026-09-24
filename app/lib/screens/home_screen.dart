@@ -26,6 +26,7 @@ import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/best_move_card.dart';
 import '../widgets/bills_sheet.dart';
+import '../widgets/charts.dart';
 import '../widgets/month_review.dart';
 import '../widgets/quick_actions.dart';
 import '../state/insights.dart';
@@ -809,6 +810,25 @@ class _ComingUpCard extends StatelessWidget {
           Text(
             l.homeComingUpTotal(state.billsDueWithin().display()),
             style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 14),
+          // Each payment as a stick at its date, as tall as it costs: when
+          // the month's bills bunch up is visible before it happens.
+          Lollipops(
+            key: const Key('home-coming-up-chart'),
+            items: [
+              for (final u in upcoming)
+                Lollipop(
+                  at: (u.due.differenceInDays(state.today) / 30)
+                      .clamp(0.0, 1.0),
+                  value: u.bill.amount.minor.toDouble(),
+                  color: u.due < state.today
+                      ? critical
+                      : (isDark(context)
+                          ? UpinoTokens.darkActionPrimary
+                          : UpinoTokens.actionPrimary),
+                ),
+            ],
           ),
           const SizedBox(height: 14),
           for (var i = 0; i < upcoming.length && i < 4; i++) ...[

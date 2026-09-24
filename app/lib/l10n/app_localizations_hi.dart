@@ -1927,4 +1927,43 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get quickPayDue => 'वेतन का समय है। बताइए आया या नहीं।';
+
+  @override
+  String get chartAvg => 'औसत';
+
+  @override
+  String get flowsTitle => 'आया और गया पैसा';
+
+  @override
+  String get flowsBlurb =>
+      'हफ़्ते-दर-हफ़्ते: वेतन और रिफ़ंड रेखा के ऊपर, खर्च और किस्तें नीचे।';
+
+  @override
+  String flowsWeek(String date) {
+    return '$date वाला हफ़्ता';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'आया $moneyIn · गया $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'समय के साथ आपका शेष';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count मा';
+  }
+
+  @override
+  String get rangeYear => '1 वर्ष';
+
+  @override
+  String get weekSpentTitle => 'पिछले 7 दिन';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount खर्च';
+  }
 }

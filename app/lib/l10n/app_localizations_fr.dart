@@ -2021,4 +2021,43 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quickPayDue => 'Votre paie est due. Dites si elle est arrivée.';
+
+  @override
+  String get chartAvg => 'Moy.';
+
+  @override
+  String get flowsTitle => 'Entrées et sorties';
+
+  @override
+  String get flowsBlurb =>
+      'Semaine par semaine : paie et remboursements au-dessus, dépenses et échéances en dessous.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'Semaine du $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'Entrées $moneyIn · Sorties $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'Votre solde dans le temps';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count m';
+  }
+
+  @override
+  String get rangeYear => '1 an';
+
+  @override
+  String get weekSpentTitle => '7 derniers jours';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount dépensés';
+  }
 }

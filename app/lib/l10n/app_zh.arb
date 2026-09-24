@@ -540,5 +540,15 @@
   "quickPay": "工资到账",
   "quickBills": "账单",
   "quickMonth": "本月",
-  "quickPayDue": "工资到期了，告诉我们是否已到账。"
+  "quickPayDue": "工资到期了，告诉我们是否已到账。",
+  "chartAvg": "平均",
+  "flowsTitle": "资金进出",
+  "flowsBlurb": "按周显示：工资和退款在线上，支出和还款在线下。",
+  "flowsWeek": "{date} 这一周",
+  "flowsInOut": "进 {moneyIn} · 出 {moneyOut}",
+  "balanceHistoryTitle": "余额变化",
+  "rangeMonths": "{count}个月",
+  "rangeYear": "1年",
+  "weekSpentTitle": "最近 7 天",
+  "weekSpentTotal": "支出 {amount}"
 }

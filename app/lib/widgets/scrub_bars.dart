@@ -1,7 +1,7 @@
-/// A column chart you can run a finger along (Strategy §8): one rounded
-/// column per day or week, the one under the finger solid, the rest pale.
-/// Columns read at a glance where lines turned into noise, and a day is a
-/// thing you can point at.
+/// A column chart you can run a finger along (Strategy §8): grey columns,
+/// the one under the finger in colour with its figure in a pill above it.
+/// Columns read at a glance, and a day, a week or a month is a thing you
+/// can point at.
 ///
 /// It draws what it is given and nothing else: the caller hands over values
 /// the engine computed and reads the selected index back.
@@ -22,13 +22,18 @@ class ScrubBars extends StatelessWidget {
     required this.selected,
     required this.onSelect,
     required this.color,
+    this.restColor,
     this.ghost,
     this.ghostColor,
     this.alert = const {},
     this.alertColor,
     this.marks = const [],
+    this.labels,
+    this.pill,
     this.guide,
+    this.guideLabel,
     this.height = 150,
+    this.maxBarWidth = 28,
     this.semanticLabel,
     super.key,
   });
@@ -42,20 +47,35 @@ class ScrubBars extends StatelessWidget {
   final Color? ghostColor;
 
   final int selected;
-  final ValueChanged<int> onSelect;
+  final ValueChanged<int>? onSelect;
+
+  /// The chosen column.
   final Color color;
 
-  /// Positions drawn in [alertColor]: a day something that must be paid is
-  /// short.
+  /// Every other column; a neutral grey unless given.
+  final Color? restColor;
+
+  /// Positions drawn in [alertColor] when chosen, and tinted with it when
+  /// not: a day something that must be paid is short.
   final Set<int> alert;
   final Color? alertColor;
 
   /// Dots under the columns: pay days, a goal's dates.
   final List<BarMark> marks;
 
-  /// A horizontal line, such as a target.
+  /// A word under each column, such as a weekday or a month; the chosen one
+  /// sits in a pill.
+  final List<String>? labels;
+
+  /// The figure shown in a pill above the chosen column.
+  final String? pill;
+
+  /// A dotted horizontal line, such as a target or an average, with an
+  /// optional tag at its start.
   final double? guide;
+  final String? guideLabel;
   final double height;
+  final double maxBarWidth;
   final String? semanticLabel;
 
   int get count => values.length;
@@ -63,6 +83,7 @@ class ScrubBars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final ink = dark ? const Color(0xFFF2F2F4) : const Color(0xFF17171A);
     // Time runs left to right in every language, as on any financial chart.
     return Semantics(
       label: semanticLabel,
@@ -71,15 +92,15 @@ class ScrubBars extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, box) {
             void pick(Offset p) {
-              if (count == 0) return;
-              final i = (p.dx / box.maxWidth * count)
-                  .floor()
-                  .clamp(0, count - 1);
+              final select = onSelect;
+              if (count == 0 || select == null) return;
+              final i =
+                  (p.dx / box.maxWidth * count).floor().clamp(0, count - 1);
               if (i == selected) return;
               if (marks.any((m) => m.index == i)) {
                 HapticFeedback.selectionClick();
               }
-              onSelect(i);
+              select(i);
             }
 
             return GestureDetector(
@@ -94,12 +115,22 @@ class ScrubBars extends StatelessWidget {
                   ghost: ghost,
                   selected: selected,
                   color: color,
+                  rest: restColor ?? ink.withValues(alpha: dark ? 0.16 : 0.09),
                   ghostColor: ghostColor ?? color.withValues(alpha: 0.14),
                   alert: alert,
                   alertColor: alertColor ?? const Color(0xFFCC2E26),
                   marks: marks,
+                  labels: labels,
+                  pill: pill,
                   guide: guide,
-                  ink: dark ? const Color(0xFFF2F2F4) : const Color(0xFF17171A),
+                  guideLabel: guideLabel,
+                  maxBarWidth: maxBarWidth,
+                  ink: ink,
+                  labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 11,
+                            color: ink.withValues(alpha: 0.55),
+                          ) ??
+                      const TextStyle(fontSize: 11),
                 ),
               ),
             );
@@ -116,69 +147,76 @@ class _BarsPainter extends CustomPainter {
     required this.ghost,
     required this.selected,
     required this.color,
+    required this.rest,
     required this.ghostColor,
     required this.alert,
     required this.alertColor,
     required this.marks,
+    required this.labels,
+    required this.pill,
     required this.guide,
+    required this.guideLabel,
+    required this.maxBarWidth,
     required this.ink,
+    required this.labelStyle,
   });
 
   final List<double?> values;
   final List<double?>? ghost;
   final int selected;
   final Color color;
+  final Color rest;
   final Color ghostColor;
   final Set<int> alert;
   final Color alertColor;
   final List<BarMark> marks;
+  final List<String>? labels;
+  final String? pill;
   final double? guide;
+  final String? guideLabel;
+  final double maxBarWidth;
   final Color ink;
+  final TextStyle labelStyle;
 
-  static const _markBand = 14.0;
   static const _stub = 3.0;
+
+  TextPainter _text(String s, TextStyle style) => TextPainter(
+      text: TextSpan(text: s, style: style), textDirection: TextDirection.ltr,)
+    ..layout();
 
   @override
   void paint(Canvas canvas, Size size) {
     final n = values.length;
     if (n == 0) return;
-    final floor = size.height - _markBand;
+    final bottomBand = labels != null ? 22.0 : (marks.isNotEmpty ? 14.0 : 2.0);
+    final topBand = pill != null ? 30.0 : 4.0;
+    final floor = size.height - bottomBand;
+    final usable = floor - topBand;
 
     var hi = guide ?? 0.0;
     for (final v in [...values, ...?ghost]) {
       if (v != null && v > hi) hi = v;
     }
     if (hi <= 0) hi = 1;
-    hi *= 1.08;
+    hi *= 1.04;
 
     final slot = size.width / n;
-    // Thin columns for many days, fuller ones for a few weeks.
-    final gapRatio = n > 40 ? 0.34 : 0.28;
-    final barW = (slot * (1 - gapRatio)).clamp(2.0, 28.0);
-    final radius = Radius.circular(barW / 2);
+    final gapRatio = n > 40 ? 0.34 : 0.3;
+    final barW = (slot * (1 - gapRatio)).clamp(2.0, maxBarWidth);
+    final radius = Radius.circular(barW / 2 > 8 ? 8 : barW / 2);
 
-    double h(double v) => (v / hi * floor).clamp(0.0, floor);
+    double h(double v) => (v / hi * usable).clamp(0.0, usable);
+    double cx(int i) => slot * i + slot / 2;
 
     RRect column(int i, double height) {
-      final cx = slot * i + slot / 2;
       final top = floor - (height < _stub ? _stub : height);
       return RRect.fromRectAndCorners(
-        Rect.fromLTRB(cx - barW / 2, top, cx + barW / 2, floor),
+        Rect.fromLTRB(cx(i) - barW / 2, top, cx(i) + barW / 2, floor),
         topLeft: radius,
         topRight: radius,
-        bottomLeft: const Radius.circular(1.5),
-        bottomRight: const Radius.circular(1.5),
+        bottomLeft: radius,
+        bottomRight: radius,
       );
-    }
-
-    if (guide != null) {
-      final y = floor - h(guide!);
-      final paint = Paint()
-        ..color = ink.withValues(alpha: 0.3)
-        ..strokeWidth = 1.2;
-      for (var x = 0.0; x < size.width; x += 9) {
-        canvas.drawLine(Offset(x, y), Offset(x + 4, y), paint);
-      }
     }
 
     // What it would be otherwise, pale, behind.
@@ -194,45 +232,112 @@ class _BarsPainter extends CustomPainter {
     for (var i = 0; i < n; i++) {
       final v = values[i];
       final isAlert = alert.contains(i);
-      final base = isAlert ? alertColor : color;
       final chosen = i == selected;
-      canvas.drawRRect(
-        column(i, v == null ? 0 : h(v)),
-        Paint()
-          ..color = chosen
-              ? base
-              : base.withValues(alpha: g != null ? 0.55 : 0.32),
-      );
+      final fill = chosen
+          ? (isAlert ? alertColor : color)
+          : (isAlert ? alertColor.withValues(alpha: 0.35) : rest);
+      canvas.drawRRect(column(i, v == null ? 0 : h(v)), Paint()..color = fill);
     }
 
-    // A soft halo over the chosen column, so it reads without a cursor.
+    // The dotted line, drawn over the columns so it reads across them.
+    if (guide != null) {
+      final y = floor - h(guide!);
+      final paint = Paint()
+        ..color = ink.withValues(alpha: 0.45)
+        ..strokeWidth = 1.2
+        ..strokeCap = StrokeCap.round;
+      var start = 0.0;
+      final tag = guideLabel;
+      if (tag != null) {
+        final t = _text(
+          tag,
+          labelStyle.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+        );
+        final r = RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, y - t.height / 2 - 3, t.width + 12, t.height + 6),
+          const Radius.circular(6),
+        );
+        canvas.drawRRect(r, Paint()..color = ink.withValues(alpha: 0.85));
+        t.paint(canvas, Offset(6, y - t.height / 2));
+        start = r.right + 4;
+      }
+      for (var x = start; x < size.width; x += 5) {
+        canvas.drawCircle(Offset(x, y), 0.9, paint);
+      }
+    }
+
+    // The chosen column's figure, in a pill above it.
     final sv = values[selected];
-    if (sv != null) {
-      final r = column(selected, h(sv)).inflate(3);
-      canvas.drawRRect(
-        r,
-        Paint()
-          ..color = color.withValues(alpha: 0.16)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3,
+    final label = pill;
+    if (label != null && sv != null) {
+      final t = _text(
+        label,
+        labelStyle.copyWith(
+          color: Colors.white,
+          fontSize: 11.5,
+          fontWeight: FontWeight.w700,
+        ),
       );
+      final w = t.width + 14;
+      final hgt = t.height + 8;
+      final top = floor - (h(sv) < _stub ? _stub : h(sv)) - hgt - 6;
+      var left = cx(selected) - w / 2;
+      if (left < 0) left = 0;
+      if (left + w > size.width) left = size.width - w;
+      final c = alert.contains(selected) ? alertColor : color;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(left, top, w, hgt),
+          const Radius.circular(8),
+        ),
+        Paint()..color = c,
+      );
+      // A small notch pointing at the column.
+      final nx = cx(selected).clamp(left + 8, left + w - 8);
+      final notch = Path()
+        ..moveTo(nx - 4, top + hgt)
+        ..lineTo(nx + 4, top + hgt)
+        ..lineTo(nx, top + hgt + 4)
+        ..close();
+      canvas.drawPath(notch, Paint()..color = c);
+      t.paint(canvas, Offset(left + 7, top + 4));
     }
 
-    // The floor, and the marks under it.
-    canvas.drawLine(
-      Offset(0, floor + 0.5),
-      Offset(size.width, floor + 0.5),
-      Paint()
-        ..color = ink.withValues(alpha: 0.08)
-        ..strokeWidth = 1,
-    );
+    // Marks and labels under the floor.
     for (final m in marks) {
       if (m.index < 0 || m.index >= n) continue;
       canvas.drawCircle(
-        Offset(slot * m.index + slot / 2, size.height - _markBand / 2 + 1),
-        2.8,
+        Offset(cx(m.index), floor + 8),
+        2.6,
         Paint()..color = m.color,
       );
+    }
+    final ls = labels;
+    if (ls != null) {
+      // With many columns, only every few is labelled.
+      final every = (n / 8).ceil().clamp(1, n);
+      for (var i = 0; i < n && i < ls.length; i++) {
+        final chosen = i == selected;
+        if (!chosen && i % every != 0 && i != n - 1) continue;
+        final t = _text(
+          ls[i],
+          chosen
+              ? labelStyle.copyWith(color: color, fontWeight: FontWeight.w700)
+              : labelStyle,
+        );
+        final x = cx(i) - t.width / 2;
+        final y = floor + 6;
+        if (chosen) {
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromLTWH(x - 7, y - 2, t.width + 14, t.height + 4),
+              const Radius.circular(8),
+            ),
+            Paint()..color = color.withValues(alpha: 0.12),
+          );
+        }
+        t.paint(canvas, Offset(x, y));
+      }
     }
   }
 
@@ -242,5 +347,6 @@ class _BarsPainter extends CustomPainter {
       old.values != values ||
       old.ghost != ghost ||
       old.color != color ||
+      old.pill != pill ||
       old.ink != ink;
 }

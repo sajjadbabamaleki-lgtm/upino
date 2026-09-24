@@ -1903,4 +1903,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quickPayDue => 'حان موعد راتبك. أخبرنا إن وصل.';
+
+  @override
+  String get chartAvg => 'المتوسط';
+
+  @override
+  String get flowsTitle => 'المال الداخل والخارج';
+
+  @override
+  String get flowsBlurb =>
+      'أسبوعًا بأسبوع: الراتب والمستردات فوق الخط، والإنفاق والسداد تحته.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'أسبوع $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'داخل $moneyIn · خارج $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'رصيدك عبر الوقت';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count أشهر';
+  }
+
+  @override
+  String get rangeYear => 'سنة';
+
+  @override
+  String get weekSpentTitle => 'آخر 7 أيام';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return 'أُنفق $amount';
+  }
 }

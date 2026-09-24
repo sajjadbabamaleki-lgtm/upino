@@ -7,12 +7,14 @@ library;
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
+import '../design/tokens.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/insights.dart';
 import 'amount_sheet.dart' show categoryLabel;
 import 'form_parts.dart' show EditorSheetFrame;
+import 'scrub_bars.dart';
 
 /// The last thirty days as sentences, in the order they are best read.
 List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
@@ -126,6 +128,7 @@ class MonthReviewCard extends StatelessWidget {
           ],
           Text(l.monthWindow, style: theme.textTheme.bodySmall),
           const SizedBox(height: 12),
+          _MonthBars(state: state),
           lines(close.past),
           if (close.ahead.isNotEmpty) ...[
             Divider(height: 28, color: borderColor(context)),
@@ -146,5 +149,56 @@ class MonthReviewCard extends StatelessWidget {
         ],
       );
     return bare ? body : UpinoCard(child: body);
+  }
+}
+
+/// What went out each thirty days, the current stretch in colour and the
+/// ones before in grey, with their average as a dotted line: the month's
+/// spending against its own history, at a glance.
+class _MonthBars extends StatefulWidget {
+  const _MonthBars({required this.state});
+
+  final AppState state;
+
+  @override
+  State<_MonthBars> createState() => _MonthBarsState();
+}
+
+class _MonthBarsState extends State<_MonthBars> {
+  int? _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final months = widget.state.monthlySpending();
+    // One stretch has nothing to be set against.
+    if (months.length < 2) return const SizedBox.shrink();
+    final earlier = months.sublist(0, months.length - 1);
+    final average = earlier.fold<int>(0, (a, m) => a + m.minor) /
+        earlier.length;
+    final i = (_selected ?? months.length - 1).clamp(0, months.length - 1);
+    final today = widget.state.today;
+    final primary = isDark(context)
+        ? UpinoTokens.darkActionPrimary
+        : UpinoTokens.actionPrimary;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: ScrubBars(
+        key: const Key('month-bars'),
+        values: [for (final m in months) m.minor.toDouble()],
+        selected: i,
+        onSelect: (n) => setState(() => _selected = n),
+        color: primary,
+        pill: months[i].display(),
+        guide: average,
+        guideLabel: l.chartAvg,
+        labels: [
+          for (var k = months.length - 1; k >= 0; k--)
+            formatMonthShort(context, today.addDays(-k * 30)),
+        ],
+        maxBarWidth: 34,
+        height: 160,
+      ),
+    );
   }
 }

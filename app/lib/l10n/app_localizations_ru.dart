@@ -1934,4 +1934,43 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get quickPayDue => 'Пора зарплаты. Отметьте, пришла ли она.';
+
+  @override
+  String get chartAvg => 'Сред.';
+
+  @override
+  String get flowsTitle => 'Приход и расход';
+
+  @override
+  String get flowsBlurb =>
+      'По неделям: зарплата и возвраты над линией, траты и платежи по долгам под ней.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'Неделя с $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'Приход $moneyIn · Расход $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'Баланс во времени';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count мес';
+  }
+
+  @override
+  String get rangeYear => '1 год';
+
+  @override
+  String get weekSpentTitle => 'Последние 7 дней';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return 'Потрачено $amount';
+  }
 }

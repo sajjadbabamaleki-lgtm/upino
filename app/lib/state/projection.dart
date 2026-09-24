@@ -236,6 +236,34 @@ extension TimelineOf on AppState {
     return Timeline(points: points, todayIndex: todayIndex, marks: marks);
   }
 
+  /// The counted balance as the record stood at the end of each day, from
+  /// up to [days] ago (never before the plan began) to today, every [step]
+  /// days and always ending today. The record, not a projection.
+  List<({LocalDate day, Money balance})> balanceHistory({
+    required int days,
+    int step = 1,
+  }) {
+    final started = startedAt;
+    var back = days;
+    if (started == null) {
+      back = 0;
+    } else {
+      final inUse = today.differenceInDays(LocalDate.at(started, utcOffset));
+      if (inUse < back) back = inUse < 0 ? 0 : inUse;
+    }
+    final out = <({LocalDate day, Money balance})>[];
+    for (var i = back; i > 0; i -= step) {
+      final day = today.addDays(-i);
+      out.add((
+        day: day,
+        balance: whatIf(at: _noon(day), recordedBy: _endOf(day))
+            .trustedAllocatableLiquidity,
+      ),);
+    }
+    out.add((day: today, balance: snapshot.trustedAllocatableLiquidity));
+    return out;
+  }
+
   TimelinePoint _point(LocalDate day, PlanSnapshot s, {bool projected = true}) =>
       TimelinePoint(
         day: day,

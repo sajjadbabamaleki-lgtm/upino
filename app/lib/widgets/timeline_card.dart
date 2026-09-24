@@ -189,13 +189,17 @@ class _TimelineCardState extends State<TimelineCard> {
             onSelect: (n) => setState(() => _selected = n),
             semanticLabel: l.timelineSemantics,
             color: compare == null ? primary : critical,
+            // The chosen day's room, in a pill over its column.
+            pill: shown.free?.display(),
+            height: 170,
             // One column a day: the room to spend, or with a purchase the
             // room after it, with the plan without it pale behind.
             values: [for (final p in (compare ?? base).points) v(p.free)],
             ghost: compare == null
                 ? null
                 : [for (final p in base.points) v(p.free)],
-            ghostColor: primary.withValues(alpha: 0.18),
+            ghostColor: primary.withValues(alpha: 0.16),
+            restColor: compare == null ? null : critical.withValues(alpha: 0.3),
             alert: {
               for (var k = 0; k < (compare ?? base).points.length; k++)
                 if (((compare ?? base).points[k].gap?.minor ?? 0) > 0) k,
@@ -269,7 +273,7 @@ class _TimelineCardState extends State<TimelineCard> {
               _Legend(
                 color: compare == null
                     ? primary
-                    : primary.withValues(alpha: 0.25),
+                    : primary.withValues(alpha: 0.2),
                 label: l.timelineFree,
               ),
               if (compare != null)

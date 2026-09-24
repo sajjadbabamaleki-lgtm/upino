@@ -540,5 +540,15 @@
   "quickPay": "Pagamento",
   "quickBills": "Contas",
   "quickMonth": "Meu mês",
-  "quickPayDue": "Seu pagamento venceu. Diga se chegou."
+  "quickPayDue": "Seu pagamento venceu. Diga se chegou.",
+  "chartAvg": "Média",
+  "flowsTitle": "Dinheiro que entra e sai",
+  "flowsBlurb": "Semana a semana: pagamentos e reembolsos acima, gastos e parcelas abaixo.",
+  "flowsWeek": "Semana de {date}",
+  "flowsInOut": "Entrou {moneyIn} · Saiu {moneyOut}",
+  "balanceHistoryTitle": "Seu saldo ao longo do tempo",
+  "rangeMonths": "{count} m",
+  "rangeYear": "1 a",
+  "weekSpentTitle": "Últimos 7 dias",
+  "weekSpentTotal": "{amount} gastos"
 }

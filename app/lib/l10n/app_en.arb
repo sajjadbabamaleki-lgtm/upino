@@ -1381,5 +1381,46 @@
   "quickPay": "Pay came",
   "quickBills": "Bills",
   "quickMonth": "My month",
-  "quickPayDue": "Your pay is due. Say whether it came."
+  "quickPayDue": "Your pay is due. Say whether it came.",
+  "chartAvg": "Avg",
+  "flowsTitle": "Money in and out",
+  "flowsBlurb": "Week by week: pay and refunds above the line, spending and repayments below.",
+  "flowsWeek": "Week of {date}",
+  "@flowsWeek": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "flowsInOut": "In {moneyIn} · Out {moneyOut}",
+  "@flowsInOut": {
+    "placeholders": {
+      "moneyIn": {
+        "type": "String"
+      },
+      "moneyOut": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceHistoryTitle": "Your balance over time",
+  "rangeMonths": "{count}M",
+  "@rangeMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rangeYear": "1Y",
+  "weekSpentTitle": "Last 7 days",
+  "weekSpentTotal": "{amount} spent",
+  "@weekSpentTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

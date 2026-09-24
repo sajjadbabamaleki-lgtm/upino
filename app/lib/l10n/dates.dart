@@ -42,3 +42,15 @@ String formatDateShort(BuildContext context, LocalDate date) {
   return DateFormat.yMMMd(_tag(context))
       .format(DateTime(date.year, date.month, date.day));
 }
+
+/// `Oct`, or `مهر` in Persian: a month on a chart's axis.
+String formatMonthShort(BuildContext context, LocalDate date) {
+  if (_jalali(context)) return _toJalali(date).monthName;
+  return DateFormat.MMM(_tag(context))
+      .format(DateTime(date.year, date.month, date.day));
+}
+
+/// `M`, `T`… the narrowest weekday a chart's axis can hold.
+String formatWeekdayNarrow(BuildContext context, LocalDate date) =>
+    DateFormat.EEEEE(_tag(context))
+        .format(DateTime(date.year, date.month, date.day));

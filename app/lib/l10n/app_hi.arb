@@ -540,5 +540,15 @@
   "quickPay": "वेतन आया",
   "quickBills": "बिल",
   "quickMonth": "मेरा महीना",
-  "quickPayDue": "वेतन का समय है। बताइए आया या नहीं।"
+  "quickPayDue": "वेतन का समय है। बताइए आया या नहीं।",
+  "chartAvg": "औसत",
+  "flowsTitle": "आया और गया पैसा",
+  "flowsBlurb": "हफ़्ते-दर-हफ़्ते: वेतन और रिफ़ंड रेखा के ऊपर, खर्च और किस्तें नीचे।",
+  "flowsWeek": "{date} वाला हफ़्ता",
+  "flowsInOut": "आया {moneyIn} · गया {moneyOut}",
+  "balanceHistoryTitle": "समय के साथ आपका शेष",
+  "rangeMonths": "{count} मा",
+  "rangeYear": "1 वर्ष",
+  "weekSpentTitle": "पिछले 7 दिन",
+  "weekSpentTotal": "{amount} खर्च"
 }

@@ -19,6 +19,7 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/goal_editor_sheet.dart';
+import '../widgets/charts.dart';
 import '../widgets/goal_projection_view.dart';
 import '../state/projection.dart';
 
@@ -200,41 +201,66 @@ class _GoalCardState extends State<_GoalCard> {
             _GoalCard._status(AppLocalizations.of(context), goal, cycles),
             style: theme.textTheme.bodySmall,
           ),
-          // Where it is heading at the pace the plan can actually hold for
-          // it, which is not always the pace it asks for (§10).
+          const SizedBox(height: 14),
+          // How far along, as a half ring of segments with the amount in the
+          // middle, and where it is heading in a pill under it (§10): at the
+          // pace the plan can actually hold, not the pace it asks for.
+          Center(
+            child: SegmentGauge(
+              key: Key('goal-gauge-${goal.id}'),
+              value: goal.progress,
+              size: 230,
+              color: goal.kind == GoalKind.paused
+                  ? (dark
+                      ? UpinoTokens.darkTextTertiary
+                      : UpinoTokens.textTertiary)
+                  : (dark
+                      ? UpinoTokens.darkActionPrimary
+                      : UpinoTokens.actionPrimary),
+              center: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    goal.saved.display(),
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontFeatures: moneyFeatures,
+                    ),
+                  ),
+                  Text(
+                    l.goalsOf(goal.target.display()),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+          ),
           if (goal.kind != GoalKind.paused && !goal.isComplete) ...[
-            const SizedBox(height: 4),
-            Text(
-              goalOutlook(context, projection),
-              key: Key('goal-outlook-${goal.id}'),
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: projection.onTrack
-                    ? null
-                    : (dark ? UpinoTokens.darkCritical : UpinoTokens.critical),
+            const SizedBox(height: 12),
+            Center(
+              child: Container(
+                key: Key('goal-outlook-${goal.id}'),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+                  border: Border.all(color: borderColor(context)),
+                ),
+                child: Text(
+                  goalOutlook(context, projection),
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: projection.onTrack
+                        ? null
+                        : (dark
+                            ? UpinoTokens.darkCritical
+                            : UpinoTokens.critical),
+                  ),
+                ),
               ),
             ),
           ],
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                goal.saved.display(),
-                style: theme.textTheme.headlineSmall,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                AppLocalizations.of(context).goalsOf(goal.target.display()),
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          _ProgressBar(
-            value: goal.progress,
-            muted: goal.kind == GoalKind.paused,
-          ),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -311,30 +337,6 @@ class _GoalCardState extends State<_GoalCard> {
     );
   }
 
-}
-
-class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.value, required this.muted});
-
-  final double value;
-  final bool muted;
-
-  @override
-  Widget build(BuildContext context) {
-    final dark = isDark(context);
-    final fill = muted
-        ? (dark ? UpinoTokens.darkTextTertiary : UpinoTokens.textTertiary)
-        : (dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-      child: LinearProgressIndicator(
-        value: value,
-        minHeight: 9,
-        backgroundColor: sunkenColor(context),
-        valueColor: AlwaysStoppedAnimation<Color>(fill),
-      ),
-    );
-  }
 }
 
 class _Fact extends StatelessWidget {

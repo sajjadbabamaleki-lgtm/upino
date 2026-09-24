@@ -22,6 +22,7 @@ import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/account_editor_sheet.dart';
+import '../widgets/balance_history_card.dart';
 import '../widgets/bill_editor_sheet.dart';
 import '../widgets/bills_sheet.dart';
 import '../widgets/choice_sheet.dart';
@@ -230,6 +231,11 @@ class PlanScreen extends StatelessWidget {
           ),
         ),
         SectionHeading(l.planMoneyAndIncome),
+        // Once there is a history to draw.
+        if (state.daysInUse >= 2) ...[
+          BalanceHistoryCard(state: state),
+          const SizedBox(height: 10),
+        ],
         ActionRow(
           key: const Key('plan-balance'),
           title: state.accounts.isEmpty ? l.planMoneyYouHave : l.accountMain,

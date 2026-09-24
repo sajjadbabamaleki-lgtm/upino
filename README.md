@@ -211,15 +211,22 @@ is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
 
 **The timeline** (Home, and in the chat for a purchase) is a column chart
-you run a finger along: one column a day for the next 45 days, the room to
-spend on that day, with the one under the finger solid and its figures in
-the readout above. Every column is the engine run forward on stated
+you run a finger along: one grey column a day for the next 45 days, the room
+to spend on that day, the one under the finger in colour with its figure in
+a pill above it. Every column is the engine run forward on stated
 assumptions — the pay on its date and every period after, bills on theirs,
-what is set aside for living spent evenly, and nothing else — so a plan
-spent as intended keeps its columns level until the pay lifts them. For a
-purchase, the columns are the room after it, bought today or after the
-pay, with the plan without it pale behind; a day something that must be
-paid would be short is red. Charts run left to right in every language.
+what is set aside for living spent evenly, and nothing else. For a purchase
+the columns are the room after it, bought today or after the pay, with the
+plan without it pale behind; a day short on something that must be paid is
+red. Charts run left to right in every language.
+
+**Other charts**, each answering one question: each goal is a half ring of
+segments filled to what is saved, with where it is heading in a pill under
+it; the month close shows each thirty days' spending as a column against a
+dotted average; Activity shows the last seven days a column a day, and
+money in above a line and out below it, week by week; bills coming up are
+lollipops at their dates, as tall as they cost; and Plan shows the balance
+over one, three or six months or a year as a smooth line.
 
 **Goals** show when each is reached at the pace the plan can actually hold
 for it, which is less than it asks for when money is short. The path chart

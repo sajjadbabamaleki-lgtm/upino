@@ -540,5 +540,15 @@
   "quickPay": "Зарплата",
   "quickBills": "Счета",
   "quickMonth": "Мой месяц",
-  "quickPayDue": "Пора зарплаты. Отметьте, пришла ли она."
+  "quickPayDue": "Пора зарплаты. Отметьте, пришла ли она.",
+  "chartAvg": "Сред.",
+  "flowsTitle": "Приход и расход",
+  "flowsBlurb": "По неделям: зарплата и возвраты над линией, траты и платежи по долгам под ней.",
+  "flowsWeek": "Неделя с {date}",
+  "flowsInOut": "Приход {moneyIn} · Расход {moneyOut}",
+  "balanceHistoryTitle": "Баланс во времени",
+  "rangeMonths": "{count} мес",
+  "rangeYear": "1 год",
+  "weekSpentTitle": "Последние 7 дней",
+  "weekSpentTotal": "Потрачено {amount}"
 }

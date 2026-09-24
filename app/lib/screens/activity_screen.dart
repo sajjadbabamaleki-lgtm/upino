@@ -23,6 +23,7 @@ import '../state/app_state.dart';
 import '../domain/account.dart';
 import '../domain/goal.dart';
 import '../domain/recovery.dart';
+import '../widgets/activity_charts.dart';
 import '../widgets/choice_sheet.dart';
 import '../widgets/month_review.dart';
 import '../widgets/amount_sheet.dart'
@@ -126,6 +127,13 @@ class ActivityScreen extends StatelessWidget {
         // Once there is a month to look back on.
         if (review.ready) ...[
           MonthReviewCard(state: state),
+          const SizedBox(height: 10),
+        ],
+        // The week at a glance, and money in and out, once there is some.
+        if (entries.isNotEmpty) ...[
+          WeekSpendCard(state: state),
+          const SizedBox(height: 10),
+          FlowsCard(state: state),
           const SizedBox(height: 10),
         ],
         // Money on its way back is shown apart: it is not money yet.

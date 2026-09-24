@@ -1848,4 +1848,42 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get quickPayDue => '工资到期了，告诉我们是否已到账。';
+
+  @override
+  String get chartAvg => '平均';
+
+  @override
+  String get flowsTitle => '资金进出';
+
+  @override
+  String get flowsBlurb => '按周显示：工资和退款在线上，支出和还款在线下。';
+
+  @override
+  String flowsWeek(String date) {
+    return '$date 这一周';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return '进 $moneyIn · 出 $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => '余额变化';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count个月';
+  }
+
+  @override
+  String get rangeYear => '1年';
+
+  @override
+  String get weekSpentTitle => '最近 7 天';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '支出 $amount';
+  }
 }

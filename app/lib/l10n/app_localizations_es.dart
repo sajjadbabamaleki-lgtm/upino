@@ -2003,4 +2003,43 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get quickPayDue => 'Tu pago vence. Di si llegó.';
+
+  @override
+  String get chartAvg => 'Media';
+
+  @override
+  String get flowsTitle => 'Dinero que entra y sale';
+
+  @override
+  String get flowsBlurb =>
+      'Semana a semana: pagos y reembolsos arriba, gastos y cuotas abajo.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'Semana del $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'Entra $moneyIn · Sale $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'Tu saldo en el tiempo';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count m';
+  }
+
+  @override
+  String get rangeYear => '1 a';
+
+  @override
+  String get weekSpentTitle => 'Últimos 7 días';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount gastados';
+  }
 }

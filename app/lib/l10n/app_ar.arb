@@ -540,5 +540,15 @@
   "quickPay": "وصل الراتب",
   "quickBills": "الفواتير",
   "quickMonth": "شهري",
-  "quickPayDue": "حان موعد راتبك. أخبرنا إن وصل."
+  "quickPayDue": "حان موعد راتبك. أخبرنا إن وصل.",
+  "chartAvg": "المتوسط",
+  "flowsTitle": "المال الداخل والخارج",
+  "flowsBlurb": "أسبوعًا بأسبوع: الراتب والمستردات فوق الخط، والإنفاق والسداد تحته.",
+  "flowsWeek": "أسبوع {date}",
+  "flowsInOut": "داخل {moneyIn} · خارج {moneyOut}",
+  "balanceHistoryTitle": "رصيدك عبر الوقت",
+  "rangeMonths": "{count} أشهر",
+  "rangeYear": "سنة",
+  "weekSpentTitle": "آخر 7 أيام",
+  "weekSpentTotal": "أُنفق {amount}"
 }

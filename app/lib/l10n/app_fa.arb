@@ -540,5 +540,15 @@
   "quickPay": "حقوق رسید",
   "quickBills": "قبض‌ها",
   "quickMonth": "مرور ماه",
-  "quickPayDue": "موعد حقوق رسیده. بگویید رسید یا نه."
+  "quickPayDue": "موعد حقوق رسیده. بگویید رسید یا نه.",
+  "chartAvg": "میانگین",
+  "flowsTitle": "ورود و خروج پول",
+  "flowsBlurb": "هفته به هفته: حقوق و بازپرداخت بالای خط، خرج و قسط زیر خط.",
+  "flowsWeek": "هفتهٔ {date}",
+  "flowsInOut": "ورودی {moneyIn} · خروجی {moneyOut}",
+  "balanceHistoryTitle": "موجودی شما در طول زمان",
+  "rangeMonths": "{count} ماه",
+  "rangeYear": "۱ سال",
+  "weekSpentTitle": "۷ روز اخیر",
+  "weekSpentTotal": "{amount} خرج شد"
 }

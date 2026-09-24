@@ -1925,4 +1925,43 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get quickPayDue => 'موعد حقوق رسیده. بگویید رسید یا نه.';
+
+  @override
+  String get chartAvg => 'میانگین';
+
+  @override
+  String get flowsTitle => 'ورود و خروج پول';
+
+  @override
+  String get flowsBlurb =>
+      'هفته به هفته: حقوق و بازپرداخت بالای خط، خرج و قسط زیر خط.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'هفتهٔ $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'ورودی $moneyIn · خروجی $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'موجودی شما در طول زمان';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count ماه';
+  }
+
+  @override
+  String get rangeYear => '۱ سال';
+
+  @override
+  String get weekSpentTitle => '۷ روز اخیر';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount خرج شد';
+  }
 }

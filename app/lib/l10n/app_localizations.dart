@@ -3359,6 +3359,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your pay is due. Say whether it came.'**
   String get quickPayDue;
+
+  /// No description provided for @chartAvg.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg'**
+  String get chartAvg;
+
+  /// No description provided for @flowsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Money in and out'**
+  String get flowsTitle;
+
+  /// No description provided for @flowsBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Week by week: pay and refunds above the line, spending and repayments below.'**
+  String get flowsBlurb;
+
+  /// No description provided for @flowsWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week of {date}'**
+  String flowsWeek(String date);
+
+  /// No description provided for @flowsInOut.
+  ///
+  /// In en, this message translates to:
+  /// **'In {moneyIn} · Out {moneyOut}'**
+  String flowsInOut(String moneyIn, String moneyOut);
+
+  /// No description provided for @balanceHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your balance over time'**
+  String get balanceHistoryTitle;
+
+  /// No description provided for @rangeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}M'**
+  String rangeMonths(int count);
+
+  /// No description provided for @rangeYear.
+  ///
+  /// In en, this message translates to:
+  /// **'1Y'**
+  String get rangeYear;
+
+  /// No description provided for @weekSpentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get weekSpentTitle;
+
+  /// No description provided for @weekSpentTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} spent'**
+  String weekSpentTotal(String amount);
 }
 
 class _AppLocalizationsDelegate

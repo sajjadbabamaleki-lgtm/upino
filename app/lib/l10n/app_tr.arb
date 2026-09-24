@@ -540,5 +540,15 @@
   "quickPay": "Maaş geldi",
   "quickBills": "Faturalar",
   "quickMonth": "Ayım",
-  "quickPayDue": "Maaş zamanı geldi. Gelip gelmediğini söyleyin."
+  "quickPayDue": "Maaş zamanı geldi. Gelip gelmediğini söyleyin.",
+  "chartAvg": "Ort.",
+  "flowsTitle": "Giren ve çıkan para",
+  "flowsBlurb": "Haftadan haftaya: maaş ve iadeler çizginin üstünde, harcama ve taksitler altında.",
+  "flowsWeek": "{date} haftası",
+  "flowsInOut": "Giren {moneyIn} · Çıkan {moneyOut}",
+  "balanceHistoryTitle": "Zaman içinde bakiyeniz",
+  "rangeMonths": "{count} ay",
+  "rangeYear": "1 yıl",
+  "weekSpentTitle": "Son 7 gün",
+  "weekSpentTotal": "{amount} harcandı"
 }

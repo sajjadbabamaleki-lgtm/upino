@@ -1328,6 +1328,81 @@ class AppState extends ChangeNotifier {
     return out;
   }
 
+  /// Spending, net of refunds, per local day for the last [days] days,
+  /// oldest first; today is last.
+  List<Money> spendingByDay({int days = 7}) {
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final out = List<int>.filled(days, 0);
+    for (final e in _events) {
+      if (voided.contains(e.id)) continue;
+      final at = _recordedAt[e.id];
+      if (at == null) continue;
+      final ago = today.differenceInDays(LocalDate.at(at, _utcOffset));
+      if (ago < 0 || ago >= days) continue;
+      final minor = switch (e) {
+        RefundEvent(:final amount, linkedExpenseId: _?) => -amount.minor,
+        _ => _spent(e)?.minor ?? 0,
+      };
+      out[days - 1 - ago] += minor;
+    }
+    return [for (final m in out) Money(m < 0 ? 0 : m, _currency)];
+  }
+
+  /// Money in and out per week for the last [weeks] weeks, oldest first:
+  /// pay and refunds in, spending and repayments out. Moving money between
+  /// the person's own accounts is neither.
+  List<({Money moneyIn, Money moneyOut})> flowsByWeek({int weeks = 8}) {
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final ins = List<int>.filled(weeks, 0);
+    final outs = List<int>.filled(weeks, 0);
+    for (final e in _events) {
+      if (voided.contains(e.id)) continue;
+      final at = _recordedAt[e.id];
+      if (at == null) continue;
+      final ago = today.differenceInDays(LocalDate.at(at, _utcOffset)) ~/ 7;
+      if (ago < 0 || ago >= weeks) continue;
+      final i = weeks - 1 - ago;
+      switch (e) {
+        case IncomeConfirmedEvent(:final amount):
+          ins[i] += amount.minor;
+        case RefundEvent(:final amount):
+          ins[i] += amount.minor;
+        case ExpenseEvent(:final amount):
+          outs[i] += amount.minor;
+        case CardPurchaseEvent(:final amount):
+          outs[i] += amount.minor;
+        case DebtPaymentEvent(:final amount):
+          outs[i] += amount.minor;
+        default:
+          break;
+      }
+    }
+    return [
+      for (var i = 0; i < weeks; i++)
+        (moneyIn: Money(ins[i], _currency), moneyOut: Money(outs[i], _currency)),
+    ];
+  }
+
+  /// What went out in each thirty-day stretch, oldest first, the current
+  /// one last; only stretches the plan was in use for, up to [months].
+  List<Money> monthlySpending({int months = 6}) {
+    final used = (daysInUse ~/ 30) + 1;
+    final n = used < months ? used : months;
+    return [
+      for (var k = n - 1; k >= 0; k--)
+        Money.sum(
+          spendingByCategory(before: k * 30).map((r) => r.total),
+          _currency,
+        ),
+    ];
+  }
+
   /// How many spends each category had over the last [days].
   Map<SpendCategory, int> spendCountsByCategory({int days = 30}) {
     final since = _now.subtract(Duration(days: days));

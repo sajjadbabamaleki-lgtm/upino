@@ -540,5 +540,15 @@
   "quickPay": "Paie reçue",
   "quickBills": "Factures",
   "quickMonth": "Mon mois",
-  "quickPayDue": "Votre paie est due. Dites si elle est arrivée."
+  "quickPayDue": "Votre paie est due. Dites si elle est arrivée.",
+  "chartAvg": "Moy.",
+  "flowsTitle": "Entrées et sorties",
+  "flowsBlurb": "Semaine par semaine : paie et remboursements au-dessus, dépenses et échéances en dessous.",
+  "flowsWeek": "Semaine du {date}",
+  "flowsInOut": "Entrées {moneyIn} · Sorties {moneyOut}",
+  "balanceHistoryTitle": "Votre solde dans le temps",
+  "rangeMonths": "{count} m",
+  "rangeYear": "1 an",
+  "weekSpentTitle": "7 derniers jours",
+  "weekSpentTotal": "{amount} dépensés"
 }
