@@ -8,11 +8,17 @@ library;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show appFlavor;
 
 import '../design/parts.dart';
 import '../device/device_bridge.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+
+/// Whether this build may read the SMS inbox. Only the Play build declares
+/// READ_SMS (see android/app/build.gradle.kts); in the direct APK the switch
+/// would ask for a permission the app does not have.
+bool get smsInboxAvailable => appFlavor == 'play';
 
 class FasterEntrySection extends StatelessWidget {
   const FasterEntrySection({required this.state, super.key});
@@ -60,14 +66,16 @@ class FasterEntrySection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SectionHeading(l.fasterTitle),
-        _SwitchCard(
-          key: const Key('profile-sms'),
-          title: l.smsTitle,
-          detail: l.smsDetail,
-          value: state.smsEnabled,
-          onChanged: (on) => unawaited(_toggleSms(context, on)),
-        ),
-        const SizedBox(height: 10),
+        if (smsInboxAvailable) ...[
+          _SwitchCard(
+            key: const Key('profile-sms'),
+            title: l.smsTitle,
+            detail: l.smsDetail,
+            value: state.smsEnabled,
+            onChanged: (on) => unawaited(_toggleSms(context, on)),
+          ),
+          const SizedBox(height: 10),
+        ],
         _SwitchCard(
           key: const Key('profile-reminder'),
           title: l.reminderTitleSetting,

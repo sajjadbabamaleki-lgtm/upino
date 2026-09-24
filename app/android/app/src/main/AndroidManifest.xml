@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Each is asked for only when the person turns the matching feature on
          in Profile. Nothing here is requested at install or first launch. -->
-    <!-- Bank messages, read on the phone to suggest spends. Never sent. -->
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- READ_SMS lives in src/play/AndroidManifest.xml, not here: see the
+         note there. -->
     <!-- The evening reminder, and putting it back after a restart. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />

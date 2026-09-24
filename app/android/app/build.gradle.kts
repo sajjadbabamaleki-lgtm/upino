@@ -44,6 +44,24 @@ android {
         }
     }
 
+    // Two ways the app reaches a phone.
+    //
+    // direct — the APK people install from the release link. It does not
+    //   declare READ_SMS: Google Play Protect blocks any sideloaded app
+    //   that asks to read SMS ("App blocked to protect your device"),
+    //   because banking malware uses it to steal one-time codes.
+    // play   — for a Play Store release once Google has approved the SMS
+    //   permission declaration. Adds READ_SMS (src/play/AndroidManifest.xml)
+    //   and the app shows the "Read bank messages" switch.
+    //
+    // The inbox code is the same in both; without the permission it reads
+    // nothing and the switch is not offered.
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("direct") { dimension = "distribution" }
+        create("play") { dimension = "distribution" }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

@@ -163,7 +163,7 @@ table is untouched by all of them.
 | Encrypted backup | Profile | AES-256-GCM, PBKDF2 key; shared through the phone's share sheet |
 | Inflation | Goals | The person's own yearly rate; shows what a goal will cost on its date |
 | Other holdings | Plan | Dollars, gold, coins at the person's own price; never in Safe-to-Spend |
-| Bank messages | Profile, Home | Read on the phone, parsed into suggestions; nothing is recorded without a tap |
+| Bank messages | Profile, Home (`play` flavor only) | Read on the phone, parsed into suggestions; nothing is recorded without a tap |
 | Evening reminder | Profile | 21:00, skipped on days that already have a spend |
 | Home-screen widget | Android launcher | Safe-to-Spend and a button that opens Quick Expense |
 | Voice entry | Quick Expense | Persian and English amounts and categories; on-device first; fills the sheet, never saves |
@@ -214,24 +214,35 @@ The release exists because a workflow artifact is only reachable from the
 desktop web UI and arrives wrapped in a zip — useless on the device the app is
 meant to run on. The artifact is still uploaded for CI debugging.
 
-The APK is debug-signed, which is what makes it installable without a release
-key. A store build needs its own signing config.
+The APK is a release build signed with a debug key committed to the repo
+(`android/app/upino-debug.keystore`). A fixed key is what lets each new build
+install over the last one; a store build needs its own signing config.
 
 The app talks to no network: the plan lives in a file in the app's own
 storage. It asks for a permission only when the matching feature is switched
 on — reading SMS for bank messages, notifications for the evening reminder,
 the microphone on the first tap of the voice button — and never at install or
-first launch. `READ_SMS` is a restricted
-permission on Google Play, so a Play build would need a policy declaration or
-the feature removed; the APK installed from the release link is unaffected.
+first launch. `READ_SMS` is declared only
+in the `play` flavor (see below): sideloaded apps that request it are blocked
+by Play Protect, and on Play it needs Google's approval.
 
 Building locally instead, which needs no CI at all:
 
 ```
 cd app
 flutter pub get
-flutter run                  # on a connected device or emulator
-flutter build apk --debug    # build/app/outputs/flutter-apk/app-debug.apk
+flutter run --flavor direct                  # on a connected device or emulator
+flutter build apk --release --flavor direct  # build/app/outputs/flutter-apk/app-direct-release.apk
+```
+
+There are two Android flavors. `direct` is the APK installed from the link
+above and does not declare `READ_SMS`, because Google Play Protect blocks any
+sideloaded app that asks to read SMS. `play` adds that permission and the
+"Read bank messages" switch, for a Play Store release once Google approves the
+SMS permissions declaration. The inbox code is shared; only the permission
+and the switch differ.
+
+```
 ```
 
 ### Goals
