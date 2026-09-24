@@ -550,5 +550,9 @@
   "rangeMonths": "{count} ماه",
   "rangeYear": "۱ سال",
   "weekSpentTitle": "۷ روز اخیر",
-  "weekSpentTotal": "{amount} خرج شد"
+  "weekSpentTotal": "{amount} خرج شد",
+  "payGaugeTitle": "تا حقوق بعدی",
+  "payGaugeDaysLabel": "روز مانده",
+  "payGaugeAfter": "بعد از حقوق {date}: {amount} قابل خرج",
+  "payGaugeLasts": "{amount} باید تا آن روز کفاف دهد."
 }

@@ -1966,4 +1966,22 @@ class AppLocalizationsHi extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return '$amount खर्च';
   }
+
+  @override
+  String get payGaugeTitle => 'अगले वेतन तक';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return 'दिन बाकी';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return '$date के वेतन के बाद: $amount खाली';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount को तब तक चलना है।';
+  }
 }

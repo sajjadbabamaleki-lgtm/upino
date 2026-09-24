@@ -550,5 +550,9 @@
   "rangeMonths": "{count} m",
   "rangeYear": "1 a",
   "weekSpentTitle": "Últimos 7 días",
-  "weekSpentTotal": "{amount} gastados"
+  "weekSpentTotal": "{amount} gastados",
+  "payGaugeTitle": "Hasta tu próximo pago",
+  "payGaugeDaysLabel": "{days, plural, =1{día restante} other{días restantes}}",
+  "payGaugeAfter": "Tras tu pago del {date}: {amount} libres",
+  "payGaugeLasts": "{amount} tienen que durar hasta entonces."
 }

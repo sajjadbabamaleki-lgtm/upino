@@ -550,5 +550,9 @@
   "rangeMonths": "{count} मा",
   "rangeYear": "1 वर्ष",
   "weekSpentTitle": "पिछले 7 दिन",
-  "weekSpentTotal": "{amount} खर्च"
+  "weekSpentTotal": "{amount} खर्च",
+  "payGaugeTitle": "अगले वेतन तक",
+  "payGaugeDaysLabel": "दिन बाकी",
+  "payGaugeAfter": "{date} के वेतन के बाद: {amount} खाली",
+  "payGaugeLasts": "{amount} को तब तक चलना है।"
 }

@@ -1968,4 +1968,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return '$amount harcandı';
   }
+
+  @override
+  String get payGaugeTitle => 'Sonraki maaşa kadar';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return 'gün kaldı';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return '$date maaşından sonra: $amount serbest';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount o güne kadar yetmeli.';
+  }
 }

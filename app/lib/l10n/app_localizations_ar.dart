@@ -1942,4 +1942,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return 'أُنفق $amount';
   }
+
+  @override
+  String get payGaugeTitle => 'حتى راتبك التالي';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return 'يوم متبقٍ';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return 'بعد راتب $date: $amount متاح';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return 'يجب أن يكفي $amount حتى ذلك الحين.';
+  }
 }

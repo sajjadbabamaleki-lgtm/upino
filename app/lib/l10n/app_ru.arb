@@ -550,5 +550,9 @@
   "rangeMonths": "{count} мес",
   "rangeYear": "1 год",
   "weekSpentTitle": "Последние 7 дней",
-  "weekSpentTotal": "Потрачено {amount}"
+  "weekSpentTotal": "Потрачено {amount}",
+  "payGaugeTitle": "До следующей зарплаты",
+  "payGaugeDaysLabel": "дн. осталось",
+  "payGaugeAfter": "После зарплаты {date}: свободно {amount}",
+  "payGaugeLasts": "{amount} должно хватить до этого дня."
 }

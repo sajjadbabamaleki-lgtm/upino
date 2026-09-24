@@ -2073,4 +2073,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return '$amount spent';
   }
+
+  @override
+  String get payGaugeTitle => 'Until your next pay';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'days to go',
+      one: 'day to go',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return 'After your pay on $date: $amount free';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount has to last until then.';
+  }
 }

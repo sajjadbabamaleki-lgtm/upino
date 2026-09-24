@@ -1886,4 +1886,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return '支出 $amount';
   }
+
+  @override
+  String get payGaugeTitle => '距离下次发工资';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return '天后';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return '$date 发薪后：可支配 $amount';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount 要撑到那天。';
+  }
 }

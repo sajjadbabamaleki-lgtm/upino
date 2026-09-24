@@ -193,21 +193,19 @@ void main() {
     expect(state.snapshot.trustedAllocatableLiquidity, eur('1000.00'));
   });
 
-  testWidgets('dragging the timeline reads another day', (tester) async {
+  testWidgets('the gauge counts the days to pay and says what the pay brings',
+      (tester) async {
     final state = funded();
     await open(tester, state);
-    final chart = find.byKey(const Key('timeline-chart'));
-    await tester.ensureVisible(chart);
+    final gauge = find.byKey(const Key('pay-gauge'));
+    await tester.ensureVisible(gauge);
     await tester.pumpAndSettle();
-    // It opens on the pay day.
-    expect(find.text('October 28'), findsWidgets);
-    await tester.tapAt(tester.getTopLeft(chart) + const Offset(2, 40));
-    await tester.pump();
-    expect(find.text('Today'), findsWidgets);
+    // 1 October to 28 October.
     expect(
-      tester.widget<Text>(find.byKey(const Key('timeline-free'))).data,
-      state.snapshot.safeToSpendNow.display(),
+      tester.widget<Text>(find.byKey(const Key('pay-gauge-days'))).data,
+      '27',
     );
+    expect(find.textContaining('After your pay on October 28'), findsOneWidget);
   });
 
   testWidgets('a goal path opens, and a new pace moves its date only when chosen',

@@ -550,5 +550,9 @@
   "rangeMonths": "{count} أشهر",
   "rangeYear": "سنة",
   "weekSpentTitle": "آخر 7 أيام",
-  "weekSpentTotal": "أُنفق {amount}"
+  "weekSpentTotal": "أُنفق {amount}",
+  "payGaugeTitle": "حتى راتبك التالي",
+  "payGaugeDaysLabel": "يوم متبقٍ",
+  "payGaugeAfter": "بعد راتب {date}: {amount} متاح",
+  "payGaugeLasts": "يجب أن يكفي {amount} حتى ذلك الحين."
 }

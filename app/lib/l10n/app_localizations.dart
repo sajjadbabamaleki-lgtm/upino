@@ -3419,6 +3419,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} spent'**
   String weekSpentTotal(String amount);
+
+  /// No description provided for @payGaugeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Until your next pay'**
+  String get payGaugeTitle;
+
+  /// No description provided for @payGaugeDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{day to go} other{days to go}}'**
+  String payGaugeDaysLabel(int days);
+
+  /// No description provided for @payGaugeAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After your pay on {date}: {amount} free'**
+  String payGaugeAfter(String date, String amount);
+
+  /// No description provided for @payGaugeLasts.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} has to last until then.'**
+  String payGaugeLasts(String amount);
 }
 
 class _AppLocalizationsDelegate

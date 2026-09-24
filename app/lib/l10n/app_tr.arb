@@ -550,5 +550,9 @@
   "rangeMonths": "{count} ay",
   "rangeYear": "1 yıl",
   "weekSpentTitle": "Son 7 gün",
-  "weekSpentTotal": "{amount} harcandı"
+  "weekSpentTotal": "{amount} harcandı",
+  "payGaugeTitle": "Sonraki maaşa kadar",
+  "payGaugeDaysLabel": "gün kaldı",
+  "payGaugeAfter": "{date} maaşından sonra: {amount} serbest",
+  "payGaugeLasts": "{amount} o güne kadar yetmeli."
 }

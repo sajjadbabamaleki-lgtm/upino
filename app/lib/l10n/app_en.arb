@@ -1422,5 +1422,33 @@
         "type": "String"
       }
     }
+  },
+  "payGaugeTitle": "Until your next pay",
+  "payGaugeDaysLabel": "{days, plural, =1{day to go} other{days to go}}",
+  "@payGaugeDaysLabel": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "payGaugeAfter": "After your pay on {date}: {amount} free",
+  "@payGaugeAfter": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payGaugeLasts": "{amount} has to last until then.",
+  "@payGaugeLasts": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

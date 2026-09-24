@@ -550,5 +550,9 @@
   "rangeMonths": "{count}个月",
   "rangeYear": "1年",
   "weekSpentTitle": "最近 7 天",
-  "weekSpentTotal": "支出 {amount}"
+  "weekSpentTotal": "支出 {amount}",
+  "payGaugeTitle": "距离下次发工资",
+  "payGaugeDaysLabel": "天后",
+  "payGaugeAfter": "{date} 发薪后：可支配 {amount}",
+  "payGaugeLasts": "{amount} 要撑到那天。"
 }

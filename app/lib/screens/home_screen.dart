@@ -41,7 +41,7 @@ import 'goals_screen.dart';
 import 'plan_screen.dart';
 import 'profile_screen.dart';
 import '../widgets/sts_hero.dart';
-import '../widgets/timeline_card.dart';
+import '../widgets/pay_gauge_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({required this.state, super.key});
@@ -352,11 +352,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       const SizedBox(height: 10),
                     ],
 
-                    // Behind and ahead on one line you can run a finger
-                    // along; the after-pay figure is its pay-day point.
-                    SectionHeading(l.timelineTitle),
-                    TimelineCard(state: state),
-                    const SizedBox(height: 20),
+                    // How long the figure has to last, and what the pay
+                    // brings: a gauge that drains day by day to the pay.
+                    if (state.nextIncome?.isProjectable ?? false) ...[
+                      SectionHeading(l.payGaugeTitle),
+                      PayGaugeCard(state: state),
+                      const SizedBox(height: 20),
+                    ],
 
                     // Money already spoken for, as named payments with dates
                     // rather than one total (§6.3).

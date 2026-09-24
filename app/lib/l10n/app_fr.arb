@@ -550,5 +550,9 @@
   "rangeMonths": "{count} m",
   "rangeYear": "1 an",
   "weekSpentTitle": "7 derniers jours",
-  "weekSpentTotal": "{amount} dépensés"
+  "weekSpentTotal": "{amount} dépensés",
+  "payGaugeTitle": "Jusqu'à votre prochaine paie",
+  "payGaugeDaysLabel": "{days, plural, =1{jour restant} other{jours restants}}",
+  "payGaugeAfter": "Après la paie du {date} : {amount} disponibles",
+  "payGaugeLasts": "{amount} doivent tenir jusque-là."
 }

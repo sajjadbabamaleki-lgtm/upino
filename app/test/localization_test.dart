@@ -14,6 +14,7 @@ import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/main.dart';
+import 'package:upino/widgets/scrub_bars.dart';
 import 'package:upino/screens/language_screen.dart';
 import 'package:upino/state/app_state.dart';
 
@@ -270,18 +271,29 @@ void main() {
       expect(find.text('اجاره و قبض‌ها'), findsWidgets);
     });
 
-    testWidgets('the timeline does not mirror into a falling one',
-        (tester) async {
-      // Everything else on the screen mirrors in Persian. The chart must
-      // not: a rising line drawn right to left reads as a falling one.
-      await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final chart = find.descendant(
-        of: find.byKey(const Key('timeline-chart')),
+    testWidgets('a chart does not mirror into a falling one', (tester) async {
+      // Everything else on the screen mirrors in Persian. A chart must
+      // not: a rising run drawn right to left reads as a falling one.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.rtl,
+            child: ScrubBars(
+              key: const Key('chart'),
+              values: const [1, 2, 3],
+              selected: 0,
+              onSelect: (_) {},
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      );
+      final paint = find.descendant(
+        of: find.byKey(const Key('chart')),
         matching: find.byType(CustomPaint),
       );
-      expect(chart, findsWidgets);
       expect(
-        Directionality.of(tester.element(chart.first)),
+        Directionality.of(tester.element(paint.first)),
         TextDirection.ltr,
         reason: 'the chart inherited the mirrored direction',
       );

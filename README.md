@@ -187,7 +187,7 @@ the mark and the page's name on the left, the bell and Profile on the right.
 
 | Screen | Where | Holds |
 |---|---|---|
-| Home | tab | The decision: Safe-to-Spend; under it a four-way menu — Ask, pay came (with a dot when it is due), bills, and the month; then the best move if there is one, the timeline ahead, bills coming up, what is set aside and why the figure moved |
+| Home | tab | The decision: Safe-to-Spend; under it a four-way menu — Ask, pay came (with a dot when it is due), bills, and the month; then the best move if there is one, a gauge of the days to pay, bills coming up, what is set aside and why the figure moved |
 | Plan | tab | Accounts, income, bills and subscriptions, goals and commitments — in waterfall order |
 | Goals | tab | Targets, where each is heading at the pace the plan can hold, and a path chart with a pace slider |
 | Activity | tab | What was recorded, how to correct it, money coming back, and the month close |
@@ -210,7 +210,12 @@ keep only their questions; answers are recomputed from the plan whenever one
 is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
 
-**The timeline** (Home, and in the chat for a purchase) is a column chart
+**The pay gauge** on Home is a half ring with a segment for each day of the
+pay period, lit for the days still to go, so it drains as the period runs;
+in its opening, the days to pay, and under it what is free once the pay
+comes.
+
+**The timeline** (in the chat, for a purchase) is a column chart
 you run a finger along: one grey column a day for the next 45 days, the room
 to spend on that day, the one under the finger in colour with its figure in
 a pill above it. Every column is the engine run forward on stated

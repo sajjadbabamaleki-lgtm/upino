@@ -1973,4 +1973,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String weekSpentTotal(String amount) {
     return 'Потрачено $amount';
   }
+
+  @override
+  String get payGaugeTitle => 'До следующей зарплаты';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return 'дн. осталось';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return 'После зарплаты $date: свободно $amount';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount должно хватить до этого дня.';
+  }
 }
