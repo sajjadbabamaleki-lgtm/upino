@@ -151,29 +151,30 @@ class _SheetHead extends StatelessWidget {
               ),
             ),
             if (onClose != null)
-              // 36, not 30, and held further in from the edge: at 30 it was
-              // under the 44px a finger actually covers, and it sat close
-              // enough to the corner to be reached by accident while
-              // scrolling the list.
+              // The icon is already a square with a cross in it, so it is
+              // drawn on its own: inside a grey circle it read as a box in a
+              // ball. It sits low enough to clear the sheet's rounded top.
+              // The tap target stays 40 by 36 around it, held 22 in from the
+              // edge so scrolling the list does not catch it.
               Positioned(
-                top: 4,
+                top: 10,
                 right: UpinoTokens.gutter + 6,
                 child: GestureDetector(
                   key: const Key('sheet-close'),
                   onTap: onClose,
                   behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    width: 36,
+                  child: SizedBox(
+                    width: 40,
                     height: 36,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: sunkenColor(context),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const UpinoIcon(
-                      'close',
-                      size: 19,
-                      color: UpinoTokens.textTertiary,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: UpinoIcon(
+                        'close',
+                        size: 24,
+                        color: isDark(context)
+                            ? UpinoTokens.darkTextTertiary
+                            : UpinoTokens.textTertiary,
+                      ),
                     ),
                   ),
                 ),
