@@ -183,7 +183,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(l.profileAppearance),
         UpinoCard(
           child: Column(
@@ -225,13 +225,13 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 10),
         _LanguageRow(state: state),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         FasterEntrySection(state: state),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         BackupSection(state: state),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(l.profileStartAgain),
         ActionRow(
           key: const Key('profile-start-over'),

@@ -103,8 +103,10 @@ class SectionHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // 20 above a heading and 10 below it: the heading belongs to what
+    // follows it, and reads as the start of a new section.
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 0, 4, 12),
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 10),
       child: Row(
         children: [
           // Flexible so a long heading wraps instead of overflowing beside

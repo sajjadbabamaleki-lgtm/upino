@@ -163,7 +163,7 @@ class PlanScreen extends StatelessWidget {
             ),
           ),
         ],
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(
           l.planGoals,
           count: state.goals.isEmpty ? null : state.goals.length,
@@ -198,7 +198,7 @@ class PlanScreen extends StatelessWidget {
             onTap: () => onOpenGoals(),
           ),
         ],
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(
           l.planSetAsideFirst,
           count: claims.isEmpty ? null : claims.length,
@@ -227,7 +227,7 @@ class PlanScreen extends StatelessWidget {
             const SizedBox(height: 10),
           ],
         if (addable.isNotEmpty) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           SectionHeading(l.planAddToPlan),
           for (final option in addable) ...[
             ActionRow(
@@ -246,7 +246,7 @@ class PlanScreen extends StatelessWidget {
         ],
         // Last, because the screen reads in the order money is assigned and
         // holdings are assigned nothing: they sit beside the plan.
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(
           l.holdingsTitle,
           count: state.holdings.isEmpty ? null : state.holdings.length,

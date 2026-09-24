@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       onTap: () => AskScreen.open(context, state),
                     ),
 
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 20),
 
                     if (attention.isNotEmpty) ...[
                       SectionHeading(l.homeAttention, count: attention.length),
@@ -243,20 +243,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         ),
                         const SizedBox(height: 10),
                       ],
-                      const SizedBox(height: 16),
+                      // With the 10 after the last row, the 20 every heading
+                      // has above it.
+                      const SizedBox(height: 10),
                     ],
 
                     if (snapshot.projectedSafeToSpend >
                         snapshot.safeToSpendNow) ...[
                       SectionHeading(l.homeAfterNextPay),
                       _ProjectedCard(snapshot: snapshot),
-                      const SizedBox(height: 26),
+                      const SizedBox(height: 20),
                     ],
 
                     SectionHeading(l.homeSetAsideFirst),
                     _ProtectedCard(snapshot: snapshot),
 
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 20),
                     SectionHeading(l.homeWhyThisNumber),
                     _WhyCard(snapshot: snapshot),
                   ]),
