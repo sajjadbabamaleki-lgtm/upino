@@ -1376,5 +1376,10 @@
   },
   "chatSuggestMove": "What should I do next?",
   "chatSuggestComing": "What bills are coming up?",
-  "chatComingNone": "No bills are due in the next 30 days. Add the ones you pay on Plan and I'll keep track of them."
+  "chatComingNone": "No bills are due in the next 30 days. Add the ones you pay on Plan and I'll keep track of them.",
+  "quickAsk": "Ask",
+  "quickPay": "Pay came",
+  "quickBills": "Bills",
+  "quickMonth": "My month",
+  "quickPayDue": "Your pay is due. Say whether it came."
 }

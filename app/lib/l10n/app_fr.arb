@@ -535,5 +535,10 @@
   "insightGoal": "Si cela continue, c'est environ {days, plural, =1{un jour} other{{days} jours}} de {goal} chaque mois.",
   "chatSuggestMove": "Que faire maintenant ?",
   "chatSuggestComing": "Quelles factures arrivent ?",
-  "chatComingNone": "Aucune facture dans les 30 prochains jours. Ajoutez les vôtres dans Plan et je les suivrai."
+  "chatComingNone": "Aucune facture dans les 30 prochains jours. Ajoutez les vôtres dans Plan et je les suivrai.",
+  "quickAsk": "Demander",
+  "quickPay": "Paie reçue",
+  "quickBills": "Factures",
+  "quickMonth": "Mon mois",
+  "quickPayDue": "Votre paie est due. Dites si elle est arrivée."
 }

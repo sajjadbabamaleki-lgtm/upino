@@ -535,5 +535,10 @@
   "insightGoal": "如果持续下去，每个月大约相当于{goal}的 {days} 天进度。",
   "chatSuggestMove": "我接下来该做什么？",
   "chatSuggestComing": "接下来有哪些账单？",
-  "chatComingNone": "未来 30 天没有账单到期。在“计划”中添加你的账单，我会帮你跟踪。"
+  "chatComingNone": "未来 30 天没有账单到期。在“计划”中添加你的账单，我会帮你跟踪。",
+  "quickAsk": "提问",
+  "quickPay": "工资到账",
+  "quickBills": "账单",
+  "quickMonth": "本月",
+  "quickPayDue": "工资到期了，告诉我们是否已到账。"
 }

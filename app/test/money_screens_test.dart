@@ -103,13 +103,15 @@ void main() {
       utcOffset: Duration.zero,
     )..replaceWith(PlanDocument.decode(funded().toDocument().encode()));
     await open(tester, state);
+    // The tile carries a dot while the pay is due.
+    expect(find.byKey(const Key('home-pay-arrived-flag')), findsOneWidget);
     await tapKey(tester, 'home-pay-arrived');
     expect(find.text('How much arrived?'), findsOneWidget);
     await tester.tap(find.widgetWithText(FilledButton, 'Save'));
     await tester.pumpAndSettle();
     expect(state.snapshot.trustedAllocatableLiquidity, eur('3000.00'));
     expect(state.payDue, isFalse);
-    expect(find.byKey(const Key('home-pay-due')), findsNothing);
+    expect(find.byKey(const Key('home-pay-arrived-flag')), findsNothing);
   });
 
   testWidgets('an account is added on Plan and offered when spending',
@@ -230,5 +232,35 @@ void main() {
 
     await tapKey(tester, 'goal-pace-apply-${goal.id}');
     expect(state.goals.single.targetDate < before, isTrue);
+  });
+
+  testWidgets('the quick menu reaches the bills and the month from Home',
+      (tester) async {
+    final state = funded()
+      ..addBill(
+        name: 'Phone',
+        amount: eur('20.00'),
+        every: BillEvery.month,
+        nextDue: LocalDate.parse('2026-10-05'),
+      );
+    await open(tester, state);
+    expect(find.byKey(const Key('quick-actions')), findsOneWidget);
+
+    await tapKey(tester, 'home-bills');
+    await tester.tap(find.byKey(Key('bills-sheet-${state.bills.single.id}')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('choice-pay')));
+    await tester.pumpAndSettle();
+    expect(state.bills.single.nextDue, LocalDate.parse('2026-11-05'));
+    // The sheet follows the plan while it is open.
+    expect(find.text('Nov 5'), findsNothing);
+    expect(find.textContaining('November 5'), findsWidgets);
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+
+    await tapKey(tester, 'home-month');
+    expect(find.byKey(const Key('month-review')), findsOneWidget);
+    // Before the first month it still says when the look back is ready.
+    expect(find.textContaining('30 days'), findsWidgets);
   });
 }

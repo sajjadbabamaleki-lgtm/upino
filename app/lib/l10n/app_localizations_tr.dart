@@ -1914,4 +1914,19 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get chatComingNone =>
       'Önümüzdeki 30 günde fatura yok. Faturalarınızı Plan\'a ekleyin, takip edeyim.';
+
+  @override
+  String get quickAsk => 'Sor';
+
+  @override
+  String get quickPay => 'Maaş geldi';
+
+  @override
+  String get quickBills => 'Faturalar';
+
+  @override
+  String get quickMonth => 'Ayım';
+
+  @override
+  String get quickPayDue => 'Maaş zamanı geldi. Gelip gelmediğini söyleyin.';
 }

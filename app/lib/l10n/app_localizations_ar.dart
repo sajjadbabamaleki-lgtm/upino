@@ -1888,4 +1888,19 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get chatComingNone =>
       'لا فواتير مستحقة خلال 30 يومًا. أضف فواتيرك في «الخطة» وسأتابعها.';
+
+  @override
+  String get quickAsk => 'اسأل';
+
+  @override
+  String get quickPay => 'وصل الراتب';
+
+  @override
+  String get quickBills => 'الفواتير';
+
+  @override
+  String get quickMonth => 'شهري';
+
+  @override
+  String get quickPayDue => 'حان موعد راتبك. أخبرنا إن وصل.';
 }

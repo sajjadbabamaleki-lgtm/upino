@@ -2006,4 +2006,19 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get chatComingNone =>
       'Aucune facture dans les 30 prochains jours. Ajoutez les vôtres dans Plan et je les suivrai.';
+
+  @override
+  String get quickAsk => 'Demander';
+
+  @override
+  String get quickPay => 'Paie reçue';
+
+  @override
+  String get quickBills => 'Factures';
+
+  @override
+  String get quickMonth => 'Mon mois';
+
+  @override
+  String get quickPayDue => 'Votre paie est due. Dites si elle est arrivée.';
 }

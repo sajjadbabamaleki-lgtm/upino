@@ -187,7 +187,7 @@ the mark and the page's name on the left, the bell and Profile on the right.
 
 | Screen | Where | Holds |
 |---|---|---|
-| Home | tab | The decision: Safe-to-Spend, the best move if there is one, whether pay that is due has come, the timeline ahead, bills coming up, what is set aside and why the figure moved |
+| Home | tab | The decision: Safe-to-Spend; under it a four-way menu — Ask, pay came (with a dot when it is due), bills, and the month; then the best move if there is one, the timeline ahead, bills coming up, what is set aside and why the figure moved |
 | Plan | tab | Accounts, income, bills and subscriptions, goals and commitments — in waterfall order |
 | Goals | tab | Targets, where each is heading at the pace the plan can hold, and a path chart with a pace slider |
 | Activity | tab | What was recorded, how to correct it, money coming back, and the month close |

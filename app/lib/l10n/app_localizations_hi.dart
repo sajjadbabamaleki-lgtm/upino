@@ -1912,4 +1912,19 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get chatComingNone =>
       'अगले 30 दिनों में कोई बिल देय नहीं है। प्लान में अपने बिल जोड़ें, मैं उन पर नज़र रखूँगा।';
+
+  @override
+  String get quickAsk => 'पूछें';
+
+  @override
+  String get quickPay => 'वेतन आया';
+
+  @override
+  String get quickBills => 'बिल';
+
+  @override
+  String get quickMonth => 'मेरा महीना';
+
+  @override
+  String get quickPayDue => 'वेतन का समय है। बताइए आया या नहीं।';
 }

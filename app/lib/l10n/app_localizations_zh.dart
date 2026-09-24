@@ -1833,4 +1833,19 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatComingNone => '未来 30 天没有账单到期。在“计划”中添加你的账单，我会帮你跟踪。';
+
+  @override
+  String get quickAsk => '提问';
+
+  @override
+  String get quickPay => '工资到账';
+
+  @override
+  String get quickBills => '账单';
+
+  @override
+  String get quickMonth => '本月';
+
+  @override
+  String get quickPayDue => '工资到期了，告诉我们是否已到账。';
 }

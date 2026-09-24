@@ -1910,4 +1910,19 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get chatComingNone =>
       'در ۳۰ روز آینده قبضی سررسید نمی‌شود. قبض‌هایت را در «برنامه» اضافه کن تا حواسم بهشان باشد.';
+
+  @override
+  String get quickAsk => 'بپرس';
+
+  @override
+  String get quickPay => 'حقوق رسید';
+
+  @override
+  String get quickBills => 'قبض‌ها';
+
+  @override
+  String get quickMonth => 'مرور ماه';
+
+  @override
+  String get quickPayDue => 'موعد حقوق رسیده. بگویید رسید یا نه.';
 }

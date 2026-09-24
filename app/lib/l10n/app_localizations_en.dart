@@ -2019,4 +2019,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chatComingNone =>
       'No bills are due in the next 30 days. Add the ones you pay on Plan and I\'ll keep track of them.';
+
+  @override
+  String get quickAsk => 'Ask';
+
+  @override
+  String get quickPay => 'Pay came';
+
+  @override
+  String get quickBills => 'Bills';
+
+  @override
+  String get quickMonth => 'My month';
+
+  @override
+  String get quickPayDue => 'Your pay is due. Say whether it came.';
 }

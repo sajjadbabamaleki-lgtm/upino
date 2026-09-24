@@ -3329,6 +3329,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No bills are due in the next 30 days. Add the ones you pay on Plan and I\'ll keep track of them.'**
   String get chatComingNone;
+
+  /// No description provided for @quickAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get quickAsk;
+
+  /// No description provided for @quickPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay came'**
+  String get quickPay;
+
+  /// No description provided for @quickBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get quickBills;
+
+  /// No description provided for @quickMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'My month'**
+  String get quickMonth;
+
+  /// No description provided for @quickPayDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pay is due. Say whether it came.'**
+  String get quickPayDue;
 }
 
 class _AppLocalizationsDelegate

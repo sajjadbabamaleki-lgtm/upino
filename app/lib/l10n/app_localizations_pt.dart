@@ -1988,4 +1988,19 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get chatComingNone =>
       'Nenhuma conta vence nos próximos 30 dias. Adicione as suas em Plano e eu acompanho.';
+
+  @override
+  String get quickAsk => 'Perguntar';
+
+  @override
+  String get quickPay => 'Pagamento';
+
+  @override
+  String get quickBills => 'Contas';
+
+  @override
+  String get quickMonth => 'Meu mês';
+
+  @override
+  String get quickPayDue => 'Seu pagamento venceu. Diga se chegou.';
 }

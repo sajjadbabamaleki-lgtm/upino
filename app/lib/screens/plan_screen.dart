@@ -23,6 +23,7 @@ import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/account_editor_sheet.dart';
 import '../widgets/bill_editor_sheet.dart';
+import '../widgets/bills_sheet.dart';
 import '../widgets/choice_sheet.dart';
 import '../widgets/holding_editor_sheet.dart';
 
@@ -202,55 +203,10 @@ class PlanScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _addBill(BuildContext context) async {
-    final draft = await BillEditorSheet.show(context, state: state);
-    if (draft == null) return;
-    state.addBill(
-      name: draft.name,
-      amount: draft.amount,
-      every: draft.every,
-      nextDue: draft.nextDue,
-      kind: draft.kind,
-      debtAccountId: draft.debtAccountId,
-    );
-  }
+  Future<void> _addBill(BuildContext context) => addBillFlow(context, state);
 
-  Future<void> _openBill(BuildContext context, Bill bill) async {
-    final l = AppLocalizations.of(context);
-    final choice = await ChoiceSheet.show<String>(
-      context,
-      title: bill.name,
-      subtitle: '${bill.amount.display()}${UpinoTokens.separator}'
-          '${billEveryLabel(l, bill.every)}',
-      choices: [
-        Choice(
-          'pay',
-          l.billPay,
-          detail: formatDate(context, bill.nextDue),
-        ),
-        Choice('edit', l.billEdit),
-      ],
-    );
-    if (choice == null || !context.mounted) return;
-    if (choice == 'pay') {
-      state.payBill(bill.id);
-      return;
-    }
-    final draft = await BillEditorSheet.show(context, state: state, bill: bill);
-    if (draft == null) return;
-    if (draft.deleted) {
-      state.removeBill(bill.id);
-      return;
-    }
-    state.updateBill(
-      bill.id,
-      name: draft.name,
-      amount: draft.amount,
-      every: draft.every,
-      nextDue: draft.nextDue,
-      kind: draft.kind,
-    );
-  }
+  Future<void> _openBill(BuildContext context, Bill bill) =>
+      openBillFlow(context, state, bill);
 
   @override
   Widget build(BuildContext context) {

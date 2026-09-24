@@ -1919,4 +1919,19 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get chatComingNone =>
       'В ближайшие 30 дней счетов нет. Добавьте свои в «План», и я буду за ними следить.';
+
+  @override
+  String get quickAsk => 'Спросить';
+
+  @override
+  String get quickPay => 'Зарплата';
+
+  @override
+  String get quickBills => 'Счета';
+
+  @override
+  String get quickMonth => 'Мой месяц';
+
+  @override
+  String get quickPayDue => 'Пора зарплаты. Отметьте, пришла ли она.';
 }

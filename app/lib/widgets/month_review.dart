@@ -12,6 +12,7 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/insights.dart';
 import 'amount_sheet.dart' show categoryLabel;
+import 'form_parts.dart' show EditorSheetFrame;
 
 /// The last thirty days as sentences, in the order they are best read.
 List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
@@ -74,9 +75,25 @@ List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
 }
 
 class MonthReviewCard extends StatelessWidget {
-  const MonthReviewCard({required this.state, super.key});
+  const MonthReviewCard({required this.state, this.bare = false, super.key});
 
   final AppState state;
+
+  /// Without its own card and title, for a sheet that has both.
+  final bool bare;
+
+  /// The close in a sheet, from Home's quick menu. Before the first month
+  /// it still says what is coming and when the look back will be ready.
+  static Future<void> show(BuildContext context, AppState state) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => EditorSheetFrame(
+          title: AppLocalizations.of(context).monthTitle,
+          children: [MonthReviewCard(state: state, bare: true)],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +116,14 @@ class MonthReviewCard extends StatelessWidget {
           ],
         );
 
-    return UpinoCard(
-      key: const Key('month-review'),
-      child: Column(
+    final body = Column(
+        key: const Key('month-review'),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l.monthTitle, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 2),
+          if (!bare) ...[
+            Text(l.monthTitle, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 2),
+          ],
           Text(l.monthWindow, style: theme.textTheme.bodySmall),
           const SizedBox(height: 12),
           lines(close.past),
@@ -126,7 +144,7 @@ class MonthReviewCard extends StatelessWidget {
             lines(close.worth),
           ],
         ],
-      ),
-    );
+      );
+    return bare ? body : UpinoCard(child: body);
   }
 }

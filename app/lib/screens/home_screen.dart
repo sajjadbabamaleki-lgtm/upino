@@ -25,6 +25,9 @@ import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/best_move_card.dart';
+import '../widgets/bills_sheet.dart';
+import '../widgets/month_review.dart';
+import '../widgets/quick_actions.dart';
 import '../state/insights.dart';
 import '../widgets/bill_editor_sheet.dart' show relativeDay;
 import '../widgets/alerts_sheet.dart';
@@ -267,6 +270,48 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       ),
                     ],
 
+                    // What was buried in a tab or at the foot of Home,
+                    // one tap from the figure.
+                    const SizedBox(height: 12),
+                    QuickActions(
+                      actions: [
+                        QuickAction(
+                          keyName: 'home-ask',
+                          icon: 'ask',
+                          label: l.quickAsk,
+                          hint: l.askBlurb,
+                          // Straight into a conversation: the question is
+                          // usually "can I afford this?".
+                          onTap: () => ChatPage.open(context, state),
+                        ),
+                        QuickAction(
+                          keyName: 'home-pay-arrived',
+                          icon: 'confirmed',
+                          label: l.quickPay,
+                          // Pay that should have come is asked about, never
+                          // assumed: it counts once the person says so.
+                          flagged: state.payDue,
+                          hint: state.payDue ? l.quickPayDue : l.payDueSub,
+                          onTap: _recordPay,
+                        ),
+                        QuickAction(
+                          keyName: 'home-bills',
+                          icon: 'receipt',
+                          label: l.quickBills,
+                          flagged: state.upcomingBills().any(
+                                (u) => u.due < state.today,
+                              ),
+                          onTap: () => BillsSheet.show(context, state),
+                        ),
+                        QuickAction(
+                          keyName: 'home-month',
+                          icon: 'trendingUp',
+                          label: l.quickMonth,
+                          onTap: () => MonthReviewCard.show(context, state),
+                        ),
+                      ],
+                    ),
+
                     if (state.bankSuggestions.isNotEmpty) ...[
                       const SizedBox(height: 12),
                       ActionRow(
@@ -278,54 +323,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       ),
                     ],
 
-                    // Pay that should have come is asked about, never
-                    // assumed: it counts only once the person says it came.
-                    if (state.payDue) ...[
-                      const SizedBox(height: 12),
-                      UpinoCard(
-                        key: const Key('home-pay-due'),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              l.payDueTitle(formatDate(
-                                context,
-                                state.nextIncome!.expectedDate,
-                              ),),
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              l.payDueSub,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            const SizedBox(height: 12),
-                            FilledButton(
-                              key: const Key('home-pay-arrived'),
-                              onPressed: _recordPay,
-                              child: Text(l.payArrived),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-
                     // One suggestion, when one is worth making (§6.2).
                     if (move != null && move.key != state.dismissedMove) ...[
                       const SizedBox(height: 12),
                       BestMoveCard(state: state, move: move),
                     ],
-
-                    const SizedBox(height: 14),
-                    ActionRow(
-                      key: const Key('home-ask'),
-                      title: l.askTitle,
-                      subtitle: l.askBlurb,
-                      trailing: const RowAffordance(icon: 'ask'),
-                      // Straight into a conversation: the card is itself the
-                      // question "can I afford this?".
-                      onTap: () => ChatPage.open(context, state),
-                    ),
 
                     const SizedBox(height: 20),
 

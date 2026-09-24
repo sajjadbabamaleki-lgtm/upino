@@ -535,5 +535,10 @@
   "insightGoal": "Si sigue así, son unos {days, plural, =1{un día} other{{days} días}} de {goal} cada mes.",
   "chatSuggestMove": "¿Qué hago ahora?",
   "chatSuggestComing": "¿Qué facturas vienen?",
-  "chatComingNone": "No vence ninguna factura en los próximos 30 días. Añade las tuyas en Plan y las seguiré."
+  "chatComingNone": "No vence ninguna factura en los próximos 30 días. Añade las tuyas en Plan y las seguiré.",
+  "quickAsk": "Preguntar",
+  "quickPay": "Llegó el pago",
+  "quickBills": "Facturas",
+  "quickMonth": "Mi mes",
+  "quickPayDue": "Tu pago vence. Di si llegó."
 }

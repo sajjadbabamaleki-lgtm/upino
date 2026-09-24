@@ -535,5 +535,10 @@
   "insightGoal": "Se continuar, são cerca de {days, plural, =1{um dia} other{{days} dias}} de {goal} por mês.",
   "chatSuggestMove": "O que faço agora?",
   "chatSuggestComing": "Quais contas estão chegando?",
-  "chatComingNone": "Nenhuma conta vence nos próximos 30 dias. Adicione as suas em Plano e eu acompanho."
+  "chatComingNone": "Nenhuma conta vence nos próximos 30 dias. Adicione as suas em Plano e eu acompanho.",
+  "quickAsk": "Perguntar",
+  "quickPay": "Pagamento",
+  "quickBills": "Contas",
+  "quickMonth": "Meu mês",
+  "quickPayDue": "Seu pagamento venceu. Diga se chegou."
 }

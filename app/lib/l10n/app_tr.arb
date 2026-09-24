@@ -535,5 +535,10 @@
   "insightGoal": "Böyle sürerse, her ay {goal} hedefinin yaklaşık {days} günü eder.",
   "chatSuggestMove": "Şimdi ne yapmalıyım?",
   "chatSuggestComing": "Hangi faturalar yaklaşıyor?",
-  "chatComingNone": "Önümüzdeki 30 günde fatura yok. Faturalarınızı Plan'a ekleyin, takip edeyim."
+  "chatComingNone": "Önümüzdeki 30 günde fatura yok. Faturalarınızı Plan'a ekleyin, takip edeyim.",
+  "quickAsk": "Sor",
+  "quickPay": "Maaş geldi",
+  "quickBills": "Faturalar",
+  "quickMonth": "Ayım",
+  "quickPayDue": "Maaş zamanı geldi. Gelip gelmediğini söyleyin."
 }

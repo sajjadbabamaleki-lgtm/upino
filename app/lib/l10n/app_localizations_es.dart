@@ -1988,4 +1988,19 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get chatComingNone =>
       'No vence ninguna factura en los próximos 30 días. Añade las tuyas en Plan y las seguiré.';
+
+  @override
+  String get quickAsk => 'Preguntar';
+
+  @override
+  String get quickPay => 'Llegó el pago';
+
+  @override
+  String get quickBills => 'Facturas';
+
+  @override
+  String get quickMonth => 'Mi mes';
+
+  @override
+  String get quickPayDue => 'Tu pago vence. Di si llegó.';
 }
