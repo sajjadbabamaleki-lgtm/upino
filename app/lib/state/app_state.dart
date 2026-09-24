@@ -1390,9 +1390,11 @@ class AppState extends ChangeNotifier {
   }
 
   /// What went out in each thirty-day stretch, oldest first, the current
-  /// one last; only stretches the plan was in use for, up to [months].
+  /// one last; only stretches the plan was in use for most of, up to
+  /// [months]. A stretch mostly from before the plan began would read as a
+  /// month of saving and pull the average down.
   List<Money> monthlySpending({int months = 6}) {
-    final used = (daysInUse ~/ 30) + 1;
+    final used = ((daysInUse + 15) ~/ 30).clamp(1, 1 << 20);
     final n = used < months ? used : months;
     return [
       for (var k = n - 1; k >= 0; k--)

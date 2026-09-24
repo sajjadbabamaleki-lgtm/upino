@@ -200,4 +200,34 @@ void main() {
           isA<ComingUpAnswer>(),);
     });
   });
+
+  group('chart data', () {
+    test('seven days of spending, today last, refunds taken off', () {
+      final state = plan()..recordExpense(eur('30.00'));
+      final spend = state.lastRecordedEventId!;
+      final later2 = later(state, 2)..recordExpense(eur('12.00'));
+      later2.refundArrived(spend, eur('10.00'));
+      final days = later2.spendingByDay();
+      expect(days, hasLength(7));
+      expect(days.last, eur('2.00'));
+      expect(days[4], eur('30.00'));
+    });
+
+    test('money in and out by week', () {
+      final state = later(plan(), 30)
+        ..confirmIncome(eur('2000.00'))
+        ..recordExpense(eur('50.00'));
+      final weeks = state.flowsByWeek(weeks: 4);
+      expect(weeks.last.moneyIn, eur('2000.00'));
+      expect(weeks.last.moneyOut, eur('50.00'));
+      expect(weeks.first.moneyIn, eur('0.00'));
+    });
+
+    test('monthly spending leaves out a stretch mostly before the start', () {
+      final state = plan()..recordExpense(eur('10.00'));
+      expect(later(state, 10).monthlySpending(), hasLength(1));
+      expect(later(state, 50).monthlySpending(), hasLength(2));
+      expect(later(state, 92).monthlySpending(), hasLength(3));
+    });
+  });
 }

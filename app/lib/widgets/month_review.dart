@@ -192,9 +192,11 @@ class _MonthBarsState extends State<_MonthBars> {
         pill: months[i].display(),
         guide: average,
         guideLabel: l.chartAvg,
+        // Each stretch is named by the month at its middle: named by its
+        // last day, two stretches can both end in the same month.
         labels: [
           for (var k = months.length - 1; k >= 0; k--)
-            formatMonthShort(context, today.addDays(-k * 30)),
+            formatMonthShort(context, today.addDays(-k * 30 - 15)),
         ],
         maxBarWidth: 34,
         height: 160,
