@@ -31,6 +31,19 @@ android {
         versionName = flutter.versionName
     }
 
+    // One fixed key for every build. Without it each CI runner made its own
+    // debug key, so every new APK had a different signature and Android
+    // refused to install it over the previous one ("App not installed").
+    // A debug key is not a secret; a store release needs its own key.
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("upino-debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

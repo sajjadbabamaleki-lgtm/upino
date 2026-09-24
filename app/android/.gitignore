@@ -12,3 +12,6 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+# The one exception: a shared debug key, so every CI build carries the same
+# signature and installs over the last one. It signs nothing that matters.
+!app/upino-debug.keystore
