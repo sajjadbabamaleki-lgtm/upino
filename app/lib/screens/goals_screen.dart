@@ -19,6 +19,8 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/goal_editor_sheet.dart';
+import '../widgets/goal_projection_view.dart';
+import '../state/projection.dart';
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({required this.state, required this.padding, super.key});
@@ -92,6 +94,7 @@ class GoalsScreen extends StatelessWidget {
           else
             for (final goal in goals) ...[
               _GoalCard(
+                state: state,
                 goal: goal,
                 inflated: state.inflatedTarget(goal),
                 rate: state.inflationBasisPoints,
@@ -122,8 +125,9 @@ class GoalsScreen extends StatelessWidget {
   }
 }
 
-class _GoalCard extends StatelessWidget {
+class _GoalCard extends StatefulWidget {
   const _GoalCard({
+    required this.state,
     required this.goal,
     required this.today,
     this.inflated,
@@ -133,6 +137,7 @@ class _GoalCard extends StatelessWidget {
     required this.onContribute,
   });
 
+  final AppState state;
   final Goal goal;
 
   /// The target at the expected inflation on its date, when that is more.
@@ -144,10 +149,34 @@ class _GoalCard extends StatelessWidget {
   final VoidCallback onContribute;
 
   @override
+  State<_GoalCard> createState() => _GoalCardState();
+
+  static String _status(AppLocalizations l, Goal goal, int cycles) =>
+      switch (goal.kind) {
+        GoalKind.paused => l.goalsPausedStatus,
+        GoalKind.flexible => l.goalsFlexibleStatus,
+        GoalKind.hard when goal.isComplete => l.goalsDone,
+        GoalKind.hard => l.goalsPeriodsToGo(cycles),
+      };
+}
+
+class _GoalCardState extends State<_GoalCard> {
+  bool _open = false;
+
+  @override
   Widget build(BuildContext context) {
+    final goal = widget.goal;
+    final today = widget.today;
+    final payCycleDays = widget.payCycleDays;
+    final inflated = widget.inflated;
+    final rate = widget.rate;
+    final onEdit = widget.onEdit;
+    final onContribute = widget.onContribute;
     final theme = Theme.of(context);
     final dark = isDark(context);
     final required = goal.requiredThisCycle(today, payCycleDays);
+    final projection = widget.state.goalProjection(goal);
+    final l = AppLocalizations.of(context);
     final cycles = goal.cyclesRemaining(today, payCycleDays);
 
     return UpinoCard(
@@ -168,9 +197,23 @@ class _GoalCard extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            _status(AppLocalizations.of(context), goal, cycles),
+            _GoalCard._status(AppLocalizations.of(context), goal, cycles),
             style: theme.textTheme.bodySmall,
           ),
+          // Where it is heading at the pace the plan can actually hold for
+          // it, which is not always the pace it asks for (§10).
+          if (goal.kind != GoalKind.paused && !goal.isComplete) ...[
+            const SizedBox(height: 4),
+            Text(
+              goalOutlook(context, projection),
+              key: Key('goal-outlook-${goal.id}'),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: projection.onTrack
+                    ? null
+                    : (dark ? UpinoTokens.darkCritical : UpinoTokens.critical),
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -228,12 +271,24 @@ class _GoalCard extends StatelessWidget {
               ),
               child: Text(
                 AppLocalizations.of(context).goalsInflated(
-                  formatRate(rate!),
-                  inflated!.display(),
+                  formatRate(rate),
+                  inflated.display(),
                 ),
                 style: theme.textTheme.bodySmall,
               ),
             ),
+          ],
+          if (goal.kind != GoalKind.paused && !goal.isComplete) ...[
+            const SizedBox(height: 8),
+            TextButton(
+              key: Key('goal-path-${goal.id}'),
+              onPressed: () => setState(() => _open = !_open),
+              child: Text(_open ? l.goalHidePath : l.goalShowPath),
+            ),
+            if (_open) ...[
+              const SizedBox(height: 4),
+              GoalProjectionView(state: widget.state, goal: goal),
+            ],
           ],
           const SizedBox(height: 16),
           SizedBox(
@@ -256,13 +311,6 @@ class _GoalCard extends StatelessWidget {
     );
   }
 
-  static String _status(AppLocalizations l, Goal goal, int cycles) =>
-      switch (goal.kind) {
-        GoalKind.paused => l.goalsPausedStatus,
-        GoalKind.flexible => l.goalsFlexibleStatus,
-        GoalKind.hard when goal.isComplete => l.goalsDone,
-        GoalKind.hard => l.goalsPeriodsToGo(cycles),
-      };
 }
 
 class _ProgressBar extends StatelessWidget {

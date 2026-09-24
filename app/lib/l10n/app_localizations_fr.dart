@@ -1460,4 +1460,120 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'Comment s\'est passé mon mois ?';
+
+  @override
+  String get timelineTitle => 'Votre argent dans les jours à venir';
+
+  @override
+  String get timelineToday => 'Aujourd\'hui';
+
+  @override
+  String get timelineNow => 'Maintenant';
+
+  @override
+  String get timelineProjected => 'Projection';
+
+  @override
+  String get timelineRecorded => 'Enregistré';
+
+  @override
+  String get timelineFree => 'Disponible à dépenser';
+
+  @override
+  String get timelineHad => 'Vous aviez';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'Solde $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'Mis de côté $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'Paie $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'Il manque $amount pour une dépense obligatoire';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'Sans cet achat : $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'Acheter après la paie';
+
+  @override
+  String get timelineBalanceLegend => 'Solde';
+
+  @override
+  String get timelineWithPurchase => 'Avec l\'achat';
+
+  @override
+  String get timelinePay => 'Jour de paie';
+
+  @override
+  String get timelineAssumptions =>
+      'L\'avenir est une projection : votre paie à sa date, les factures aux leurs, le budget de vie dépensé régulièrement, et rien d\'autre. Glissez sur le graphique pour voir un jour.';
+
+  @override
+  String get timelineSemantics =>
+      'Graphique de votre solde et de ce qui est disponible, jour par jour';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'Graphique de la progression de $goal';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'Objectif $amount d\'ici le $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'Mettre de côté par période : $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'Dans les temps : atteint le $date.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days jours',
+      one: 'un jour',
+    );
+    return 'À ce rythme, il est atteint le $date, $_temp0 après sa date.';
+  }
+
+  @override
+  String get goalNotMoving =>
+      'Rien n\'y va en ce moment, il ne se rapproche donc pas.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'Reporter l\'échéance au $date';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'Simple simulation : rien ne change tant que vous ne choisissez pas.';
+
+  @override
+  String get goalShowPath => 'Voir le chemin';
+
+  @override
+  String get goalHidePath => 'Masquer';
 }

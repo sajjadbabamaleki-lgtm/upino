@@ -28,6 +28,7 @@ import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
 import '../widgets/month_review.dart';
 import '../widgets/purchase_scenarios.dart';
+import '../widgets/timeline_card.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -170,7 +171,7 @@ class _ChatPageState extends State<ChatPage> {
                         // once there is one.
                         _InLanguage(
                           language: turns.firstOrNull?.language,
-                          child: _AnswerView(answer: greet(state)),
+                          child: _AnswerView(answer: greet(state), state: state),
                         ),
                         if (resumed) ...[
                           const SizedBox(height: 10),
@@ -201,7 +202,7 @@ class _ChatPageState extends State<ChatPage> {
                                 for (final answer
                                     in reply(turn.question, state)) ...[
                                   const SizedBox(height: 10),
-                                  _AnswerView(answer: answer),
+                                  _AnswerView(answer: answer, state: state),
                                 ],
                               ],
                             ),
@@ -433,9 +434,10 @@ class _Bubble extends StatelessWidget {
 }
 
 class _AnswerView extends StatelessWidget {
-  const _AnswerView({required this.answer});
+  const _AnswerView({required this.answer, required this.state});
 
   final AskAnswer answer;
+  final AppState state;
 
   @override
   Widget build(BuildContext context) {
@@ -507,6 +509,9 @@ class _AnswerView extends StatelessWidget {
                 ),
             ]),
             const SizedBox(height: 10),
+            // The three plans side by side over time, before the cards.
+            TimelineCard(state: state, purchase: scenarios.amount),
+            const SizedBox(height: 12),
             // The cards carry the "no verdict" line themselves.
             PurchaseScenarios(result: scenarios),
           ],

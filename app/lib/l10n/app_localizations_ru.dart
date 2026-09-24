@@ -1418,4 +1418,113 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'Как прошёл мой месяц?';
+
+  @override
+  String get timelineTitle => 'Ваши деньги впереди';
+
+  @override
+  String get timelineToday => 'Сегодня';
+
+  @override
+  String get timelineNow => 'Сейчас';
+
+  @override
+  String get timelineProjected => 'Прогноз';
+
+  @override
+  String get timelineRecorded => 'Записано';
+
+  @override
+  String get timelineFree => 'Можно тратить';
+
+  @override
+  String get timelineHad => 'У вас было';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'Баланс $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'Отложено $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'Зарплата $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'Не хватает $amount на обязательный платёж';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'Без покупки: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'Купить после зарплаты';
+
+  @override
+  String get timelineBalanceLegend => 'Баланс';
+
+  @override
+  String get timelineWithPurchase => 'С покупкой';
+
+  @override
+  String get timelinePay => 'День зарплаты';
+
+  @override
+  String get timelineAssumptions =>
+      'Будущее — это прогноз: зарплата в свой день, счета в свои, деньги на жизнь тратятся равномерно, и больше ничего. Проведите по графику, чтобы увидеть любой день.';
+
+  @override
+  String get timelineSemantics => 'График баланса и доступных денег по дням';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'График того, как «$goal» достигает цели';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'Цель $amount к $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'Откладывать за период: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'По плану: будет достигнута к $date.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'В таком темпе цель будет достигнута $date, на $days дн. позже срока.';
+  }
+
+  @override
+  String get goalNotMoving =>
+      'Сейчас на цель ничего не идёт, поэтому она не приближается.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'Перенести срок на $date';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'Это только «что если»: ничего не меняется, пока вы не выберете.';
+
+  @override
+  String get goalShowPath => 'Посмотреть путь к цели';
+
+  @override
+  String get goalHidePath => 'Скрыть';
 }

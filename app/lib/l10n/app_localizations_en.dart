@@ -1473,4 +1473,120 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'How was my month?';
+
+  @override
+  String get timelineTitle => 'Your money ahead';
+
+  @override
+  String get timelineToday => 'Today';
+
+  @override
+  String get timelineNow => 'Now';
+
+  @override
+  String get timelineProjected => 'Projected';
+
+  @override
+  String get timelineRecorded => 'Recorded';
+
+  @override
+  String get timelineFree => 'Free to spend';
+
+  @override
+  String get timelineHad => 'You had';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'Balance $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'Set aside $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'Pay $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return '$amount short for something that must be paid';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'Without it: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'Buy after pay';
+
+  @override
+  String get timelineBalanceLegend => 'Balance';
+
+  @override
+  String get timelineWithPurchase => 'With the purchase';
+
+  @override
+  String get timelinePay => 'Pay day';
+
+  @override
+  String get timelineAssumptions =>
+      'Ahead is a projection: your pay on its date, bills on theirs, what is set aside for living spent evenly, and nothing else. Drag across the chart to see any day.';
+
+  @override
+  String get timelineSemantics =>
+      'Chart of your balance and what is free to spend, day by day';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'Chart of how $goal gets to its target';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'Target $amount by $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'Put aside each pay period: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'On track: reached by $date.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: 'a day',
+    );
+    return 'At this pace it is reached on $date, $_temp0 after its date.';
+  }
+
+  @override
+  String get goalNotMoving =>
+      'Nothing is going to it right now, so it is not getting closer.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'Move the target date to $date';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'Only a what-if: nothing changes until you choose.';
+
+  @override
+  String get goalShowPath => 'See how it gets there';
+
+  @override
+  String get goalHidePath => 'Hide';
 }

@@ -2507,6 +2507,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How was my month?'**
   String get chatSuggestMonth;
+
+  /// No description provided for @timelineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your money ahead'**
+  String get timelineTitle;
+
+  /// No description provided for @timelineToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get timelineToday;
+
+  /// No description provided for @timelineNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get timelineNow;
+
+  /// No description provided for @timelineProjected.
+  ///
+  /// In en, this message translates to:
+  /// **'Projected'**
+  String get timelineProjected;
+
+  /// No description provided for @timelineRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded'**
+  String get timelineRecorded;
+
+  /// No description provided for @timelineFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free to spend'**
+  String get timelineFree;
+
+  /// No description provided for @timelineHad.
+  ///
+  /// In en, this message translates to:
+  /// **'You had'**
+  String get timelineHad;
+
+  /// No description provided for @timelineBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance {amount}'**
+  String timelineBalance(String amount);
+
+  /// No description provided for @timelineSetAside.
+  ///
+  /// In en, this message translates to:
+  /// **'Set aside {amount}'**
+  String timelineSetAside(String amount);
+
+  /// No description provided for @timelinePayMark.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {amount}'**
+  String timelinePayMark(String amount);
+
+  /// No description provided for @timelineShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} short for something that must be paid'**
+  String timelineShort(String amount);
+
+  /// No description provided for @timelineWithout.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it: {amount}'**
+  String timelineWithout(String amount);
+
+  /// No description provided for @timelineBuyAfterPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy after pay'**
+  String get timelineBuyAfterPay;
+
+  /// No description provided for @timelineBalanceLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get timelineBalanceLegend;
+
+  /// No description provided for @timelineWithPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'With the purchase'**
+  String get timelineWithPurchase;
+
+  /// No description provided for @timelinePay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay day'**
+  String get timelinePay;
+
+  /// No description provided for @timelineAssumptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahead is a projection: your pay on its date, bills on theirs, what is set aside for living spent evenly, and nothing else. Drag across the chart to see any day.'**
+  String get timelineAssumptions;
+
+  /// No description provided for @timelineSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart of your balance and what is free to spend, day by day'**
+  String get timelineSemantics;
+
+  /// No description provided for @goalChartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart of how {goal} gets to its target'**
+  String goalChartSemantics(String goal);
+
+  /// No description provided for @goalChartTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target {amount} by {date}'**
+  String goalChartTarget(String amount, String date);
+
+  /// No description provided for @goalPaceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Put aside each pay period: {amount}'**
+  String goalPaceLabel(String amount);
+
+  /// No description provided for @goalOnTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'On track: reached by {date}.'**
+  String goalOnTrack(String date);
+
+  /// No description provided for @goalLate.
+  ///
+  /// In en, this message translates to:
+  /// **'At this pace it is reached on {date}, {days, plural, =1{a day} other{{days} days}} after its date.'**
+  String goalLate(String date, int days);
+
+  /// No description provided for @goalNotMoving.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is going to it right now, so it is not getting closer.'**
+  String get goalNotMoving;
+
+  /// No description provided for @goalUsePace.
+  ///
+  /// In en, this message translates to:
+  /// **'Move the target date to {date}'**
+  String goalUsePace(String date);
+
+  /// No description provided for @goalPaceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only a what-if: nothing changes until you choose.'**
+  String get goalPaceNote;
+
+  /// No description provided for @goalShowPath.
+  ///
+  /// In en, this message translates to:
+  /// **'See how it gets there'**
+  String get goalShowPath;
+
+  /// No description provided for @goalHidePath.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get goalHidePath;
 }
 
 class _AppLocalizationsDelegate

@@ -1412,4 +1412,113 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'मेरा महीना कैसा रहा?';
+
+  @override
+  String get timelineTitle => 'आगे आपका पैसा';
+
+  @override
+  String get timelineToday => 'आज';
+
+  @override
+  String get timelineNow => 'अभी';
+
+  @override
+  String get timelineProjected => 'अनुमान';
+
+  @override
+  String get timelineRecorded => 'दर्ज';
+
+  @override
+  String get timelineFree => 'खर्च के लिए खाली';
+
+  @override
+  String get timelineHad => 'आपके पास था';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'शेष $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'अलग रखा $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'वेतन $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'ज़रूरी भुगतान के लिए $amount कम';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'इसके बिना: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'वेतन के बाद खरीदें';
+
+  @override
+  String get timelineBalanceLegend => 'शेष';
+
+  @override
+  String get timelineWithPurchase => 'खरीद के साथ';
+
+  @override
+  String get timelinePay => 'वेतन का दिन';
+
+  @override
+  String get timelineAssumptions =>
+      'आगे का हिस्सा अनुमान है: वेतन अपनी तारीख पर, बिल अपनी तारीखों पर, जीवन-खर्च के लिए रखा पैसा बराबर खर्च, और कुछ नहीं। किसी भी दिन को देखने के लिए चार्ट पर उँगली खिसकाएँ।';
+
+  @override
+  String get timelineSemantics =>
+      'आपके शेष और खर्च योग्य राशि का दिन-ब-दिन चार्ट';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return '$goal के लक्ष्य तक पहुँचने का चार्ट';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return '$date तक लक्ष्य $amount';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'हर वेतन अवधि में अलग रखें: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'सही राह पर: $date तक पूरा।';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'इस गति से यह $date को पूरा होगा, अपनी तारीख से $days दिन बाद।';
+  }
+
+  @override
+  String get goalNotMoving =>
+      'अभी इसमें कुछ नहीं जा रहा, इसलिए यह करीब नहीं आ रहा।';
+
+  @override
+  String goalUsePace(String date) {
+    return 'लक्ष्य तारीख $date करें';
+  }
+
+  @override
+  String get goalPaceNote => 'बस एक अनुमान: जब तक आप न चुनें, कुछ नहीं बदलता।';
+
+  @override
+  String get goalShowPath => 'देखें यह कैसे पहुँचता है';
+
+  @override
+  String get goalHidePath => 'छिपाएँ';
 }

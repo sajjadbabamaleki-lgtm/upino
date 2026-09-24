@@ -1345,4 +1345,111 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => '我这个月过得怎么样？';
+
+  @override
+  String get timelineTitle => '你接下来的钱';
+
+  @override
+  String get timelineToday => '今天';
+
+  @override
+  String get timelineNow => '现在';
+
+  @override
+  String get timelineProjected => '预测';
+
+  @override
+  String get timelineRecorded => '已记录';
+
+  @override
+  String get timelineFree => '可自由支配';
+
+  @override
+  String get timelineHad => '当时余额';
+
+  @override
+  String timelineBalance(String amount) {
+    return '余额 $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return '已预留 $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return '工资 $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return '必须支付的款项还差 $amount';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return '不买：$amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => '发工资后买';
+
+  @override
+  String get timelineBalanceLegend => '余额';
+
+  @override
+  String get timelineWithPurchase => '买了之后';
+
+  @override
+  String get timelinePay => '发薪日';
+
+  @override
+  String get timelineAssumptions =>
+      '未来部分是预测：工资按时到账、账单按期支付、生活预留平均花掉，此外不花别的。在图上滑动可查看任意一天。';
+
+  @override
+  String get timelineSemantics => '逐日显示余额和可支配金额的图表';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return '$goal达成目标的图表';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return '目标 $amount，截止 $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return '每个发薪周期存入：$amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return '进度正常：$date 前达成。';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return '按这个速度将在 $date 达成，比目标日期晚 $days 天。';
+  }
+
+  @override
+  String get goalNotMoving => '目前没有钱投入，所以没有进展。';
+
+  @override
+  String goalUsePace(String date) {
+    return '把目标日期改为 $date';
+  }
+
+  @override
+  String get goalPaceNote => '只是假设：在你确认之前什么都不会改变。';
+
+  @override
+  String get goalShowPath => '查看达成路径';
+
+  @override
+  String get goalHidePath => '收起';
 }

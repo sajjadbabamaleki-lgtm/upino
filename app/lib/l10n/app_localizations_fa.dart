@@ -1409,4 +1409,112 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'ماهم چطور گذشت؟';
+
+  @override
+  String get timelineTitle => 'پول شما در روزهای پیش رو';
+
+  @override
+  String get timelineToday => 'امروز';
+
+  @override
+  String get timelineNow => 'اکنون';
+
+  @override
+  String get timelineProjected => 'پیش‌بینی';
+
+  @override
+  String get timelineRecorded => 'ثبت‌شده';
+
+  @override
+  String get timelineFree => 'قابل خرج';
+
+  @override
+  String get timelineHad => 'موجودی شما';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'موجودی $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'کنار گذاشته $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'حقوق $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'برای پرداختی ضروری $amount کم است';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'بدون آن: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'خرید بعد از حقوق';
+
+  @override
+  String get timelineBalanceLegend => 'موجودی';
+
+  @override
+  String get timelineWithPurchase => 'با این خرید';
+
+  @override
+  String get timelinePay => 'روز حقوق';
+
+  @override
+  String get timelineAssumptions =>
+      'روزهای آینده پیش‌بینی است: حقوق در تاریخ خودش، قبض‌ها در تاریخ خودشان، مبلغ کنارگذاشته برای زندگی به‌طور یکنواخت خرج می‌شود و خرج دیگری نیست. انگشت را روی نمودار بکشید تا هر روز را ببینید.';
+
+  @override
+  String get timelineSemantics => 'نمودار موجودی و مبلغ قابل خرج، روز به روز';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'نمودار رسیدن $goal به هدفش';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'هدف $amount تا $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'کنار گذاشتن در هر دوره: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'در مسیر: تا $date به آن می‌رسید.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'با این سرعت در $date به آن می‌رسید، $days روز بعد از تاریخ هدف.';
+  }
+
+  @override
+  String get goalNotMoving => 'فعلاً پولی به آن نمی‌رسد، پس نزدیک‌تر نمی‌شود.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'تاریخ هدف را $date کن';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'فقط یک «اگر»: تا خودتان انتخاب نکنید چیزی تغییر نمی‌کند.';
+
+  @override
+  String get goalShowPath => 'ببینید چطور به آن می‌رسید';
+
+  @override
+  String get goalHidePath => 'بستن';
 }

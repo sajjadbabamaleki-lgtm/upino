@@ -925,5 +925,116 @@
       }
     }
   },
-  "chatSuggestMonth": "How was my month?"
+  "chatSuggestMonth": "How was my month?",
+  "timelineTitle": "Your money ahead",
+  "timelineToday": "Today",
+  "timelineNow": "Now",
+  "timelineProjected": "Projected",
+  "timelineRecorded": "Recorded",
+  "timelineFree": "Free to spend",
+  "timelineHad": "You had",
+  "timelineBalance": "Balance {amount}",
+  "@timelineBalance": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineSetAside": "Set aside {amount}",
+  "@timelineSetAside": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelinePayMark": "Pay {amount}",
+  "@timelinePayMark": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineShort": "{amount} short for something that must be paid",
+  "@timelineShort": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineWithout": "Without it: {amount}",
+  "@timelineWithout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineBuyAfterPay": "Buy after pay",
+  "timelineBalanceLegend": "Balance",
+  "timelineWithPurchase": "With the purchase",
+  "timelinePay": "Pay day",
+  "timelineAssumptions": "Ahead is a projection: your pay on its date, bills on theirs, what is set aside for living spent evenly, and nothing else. Drag across the chart to see any day.",
+  "timelineSemantics": "Chart of your balance and what is free to spend, day by day",
+  "goalChartSemantics": "Chart of how {goal} gets to its target",
+  "@goalChartSemantics": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "goalChartTarget": "Target {amount} by {date}",
+  "@goalChartTarget": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPaceLabel": "Put aside each pay period: {amount}",
+  "@goalPaceLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalOnTrack": "On track: reached by {date}.",
+  "@goalOnTrack": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalLate": "At this pace it is reached on {date}, {days, plural, =1{a day} other{{days} days}} after its date.",
+  "@goalLate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "goalNotMoving": "Nothing is going to it right now, so it is not getting closer.",
+  "goalUsePace": "Move the target date to {date}",
+  "@goalUsePace": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPaceNote": "Only a what-if: nothing changes until you choose.",
+  "goalShowPath": "See how it gets there",
+  "goalHidePath": "Hide"
 }

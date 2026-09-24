@@ -33,6 +33,7 @@ import 'goals_screen.dart';
 import 'plan_screen.dart';
 import 'profile_screen.dart';
 import '../widgets/sts_hero.dart';
+import '../widgets/timeline_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({required this.state, super.key});
@@ -288,12 +289,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       const SizedBox(height: 10),
                     ],
 
-                    if (snapshot.projectedSafeToSpend >
-                        snapshot.safeToSpendNow) ...[
-                      SectionHeading(l.homeAfterNextPay),
-                      _ProjectedCard(snapshot: snapshot),
-                      const SizedBox(height: 20),
-                    ],
+                    // Behind and ahead on one line you can run a finger
+                    // along; the after-pay figure is its pay-day point.
+                    SectionHeading(l.timelineTitle),
+                    TimelineCard(state: state),
+                    const SizedBox(height: 20),
 
                     SectionHeading(l.homeSetAsideFirst),
                     _ProtectedCard(snapshot: snapshot),
@@ -469,50 +469,6 @@ class _ConfirmationBannerState extends State<_ConfirmationBanner> {
           ),
         ),
       );
-}
-
-/// The projected value is visibly a forecast and is never presented as cash
-/// already available (§13, INV-04).
-class _ProjectedCard extends StatelessWidget {
-  const _ProjectedCard({required this.snapshot});
-
-  final PlanSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return UpinoCard(
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  snapshot.projectedSafeToSpend.display(),
-                  style: theme.textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  AppLocalizations.of(context).homeOncePayArrives(
-                    formatDate(context, snapshot.decisionHorizonEnd),
-                  ),
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-          // The layout mirrors in Arabic and Persian, and a mirrored rising
-          // arrow reads as a falling one. The figure it sits beside is a
-          // forecast of more money, so this one glyph keeps its direction.
-          const Directionality(
-            textDirection: TextDirection.ltr,
-            child: RowAffordance(icon: 'trendingUp'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _ProtectedCard extends StatelessWidget {

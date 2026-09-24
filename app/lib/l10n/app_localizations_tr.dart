@@ -1411,4 +1411,114 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'Ayım nasıl geçti?';
+
+  @override
+  String get timelineTitle => 'Önümüzdeki günlerde paranız';
+
+  @override
+  String get timelineToday => 'Bugün';
+
+  @override
+  String get timelineNow => 'Şimdi';
+
+  @override
+  String get timelineProjected => 'Tahmin';
+
+  @override
+  String get timelineRecorded => 'Kayıtlı';
+
+  @override
+  String get timelineFree => 'Harcanabilir';
+
+  @override
+  String get timelineHad => 'Paranız';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'Bakiye $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'Ayrılan $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'Maaş $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'Zorunlu bir ödeme için $amount eksik';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'Onsuz: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'Maaştan sonra al';
+
+  @override
+  String get timelineBalanceLegend => 'Bakiye';
+
+  @override
+  String get timelineWithPurchase => 'Alışverişle';
+
+  @override
+  String get timelinePay => 'Maaş günü';
+
+  @override
+  String get timelineAssumptions =>
+      'İleriye dönük kısım bir tahmindir: maaş kendi tarihinde, faturalar kendi tarihlerinde, yaşam için ayrılan para eşit harcanır ve başka bir şey yok. Herhangi bir günü görmek için grafikte kaydırın.';
+
+  @override
+  String get timelineSemantics =>
+      'Bakiyenizin ve harcanabilir tutarın günlük grafiği';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return '$goal hedefine nasıl ulaşır grafiği';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return '$date tarihine kadar hedef $amount';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'Her maaş döneminde ayır: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'Yolunda: $date tarihinde ulaşılır.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'Bu hızla $date tarihinde, hedef tarihinden $days gün sonra ulaşılır.';
+  }
+
+  @override
+  String get goalNotMoving =>
+      'Şu an bu hedefe hiçbir şey gitmiyor, bu yüzden yaklaşmıyor.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'Hedef tarihini $date yap';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'Sadece bir deneme: siz seçene kadar hiçbir şey değişmez.';
+
+  @override
+  String get goalShowPath => 'Nasıl ulaşacağını gör';
+
+  @override
+  String get goalHidePath => 'Gizle';
 }

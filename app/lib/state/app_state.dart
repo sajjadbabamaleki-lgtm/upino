@@ -734,6 +734,9 @@ class AppState extends ChangeNotifier {
     DateTime? at,
     List<LedgerEvent> extraEvents = const [],
     List<IncomeEvent>? incomeEvents,
+    DateTime? recordedBy,
+    List<Claim>? ownClaims,
+    List<Bill>? bills,
   }) {
     final now = at ?? _now;
     final day = LocalDate.at(now, _utcOffset);
@@ -763,15 +766,18 @@ class AppState extends ChangeNotifier {
               cardId: a.id,
               amount: a.opening,
             ),
-        ..._events,
+        for (final e in _events)
+          if (recordedBy == null ||
+              !(_recordedAt[e.id]?.isAfter(recordedBy) ?? false))
+            e,
         ...extraEvents,
       ],
       // Goals included: leaving them out of a what-if made a purchase look
       // free when it came out of a goal.
       claims: [
-        ..._claims,
+        ...ownClaims ?? _claims,
         ..._goalClaimsAt(day),
-        for (final b in _bills) b.toClaim(day, horizon, _payCycleDays),
+        for (final b in bills ?? _bills) b.toClaim(day, horizon, _payCycleDays),
       ],
       incomeEvents: income,
       cards: [
@@ -1325,15 +1331,20 @@ class AppState extends ChangeNotifier {
   /// ConfirmBalance (§22, §15.1). A difference from the modelled balance is
   /// recorded as an auditable adjustment, never as spending.
   void confirmBalance(Money observed) {
-    final modelled = snapshot.trustedAllocatableLiquidity;
+    // The main account's own balance: with other accounts counted, the
+    // plan's total is not what this one account holds.
+    final modelled =
+        snapshot.ledger.balances[_accountId] ?? Money.zero(_currency);
     final delta = observed - modelled;
     if (!delta.isZero) {
+      final id = 'e${++_eventSeq}';
       _events.add(BalanceAdjustmentEvent(
-        id: 'e${++_eventSeq}',
+        id: id,
         accountId: _accountId,
         delta: delta,
         reason: 'User confirmed observed balance',
       ),);
+      _recordedAt[id] = _now;
     }
     _lastBalanceConfirmation = _now;
     _persist();
@@ -2083,6 +2094,30 @@ class AppState extends ChangeNotifier {
   }
 
   List<GoalContribution> get contributions => List.unmodifiable(_contributions);
+
+  /// A what-if on the live plan: the same claims, accounts and rules, with
+  /// only the moment, some extra events or the expected income changed.
+  /// [recordedBy] leaves out what was recorded after that instant, which is
+  /// how the plan looked then. Never changes anything.
+  PlanSnapshot whatIf({
+    DateTime? at,
+    List<LedgerEvent> extraEvents = const [],
+    List<IncomeEvent>? incomeEvents,
+    DateTime? recordedBy,
+    List<Claim>? ownClaims,
+    List<Bill>? bills,
+  }) =>
+      computePlan(_input(
+        at: at,
+        extraEvents: extraEvents,
+        incomeEvents: incomeEvents,
+        recordedBy: recordedBy,
+        ownClaims: ownClaims,
+        bills: bills,
+      ),);
+
+  /// The claims the person set, without goals or bills.
+  List<Claim> get ownClaims => List.unmodifiable(_claims);
 
   Allocation? allocationFor(String claimId) {
     for (final a in snapshot.allocations) {

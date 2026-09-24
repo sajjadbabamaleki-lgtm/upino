@@ -1391,4 +1391,112 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatSuggestMonth => 'كيف كان شهري؟';
+
+  @override
+  String get timelineTitle => 'أموالك في الأيام القادمة';
+
+  @override
+  String get timelineToday => 'اليوم';
+
+  @override
+  String get timelineNow => 'الآن';
+
+  @override
+  String get timelineProjected => 'متوقع';
+
+  @override
+  String get timelineRecorded => 'مسجَّل';
+
+  @override
+  String get timelineFree => 'متاح للإنفاق';
+
+  @override
+  String get timelineHad => 'كان لديك';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'الرصيد $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'محجوز $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'الراتب $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'ينقص $amount لدفعة لا بد منها';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'بدونها: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'الشراء بعد الراتب';
+
+  @override
+  String get timelineBalanceLegend => 'الرصيد';
+
+  @override
+  String get timelineWithPurchase => 'مع الشراء';
+
+  @override
+  String get timelinePay => 'يوم الراتب';
+
+  @override
+  String get timelineAssumptions =>
+      'ما بعد اليوم توقُّع: راتبك في موعده، والفواتير في مواعيدها، وما خُصص للمعيشة يُنفق بالتساوي، ولا شيء غير ذلك. اسحب على الرسم لترى أي يوم.';
+
+  @override
+  String get timelineSemantics =>
+      'رسم بياني لرصيدك وما هو متاح للإنفاق يومًا بيوم';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'رسم بياني لوصول $goal إلى هدفه';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'الهدف $amount بحلول $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'ادخار كل فترة راتب: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'على المسار: يتحقق بحلول $date.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'بهذه الوتيرة يتحقق في $date، بعد موعده بـ$days يوم.';
+  }
+
+  @override
+  String get goalNotMoving => 'لا يذهب إليه شيء حاليًا، لذا لا يقترب.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'انقل موعد الهدف إلى $date';
+  }
+
+  @override
+  String get goalPaceNote => 'مجرد افتراض: لا يتغير شيء حتى تختار.';
+
+  @override
+  String get goalShowPath => 'انظر كيف يصل';
+
+  @override
+  String get goalHidePath => 'إخفاء';
 }

@@ -94,10 +94,10 @@ void main() {
           .opacity;
 
       expect(opacityAbove(find.byType(StsHero)), 1);
-      expect(opacityAbove(find.text('Set aside first')), lessThan(1));
+      expect(opacityAbove(find.text('Your money ahead')), lessThan(1));
 
       await tester.pumpAndSettle();
-      expect(opacityAbove(find.text('Set aside first')), 1);
+      expect(opacityAbove(find.text('Your money ahead')), 1);
     });
 
     testWidgets('a phone asked to stop animating gets none of it',

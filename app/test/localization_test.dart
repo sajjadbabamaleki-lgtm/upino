@@ -8,7 +8,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:upino/design/icon.dart';
 import 'package:upino/design/parts.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/clock.dart';
@@ -271,18 +270,20 @@ void main() {
       expect(find.text('اجاره و قبض‌ها'), findsWidgets);
     });
 
-    testWidgets('the forecast arrow does not mirror into a falling one',
+    testWidgets('the timeline does not mirror into a falling one',
         (tester) async {
-      // Everything else on the screen mirrors in Persian. This one glyph
-      // must not: a rising forecast drawn as a falling arrow is worse than
-      // an arrow pointing the unexpected way.
+      // Everything else on the screen mirrors in Persian. The chart must
+      // not: a rising line drawn right to left reads as a falling one.
       await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final icon = find.byWidgetPredicate((w) => w is UpinoIcon && w.name == 'trendingUp');
-      expect(icon, findsOneWidget);
+      final chart = find.descendant(
+        of: find.byKey(const Key('timeline-chart')),
+        matching: find.byType(CustomPaint),
+      );
+      expect(chart, findsWidgets);
       expect(
-        Directionality.of(tester.element(icon)),
+        Directionality.of(tester.element(chart.first)),
         TextDirection.ltr,
-        reason: 'the arrow inherited the mirrored direction',
+        reason: 'the chart inherited the mirrored direction',
       );
     });
   });
