@@ -342,8 +342,13 @@ void main() {
 
   testWidgets('03h the Ask tab', (tester) async {
     final state = fundedState();
-    final id = state.startConversation();
-    state.ask(id, 'Can I buy a phone for 1500?');
+    for (final q in [
+      'When is my next pay?',
+      'Where did my money go this month, and what was the biggest thing?',
+      'Can I buy a phone for 1500?',
+    ]) {
+      state.ask(state.startConversation(), q);
+    }
     await shootApp(
       tester,
       '03h-ask-hub',

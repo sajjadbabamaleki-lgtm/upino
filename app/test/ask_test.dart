@@ -289,6 +289,27 @@ void main() {
       expect(state.conversations, hasLength(1));
     });
 
+    testWidgets('conversations sit above the common questions, two rows '
+        'tall however many there are', (tester) async {
+      final state = funded();
+      for (var i = 0; i < 6; i++) {
+        state.ask(state.startConversation(), 'question number $i');
+      }
+      await openHub(tester, state);
+      final shelf = tester.getRect(find.byKey(const Key('ask-history')));
+      final common = tester.getRect(find.byKey(const Key('ask-common-safeToSpend')));
+      expect(shelf.bottom, lessThan(common.top));
+      expect(shelf.height, lessThan(200));
+      // The newest is on top; the oldest is reached by scrolling the shelf.
+      expect(find.text('question number 5'), findsOneWidget);
+      await tester.drag(find.byKey(const Key('ask-history')), const Offset(0, -600));
+      await tester.pumpAndSettle();
+      expect(find.text('question number 0'), findsOneWidget);
+      // The page itself did not move.
+      expect(tester.getRect(find.byKey(const Key('ask-common-safeToSpend'))).top,
+          common.top,);
+    });
+
     testWidgets('a past conversation can be deleted, after a yes',
         (tester) async {
       final state = funded();

@@ -40,6 +40,14 @@ class AskHubScreen extends StatelessWidget {
       children: revealed([
         _AskHero(state: state),
         const SizedBox(height: 20),
+        // Past conversations come first, but only two rows of them: the
+        // rest scroll inside their own box, so however many there are, the
+        // common questions below stay where they are.
+        if (conversations.isNotEmpty) ...[
+          SectionHeading(l.askHubHistory, count: conversations.length),
+          _ConversationShelf(state: state, conversations: conversations),
+          const SizedBox(height: 20),
+        ],
         SectionHeading(l.askHubCommon),
         for (final (q, text) in common) ...[
           _CommonQuestion(
@@ -50,15 +58,55 @@ class AskHubScreen extends StatelessWidget {
           ),
           const SizedBox(height: 10),
         ],
-        if (conversations.isNotEmpty) ...[
-          const SizedBox(height: 10),
-          SectionHeading(l.askHubHistory, count: conversations.length),
-          for (final c in conversations) ...[
-            _PastConversation(state: state, conversation: c),
-            const SizedBox(height: 10),
-          ],
-        ],
       ]),
+    );
+  }
+}
+
+/// Two conversations' height, scrolling within itself when there are more,
+/// with the ones beyond fading out at the bottom edge so it is plain there
+/// is more to scroll to.
+class _ConversationShelf extends StatelessWidget {
+  const _ConversationShelf({required this.state, required this.conversations});
+
+  final AppState state;
+  final List<Conversation> conversations;
+
+  static const visible = 2;
+  static const rowHeight = 74.0;
+  static const gap = 10.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final more = conversations.length > visible;
+    final rows = more ? visible : conversations.length;
+    // A little of the third row shows when there is one, as the cue.
+    final height = rows * rowHeight + (rows - 1) * gap + (more ? 28 : 0);
+    final list = ListView.separated(
+      key: const Key('ask-history'),
+      padding: EdgeInsets.zero,
+      physics: const ClampingScrollPhysics(),
+      itemCount: conversations.length,
+      separatorBuilder: (_, __) => const SizedBox(height: gap),
+      itemBuilder: (context, i) => SizedBox(
+        height: rowHeight,
+        child: _PastConversation(state: state, conversation: conversations[i]),
+      ),
+    );
+    return SizedBox(
+      height: height,
+      child: !more
+          ? list
+          : ShaderMask(
+              shaderCallback: (rect) => const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, Colors.black, Colors.transparent],
+                stops: [0, 0.78, 1],
+              ).createShader(rect),
+              blendMode: BlendMode.dstIn,
+              child: list,
+            ),
     );
   }
 }
@@ -242,11 +290,41 @@ class _PastConversation extends StatelessWidget {
         ),
         child: Text(l.askHubDeleteTitle),
       ),
-      child: ActionRow(
-        title: c.title ?? '',
-        subtitle: '${formatDateShort(context, started)}'
-            '${UpinoTokens.separator}${l.askHubTurns(c.turns.length)}',
+      child: GestureDetector(
         onTap: () => ChatPage.open(context, state, conversationId: c.id),
+        behavior: HitTestBehavior.opaque,
+        child: UpinoCard(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // One line: the shelf is a fixed two rows tall.
+                    Text(
+                      c.title ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      '${formatDateShort(context, started)}'
+                      '${UpinoTokens.separator}${l.askHubTurns(c.turns.length)}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              const RowAffordance(),
+            ],
+          ),
+        ),
       ),
     );
   }
