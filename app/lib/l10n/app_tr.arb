@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{total} hedefin {onTrack} tanesi yolunda",
   "goalsNextUp": "Sıradaki: {goal}, {date}",
   "goalsTips": "Daha erken ulaşmanın yolları",
-  "goalsTipsSub": "Harcamalarınıza göre Upino'ya sorun"
+  "goalsTipsSub": "Harcamalarınıza göre Upino'ya sorun",
+  "goalsDetailTitle": "Her hedef"
 }

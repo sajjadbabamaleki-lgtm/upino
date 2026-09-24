@@ -2014,4 +2014,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'अपने खर्च के आधार पर Upino से पूछें';
+
+  @override
+  String get goalsDetailTitle => 'हर लक्ष्य';
 }

@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{onTrack} de {total} em dia",
   "goalsNextUp": "Próxima: {goal}, {date}",
   "goalsTips": "Jeitos de chegar antes",
-  "goalsTipsSub": "Pergunte ao Upino, com base nos seus gastos"
+  "goalsTipsSub": "Pergunte ao Upino, com base nos seus gastos",
+  "goalsDetailTitle": "Cada meta"
 }

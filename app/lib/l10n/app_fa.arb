@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{onTrack} از {total} در مسیر",
   "goalsNextUp": "بعدی: {goal}، {date}",
   "goalsTips": "راه‌های رسیدن سریع‌تر",
-  "goalsTipsSub": "از اوپینو بپرسید، بر اساس خرج‌های خودتان"
+  "goalsTipsSub": "از اوپینو بپرسید، بر اساس خرج‌های خودتان",
+  "goalsDetailTitle": "جزئیات هر هدف"
 }

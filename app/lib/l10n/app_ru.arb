@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{onTrack} из {total} по плану",
   "goalsNextUp": "Ближайшая: «{goal}», {date}",
   "goalsTips": "Как прийти к цели быстрее",
-  "goalsTipsSub": "Спросите Upino — по вашим тратам"
+  "goalsTipsSub": "Спросите Upino — по вашим тратам",
+  "goalsDetailTitle": "Каждая цель"
 }

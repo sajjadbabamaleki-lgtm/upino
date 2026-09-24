@@ -1485,5 +1485,6 @@
     }
   },
   "goalsTips": "Ways to get there sooner",
-  "goalsTipsSub": "Ask Upino, from your own spending"
+  "goalsTipsSub": "Ask Upino, from your own spending",
+  "goalsDetailTitle": "Each goal"
 }

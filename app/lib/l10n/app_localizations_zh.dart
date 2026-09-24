@@ -1934,4 +1934,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get goalsTipsSub => '根据你的支出问问 Upino';
+
+  @override
+  String get goalsDetailTitle => '各个目标';
 }

@@ -23,14 +23,25 @@ import '../widgets/charts.dart';
 import '../widgets/goal_projection_view.dart';
 import '../widgets/goals_orbit.dart';
 import '../design/icon.dart';
-import 'ask_chat_screen.dart';
 import '../state/projection.dart';
 
-class GoalsScreen extends StatelessWidget {
+class GoalsScreen extends StatefulWidget {
   const GoalsScreen({required this.state, required this.padding, super.key});
 
   final AppState state;
   final EdgeInsets padding;
+
+  @override
+  State<GoalsScreen> createState() => _GoalsScreenState();
+}
+
+class _GoalsScreenState extends State<GoalsScreen> {
+  AppState get state => widget.state;
+  EdgeInsets get padding => widget.padding;
+
+  /// A key for each goal's card, kept across builds so the rings and tiles
+  /// can scroll to it.
+  final _cardKeys = <String, GlobalKey>{};
 
   Future<void> _create(BuildContext context) async {
     final draft = await GoalEditorSheet.show(context, state: state);
@@ -81,40 +92,21 @@ class GoalsScreen extends StatelessWidget {
     return target == 0 ? 0 : saved / target;
   }
 
-  /// The whole goal — where it is heading, its path, adding money and
-  /// changing it — in a sheet that follows the plan while it is open.
-  Future<void> _open(BuildContext context, Goal goal) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (sheet) => AnimatedBuilder(
-          animation: state,
-          builder: (sheet, _) {
-            final current =
-                state.goals.where((g) => g.id == goal.id).firstOrNull;
-            if (current == null) return const SizedBox.shrink();
-            return ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(sheet).size.height * 0.9,
-              ),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-                child: _GoalCard(
-                  state: state,
-                  goal: current,
-                  inflated: state.inflatedTarget(current),
-                  rate: state.inflationBasisPoints,
-                  today: state.today,
-                  payCycleDays: state.payCycleDays,
-                  onEdit: () => _edit(sheet, current),
-                  onContribute: () => _contribute(sheet, current),
-                ),
-              ),
-            );
-          },
-        ),
-      );
+  /// The goal's own card further down, found by its key.
+  GlobalKey _cardKey(String id) =>
+      _cardKeys.putIfAbsent(id, () => GlobalKey(debugLabel: 'goal-$id'));
+
+  /// Scroll down to the goal's card, which holds the whole of it.
+  Future<void> _open(BuildContext context, Goal goal) async {
+    final target = _cardKeys[goal.id]?.currentContext;
+    if (target == null) return;
+    await Scrollable.ensureVisible(
+      target,
+      duration: const Duration(milliseconds: 450),
+      curve: Curves.easeOutCubic,
+      alignment: 0.05,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,28 +179,44 @@ class GoalsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
             ],
-            _TipsRow(
-              onTap: () => ChatPage.open(
-                context,
-                state,
-                firstQuestion: l.chatSuggestAdvice,
+          ],
+          // The one action this tab has, where the eye lands after the
+          // overview. A floating button would sit on top of the nav bar.
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              key: const Key('goals-new'),
+              onPressed: () => _create(context),
+              icon: const Icon(Icons.add_rounded),
+              label: Text(l.goalsNew),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(54),
               ),
             ),
-          ],
-          const SizedBox(height: 10),
-          if (goals.isNotEmpty) ...[
-            _InflationRow(state: state),
-            const SizedBox(height: 10),
-          ],
-          // A floating button would sit on top of the nav bar, so the one
-          // action this tab has lives in the list like the Plan tab's adds.
-          ActionRow(
-            key: const Key('goals-new'),
-            title: l.goalsNew,
-            subtitle: l.goalsNewSub,
-            trailing: const RowAffordance(icon: 'add'),
-            onTap: () => _create(context),
           ),
+          // Further down, each goal again, larger and whole: where it is
+          // heading, its path, adding money. The rings and tiles above
+          // scroll here.
+          if (goals.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            SectionHeading(l.goalsDetailTitle, count: goals.length),
+            for (var i = 0; i < goals.length; i++) ...[
+              _GoalCard(
+                key: _cardKey(goals[i].id),
+                state: state,
+                goal: goals[i],
+                color: goalColor(i),
+                inflated: state.inflatedTarget(goals[i]),
+                rate: state.inflationBasisPoints,
+                today: state.today,
+                payCycleDays: state.payCycleDays,
+                onEdit: () => _edit(context, goals[i]),
+                onContribute: () => _contribute(context, goals[i]),
+              ),
+              const SizedBox(height: 12),
+            ],
+            _InflationRow(state: state),
+          ],
         ]),
       ),
     );
@@ -217,6 +225,8 @@ class GoalsScreen extends StatelessWidget {
 
 class _GoalCard extends StatefulWidget {
   const _GoalCard({
+    super.key,
+    this.color,
     required this.state,
     required this.goal,
     required this.today,
@@ -229,6 +239,9 @@ class _GoalCard extends StatefulWidget {
 
   final AppState state;
   final Goal goal;
+
+  /// Its colour on the rings above; the app's blue when shown alone.
+  final Color? color;
 
   /// The target at the expected inflation on its date, when that is more.
   final Money? inflated;
@@ -303,9 +316,10 @@ class _GoalCardState extends State<_GoalCard> {
                   ? (dark
                       ? UpinoTokens.darkTextTertiary
                       : UpinoTokens.textTertiary)
-                  : (dark
-                      ? UpinoTokens.darkActionPrimary
-                      : UpinoTokens.actionPrimary),
+                  : widget.color ??
+                      (dark
+                          ? UpinoTokens.darkActionPrimary
+                          : UpinoTokens.actionPrimary),
               center: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -748,62 +762,6 @@ class _GoalTile extends StatelessWidget {
                       : color,
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Into a conversation about getting there sooner, answered from the
-/// person's own spending.
-class _TipsRow extends StatelessWidget {
-  const _TipsRow({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final l = AppLocalizations.of(context);
-    final dark = isDark(context);
-    return GestureDetector(
-      key: const Key('goals-tips'),
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        decoration: BoxDecoration(
-          color: dark ? const Color(0xFF2E2716) : const Color(0xFFFFF8E6),
-          borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
-          border: Border.all(
-            color: dark ? const Color(0xFF4A3F22) : const Color(0xFFFBE7B5),
-          ),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.lightbulb_rounded,
-              color: Color(0xFFF5B400),
-              size: 24,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(l.goalsTips, style: theme.textTheme.titleMedium),
-                  Text(
-                    l.goalsTipsSub,
-                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              color: Color(0xFFF5B400),
             ),
           ],
         ),

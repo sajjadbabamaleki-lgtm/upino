@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{onTrack} من {total} على المسار",
   "goalsNextUp": "التالي: {goal}، {date}",
   "goalsTips": "طرق للوصول أسرع",
-  "goalsTipsSub": "اسأل Upino، بناءً على إنفاقك"
+  "goalsTipsSub": "اسأل Upino، بناءً على إنفاقك",
+  "goalsDetailTitle": "كل هدف"
 }

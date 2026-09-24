@@ -225,6 +225,8 @@ void main() {
 
     // All the way right: the most per period, the soonest date.
     final slider = find.byKey(Key('goal-pace-${goal.id}'));
+    await tester.ensureVisible(slider);
+    await tester.pumpAndSettle();
     await tester.drag(slider, const Offset(400, 0));
     await tester.pumpAndSettle();
     expect(state.goals.single.targetDate, before);
@@ -261,5 +263,30 @@ void main() {
     expect(find.byKey(const Key('month-review')), findsOneWidget);
     // Before the first month it still says when the look back is ready.
     expect(find.textContaining('30 days'), findsWidgets);
+  });
+
+  testWidgets('the goal rings arrive: the centre counts up to the whole',
+      (tester) async {
+    final state = funded()
+      ..addGoal(
+        name: 'Bike',
+        target: eur('600.00'),
+        targetDate: LocalDate.parse('2027-10-01'),
+      );
+    state.contributeToGoal(state.goals.single.id, eur('300.00'));
+    await open(tester, state);
+    await tester.tap(find.byKey(const Key('nav-2')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
+    // Early in the welcome the count has not reached the whole.
+    expect(
+      tester.widget<Text>(find.byKey(const Key('goals-overall'))).data,
+      isNot('50%'),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<Text>(find.byKey(const Key('goals-overall'))).data,
+      '50%',
+    );
   });
 }

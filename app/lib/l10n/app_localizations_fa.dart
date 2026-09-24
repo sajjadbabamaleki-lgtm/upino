@@ -2012,4 +2012,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'از اوپینو بپرسید، بر اساس خرج‌های خودتان';
+
+  @override
+  String get goalsDetailTitle => 'جزئیات هر هدف';
 }

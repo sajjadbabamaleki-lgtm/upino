@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{onTrack} sur {total} dans les temps",
   "goalsNextUp": "Prochain : {goal}, {date}",
   "goalsTips": "Comment y arriver plus vite",
-  "goalsTipsSub": "Demandez à Upino, d'après vos dépenses"
+  "goalsTipsSub": "Demandez à Upino, d'après vos dépenses",
+  "goalsDetailTitle": "Chaque objectif"
 }

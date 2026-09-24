@@ -3491,6 +3491,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask Upino, from your own spending'**
   String get goalsTipsSub;
+
+  /// No description provided for @goalsDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Each goal'**
+  String get goalsDetailTitle;
 }
 
 class _AppLocalizationsDelegate

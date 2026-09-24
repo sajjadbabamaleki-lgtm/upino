@@ -2127,4 +2127,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'Ask Upino, from your own spending';
+
+  @override
+  String get goalsDetailTitle => 'Each goal';
 }

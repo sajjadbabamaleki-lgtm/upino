@@ -2016,4 +2016,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'Harcamalarınıza göre Upino\'ya sorun';
+
+  @override
+  String get goalsDetailTitle => 'Her hedef';
 }

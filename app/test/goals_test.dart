@@ -314,8 +314,9 @@ void main() {
 
       expect(state.goals.single.name, 'Laptop');
       expect(state.goals.single.target, eur('1200.00'));
-      expect(find.text('Laptop'), findsOneWidget);
-      expect(find.text('of €1,200.00'), findsOneWidget);
+      // On its tile, and again in full further down.
+      expect(find.text('Laptop'), findsWidgets);
+      expect(find.text('of €1,200.00'), findsWidgets);
     });
 
     testWidgets('money can be added to a goal from its card', (tester) async {

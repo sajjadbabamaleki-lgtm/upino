@@ -189,7 +189,7 @@ the mark and the page's name on the left, the bell and Profile on the right.
 |---|---|---|
 | Home | tab | The decision: Safe-to-Spend; under it a four-way menu — Ask, pay came (with a dot when it is due), bills, and the month; then the best move if there is one, a gauge of the days to pay, bills coming up, what is set aside and why the figure moved |
 | Plan | tab | Accounts, income, bills and subscriptions, goals and commitments — in waterfall order |
-| Goals | tab | Up to four goals as coloured rings round how far along they are together, what went in this month and how many are on track, a tile per goal that opens it whole (where it is heading, its path and pace slider, adding money), and a way into the chat to get there sooner |
+| Goals | tab | Up to four goals as coloured rings round how far along they are together, arriving with a short welcome; what went in this month and how many are on track; a tile per goal; a button for a new goal; then each goal in full further down, where the rings and tiles scroll to |
 | Activity | tab | What was recorded, how to correct it, money coming back, and the month close |
 | Ask | tab | A chat about the plan, answered by the plan (below) |
 | Alerts | bell | What needs the person, derived from the plan, never stored |

@@ -2021,4 +2021,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'Спросите Upino — по вашим тратам';
+
+  @override
+  String get goalsDetailTitle => 'Каждая цель';
 }

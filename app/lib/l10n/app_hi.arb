@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{total} में से {onTrack} सही राह पर",
   "goalsNextUp": "अगला: {goal}, {date}",
   "goalsTips": "जल्दी पहुँचने के तरीके",
-  "goalsTipsSub": "अपने खर्च के आधार पर Upino से पूछें"
+  "goalsTipsSub": "अपने खर्च के आधार पर Upino से पूछें",
+  "goalsDetailTitle": "हर लक्ष्य"
 }

@@ -1990,4 +1990,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'اسأل Upino، بناءً على إنفاقك';
+
+  @override
+  String get goalsDetailTitle => 'كل هدف';
 }

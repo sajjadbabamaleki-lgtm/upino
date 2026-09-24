@@ -562,5 +562,6 @@
   "goalsOnTrackCount": "{total} 个中 {onTrack} 个按计划",
   "goalsNextUp": "下一个：{goal}，{date}",
   "goalsTips": "更快达成的方法",
-  "goalsTipsSub": "根据你的支出问问 Upino"
+  "goalsTipsSub": "根据你的支出问问 Upino",
+  "goalsDetailTitle": "各个目标"
 }

@@ -2096,4 +2096,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get goalsTipsSub => 'Pregunta a Upino, según tus gastos';
+
+  @override
+  String get goalsDetailTitle => 'Cada meta';
 }
