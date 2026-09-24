@@ -1185,11 +1185,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get chatPurchaseShort => 'आज खरीदने पर कोई ज़रूरी भुगतान कम पड़ेगा।';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return '$days दिनों में बाँटें तो रोज़ लगभग $perDay।';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return 'अभी $date तक कुछ भी खाली नहीं: जो है सब ज़रूरी भुगतानों के लिए रखा है।';
   }
@@ -1340,4 +1335,81 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => 'नमस्ते! मैं ठीक हूँ, शुक्रिया।';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'यह वेतन तक $days दिन चलना है।';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '$date तक आपके पैसे में से $amount पहले से तय है।';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · लगभग $days दिन बाद';
+  }
+
+  @override
+  String get askGoalsTitle => 'लक्ष्य आगे खिसकते हैं';
+
+  @override
+  String get askGoalsNote =>
+      'अनुमानित, उसी गति से जिससे हर लक्ष्य के लिए बचत हो रही है।';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return 'इससे $goal लगभग $days दिन पीछे चला जाएगा।';
+  }
+
+  @override
+  String get monthTitle => 'आपका महीना';
+
+  @override
+  String get monthWindow => 'पिछले 30 दिन, उससे पहले के 30 दिनों के मुकाबले';
+
+  @override
+  String monthTooSoon(int days) {
+    return 'महीने की समीक्षा के लिए एक महीने का खर्च चाहिए। आपकी $days दिन में तैयार होगी।';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'पिछले 30 दिनों में $amount खर्च हुए।';
+  }
+
+  @override
+  String get monthNothing => 'पिछले 30 दिनों में कुछ दर्ज नहीं हुआ।';
+
+  @override
+  String monthMore(String amount) {
+    return 'यह पिछले 30 दिनों से $amount ज़्यादा है।';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'यह पिछले 30 दिनों से $amount कम है।';
+  }
+
+  @override
+  String get monthSame => 'पिछले 30 दिनों जितना ही।';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'सबसे ज़्यादा बढ़ा: $category, $amount।';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'सबसे ज़्यादा घटा: $category, $amount।';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'सही राह पर लक्ष्य: $total में से $onTrack।';
+  }
+
+  @override
+  String get chatSuggestMonth => 'मेरा महीना कैसा रहा?';
 }

@@ -53,10 +53,17 @@ class SpendScenarios {
     required this.buyNow,
     required this.buyAfterIncome,
     required this.incomeDate,
+    this.goalPace = const {},
+    this.payCycleDays = 30,
   });
 
   final Money amount;
   final PlanSnapshot doNotBuy;
+
+  /// What each goal's claim puts away per pay period, by claim id, so a
+  /// loss to a goal can be said as time rather than as money.
+  final Map<String, Money> goalPace;
+  final int payCycleDays;
   final PlanSnapshot buyNow;
 
   /// Null when no pay is expected, so there is no later moment to compare.
@@ -86,10 +93,69 @@ class SpendScenarios {
     return out;
   }
 
+  /// Goals that buying now pushes back, and by roughly how many days: what
+  /// the goal loses, at the pace it is being saved for (§9). Approximate by
+  /// nature, and said so wherever it is shown.
+  List<({String claimId, String label, int days})> get goalDelays => [
+        for (final c in costsNow)
+          if (goalPace[c.claimId] case final pace? when pace.minor > 0)
+            (
+              claimId: c.claimId,
+              label: c.label,
+              days: (c.lost.minor * payCycleDays / pace.minor).ceil(),
+            ),
+      ];
+
   /// Whether waiting is materially better, which is the only comparison the
   /// engine can make without assuming anything about behaviour.
   bool get waitingHelps =>
       buyAfterIncome != null && breaksNow && !breaksAfterIncome;
+}
+
+/// A month in a few facts (§13). [previous] and the category moves are
+/// null until there is a full earlier month to compare with.
+class MonthReview {
+  const MonthReview({
+    required this.daysSeen,
+    required this.spent,
+    required this.previous,
+    required this.goals,
+    required this.goalsOnTrack,
+    this.up,
+    this.upBy,
+    this.down,
+    this.downBy,
+  });
+
+  /// A month is thirty days here, matching the spending window.
+  static const month = 30;
+
+  final int daysSeen;
+  final Money spent;
+  final Money? previous;
+  final SpendCategory? up;
+  final Money? upBy;
+  final SpendCategory? down;
+  final Money? downBy;
+  final int goals;
+  final int goalsOnTrack;
+
+  bool get ready => daysSeen >= month;
+  int get daysToReady => ready ? 0 : month - daysSeen;
+
+  /// Last month against the one before, or null with nothing to compare.
+  /// Within a twentieth either way it is "about the same".
+  Money? get change {
+    final p = previous;
+    if (p == null) return null;
+    return spent - p;
+  }
+
+  bool get aboutTheSame {
+    final c = change, p = previous;
+    if (c == null || p == null) return false;
+    return c.minor.abs() * 20 <= p.minor.abs();
+  }
 }
 
 /// A message on the phone, as the device layer hands it over.
@@ -1379,7 +1445,56 @@ class AppState extends ChangeNotifier {
         buyNow: _simulate(extraExpense: amount),
         buyAfterIncome: _afterIncome(amount),
         incomeDate: _projectableIncome?.expectedDate,
+        goalPace: {
+          for (final c in _goalClaims) c.id: c.amount,
+        },
+        payCycleDays: _payCycleDays,
       );
+
+  /// The last thirty days against the thirty before (§13): what went out,
+  /// what moved most, and how the goals stand. Only facts already recorded;
+  /// no score and no judgement.
+  MonthReview get monthReview {
+    final days = daysInUse;
+    final last = spendingByCategory();
+    final previous = days >= 60 ? spendingByCategory(before: 30) : null;
+    Money sum(List<({SpendCategory? category, Money total})> rows) =>
+        Money.sum(rows.map((r) => r.total), _currency);
+
+    SpendCategory? up, down;
+    Money? upBy, downBy;
+    if (previous != null) {
+      final before = {for (final r in previous) r.category: r.total};
+      final now = {for (final r in last) r.category: r.total};
+      for (final c in {...before.keys, ...now.keys}) {
+        if (c == null) continue;
+        final d = (now[c] ?? Money.zero(_currency)) -
+            (before[c] ?? Money.zero(_currency));
+        if (d.minor > 0 && (upBy == null || d > upBy)) {
+          up = c;
+          upBy = d;
+        } else if (d.minor < 0 && (downBy == null || -d.minor > downBy.minor)) {
+          down = c;
+          downBy = Money(-d.minor, _currency);
+        }
+      }
+    }
+
+    final goals = snapshot.allocations
+        .where((a) => a.claimId.startsWith('goal:'))
+        .toList();
+    return MonthReview(
+      daysSeen: days,
+      spent: sum(last),
+      previous: previous == null ? null : sum(previous),
+      up: up,
+      upBy: upBy,
+      down: down,
+      downBy: downBy,
+      goals: goals.length,
+      goalsOnTrack: goals.where((a) => a.shortfall.minor <= 0).length,
+    );
+  }
 
   IncomeEvent? get _projectableIncome {
     for (final i in _incomeEvents) {
@@ -1437,7 +1552,9 @@ class AppState extends ChangeNotifier {
               amount: extraExpense,
             ),
         ],
-        claims: _claims,
+        // The same claims as the live plan, goals included: leaving them
+        // out made a purchase look free when it came out of a goal.
+        claims: [..._claims, ..._goalClaims],
         incomeEvents: incomeEvents ?? _incomeEvents,
         oldestConfirmationAt: _lastBalanceConfirmation,
       ),);

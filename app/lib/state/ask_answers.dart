@@ -79,12 +79,16 @@ class PurchaseAnswer extends AskAnswer {
   final SpendScenarios scenarios;
 }
 
+class MonthReviewAnswer extends AskAnswer {
+  const MonthReviewAnswer(this.review);
+  final MonthReview review;
+}
+
 class SafeToSpendAnswer extends AskAnswer {
   const SafeToSpendAnswer({
     required this.amount,
     required this.until,
     required this.days,
-    required this.perDay,
     required this.trusted,
   });
 
@@ -94,9 +98,6 @@ class SafeToSpendAnswer extends AskAnswer {
   /// Days the figure has to last, today included.
   final int days;
 
-  /// [amount] spread evenly over [days], rounded half-even. A way of seeing
-  /// the figure, not a budget the plan enforces.
-  final Money perDay;
 
   /// False when the balance needs confirming, which the answer says rather
   /// than presenting a stale figure as current.
@@ -262,6 +263,10 @@ final _payWords = _words(
 final _whereWords = _words(
   r'کجا رفت|کجا خرج|خرج(‌| )?هام|دسته|where did|where.*go|spent on|categor',
 );
+final _monthWords = _words(
+  r'ماهم|این ماه|ماه (گذشته|قبل|پیش)|مرور ماه|خلاصه(ٔ|ی)? ماه|ماهانه|'
+  r'my month|this month|last month|month review|monthly|how did i do',
+);
 final _asideWords = _words(
   r'کنار|قبض|تعهد|اجاره|set aside|protected|bills|commitments|rent',
 );
@@ -328,6 +333,7 @@ AskAnswer answerQuestion(String question, AppState state) {
   if (_safeWords.hasMatch(text)) return _safeToSpend(state);
   if (aboutPay) return _nextPay(state);
   if (_whereWords.hasMatch(text)) return _whereItWent(state);
+  if (_monthWords.hasMatch(text)) return MonthReviewAnswer(state.monthReview);
   if (_asideWords.hasMatch(text)) return _setAside(state);
   if (_who.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.whoAreYou);
   if (_howAreYou.hasMatch(text)) {
@@ -351,13 +357,21 @@ WhyAnswer _explain(AppState state) {
 
 /// The questions offered as one-tap chips, so the first message never has
 /// to be typed.
-enum SuggestedQuestion { safeToSpend, nextPay, whereItWent, setAside, advice }
+enum SuggestedQuestion {
+  safeToSpend,
+  nextPay,
+  whereItWent,
+  setAside,
+  monthReview,
+  advice,
+}
 
 AskAnswer answerSuggested(SuggestedQuestion q, AppState state) => switch (q) {
       SuggestedQuestion.safeToSpend => _safeToSpend(state),
       SuggestedQuestion.nextPay => _nextPay(state),
       SuggestedQuestion.whereItWent => _whereItWent(state),
       SuggestedQuestion.setAside => _setAside(state),
+      SuggestedQuestion.monthReview => MonthReviewAnswer(state.monthReview),
       SuggestedQuestion.advice => _advise(state),
     };
 
@@ -369,10 +383,6 @@ SafeToSpendAnswer _safeToSpend(AppState state) {
     amount: s.safeToSpendNow,
     until: s.decisionHorizonEnd,
     days: spread,
-    perDay: Money(
-      divideRoundHalfEven(s.safeToSpendNow.minor, spread),
-      s.safeToSpendNow.currency,
-    ),
     trusted: s.confidenceState == ConfidenceState.trusted,
   );
 }

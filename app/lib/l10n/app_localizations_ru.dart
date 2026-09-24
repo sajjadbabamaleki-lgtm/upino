@@ -1189,11 +1189,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Покупка сегодня оставит обязательный платёж без покрытия.';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return 'Если растянуть на $days дней, это около $perDay в день.';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return 'Сейчас до $date ничего свободного нет: всё уже отложено на обязательные платежи.';
   }
@@ -1346,4 +1341,81 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => 'Привет! Всё хорошо, спасибо.';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'Этого должно хватить на $days дн., до зарплаты.';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '$amount ваших денег уже распределены до $date.';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · примерно на $days дн. позже';
+  }
+
+  @override
+  String get askGoalsTitle => 'Цели сдвигаются';
+
+  @override
+  String get askGoalsNote =>
+      'Примерно, при текущем темпе накоплений на каждую цель.';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return 'Это отодвинет цель «$goal» примерно на $days дн.';
+  }
+
+  @override
+  String get monthTitle => 'Ваш месяц';
+
+  @override
+  String get monthWindow => 'Последние 30 дней против 30 дней до них';
+
+  @override
+  String monthTooSoon(int days) {
+    return 'Для итогов месяца нужен месяц расходов. Ваши будут готовы через $days дн.';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'За последние 30 дней потрачено $amount.';
+  }
+
+  @override
+  String get monthNothing => 'За последние 30 дней ничего не записано.';
+
+  @override
+  String monthMore(String amount) {
+    return 'Это на $amount больше, чем за 30 дней до этого.';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'Это на $amount меньше, чем за 30 дней до этого.';
+  }
+
+  @override
+  String get monthSame => 'Примерно столько же, сколько за 30 дней до этого.';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'Больше всего выросло: $category, на $amount.';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'Больше всего снизилось: $category, на $amount.';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'Цели по плану: $onTrack из $total.';
+  }
+
+  @override
+  String get chatSuggestMonth => 'Как прошёл мой месяц?';
 }

@@ -20,6 +20,7 @@ import '../design/tokens.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import '../widgets/month_review.dart';
 import '../widgets/amount_sheet.dart' show CategoryChips, categoryLabel;
 
 class ActivityScreen extends StatelessWidget {
@@ -55,6 +56,7 @@ class ActivityScreen extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final entries = state.activity;
     final spending = state.spendingByCategory();
+    final review = state.monthReview;
 
     return ListView(
       padding: padding,
@@ -69,6 +71,11 @@ class ActivityScreen extends StatelessWidget {
         ),
         // Only once something has been sorted: a card that says "Not sorted"
         // and nothing else tells the person nothing they did not know.
+        // Once there is a month to look back on.
+        if (review.ready) ...[
+          MonthReviewCard(review: review),
+          const SizedBox(height: 10),
+        ],
         if (spending.any((r) => r.category != null)) ...[
           _WhereItWent(spending: spending),
           const SizedBox(height: 10),

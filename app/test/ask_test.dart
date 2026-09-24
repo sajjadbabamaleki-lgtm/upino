@@ -496,13 +496,13 @@ void main() {
           SmallTalk.whoAreYou,);
     });
 
-    test('what can be spent, spread over the days it has to last', () {
+    test('what can be spent, and how long it has to last, not a daily cut',
+        () {
       final state = funded();
       final a = answerQuestion('how much can I spend', state)
           as SafeToSpendAnswer;
+      expect(a.amount, state.snapshot.safeToSpendNow);
       expect(a.days, a.until.differenceInDays(state.today) + 1);
-      expect(a.perDay.minor * a.days,
-          closeTo(a.amount.minor, a.days.toDouble()),);
     });
 
     test('pay is counted down in days', () {
@@ -540,6 +540,74 @@ void main() {
         find.textContaining('keeps everything you must pay covered'),
         findsOneWidget,
       );
+    });
+  });
+
+  group('goals in the purchase', () {
+    test('what a goal loses is said as days later, at its pace', () {
+      // 1200 over twelve pay periods is 100 a period; losing 50 of it is
+      // half a period, fifteen days.
+      final state = funded()
+        ..addGoal(
+          name: 'Bike',
+          target: eur('1200.00'),
+          targetDate: LocalDate.parse('2026-10-01').addDays(360),
+        );
+      final r = state.simulatePurchase(
+        state.snapshot.safeToSpendNow + eur('50.00'),
+      );
+      final bike = r.goalDelays.single;
+      expect(bike.label, 'Bike');
+      expect(bike.days, 15);
+    });
+
+    test('a purchase the plan absorbs moves no goal', () {
+      final state = funded()
+        ..addGoal(
+          name: 'Bike',
+          target: eur('1200.00'),
+          targetDate: LocalDate.parse('2026-10-01').addDays(360),
+        );
+      expect(state.simulatePurchase(eur('100.00')).goalDelays, isEmpty);
+    });
+  });
+
+  group('the month review', () {
+    AppState later(AppState from, int days) =>
+        AppState(now: DateTime.utc(2026, 10, 1, 10).add(Duration(days: days)))
+          ..replaceWith(from.toDocument());
+
+    test('waits for a month of spending', () {
+      final r = funded().monthReview;
+      expect(r.ready, isFalse);
+      expect(r.daysToReady, 30);
+      expect(answerQuestion('ماهم چطور گذشت؟', funded()),
+          isA<MonthReviewAnswer>(),);
+    });
+
+    test('compares the last thirty days with the thirty before', () {
+      final start = funded();
+      final first = later(start, 10)
+        ..recordExpense(eur('100.00'), category: SpendCategory.food)
+        ..recordExpense(eur('80.00'), category: SpendCategory.fun);
+      final second = later(first, 45)
+        ..recordExpense(eur('300.00'), category: SpendCategory.food);
+      final r = later(second, 65).monthReview;
+      expect(r.ready, isTrue);
+      expect(r.spent, eur('300.00'));
+      expect(r.previous, eur('180.00'));
+      expect(r.change, eur('120.00'));
+      expect(r.up, SpendCategory.food);
+      expect(r.upBy, eur('200.00'));
+      expect(r.down, SpendCategory.fun);
+      expect(r.downBy, eur('80.00'));
+    });
+
+    test('is asked for in either language', () {
+      final state = funded();
+      for (final q in ['how was my month', 'مرور ماه', 'this month?']) {
+        expect(answerQuestion(q, state), isA<MonthReviewAnswer>(), reason: q);
+      }
     });
   });
 }

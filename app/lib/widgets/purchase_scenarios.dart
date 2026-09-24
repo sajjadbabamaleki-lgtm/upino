@@ -53,6 +53,7 @@ class PurchaseScenarios extends StatelessWidget {
           note: result.breaksNow ? l.askBreaks : l.askSafe,
           critical: result.breaksNow,
           costs: result.costsNow,
+          goalDelays: result.goalDelays,
         ),
         const SizedBox(height: 12),
         if (result.buyAfterIncome != null)
@@ -106,6 +107,7 @@ class _Scenario extends StatelessWidget {
     required this.note,
     this.critical = false,
     this.costs = const [],
+    this.goalDelays = const [],
     this.assumption,
     super.key,
   });
@@ -115,6 +117,7 @@ class _Scenario extends StatelessWidget {
   final String note;
   final bool critical;
   final List<({String claimId, String label, Money lost})> costs;
+  final List<({String claimId, String label, int days})> goalDelays;
   final String? assumption;
 
   @override
@@ -161,6 +164,32 @@ class _Scenario extends StatelessWidget {
                       ?.copyWith(fontFeatures: moneyFeatures),
                 ),
               ),
+          ],
+          // A goal's loss said as time: "a week later" is felt where
+          // "200 less this period" is not (§9).
+          if (goalDelays.isNotEmpty) ...[
+            const SizedBox(height: 14),
+            Text(
+              l.askGoalsTitle,
+              key: const Key('ask-goal-delays'),
+              style: theme.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 6),
+            for (final g in goalDelays)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  l.askGoalLater(labelForClaim(l, g.claimId, g.label), g.days),
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
+            Text(
+              l.askGoalsNote,
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontSize: 12,
+                color: UpinoTokens.textTertiary,
+              ),
+            ),
           ],
           if (assumption != null) ...[
             const SizedBox(height: 12),

@@ -2160,12 +2160,6 @@ abstract class AppLocalizations {
   /// **'Buying it today would leave something you must pay short.'**
   String get chatPurchaseShort;
 
-  /// No description provided for @chatSafePerDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Spread over {days} days, that\'s about {perDay} a day.'**
-  String chatSafePerDay(String perDay, int days);
-
   /// No description provided for @chatSafeNothing.
   ///
   /// In en, this message translates to:
@@ -2405,6 +2399,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hi! I\'m good, thanks.'**
   String get chatSmallHiFine;
+
+  /// No description provided for @chatSafeLasts.
+  ///
+  /// In en, this message translates to:
+  /// **'That has to last {days} days, until your pay.'**
+  String chatSafeLasts(int days);
+
+  /// No description provided for @homeSpokenFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} of your money is already spoken for until {date}.'**
+  String homeSpokenFor(String amount, String date);
+
+  /// No description provided for @askGoalLater.
+  ///
+  /// In en, this message translates to:
+  /// **'{goal} · about {days, plural, =1{a day} other{{days} days}} later'**
+  String askGoalLater(String goal, int days);
+
+  /// No description provided for @askGoalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals move later'**
+  String get askGoalsTitle;
+
+  /// No description provided for @askGoalsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Roughly, at the pace each goal is being saved for.'**
+  String get askGoalsNote;
+
+  /// No description provided for @chatPurchaseGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'It would push {goal} back by about {days, plural, =1{a day} other{{days} days}}.'**
+  String chatPurchaseGoal(String goal, int days);
+
+  /// No description provided for @monthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your month'**
+  String get monthTitle;
+
+  /// No description provided for @monthWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'The last 30 days, against the 30 before'**
+  String get monthWindow;
+
+  /// No description provided for @monthTooSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'A month review needs a month of spending. Yours is ready in {days, plural, =1{a day} other{{days} days}}.'**
+  String monthTooSoon(int days);
+
+  /// No description provided for @monthSpent.
+  ///
+  /// In en, this message translates to:
+  /// **'In the last 30 days, {amount} went out.'**
+  String monthSpent(String amount);
+
+  /// No description provided for @monthNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was recorded in the last 30 days.'**
+  String get monthNothing;
+
+  /// No description provided for @monthMore.
+  ///
+  /// In en, this message translates to:
+  /// **'That is {amount} more than the 30 days before.'**
+  String monthMore(String amount);
+
+  /// No description provided for @monthLess.
+  ///
+  /// In en, this message translates to:
+  /// **'That is {amount} less than the 30 days before.'**
+  String monthLess(String amount);
+
+  /// No description provided for @monthSame.
+  ///
+  /// In en, this message translates to:
+  /// **'About the same as the 30 days before.'**
+  String get monthSame;
+
+  /// No description provided for @monthUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up the most: {category}, by {amount}.'**
+  String monthUp(String category, String amount);
+
+  /// No description provided for @monthDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down the most: {category}, by {amount}.'**
+  String monthDown(String category, String amount);
+
+  /// No description provided for @monthGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals on track: {onTrack} of {total}.'**
+  String monthGoals(int onTrack, int total);
+
+  /// No description provided for @chatSuggestMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'How was my month?'**
+  String get chatSuggestMonth;
 }
 
 class _AppLocalizationsDelegate

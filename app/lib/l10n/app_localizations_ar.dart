@@ -1168,11 +1168,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'الشراء اليوم سيترك شيئًا يجب دفعه دون تغطية.';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return 'موزّعًا على $days يومًا، هذا نحو $perDay يوميًا.';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return 'حاليًا لا يوجد فائض حتى $date: كل ما لديك مخصّص لما يجب دفعه.';
   }
@@ -1320,4 +1315,80 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => 'مرحبًا! أنا بخير، شكرًا.';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'يجب أن يكفي هذا $days يومًا حتى راتبك.';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '$amount من أموالك محجوزة مسبقًا حتى $date.';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · متأخر نحو $days يوم';
+  }
+
+  @override
+  String get askGoalsTitle => 'الأهداف تتأخر';
+
+  @override
+  String get askGoalsNote => 'تقريبًا، بالوتيرة التي يُدَّخر بها لكل هدف.';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return 'سيؤخر $goal نحو $days يوم.';
+  }
+
+  @override
+  String get monthTitle => 'شهرك';
+
+  @override
+  String get monthWindow => 'آخر 30 يومًا مقارنةً بالـ30 التي قبلها';
+
+  @override
+  String monthTooSoon(int days) {
+    return 'مراجعة الشهر تحتاج إلى شهر من الإنفاق. ستكون جاهزة بعد $days يوم.';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'في آخر 30 يومًا، خرج $amount.';
+  }
+
+  @override
+  String get monthNothing => 'لم يُسجَّل شيء في آخر 30 يومًا.';
+
+  @override
+  String monthMore(String amount) {
+    return 'أي أكثر بـ$amount من الـ30 يومًا السابقة.';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'أي أقل بـ$amount من الـ30 يومًا السابقة.';
+  }
+
+  @override
+  String get monthSame => 'تقريبًا مثل الـ30 يومًا السابقة.';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'الأكثر ارتفاعًا: $category، بمقدار $amount.';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'الأكثر انخفاضًا: $category، بمقدار $amount.';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'الأهداف على المسار: $onTrack من $total.';
+  }
+
+  @override
+  String get chatSuggestMonth => 'كيف كان شهري؟';
 }

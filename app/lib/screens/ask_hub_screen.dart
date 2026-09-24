@@ -18,6 +18,7 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
+import '../widgets/month_review.dart';
 import '../widgets/top_bar.dart' show UpinoMark;
 import 'ask_chat_screen.dart';
 
@@ -334,11 +335,11 @@ class _PastConversation extends StatelessWidget {
 String answerPreview(BuildContext context, AskAnswer answer) {
   final l = AppLocalizations.of(context);
   return switch (answer) {
-    SafeToSpendAnswer(:final amount, :final until, :final perDay, :final days)
+    SafeToSpendAnswer(:final amount, :final until, :final days)
         when !amount.isZero =>
       [
         l.chatSafe(amount.display(), formatDate(context, until)),
-        if (days > 1) l.chatSafePerDay(perDay.display(), days),
+        if (days > 1) l.chatSafeLasts(days),
       ].join(' '),
     SafeToSpendAnswer(:final until) =>
       l.chatSafeNothing(formatDate(context, until)),
@@ -355,6 +356,8 @@ String answerPreview(BuildContext context, AskAnswer answer) {
         .join(UpinoTokens.separator),
     SetAsideAnswer(:final total, :final claims) =>
       l.askHubAsidePreview(total.display(), claims.length),
+    MonthReviewAnswer(:final review) =>
+      monthReviewLines(l, review).take(2).join(' '),
     AdviceAnswer(:final acquaintance) when
         acquaintance == Acquaintance.newcomer =>
       l.chatAdviceTooSoon,

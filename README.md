@@ -187,10 +187,10 @@ the mark and the page's name on the left, the bell and Profile on the right.
 
 | Screen | Where | Holds |
 |---|---|---|
-| Home | tab | The decision: Safe-to-Spend, what is short, why the figure moved |
+| Home | tab | The decision: Safe-to-Spend, what is short, how much is already spoken for and until when, why the figure moved |
 | Plan | tab | Commitments, income and balance — listed in waterfall order |
 | Goals | tab | Targets, progress and what each needs from this pay period |
-| Activity | tab | What was recorded, and how to correct it |
+| Activity | tab | What was recorded, how to correct it, and the month review |
 | Ask | tab | A chat about the plan, answered by the plan (below) |
 | Alerts | bell | What needs the person, derived from the plan, never stored |
 | Profile | capsule | Balance confirmation, confidence, theme, backup, starting over |
@@ -199,14 +199,21 @@ the mark and the page's name on the left, the bell and Profile on the right.
 tab is a hub: a card that opens the chat on its own page, the common
 questions with part of their answer already showing, and past conversations.
 A question is matched against a few intents in Persian and English — how much
-can be spent, the next pay, where the money went, what is set aside, why, how
-to spend less, and ordinary pleasantries — and a price anywhere in it makes
-it a purchase, answered with the same three full plans the scenario cards
-show. Replies come back in the language the question was written in. Every
+can be spent, the next pay, where the money went, what is set aside, how the
+month went, why, how to spend less, and ordinary pleasantries — and a price
+anywhere in it makes it a purchase, answered with the same three full plans
+the scenario cards show, including how many days later each goal it touches
+would be reached. What can be spent is given with how long it has to last,
+never as a daily allowance. Replies come back in the language the question was written in. Every
 figure is read from the engine and nothing leaves the phone. Conversations
 keep only their questions; answers are recomputed from the plan whenever one
 is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
+
+The month review compares the last thirty days with the thirty before: what
+went out, the category that rose and the one that fell most, and how many
+goals are on track. It appears on Activity after a month of use and can be
+asked for in the chat. It states facts; there is no score.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.

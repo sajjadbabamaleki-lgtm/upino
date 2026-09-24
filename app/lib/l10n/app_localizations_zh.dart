@@ -1129,11 +1129,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatPurchaseShort => '今天买会让某项必须支付的款项不够。';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return '分摊到 $days 天，大约每天 $perDay。';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return '目前到 $date 前没有余钱：现有的钱都已留给必须支付的项目。';
   }
@@ -1274,4 +1269,80 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => '你好！我很好，谢谢。';
+
+  @override
+  String chatSafeLasts(int days) {
+    return '这笔钱要撑 $days 天，直到发工资。';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '到 $date 为止，你已有 $amount 的钱有了去处。';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · 大约推迟 $days 天';
+  }
+
+  @override
+  String get askGoalsTitle => '目标会推迟';
+
+  @override
+  String get askGoalsNote => '按每个目标当前的储蓄速度粗略估算。';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return '这会让$goal推迟大约 $days 天。';
+  }
+
+  @override
+  String get monthTitle => '你的这个月';
+
+  @override
+  String get monthWindow => '最近 30 天，对比之前的 30 天';
+
+  @override
+  String monthTooSoon(int days) {
+    return '月度回顾需要一个月的支出记录。你的将在 $days 天后准备好。';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return '最近 30 天共支出 $amount。';
+  }
+
+  @override
+  String get monthNothing => '最近 30 天没有任何记录。';
+
+  @override
+  String monthMore(String amount) {
+    return '比之前 30 天多了 $amount。';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return '比之前 30 天少了 $amount。';
+  }
+
+  @override
+  String get monthSame => '与之前 30 天大致相同。';
+
+  @override
+  String monthUp(String category, String amount) {
+    return '增长最多：$category，多了 $amount。';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return '减少最多：$category，少了 $amount。';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return '按计划进行的目标：$onTrack / $total。';
+  }
+
+  @override
+  String get chatSuggestMonth => '我这个月过得怎么样？';
 }

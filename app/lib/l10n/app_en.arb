@@ -691,17 +691,6 @@
     }
   },
   "chatPurchaseShort": "Buying it today would leave something you must pay short.",
-  "chatSafePerDay": "Spread over {days} days, that's about {perDay} a day.",
-  "@chatSafePerDay": {
-    "placeholders": {
-      "perDay": {
-        "type": "String"
-      },
-      "days": {
-        "type": "int"
-      }
-    }
-  },
   "chatSafeNothing": "Right now there's nothing spare until {date}: everything you have is already promised to something you must pay.",
   "@chatSafeNothing": {
     "placeholders": {
@@ -823,5 +812,118 @@
   "askHubDeleteTitle": "Delete this conversation?",
   "askHubDeleteBlurb": "Only the conversation goes. Nothing in your plan changes.",
   "chatSmallHi": "Hi!",
-  "chatSmallHiFine": "Hi! I'm good, thanks."
+  "chatSmallHiFine": "Hi! I'm good, thanks.",
+  "chatSafeLasts": "That has to last {days} days, until your pay.",
+  "@chatSafeLasts": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSpokenFor": "{amount} of your money is already spoken for until {date}.",
+  "@homeSpokenFor": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "askGoalLater": "{goal} · about {days, plural, =1{a day} other{{days} days}} later",
+  "@askGoalLater": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "askGoalsTitle": "Goals move later",
+  "askGoalsNote": "Roughly, at the pace each goal is being saved for.",
+  "chatPurchaseGoal": "It would push {goal} back by about {days, plural, =1{a day} other{{days} days}}.",
+  "@chatPurchaseGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthTitle": "Your month",
+  "monthWindow": "The last 30 days, against the 30 before",
+  "monthTooSoon": "A month review needs a month of spending. Yours is ready in {days, plural, =1{a day} other{{days} days}}.",
+  "@monthTooSoon": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthSpent": "In the last 30 days, {amount} went out.",
+  "@monthSpent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthNothing": "Nothing was recorded in the last 30 days.",
+  "monthMore": "That is {amount} more than the 30 days before.",
+  "@monthMore": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthLess": "That is {amount} less than the 30 days before.",
+  "@monthLess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthSame": "About the same as the 30 days before.",
+  "monthUp": "Up the most: {category}, by {amount}.",
+  "@monthUp": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthDown": "Down the most: {category}, by {amount}.",
+  "@monthDown": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthGoals": "Goals on track: {onTrack} of {total}.",
+  "@monthGoals": {
+    "placeholders": {
+      "onTrack": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestMonth": "How was my month?"
 }

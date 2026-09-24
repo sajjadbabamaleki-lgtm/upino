@@ -26,6 +26,7 @@ import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
+import '../widgets/month_review.dart';
 import '../widgets/purchase_scenarios.dart';
 
 class ChatPage extends StatefulWidget {
@@ -316,6 +317,7 @@ List<(SuggestedQuestion, String)> suggestedQuestions(AppLocalizations l) => [
       (SuggestedQuestion.nextPay, l.chatSuggestPay),
       (SuggestedQuestion.whereItWent, l.chatSuggestWhere),
       (SuggestedQuestion.setAside, l.chatSuggestAside),
+      (SuggestedQuestion.monthReview, l.chatSuggestMonth),
       (SuggestedQuestion.advice, l.chatSuggestAdvice),
     ];
 
@@ -498,17 +500,25 @@ class _AnswerView extends StatelessWidget {
                 )
               else
                 l.chatPurchaseShort,
+              if (scenarios.goalDelays.firstOrNull case final g?)
+                l.chatPurchaseGoal(
+                  labelForClaim(l, g.claimId, g.label),
+                  g.days,
+                ),
             ]),
             const SizedBox(height: 10),
             // The cards carry the "no verdict" line themselves.
             PurchaseScenarios(result: scenarios),
           ],
         ),
+      MonthReviewAnswer(:final review) => say(
+          const Key('chat-answer-month'),
+          monthReviewLines(l, review),
+        ),
       SafeToSpendAnswer(
         :final amount,
         :final until,
         :final days,
-        :final perDay,
         :final trusted,
       ) =>
         say(const Key('chat-answer-safe'), [
@@ -516,7 +526,7 @@ class _AnswerView extends StatelessWidget {
             l.chatSafeNothing(formatDate(context, until))
           else ...[
             l.chatSafe(amount.display(), formatDate(context, until)),
-            if (days > 1) l.chatSafePerDay(perDay.display(), days),
+            if (days > 1) l.chatSafeLasts(days),
           ],
           if (!trusted) l.chatSafeStale,
         ]),

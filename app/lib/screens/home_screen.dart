@@ -538,9 +538,15 @@ class _ProtectedCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Said as money already taken and the date it is held to (§6.3),
+          // so the gap between balance and spendable is not a mystery.
           Text(
-            AppLocalizations.of(context).homeProtectedBlurb,
-            style: theme.textTheme.bodySmall,
+            AppLocalizations.of(context).homeSpokenFor(
+              snapshot.protectedTotal.display(),
+              formatDate(context, snapshot.decisionHorizonEnd),
+            ),
+            key: const Key('home-spoken-for'),
+            style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           for (var i = 0; i < rows.length; i++) ...[

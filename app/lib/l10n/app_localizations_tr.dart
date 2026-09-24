@@ -1183,11 +1183,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Bugün alırsan ödemen gereken bir şey açıkta kalır.';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return '$days güne yayarsan günde yaklaşık $perDay eder.';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return 'Şu an $date tarihine kadar boşta para yok: elindeki her şey ödemelere ayrılmış.';
   }
@@ -1339,4 +1334,81 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => 'Merhaba! İyiyim, teşekkürler.';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'Bu, maaşa kadar $days gün yetmeli.';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '$date tarihine kadar paranızın $amount kadarı zaten ayrılmış durumda.';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · yaklaşık $days gün sonra';
+  }
+
+  @override
+  String get askGoalsTitle => 'Hedefler gecikir';
+
+  @override
+  String get askGoalsNote =>
+      'Yaklaşık olarak, her hedef için biriktirilen hızla.';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return 'Bu, $goal hedefini yaklaşık $days gün geciktirir.';
+  }
+
+  @override
+  String get monthTitle => 'Ayınız';
+
+  @override
+  String get monthWindow => 'Son 30 gün, önceki 30 güne karşı';
+
+  @override
+  String monthTooSoon(int days) {
+    return 'Ay özeti için bir aylık harcama gerekir. Sizinki $days gün içinde hazır olur.';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'Son 30 günde $amount harcandı.';
+  }
+
+  @override
+  String get monthNothing => 'Son 30 günde hiçbir şey kaydedilmedi.';
+
+  @override
+  String monthMore(String amount) {
+    return 'Bu, önceki 30 günden $amount fazla.';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'Bu, önceki 30 günden $amount az.';
+  }
+
+  @override
+  String get monthSame => 'Önceki 30 günle hemen hemen aynı.';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'En çok artan: $category, $amount.';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'En çok azalan: $category, $amount.';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'Yolunda giden hedefler: $total hedefin $onTrack tanesi.';
+  }
+
+  @override
+  String get chatSuggestMonth => 'Ayım nasıl geçti?';
 }

@@ -1194,11 +1194,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'Comprar hoje deixaria algo que tem de pagar a descoberto.';
 
   @override
-  String chatSafePerDay(String perDay, int days) {
-    return 'Repartido por $days dias, dá cerca de $perDay por dia.';
-  }
-
-  @override
   String chatSafeNothing(String date) {
     return 'Neste momento não sobra nada até $date: tudo o que tem já está comprometido.';
   }
@@ -1354,4 +1349,99 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get chatSmallHiFine => 'Olá! Estou bem, obrigado.';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'Isto tem de durar $days dias, até ao salário.';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '$amount do seu dinheiro já tem destino até $date.';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days dias',
+      one: 'um dia',
+    );
+    return '$goal · cerca de $_temp0 depois';
+  }
+
+  @override
+  String get askGoalsTitle => 'As metas atrasam';
+
+  @override
+  String get askGoalsNote =>
+      'Aproximado, no ritmo em que cada meta está sendo poupada.';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days dias',
+      one: 'um dia',
+    );
+    return 'Isso atrasaria $goal em cerca de $_temp0.';
+  }
+
+  @override
+  String get monthTitle => 'Seu mês';
+
+  @override
+  String get monthWindow => 'Os últimos 30 dias, comparados aos 30 anteriores';
+
+  @override
+  String monthTooSoon(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days dias',
+      one: 'um dia',
+    );
+    return 'O resumo do mês precisa de um mês de gastos. O seu fica pronto em $_temp0.';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'Nos últimos 30 dias, saíram $amount.';
+  }
+
+  @override
+  String get monthNothing => 'Nada foi registrado nos últimos 30 dias.';
+
+  @override
+  String monthMore(String amount) {
+    return 'São $amount a mais que nos 30 dias anteriores.';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'São $amount a menos que nos 30 dias anteriores.';
+  }
+
+  @override
+  String get monthSame => 'Mais ou menos o mesmo que nos 30 dias anteriores.';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'O que mais subiu: $category, $amount.';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'O que mais caiu: $category, $amount.';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'Metas em dia: $onTrack de $total.';
+  }
+
+  @override
+  String get chatSuggestMonth => 'Como foi meu mês?';
 }
