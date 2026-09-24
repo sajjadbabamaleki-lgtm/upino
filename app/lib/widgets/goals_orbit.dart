@@ -47,31 +47,40 @@ class GoalsOrbit extends StatelessWidget {
   final double overall;
   final ValueChanged<Goal> onOpen;
 
-  static const _height = 320.0;
-  static const _ring = 66.0;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     final dark = isDark(context);
-    return SizedBox(
-      key: const Key('goals-orbit'),
-      height: _height,
-      child: LayoutBuilder(
-        builder: (context, box) {
-          final w = box.maxWidth;
-          final c = Offset(w / 2, _height / 2);
-          final r = math.min(w, _height) / 2 - 62;
-          final n = goals.length;
-          // Round from the top, evenly.
-          final angles = [
-            for (var i = 0; i < n; i++) -math.pi / 2 + i * 2 * math.pi / n,
-          ];
-          Offset at(double a, double radius) =>
-              c + Offset(math.cos(a), math.sin(a)) * radius;
+    final ink = dark ? const Color(0xFFB4B4BC) : const Color(0xFF6E6E76);
+    return LayoutBuilder(
+      builder: (context, box) {
+        final w = box.maxWidth;
+        // The rings sit on a circle of radius r; the names run round a
+        // circle 1.72 r out, as in the reference, so the whole thing is
+        // about 3.6 r across.
+        final r = math.min(w / 3.7, 100.0);
+        final height = r * 3.7;
+        final c = Offset(w / 2, height / 2);
+        final ring = r * 0.62;
+        final n = goals.length;
+        final angles = [
+          for (var i = 0; i < n; i++) -math.pi / 2 + i * 2 * math.pi / n,
+        ];
+        Offset at(double a, double radius) =>
+            c + Offset(math.cos(a), math.sin(a)) * radius;
+        final labelStyle =
+            (theme.textTheme.bodySmall ?? const TextStyle()).copyWith(
+          fontSize: 13,
+          letterSpacing: 2.2,
+          fontWeight: FontWeight.w500,
+          color: ink,
+        );
 
-          return Stack(
+        return SizedBox(
+          key: const Key('goals-orbit'),
+          height: height,
+          child: Stack(
             clipBehavior: Clip.none,
             children: [
               Positioned.fill(
@@ -81,33 +90,34 @@ class GoalsOrbit extends StatelessWidget {
                     radius: r,
                     angles: angles,
                     colors: [for (final g in goals) goalColor(g.color)],
+                    names: [for (final g in goals) g.goal.name.toUpperCase()],
+                    labelStyle: labelStyle,
                     dark: dark,
                   ),
                 ),
               ),
               // The centre: all goals together.
               Positioned(
-                left: c.dx - 70,
-                top: c.dy - 45,
-                width: 140,
-                height: 90,
-                // Shrunk to fit, never spilling into the rings.
+                left: c.dx - r * 0.72,
+                top: c.dy - r * 0.5,
+                width: r * 1.44,
+                height: r,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         '${(overall * 100).floor().clamp(0, 100)}%',
                         key: const Key('goals-overall'),
                         style: theme.textTheme.displayMedium?.copyWith(
-                          fontSize: 42,
+                          fontSize: 46,
                           height: 1.0,
+                          fontWeight: FontWeight.w700,
                           fontFeatures: moneyFeatures,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         l.goalsOverall,
                         textAlign: TextAlign.center,
@@ -117,13 +127,12 @@ class GoalsOrbit extends StatelessWidget {
                   ),
                 ),
               ),
-              for (var i = 0; i < n; i++) ...[
-                // Each goal's ring.
+              for (var i = 0; i < n; i++)
                 Positioned(
-                  left: at(angles[i], r).dx - _ring / 2,
-                  top: at(angles[i], r).dy - _ring / 2,
-                  width: _ring,
-                  height: _ring,
+                  left: at(angles[i], r).dx - ring / 2,
+                  top: at(angles[i], r).dy - ring / 2,
+                  width: ring,
+                  height: ring,
                   child: GestureDetector(
                     key: Key('goals-orbit-${goals[i].goal.id}'),
                     onTap: () => onOpen(goals[i].goal),
@@ -133,58 +142,10 @@ class GoalsOrbit extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Its name outside the ring: level above and below, turned
-                // along the side at left and right so a word keeps its
-                // shape (a script that joins its letters cannot be bent
-                // round a curve one letter at a time).
-                _Label(
-                  text: goals[i].goal.name,
-                  at: at(angles[i], r + _ring / 2 + 16),
-                  angle: angles[i],
-                ),
-              ],
             ],
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _Label extends StatelessWidget {
-  const _Label({required this.text, required this.at, required this.angle});
-
-  final String text;
-  final Offset at;
-  final double angle;
-
-  @override
-  Widget build(BuildContext context) {
-    final side = math.cos(angle).abs() > 0.7;
-    final style = Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontSize: 12,
-          letterSpacing: 1.6,
-          fontWeight: FontWeight.w600,
+          ),
         );
-    const w = 120.0, h = 18.0;
-    final label = Text(
-      text.toUpperCase(),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.center,
-      style: style,
-    );
-    return Positioned(
-      left: at.dx - w / 2,
-      top: at.dy - h / 2,
-      width: w,
-      height: h,
-      child: side
-          ? Transform.rotate(
-              angle: math.cos(angle) > 0 ? math.pi / 2 : -math.pi / 2,
-              child: label,
-            )
-          : label,
+      },
     );
   }
 }
@@ -206,7 +167,8 @@ class _Ring extends StatelessWidget {
           child: Text(
             '${goalPercent(goal)}',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: 18,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
                   fontFeatures: moneyFeatures,
                 ),
           ),
@@ -224,17 +186,17 @@ class _RingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final c = size.center(Offset.zero);
-    final r = size.width / 2 - 3;
+    final r = size.width / 2 - 2;
     canvas
-      ..drawCircle(c, r + 2, Paint()..color = fill)
-      ..drawCircle(c, r - 3, Paint()..color = color.withValues(alpha: 0.08))
+      ..drawCircle(c, r, Paint()..color = fill)
+      ..drawCircle(c, r - 2, Paint()..color = color.withValues(alpha: 0.07))
       ..drawCircle(
         c,
         r,
         Paint()
-          ..color = color.withValues(alpha: 0.16)
+          ..color = color.withValues(alpha: 0.14)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 4.5,
+          ..strokeWidth = 3.6,
       )
       ..drawArc(
         Rect.fromCircle(center: c, radius: r),
@@ -244,7 +206,7 @@ class _RingPainter extends CustomPainter {
         Paint()
           ..color = color
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 4.5
+          ..strokeWidth = 3.6
           ..strokeCap = StrokeCap.round,
       );
   }
@@ -260,6 +222,8 @@ class _OrbitPainter extends CustomPainter {
     required this.radius,
     required this.angles,
     required this.colors,
+    required this.names,
+    required this.labelStyle,
     required this.dark,
   });
 
@@ -267,63 +231,126 @@ class _OrbitPainter extends CustomPainter {
   final double radius;
   final List<double> angles;
   final List<Color> colors;
+  final List<String> names;
+  final TextStyle labelStyle;
   final bool dark;
+
+  static const _deg = math.pi / 180;
 
   Offset _at(double a, double r) =>
       centre + Offset(math.cos(a), math.sin(a)) * r;
 
   @override
   void paint(Canvas canvas, Size size) {
-    // A soft glow in each goal's colour, behind everything.
+    final r = radius;
+
+    // A soft glow of each goal's colour round its ring.
     for (var i = 0; i < angles.length; i++) {
-      final p = _at(angles[i], radius * 0.55);
+      final p = _at(angles[i], r * 0.9);
+      final rect = Rect.fromCircle(center: p, radius: r * 1.2);
       canvas.drawCircle(
         p,
-        radius * 1.05,
+        r * 1.2,
         Paint()
           ..shader = RadialGradient(
             colors: [
-              colors[i].withValues(alpha: dark ? 0.16 : 0.13),
+              colors[i].withValues(alpha: dark ? 0.14 : 0.11),
               colors[i].withValues(alpha: 0.0),
             ],
-          ).createShader(Rect.fromCircle(center: p, radius: radius * 1.05)),
+          ).createShader(rect),
       );
     }
 
     final grey = (dark ? Colors.white : Colors.black)
-        .withValues(alpha: dark ? 0.12 : 0.07);
+        .withValues(alpha: dark ? 0.13 : 0.075);
+    final greyLight = (dark ? Colors.white : Colors.black)
+        .withValues(alpha: dark ? 0.08 : 0.05);
 
-    // Dots trailing away from each ring in its colour, and grey ones in
-    // between, as in a constellation.
+    // Grey dots on the diagonals between rings: a large one near in, a small
+    // one further out.
+    for (var k = 0; k < 4; k++) {
+      final a = (-135 + k * 90) * _deg;
+      canvas
+        ..drawCircle(_at(a, r * 0.98), r * 0.15, Paint()..color = grey)
+        ..drawCircle(_at(a, r * 1.4), r * 0.065, Paint()..color = greyLight);
+    }
+
+    // Two dots in each goal's colour either side of its ring, and a tiny one
+    // further out.
     for (var i = 0; i < angles.length; i++) {
       final a = angles[i];
       final col = colors[i];
-      for (final (off, size, alpha) in const [
-        (0.44, 7.5, 0.85),
-        (0.62, 4.5, 0.45),
-        (0.76, 2.5, 0.28),
-      ]) {
-        for (final sign in const [-1, 1]) {
-          canvas.drawCircle(
-            _at(a + sign * off, radius),
-            size,
-            Paint()..color = col.withValues(alpha: alpha),
-          );
-        }
-      }
-      for (final sign in const [-1, 1]) {
+      for (final s in const [-1, 1]) {
         canvas
           ..drawCircle(
-            _at(a + sign * 0.78, radius * 0.66),
-            11,
-            Paint()..color = grey,
+            _at(a + s * 27 * _deg, r * 1.19),
+            r * 0.085,
+            Paint()..color = col.withValues(alpha: 0.75),
           )
           ..drawCircle(
-            _at(a + sign * 1.0, radius * 1.02),
-            6,
-            Paint()..color = grey,
+            _at(a + s * 31 * _deg, r * 1.42),
+            r * 0.03,
+            Paint()..color = col.withValues(alpha: 0.45),
           );
       }
+    }
+
+    // Names round the outside.
+    for (var i = 0; i < angles.length; i++) {
+      _label(canvas, names[i], angles[i], r * 1.72);
+    }
+  }
+
+  /// Arabic-script letters join, so a word in one of those scripts cannot
+  /// be bent round a curve one letter at a time without falling apart.
+  static final _joining = RegExp(r'[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]');
+
+  void _label(Canvas canvas, String text, double angle, double rl) {
+    final bottom = math.sin(angle) > 0.5;
+    if (_joining.hasMatch(text)) {
+      // Straight: level at top and bottom, turned along the side at left
+      // and right, so the word keeps its shape.
+      final tp = TextPainter(
+        text:
+            TextSpan(text: text, style: labelStyle.copyWith(letterSpacing: 0)),
+        textDirection: TextDirection.rtl,
+        maxLines: 1,
+        ellipsis: '…',
+      )..layout(maxWidth: rl * 1.2);
+      final p = _at(angle, rl);
+      canvas.save();
+      canvas.translate(p.dx, p.dy);
+      final side = math.cos(angle).abs() > 0.7;
+      if (side) canvas.rotate(math.cos(angle) > 0 ? math.pi / 2 : -math.pi / 2);
+      tp.paint(canvas, Offset(-tp.width / 2, -tp.height / 2));
+      canvas.restore();
+      return;
+    }
+
+    // Letter by letter along the arc, reading left to right at the top and
+    // bottom, upward on the left and downward on the right.
+    final letters = [
+      for (final ch in text.characters)
+        TextPainter(
+          text: TextSpan(text: ch, style: labelStyle),
+          textDirection: TextDirection.ltr,
+        )..layout(),
+    ];
+    final total = letters.fold<double>(0, (w, t) => w + t.width);
+    // Never more than a third of the way round.
+    final span = math.min(total / rl, 2 * math.pi / 3);
+    final scale = span * rl / total;
+    var a = bottom ? angle + span / 2 : angle - span / 2;
+    for (final t in letters) {
+      final step = t.width * scale / rl;
+      final mid = bottom ? a - step / 2 : a + step / 2;
+      final p = _at(mid, rl);
+      canvas.save();
+      canvas.translate(p.dx, p.dy);
+      canvas.rotate(bottom ? mid - math.pi / 2 : mid + math.pi / 2);
+      t.paint(canvas, Offset(-t.width / 2, -t.height / 2));
+      canvas.restore();
+      a = bottom ? a - step : a + step;
     }
   }
 
@@ -331,5 +358,6 @@ class _OrbitPainter extends CustomPainter {
   bool shouldRepaint(_OrbitPainter old) =>
       old.angles.length != angles.length ||
       old.radius != radius ||
-      old.dark != dark;
+      old.dark != dark ||
+      old.names.join() != names.join();
 }

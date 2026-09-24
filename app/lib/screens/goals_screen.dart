@@ -127,14 +127,16 @@ class GoalsScreen extends StatelessWidget {
       builder: (context, _) => ListView(
         padding: padding,
         children: revealed([
-          // The page's name is in the capsule above.
-          Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
-            child: Text(
-              goals.isEmpty ? l.goalsBlurbEmpty : l.goalsBlurb,
-              style: theme.textTheme.bodySmall,
+          // The page's name is in the capsule above, and the rings say
+          // the rest; a line under the name would only repeat them.
+          if (goals.isEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+              child: Text(
+                l.goalsBlurbEmpty,
+                style: theme.textTheme.bodySmall,
+              ),
             ),
-          ),
           if (goals.isEmpty)
             UpinoCard(
               child: Text(
