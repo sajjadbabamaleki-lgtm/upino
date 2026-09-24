@@ -554,5 +554,13 @@
   "payGaugeTitle": "Sonraki maaşa kadar",
   "payGaugeDaysLabel": "gün kaldı",
   "payGaugeAfter": "{date} maaşından sonra: {amount} serbest",
-  "payGaugeLasts": "{amount} o güne kadar yetmeli."
+  "payGaugeLasts": "{amount} o güne kadar yetmeli.",
+  "goalsOverall": "tüm hedeflerinizin",
+  "goalsThisMonth": "Bu ay +{amount}",
+  "goalsNothingThisMonth": "Bu ay eklenen yok",
+  "goalsAllOnTrack": "Hepsi yolunda",
+  "goalsOnTrackCount": "{total} hedefin {onTrack} tanesi yolunda",
+  "goalsNextUp": "Sıradaki: {goal}, {date}",
+  "goalsTips": "Daha erken ulaşmanın yolları",
+  "goalsTipsSub": "Harcamalarınıza göre Upino'ya sorun"
 }

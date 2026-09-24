@@ -487,8 +487,15 @@ extension GoalProjectionOf on AppState {
     if (remaining <= 0) {
       finishes = today;
     } else if (per.minor > 0) {
-      final periods = (remaining / per.minor).ceil();
-      finishes = firstPay.addDays((periods - 1) * cycle);
+      var periods = (remaining / per.minor).ceil();
+      // A per-period amount rounded to the cent can leave a cent or two
+      // over; that is not a whole period more.
+      if (periods > 1 && remaining - (periods - 1) * per.minor <= periods) {
+        periods--;
+      }
+      // This period's share is set aside now; the rest come with each pay.
+      finishes =
+          periods == 1 ? today : firstPay.addDays((periods - 2) * cycle);
     }
 
     // History: what was saved as of each week, from the contributions log.
@@ -510,7 +517,8 @@ extension GoalProjectionOf on AppState {
         return Money(s < 0 ? 0 : s, currency);
       }
       if (per.minor <= 0) return goal.saved;
-      var paid = 0;
+      // This period's share, set aside now, then one with each pay.
+      var paid = 1;
       for (var p = firstPay; p <= day; p = p.addDays(cycle)) {
         paid++;
       }

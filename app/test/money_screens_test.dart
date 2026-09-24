@@ -219,6 +219,7 @@ void main() {
     final goal = state.goals.single;
     final before = goal.targetDate;
     await open(tester, state, tab: 2);
+    await tapKey(tester, 'goal-tile-${goal.id}');
     await tapKey(tester, 'goal-path-${goal.id}');
     expect(find.byKey(Key('goal-chart-${goal.id}')), findsOneWidget);
 

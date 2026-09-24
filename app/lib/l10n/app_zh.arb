@@ -554,5 +554,13 @@
   "payGaugeTitle": "距离下次发工资",
   "payGaugeDaysLabel": "天后",
   "payGaugeAfter": "{date} 发薪后：可支配 {amount}",
-  "payGaugeLasts": "{amount} 要撑到那天。"
+  "payGaugeLasts": "{amount} 要撑到那天。",
+  "goalsOverall": "所有目标的进度",
+  "goalsThisMonth": "本月 +{amount}",
+  "goalsNothingThisMonth": "本月尚未存入",
+  "goalsAllOnTrack": "全部按计划",
+  "goalsOnTrackCount": "{total} 个中 {onTrack} 个按计划",
+  "goalsNextUp": "下一个：{goal}，{date}",
+  "goalsTips": "更快达成的方法",
+  "goalsTipsSub": "根据你的支出问问 Upino"
 }

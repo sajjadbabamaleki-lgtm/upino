@@ -21,6 +21,9 @@ import '../widgets/amount_sheet.dart';
 import '../widgets/goal_editor_sheet.dart';
 import '../widgets/charts.dart';
 import '../widgets/goal_projection_view.dart';
+import '../widgets/goals_orbit.dart';
+import '../design/icon.dart';
+import 'ask_chat_screen.dart';
 import '../state/projection.dart';
 
 class GoalsScreen extends StatelessWidget {
@@ -66,6 +69,53 @@ class GoalsScreen extends StatelessWidget {
     if (amount != null) state.contributeToGoal(goal.id, amount.amount);
   }
 
+  /// All goals together: what is saved against what was set, goals that
+  /// are paused left out.
+  static double _overall(List<Goal> goals) {
+    var saved = 0, target = 0;
+    for (final g in goals) {
+      if (g.kind == GoalKind.paused) continue;
+      saved += g.saved.minor > g.target.minor ? g.target.minor : g.saved.minor;
+      target += g.target.minor;
+    }
+    return target == 0 ? 0 : saved / target;
+  }
+
+  /// The whole goal — where it is heading, its path, adding money and
+  /// changing it — in a sheet that follows the plan while it is open.
+  Future<void> _open(BuildContext context, Goal goal) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheet) => AnimatedBuilder(
+          animation: state,
+          builder: (sheet, _) {
+            final current =
+                state.goals.where((g) => g.id == goal.id).firstOrNull;
+            if (current == null) return const SizedBox.shrink();
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(sheet).size.height * 0.9,
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                child: _GoalCard(
+                  state: state,
+                  goal: current,
+                  inflated: state.inflatedTarget(current),
+                  rate: state.inflationBasisPoints,
+                  today: state.today,
+                  payCycleDays: state.payCycleDays,
+                  onEdit: () => _edit(sheet, current),
+                  onContribute: () => _contribute(sheet, current),
+                ),
+              ),
+            );
+          },
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -92,20 +142,57 @@ class GoalsScreen extends StatelessWidget {
                 style: theme.textTheme.bodySmall,
               ),
             )
-          else
-            for (final goal in goals) ...[
-              _GoalCard(
-                state: state,
-                goal: goal,
-                inflated: state.inflatedTarget(goal),
-                rate: state.inflationBasisPoints,
-                today: state.today,
-                payCycleDays: state.payCycleDays,
-                onEdit: () => _edit(context, goal),
-                onContribute: () => _contribute(context, goal),
+          else ...[
+            // All the goals at once: rings round how far along they are
+            // together, on the page itself rather than in a card.
+            GoalsOrbit(
+              goals: [
+                for (var i = 0; i < goals.length && i < 4; i++)
+                  (goal: goals[i], color: i),
+              ],
+              overall: _overall(goals),
+              onOpen: (g) => _open(context, g),
+            ),
+            const SizedBox(height: 10),
+            _Summary(state: state),
+            const SizedBox(height: 10),
+            // A tile for each goal, two to a row, in the colour it has on
+            // the rings; the whole goal opens from it.
+            for (var i = 0; i < goals.length; i += 2) ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _GoalTile(
+                      state: state,
+                      goal: goals[i],
+                      color: goalColor(i),
+                      onTap: () => _open(context, goals[i]),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: i + 1 < goals.length
+                        ? _GoalTile(
+                            state: state,
+                            goal: goals[i + 1],
+                            color: goalColor(i + 1),
+                            onTap: () => _open(context, goals[i + 1]),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
             ],
+            _TipsRow(
+              onTap: () => ChatPage.open(
+                context,
+                state,
+                firstQuestion: l.chatSuggestAdvice,
+              ),
+            ),
+          ],
           const SizedBox(height: 10),
           if (goals.isNotEmpty) ...[
             _InflationRow(state: state),
@@ -336,7 +423,6 @@ class _GoalCardState extends State<_GoalCard> {
       ),
     );
   }
-
 }
 
 class _Fact extends StatelessWidget {
@@ -393,7 +479,8 @@ class _InflationRow extends StatelessWidget {
     return ActionRow(
       key: const Key('goals-inflation'),
       title: l.inflationTitle,
-      subtitle: rate == null ? l.inflationNotSet : l.inflationRate(formatRate(rate)),
+      subtitle:
+          rate == null ? l.inflationNotSet : l.inflationRate(formatRate(rate)),
       trailing: const RowAffordance(icon: 'trendingUp'),
       onTap: () => _edit(context),
     );
@@ -458,6 +545,267 @@ class _InflationDialogState extends State<_InflationDialog> {
           child: Text(l.save),
         ),
       ],
+    );
+  }
+}
+
+/// How the goals are doing together: what went in this month, how many are
+/// on track, and which comes next.
+class _Summary extends StatelessWidget {
+  const _Summary({required this.state});
+
+  final AppState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    final green = dark ? const Color(0xFF4ADE80) : const Color(0xFF1E9E4A);
+    final open = state.goals
+        .where((g) => g.kind != GoalKind.paused && !g.isComplete)
+        .toList();
+    final onTrack = open.where((g) => state.goalProjection(g).onTrack).length;
+    final next = ([...open]
+          ..sort((a, b) => a.targetDate.compareTo(b.targetDate)))
+        .firstOrNull;
+    final month = state.toGoalsWithin();
+    final added = month.minor > 0;
+
+    return UpinoCard(
+      key: const Key('goals-summary'),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: (added ? green : borderColor(context))
+                    .withValues(alpha: 0.35),
+                width: 3,
+              ),
+            ),
+            child: UpinoIcon(
+              'trendingUp',
+              size: 18,
+              color: added ? green : UpinoTokens.textTertiary,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+                border: Border.all(
+                  color: (added ? green : borderColor(context))
+                      .withValues(alpha: 0.35),
+                ),
+              ),
+              // Shrunk to fit rather than cut off: the amount is the point.
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  added
+                      ? l.goalsThisMonth(month.display())
+                      : l.goalsNothingThisMonth,
+                  maxLines: 1,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: added ? green : null,
+                    fontWeight: FontWeight.w600,
+                    fontFeatures: moneyFeatures,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  onTrack == open.length
+                      ? l.goalsAllOnTrack
+                      : l.goalsOnTrackCount(onTrack, open.length),
+                  textAlign: TextAlign.end,
+                  style: theme.textTheme.titleMedium,
+                ),
+                if (next != null)
+                  Text(
+                    l.goalsNextUp(
+                      next.name,
+                      formatDateShort(context, next.targetDate),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GoalTile extends StatelessWidget {
+  const _GoalTile({
+    required this.state,
+    required this.goal,
+    required this.color,
+    required this.onTap,
+  });
+
+  final AppState state;
+  final Goal goal;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final dark = isDark(context);
+    final green = dark ? const Color(0xFF4ADE80) : const Color(0xFF1E9E4A);
+    final added = state.toGoalsWithin(goalId: goal.id);
+    return GestureDetector(
+      key: Key('goal-tile-${goal.id}'),
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: UpinoCard(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    goal.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+                if (added.minor > 0) ...[
+                  Icon(Icons.arrow_drop_up_rounded, size: 18, color: green),
+                  Text(
+                    added.display(),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 11,
+                      color: green,
+                      fontWeight: FontWeight.w600,
+                      fontFeatures: moneyFeatures,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  '${goalPercent(goal)}',
+                  style: theme.textTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontFeatures: moneyFeatures,
+                  ),
+                ),
+                const SizedBox(width: 3),
+                Text(
+                  '/ 100%',
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Text(
+              AppLocalizations.of(context).goalsOf(goal.target.display()),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall?.copyWith(fontSize: 11.5),
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              child: LinearProgressIndicator(
+                value: goal.progress,
+                minHeight: 8,
+                backgroundColor: sunkenColor(context),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  goal.kind == GoalKind.paused
+                      ? UpinoTokens.textTertiary
+                      : color,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Into a conversation about getting there sooner, answered from the
+/// person's own spending.
+class _TipsRow extends StatelessWidget {
+  const _TipsRow({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    return GestureDetector(
+      key: const Key('goals-tips'),
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+        decoration: BoxDecoration(
+          color: dark ? const Color(0xFF2E2716) : const Color(0xFFFFF8E6),
+          borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+          border: Border.all(
+            color: dark ? const Color(0xFF4A3F22) : const Color(0xFFFBE7B5),
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.lightbulb_rounded,
+              color: Color(0xFFF5B400),
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l.goalsTips, style: theme.textTheme.titleMedium),
+                  Text(
+                    l.goalsTipsSub,
+                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Color(0xFFF5B400),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

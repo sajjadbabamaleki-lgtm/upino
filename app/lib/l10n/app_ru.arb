@@ -554,5 +554,13 @@
   "payGaugeTitle": "До следующей зарплаты",
   "payGaugeDaysLabel": "дн. осталось",
   "payGaugeAfter": "После зарплаты {date}: свободно {amount}",
-  "payGaugeLasts": "{amount} должно хватить до этого дня."
+  "payGaugeLasts": "{amount} должно хватить до этого дня.",
+  "goalsOverall": "от всех целей",
+  "goalsThisMonth": "+{amount} за месяц",
+  "goalsNothingThisMonth": "В этом месяце ничего",
+  "goalsAllOnTrack": "Всё по плану",
+  "goalsOnTrackCount": "{onTrack} из {total} по плану",
+  "goalsNextUp": "Ближайшая: «{goal}», {date}",
+  "goalsTips": "Как прийти к цели быстрее",
+  "goalsTipsSub": "Спросите Upino — по вашим тратам"
 }

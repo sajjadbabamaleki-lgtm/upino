@@ -3443,6 +3443,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} has to last until then.'**
   String payGaugeLasts(String amount);
+
+  /// No description provided for @goalsOverall.
+  ///
+  /// In en, this message translates to:
+  /// **'of all your goals'**
+  String get goalsOverall;
+
+  /// No description provided for @goalsThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'+{amount} this month'**
+  String goalsThisMonth(String amount);
+
+  /// No description provided for @goalsNothingThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing added this month'**
+  String get goalsNothingThisMonth;
+
+  /// No description provided for @goalsAllOnTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'All on track'**
+  String get goalsAllOnTrack;
+
+  /// No description provided for @goalsOnTrackCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{onTrack} of {total} on track'**
+  String goalsOnTrackCount(int onTrack, int total);
+
+  /// No description provided for @goalsNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {goal}, {date}'**
+  String goalsNextUp(String goal, String date);
+
+  /// No description provided for @goalsTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Ways to get there sooner'**
+  String get goalsTips;
+
+  /// No description provided for @goalsTipsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Upino, from your own spending'**
+  String get goalsTipsSub;
 }
 
 class _AppLocalizationsDelegate

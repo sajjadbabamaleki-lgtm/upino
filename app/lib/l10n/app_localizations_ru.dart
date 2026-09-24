@@ -1991,4 +1991,34 @@ class AppLocalizationsRu extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount должно хватить до этого дня.';
   }
+
+  @override
+  String get goalsOverall => 'от всех целей';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '+$amount за месяц';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'В этом месяце ничего';
+
+  @override
+  String get goalsAllOnTrack => 'Всё по плану';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$onTrack из $total по плану';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'Ближайшая: «$goal», $date';
+  }
+
+  @override
+  String get goalsTips => 'Как прийти к цели быстрее';
+
+  @override
+  String get goalsTipsSub => 'Спросите Upino — по вашим тратам';
 }

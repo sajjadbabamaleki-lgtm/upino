@@ -1984,4 +1984,34 @@ class AppLocalizationsHi extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount को तब तक चलना है।';
   }
+
+  @override
+  String get goalsOverall => 'आपके सभी लक्ष्यों का';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return 'इस महीने +$amount';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'इस महीने कुछ नहीं जोड़ा';
+
+  @override
+  String get goalsAllOnTrack => 'सब सही राह पर';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$total में से $onTrack सही राह पर';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'अगला: $goal, $date';
+  }
+
+  @override
+  String get goalsTips => 'जल्दी पहुँचने के तरीके';
+
+  @override
+  String get goalsTipsSub => 'अपने खर्च के आधार पर Upino से पूछें';
 }

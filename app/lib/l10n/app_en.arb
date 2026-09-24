@@ -1450,5 +1450,40 @@
         "type": "String"
       }
     }
-  }
+  },
+  "goalsOverall": "of all your goals",
+  "goalsThisMonth": "+{amount} this month",
+  "@goalsThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsNothingThisMonth": "Nothing added this month",
+  "goalsAllOnTrack": "All on track",
+  "goalsOnTrackCount": "{onTrack} of {total} on track",
+  "@goalsOnTrackCount": {
+    "placeholders": {
+      "onTrack": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsNextUp": "Next: {goal}, {date}",
+  "@goalsNextUp": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsTips": "Ways to get there sooner",
+  "goalsTipsSub": "Ask Upino, from your own spending"
 }

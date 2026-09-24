@@ -554,5 +554,13 @@
   "payGaugeTitle": "حتى راتبك التالي",
   "payGaugeDaysLabel": "يوم متبقٍ",
   "payGaugeAfter": "بعد راتب {date}: {amount} متاح",
-  "payGaugeLasts": "يجب أن يكفي {amount} حتى ذلك الحين."
+  "payGaugeLasts": "يجب أن يكفي {amount} حتى ذلك الحين.",
+  "goalsOverall": "من كل أهدافك",
+  "goalsThisMonth": "+{amount} هذا الشهر",
+  "goalsNothingThisMonth": "لم يُضف شيء هذا الشهر",
+  "goalsAllOnTrack": "الكل على المسار",
+  "goalsOnTrackCount": "{onTrack} من {total} على المسار",
+  "goalsNextUp": "التالي: {goal}، {date}",
+  "goalsTips": "طرق للوصول أسرع",
+  "goalsTipsSub": "اسأل Upino، بناءً على إنفاقك"
 }

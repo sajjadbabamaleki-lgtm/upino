@@ -1982,4 +1982,34 @@ class AppLocalizationsFa extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount باید تا آن روز کفاف دهد.';
   }
+
+  @override
+  String get goalsOverall => 'از کل هدف‌ها';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '$amount+ این ماه';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'این ماه چیزی اضافه نشده';
+
+  @override
+  String get goalsAllOnTrack => 'همه در مسیر';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$onTrack از $total در مسیر';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'بعدی: $goal، $date';
+  }
+
+  @override
+  String get goalsTips => 'راه‌های رسیدن سریع‌تر';
+
+  @override
+  String get goalsTipsSub => 'از اوپینو بپرسید، بر اساس خرج‌های خودتان';
 }

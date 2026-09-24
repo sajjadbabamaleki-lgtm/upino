@@ -1986,4 +1986,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount o güne kadar yetmeli.';
   }
+
+  @override
+  String get goalsOverall => 'tüm hedeflerinizin';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return 'Bu ay +$amount';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'Bu ay eklenen yok';
+
+  @override
+  String get goalsAllOnTrack => 'Hepsi yolunda';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$total hedefin $onTrack tanesi yolunda';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'Sıradaki: $goal, $date';
+  }
+
+  @override
+  String get goalsTips => 'Daha erken ulaşmanın yolları';
+
+  @override
+  String get goalsTipsSub => 'Harcamalarınıza göre Upino\'ya sorun';
 }

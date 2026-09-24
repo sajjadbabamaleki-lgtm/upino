@@ -1904,4 +1904,34 @@ class AppLocalizationsZh extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount 要撑到那天。';
   }
+
+  @override
+  String get goalsOverall => '所有目标的进度';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '本月 +$amount';
+  }
+
+  @override
+  String get goalsNothingThisMonth => '本月尚未存入';
+
+  @override
+  String get goalsAllOnTrack => '全部按计划';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$total 个中 $onTrack 个按计划';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return '下一个：$goal，$date';
+  }
+
+  @override
+  String get goalsTips => '更快达成的方法';
+
+  @override
+  String get goalsTipsSub => '根据你的支出问问 Upino';
 }

@@ -328,6 +328,9 @@ void main() {
       await openGoals(tester, state);
 
       final id = state.goals.single.id;
+      // The whole goal opens from its tile.
+      await tester.tap(find.byKey(Key('goal-tile-$id')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('goal-add-$id')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField).last, '300.00');
@@ -336,7 +339,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.goals.single.saved, eur('300.00'));
-      expect(find.text('€300.00'), findsOneWidget);
+      // In the open goal, and on its tile as this month's addition.
+      expect(find.text('€300.00'), findsWidgets);
     });
 
     testWidgets('a goal can be deleted from its editor', (tester) async {
@@ -348,7 +352,14 @@ void main() {
         );
       await openGoals(tester, state);
 
-      await tester.tap(find.byType(RowAffordance).first);
+      await tester.tap(find.byKey(Key('goal-tile-${state.goals.single.id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byKey(Key('goal-card-${state.goals.single.id}')),
+          matching: find.byType(RowAffordance),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('goal-delete')));
       await tester.pumpAndSettle();

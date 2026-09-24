@@ -2066,4 +2066,34 @@ class AppLocalizationsPt extends AppLocalizations {
   String payGaugeLasts(String amount) {
     return '$amount precisam durar até lá.';
   }
+
+  @override
+  String get goalsOverall => 'de todas as metas';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '+$amount este mês';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'Nada adicionado este mês';
+
+  @override
+  String get goalsAllOnTrack => 'Tudo em dia';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$onTrack de $total em dia';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'Próxima: $goal, $date';
+  }
+
+  @override
+  String get goalsTips => 'Jeitos de chegar antes';
+
+  @override
+  String get goalsTipsSub => 'Pergunte ao Upino, com base nos seus gastos';
 }

@@ -554,5 +554,13 @@
   "payGaugeTitle": "Até o próximo pagamento",
   "payGaugeDaysLabel": "{days, plural, =1{dia restante} other{dias restantes}}",
   "payGaugeAfter": "Depois do pagamento de {date}: {amount} livres",
-  "payGaugeLasts": "{amount} precisam durar até lá."
+  "payGaugeLasts": "{amount} precisam durar até lá.",
+  "goalsOverall": "de todas as metas",
+  "goalsThisMonth": "+{amount} este mês",
+  "goalsNothingThisMonth": "Nada adicionado este mês",
+  "goalsAllOnTrack": "Tudo em dia",
+  "goalsOnTrackCount": "{onTrack} de {total} em dia",
+  "goalsNextUp": "Próxima: {goal}, {date}",
+  "goalsTips": "Jeitos de chegar antes",
+  "goalsTipsSub": "Pergunte ao Upino, com base nos seus gastos"
 }

@@ -2276,13 +2276,15 @@ class AppState extends ChangeNotifier {
     );
   }
 
-  /// What was put toward goals over the last [days].
-  Money toGoalsWithin({int days = 30}) {
+  /// What was put toward goals over the last [days]; toward one goal
+  /// when [goalId] is given.
+  Money toGoalsWithin({int days = 30, String? goalId}) {
     final since = _now.subtract(Duration(days: days));
     return Money.sum(
       [
         for (final c in _contributions)
-          if (!c.at.isBefore(since)) c.amount,
+          if (!c.at.isBefore(since) && (goalId == null || c.goalId == goalId))
+            c.amount,
       ],
       _currency,
     );

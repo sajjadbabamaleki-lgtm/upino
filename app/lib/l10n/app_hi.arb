@@ -554,5 +554,13 @@
   "payGaugeTitle": "अगले वेतन तक",
   "payGaugeDaysLabel": "दिन बाकी",
   "payGaugeAfter": "{date} के वेतन के बाद: {amount} खाली",
-  "payGaugeLasts": "{amount} को तब तक चलना है।"
+  "payGaugeLasts": "{amount} को तब तक चलना है।",
+  "goalsOverall": "आपके सभी लक्ष्यों का",
+  "goalsThisMonth": "इस महीने +{amount}",
+  "goalsNothingThisMonth": "इस महीने कुछ नहीं जोड़ा",
+  "goalsAllOnTrack": "सब सही राह पर",
+  "goalsOnTrackCount": "{total} में से {onTrack} सही राह पर",
+  "goalsNextUp": "अगला: {goal}, {date}",
+  "goalsTips": "जल्दी पहुँचने के तरीके",
+  "goalsTipsSub": "अपने खर्च के आधार पर Upino से पूछें"
 }

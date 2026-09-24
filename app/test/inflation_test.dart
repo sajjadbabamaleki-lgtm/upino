@@ -125,6 +125,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(state.inflationBasisPoints, 3500);
+    // Said on the goal itself, which opens from its tile.
+    await tester.tap(find.byKey(Key('goal-tile-${state.goals.single.id}')));
+    await tester.pumpAndSettle();
     expect(
       find.text('At 35% a year, this will cost about €1,350.00 by then.'),
       findsOneWidget,

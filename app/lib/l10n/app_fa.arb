@@ -554,5 +554,13 @@
   "payGaugeTitle": "تا حقوق بعدی",
   "payGaugeDaysLabel": "روز مانده",
   "payGaugeAfter": "بعد از حقوق {date}: {amount} قابل خرج",
-  "payGaugeLasts": "{amount} باید تا آن روز کفاف دهد."
+  "payGaugeLasts": "{amount} باید تا آن روز کفاف دهد.",
+  "goalsOverall": "از کل هدف‌ها",
+  "goalsThisMonth": "{amount}+ این ماه",
+  "goalsNothingThisMonth": "این ماه چیزی اضافه نشده",
+  "goalsAllOnTrack": "همه در مسیر",
+  "goalsOnTrackCount": "{onTrack} از {total} در مسیر",
+  "goalsNextUp": "بعدی: {goal}، {date}",
+  "goalsTips": "راه‌های رسیدن سریع‌تر",
+  "goalsTipsSub": "از اوپینو بپرسید، بر اساس خرج‌های خودتان"
 }
