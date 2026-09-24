@@ -133,10 +133,16 @@ class _SheetHead extends StatelessWidget {
 
   static const height = 44.0;
 
+  /// The close icon's distance from both the top and the side of the sheet.
+  static const _cornerInset = UpinoTokens.gutter + 6;
+
   @override
   Widget build(BuildContext context) => SizedBox(
         height: height,
         child: Stack(
+          // The close button reaches a little below the head, over the
+          // empty right-hand end of the title row.
+          clipBehavior: Clip.none,
           children: [
             Center(
               child: Container(
@@ -153,12 +159,15 @@ class _SheetHead extends StatelessWidget {
             if (onClose != null)
               // The icon is already a square with a cross in it, so it is
               // drawn on its own: inside a grey circle it read as a box in a
-              // ball. It sits low enough to clear the sheet's rounded top.
+              // ball. It sits as far from the top of the sheet as from its
+              // side, so it reads as set into the corner rather than stuck
+              // to one edge of it.
               // The tap target stays 40 by 36 around it, held 22 in from the
               // edge so scrolling the list does not catch it.
               Positioned(
-                top: 10,
-                right: UpinoTokens.gutter + 6,
+                // The icon is centred in a 36-high target, so 6 above it.
+                top: _cornerInset - 6,
+                right: _cornerInset,
                 child: GestureDetector(
                   key: const Key('sheet-close'),
                   onTap: onClose,
