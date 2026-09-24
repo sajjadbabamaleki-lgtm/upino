@@ -563,5 +563,16 @@
   "goalsNextUp": "Prochain : {goal}, {date}",
   "goalsTips": "Comment y arriver plus vite",
   "goalsTipsSub": "Demandez à Upino, d'après vos dépenses",
-  "goalsDetailTitle": "Chaque objectif"
+  "goalsDetailTitle": "Chaque objectif",
+  "demoTry": "Essayer avec des données d'exemple",
+  "demoTrySub": "Quatre objectifs, des factures et trois mois d'historique, dans une copie qui n'est pas la vôtre et n'est pas enregistrée.",
+  "demoBanner": "Données d'exemple : rien ici n'est à vous ni enregistré.",
+  "demoExit": "Quitter",
+  "demoGoalTrip": "Voyage",
+  "demoGoalLaptop": "Ordinateur",
+  "demoGoalEmergency": "Urgences",
+  "demoGoalCar": "Voiture",
+  "demoBillPhone": "Téléphone",
+  "demoBillInternet": "Internet",
+  "demoBillGym": "Salle de sport"
 }

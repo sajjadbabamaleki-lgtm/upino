@@ -563,5 +563,16 @@
   "goalsNextUp": "Ближайшая: «{goal}», {date}",
   "goalsTips": "Как прийти к цели быстрее",
   "goalsTipsSub": "Спросите Upino — по вашим тратам",
-  "goalsDetailTitle": "Каждая цель"
+  "goalsDetailTitle": "Каждая цель",
+  "demoTry": "Попробовать на примере",
+  "demoTrySub": "Четыре цели, счета и три месяца истории — в копии, которая не ваша и не сохраняется.",
+  "demoBanner": "Пример: здесь ничего не ваше и не сохраняется.",
+  "demoExit": "Выйти",
+  "demoGoalTrip": "Поездка",
+  "demoGoalLaptop": "Ноутбук",
+  "demoGoalEmergency": "Запас",
+  "demoGoalCar": "Машина",
+  "demoBillPhone": "Телефон",
+  "demoBillInternet": "Интернет",
+  "demoBillGym": "Спортзал"
 }

@@ -1937,4 +1937,37 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => '各个目标';
+
+  @override
+  String get demoTry => '用示例数据试试';
+
+  @override
+  String get demoTrySub => '四个目标、账单和三个月的记录，放在一个不属于你、也不会保存的副本里。';
+
+  @override
+  String get demoBanner => '示例数据：这里的内容都不属于你，也不会保存。';
+
+  @override
+  String get demoExit => '退出';
+
+  @override
+  String get demoGoalTrip => '旅行';
+
+  @override
+  String get demoGoalLaptop => '笔记本电脑';
+
+  @override
+  String get demoGoalEmergency => '应急';
+
+  @override
+  String get demoGoalCar => '汽车';
+
+  @override
+  String get demoBillPhone => '电话';
+
+  @override
+  String get demoBillInternet => '网络';
+
+  @override
+  String get demoBillGym => '健身房';
 }

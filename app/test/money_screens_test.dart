@@ -13,6 +13,7 @@ import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
+import 'package:upino/state/demo.dart';
 
 final now = DateTime.utc(2026, 10, 1, 10);
 Money eur(String v) => Money.parse(v, 'EUR');
@@ -288,5 +289,54 @@ void main() {
       tester.widget<Text>(find.byKey(const Key('goals-overall'))).data,
       '50%',
     );
+  });
+
+  testWidgets('sample data opens a copy with four goals and leaves the plan',
+      (tester) async {
+    final state = funded();
+    final before = state.toDocument().encode();
+    await open(tester, state, tab: 2);
+    await tapKey(tester, 'goals-demo');
+    expect(find.byKey(const Key('demo-banner')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('nav-2')).last);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('goals-orbit')), findsOneWidget);
+    expect(find.text('TRIP'), findsNothing); // Latin names curve, painted
+    await tester.tap(find.byKey(const Key('demo-exit')));
+    await tester.pumpAndSettle();
+    expect(state.toDocument().encode(), before);
+    expect(state.goals, isEmpty);
+  });
+
+  test('the sample plan has four goals, bills and months of history', () {
+    final demo = buildDemo(
+      now: now,
+      utcOffset: Duration.zero,
+      names: const DemoNames(
+        goals: ['A', 'B', 'C', 'D'],
+        bills: ['x', 'y', 'z'],
+      ),
+    );
+    expect(demo.goals, hasLength(4));
+    expect(demo.bills, hasLength(3));
+    expect(demo.daysInUse, 92);
+    expect(demo.monthlySpending().length, greaterThan(1));
+    expect(demo.snapshot.mandatoryFundingGap.isZero, isTrue);
+  });
+
+  testWidgets('an answer comes after a moment of dots', (tester) async {
+    final state = funded();
+    await open(tester, state);
+    await tester.tap(find.byKey(const Key('home-ask')));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const Key('chat-input')), 'how much can I spend');
+    await tester.tap(find.byKey(const Key('chat-send')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.byKey(const Key('chat-typing')), findsOneWidget);
+    expect(find.byKey(const Key('chat-answer-safe')), findsNothing);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('chat-typing')), findsNothing);
+    expect(find.byKey(const Key('chat-answer-safe')), findsOneWidget);
   });
 }

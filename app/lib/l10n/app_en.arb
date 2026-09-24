@@ -1486,5 +1486,16 @@
   },
   "goalsTips": "Ways to get there sooner",
   "goalsTipsSub": "Ask Upino, from your own spending",
-  "goalsDetailTitle": "Each goal"
+  "goalsDetailTitle": "Each goal",
+  "demoTry": "Try it with sample data",
+  "demoTrySub": "Four goals, bills and three months of history, in a copy that is not yours and is not saved.",
+  "demoBanner": "Sample data: nothing here is yours or saved.",
+  "demoExit": "Exit",
+  "demoGoalTrip": "Trip",
+  "demoGoalLaptop": "Laptop",
+  "demoGoalEmergency": "Emergency",
+  "demoGoalCar": "Car",
+  "demoBillPhone": "Phone",
+  "demoBillInternet": "Internet",
+  "demoBillGym": "Gym"
 }

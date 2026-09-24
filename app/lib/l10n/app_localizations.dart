@@ -3497,6 +3497,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Each goal'**
   String get goalsDetailTitle;
+
+  /// No description provided for @demoTry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it with sample data'**
+  String get demoTry;
+
+  /// No description provided for @demoTrySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Four goals, bills and three months of history, in a copy that is not yours and is not saved.'**
+  String get demoTrySub;
+
+  /// No description provided for @demoBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample data: nothing here is yours or saved.'**
+  String get demoBanner;
+
+  /// No description provided for @demoExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get demoExit;
+
+  /// No description provided for @demoGoalTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip'**
+  String get demoGoalTrip;
+
+  /// No description provided for @demoGoalLaptop.
+  ///
+  /// In en, this message translates to:
+  /// **'Laptop'**
+  String get demoGoalLaptop;
+
+  /// No description provided for @demoGoalEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get demoGoalEmergency;
+
+  /// No description provided for @demoGoalCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get demoGoalCar;
+
+  /// No description provided for @demoBillPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get demoBillPhone;
+
+  /// No description provided for @demoBillInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet'**
+  String get demoBillInternet;
+
+  /// No description provided for @demoBillGym.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym'**
+  String get demoBillGym;
 }
 
 class _AppLocalizationsDelegate

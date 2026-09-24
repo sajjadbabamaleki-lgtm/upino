@@ -13,6 +13,7 @@ import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import 'backup_section.dart';
+import 'demo_screen.dart';
 import 'faster_entry_section.dart';
 import 'currency_screen.dart';
 import 'language_screen.dart';
@@ -230,6 +231,14 @@ class ProfileScreen extends StatelessWidget {
 
         const SizedBox(height: 20),
         SectionHeading(l.profileStartAgain),
+        ActionRow(
+          key: const Key('profile-demo'),
+          title: l.demoTry,
+          subtitle: l.demoTrySub,
+          trailing: const RowAffordance(icon: 'chevronRight'),
+          onTap: () => DemoScreen.open(context, state),
+        ),
+        const SizedBox(height: 10),
         ActionRow(
           key: const Key('profile-start-over'),
           title: l.profileDelete,

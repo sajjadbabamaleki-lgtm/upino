@@ -22,6 +22,7 @@ import '../widgets/goal_editor_sheet.dart';
 import '../widgets/charts.dart';
 import '../widgets/goal_projection_view.dart';
 import '../widgets/goals_orbit.dart';
+import 'demo_screen.dart';
 import '../design/icon.dart';
 import '../state/projection.dart';
 
@@ -194,6 +195,15 @@ class _GoalsScreenState extends State<GoalsScreen> {
               ),
             ),
           ),
+          // To see the page with several goals before there are several.
+          if (goals.length < 4)
+            Center(
+              child: TextButton(
+                key: const Key('goals-demo'),
+                onPressed: () => DemoScreen.open(context, state),
+                child: Text(l.demoTry),
+              ),
+            ),
           // Further down, each goal again, larger and whole: where it is
           // heading, its path, adding money. The rings and tiles above
           // scroll here.

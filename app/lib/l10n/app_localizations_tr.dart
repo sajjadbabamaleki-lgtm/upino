@@ -2019,4 +2019,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'Her hedef';
+
+  @override
+  String get demoTry => 'Örnek verilerle dene';
+
+  @override
+  String get demoTrySub =>
+      'Dört hedef, faturalar ve üç aylık geçmiş; size ait olmayan ve kaydedilmeyen bir kopyada.';
+
+  @override
+  String get demoBanner =>
+      'Örnek veri: buradaki hiçbir şey sizin değil ve kaydedilmez.';
+
+  @override
+  String get demoExit => 'Çık';
+
+  @override
+  String get demoGoalTrip => 'Seyahat';
+
+  @override
+  String get demoGoalLaptop => 'Dizüstü';
+
+  @override
+  String get demoGoalEmergency => 'Acil';
+
+  @override
+  String get demoGoalCar => 'Araba';
+
+  @override
+  String get demoBillPhone => 'Telefon';
+
+  @override
+  String get demoBillInternet => 'İnternet';
+
+  @override
+  String get demoBillGym => 'Spor salonu';
 }

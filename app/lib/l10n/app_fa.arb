@@ -563,5 +563,16 @@
   "goalsNextUp": "بعدی: {goal}، {date}",
   "goalsTips": "راه‌های رسیدن سریع‌تر",
   "goalsTipsSub": "از اوپینو بپرسید، بر اساس خرج‌های خودتان",
-  "goalsDetailTitle": "جزئیات هر هدف"
+  "goalsDetailTitle": "جزئیات هر هدف",
+  "demoTry": "امتحان با داده‌ی نمونه",
+  "demoTrySub": "چهار هدف، قبض‌ها و سه ماه سابقه، در یک نسخه‌ی جدا که مال شما نیست و ذخیره نمی‌شود.",
+  "demoBanner": "داده‌ی نمونه: هیچ‌چیز اینجا مال شما نیست و ذخیره نمی‌شود.",
+  "demoExit": "خروج",
+  "demoGoalTrip": "سفر",
+  "demoGoalLaptop": "لپ‌تاپ",
+  "demoGoalEmergency": "اضطراری",
+  "demoGoalCar": "ماشین",
+  "demoBillPhone": "تلفن",
+  "demoBillInternet": "اینترنت",
+  "demoBillGym": "باشگاه"
 }

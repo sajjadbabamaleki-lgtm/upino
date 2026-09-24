@@ -563,5 +563,16 @@
   "goalsNextUp": "下一个：{goal}，{date}",
   "goalsTips": "更快达成的方法",
   "goalsTipsSub": "根据你的支出问问 Upino",
-  "goalsDetailTitle": "各个目标"
+  "goalsDetailTitle": "各个目标",
+  "demoTry": "用示例数据试试",
+  "demoTrySub": "四个目标、账单和三个月的记录，放在一个不属于你、也不会保存的副本里。",
+  "demoBanner": "示例数据：这里的内容都不属于你，也不会保存。",
+  "demoExit": "退出",
+  "demoGoalTrip": "旅行",
+  "demoGoalLaptop": "笔记本电脑",
+  "demoGoalEmergency": "应急",
+  "demoGoalCar": "汽车",
+  "demoBillPhone": "电话",
+  "demoBillInternet": "网络",
+  "demoBillGym": "健身房"
 }

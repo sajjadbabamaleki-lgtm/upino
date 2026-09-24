@@ -1993,4 +1993,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'كل هدف';
+
+  @override
+  String get demoTry => 'جرّبه ببيانات نموذجية';
+
+  @override
+  String get demoTrySub =>
+      'أربعة أهداف وفواتير وثلاثة أشهر من السجل، في نسخة ليست لك ولا تُحفظ.';
+
+  @override
+  String get demoBanner => 'بيانات نموذجية: لا شيء هنا لك أو محفوظ.';
+
+  @override
+  String get demoExit => 'خروج';
+
+  @override
+  String get demoGoalTrip => 'رحلة';
+
+  @override
+  String get demoGoalLaptop => 'حاسوب';
+
+  @override
+  String get demoGoalEmergency => 'طوارئ';
+
+  @override
+  String get demoGoalCar => 'سيارة';
+
+  @override
+  String get demoBillPhone => 'الهاتف';
+
+  @override
+  String get demoBillInternet => 'الإنترنت';
+
+  @override
+  String get demoBillGym => 'النادي';
 }

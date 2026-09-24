@@ -563,5 +563,16 @@
   "goalsNextUp": "अगला: {goal}, {date}",
   "goalsTips": "जल्दी पहुँचने के तरीके",
   "goalsTipsSub": "अपने खर्च के आधार पर Upino से पूछें",
-  "goalsDetailTitle": "हर लक्ष्य"
+  "goalsDetailTitle": "हर लक्ष्य",
+  "demoTry": "नमूना डेटा के साथ आज़माएँ",
+  "demoTrySub": "चार लक्ष्य, बिल और तीन महीने का इतिहास, एक अलग प्रति में जो आपकी नहीं है और सहेजी नहीं जाती।",
+  "demoBanner": "नमूना डेटा: यहाँ कुछ भी आपका नहीं है और सहेजा नहीं जाता।",
+  "demoExit": "बाहर",
+  "demoGoalTrip": "यात्रा",
+  "demoGoalLaptop": "लैपटॉप",
+  "demoGoalEmergency": "आपातकाल",
+  "demoGoalCar": "कार",
+  "demoBillPhone": "फ़ोन",
+  "demoBillInternet": "इंटरनेट",
+  "demoBillGym": "जिम"
 }

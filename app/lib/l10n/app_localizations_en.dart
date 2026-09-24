@@ -2130,4 +2130,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'Each goal';
+
+  @override
+  String get demoTry => 'Try it with sample data';
+
+  @override
+  String get demoTrySub =>
+      'Four goals, bills and three months of history, in a copy that is not yours and is not saved.';
+
+  @override
+  String get demoBanner => 'Sample data: nothing here is yours or saved.';
+
+  @override
+  String get demoExit => 'Exit';
+
+  @override
+  String get demoGoalTrip => 'Trip';
+
+  @override
+  String get demoGoalLaptop => 'Laptop';
+
+  @override
+  String get demoGoalEmergency => 'Emergency';
+
+  @override
+  String get demoGoalCar => 'Car';
+
+  @override
+  String get demoBillPhone => 'Phone';
+
+  @override
+  String get demoBillInternet => 'Internet';
+
+  @override
+  String get demoBillGym => 'Gym';
 }

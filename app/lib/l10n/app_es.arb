@@ -563,5 +563,16 @@
   "goalsNextUp": "Próxima: {goal}, {date}",
   "goalsTips": "Formas de llegar antes",
   "goalsTipsSub": "Pregunta a Upino, según tus gastos",
-  "goalsDetailTitle": "Cada meta"
+  "goalsDetailTitle": "Cada meta",
+  "demoTry": "Probar con datos de ejemplo",
+  "demoTrySub": "Cuatro metas, facturas y tres meses de historial, en una copia que no es tuya y no se guarda.",
+  "demoBanner": "Datos de ejemplo: nada aquí es tuyo ni se guarda.",
+  "demoExit": "Salir",
+  "demoGoalTrip": "Viaje",
+  "demoGoalLaptop": "Portátil",
+  "demoGoalEmergency": "Emergencias",
+  "demoGoalCar": "Coche",
+  "demoBillPhone": "Teléfono",
+  "demoBillInternet": "Internet",
+  "demoBillGym": "Gimnasio"
 }

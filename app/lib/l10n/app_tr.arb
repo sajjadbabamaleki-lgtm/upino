@@ -563,5 +563,16 @@
   "goalsNextUp": "Sıradaki: {goal}, {date}",
   "goalsTips": "Daha erken ulaşmanın yolları",
   "goalsTipsSub": "Harcamalarınıza göre Upino'ya sorun",
-  "goalsDetailTitle": "Her hedef"
+  "goalsDetailTitle": "Her hedef",
+  "demoTry": "Örnek verilerle dene",
+  "demoTrySub": "Dört hedef, faturalar ve üç aylık geçmiş; size ait olmayan ve kaydedilmeyen bir kopyada.",
+  "demoBanner": "Örnek veri: buradaki hiçbir şey sizin değil ve kaydedilmez.",
+  "demoExit": "Çık",
+  "demoGoalTrip": "Seyahat",
+  "demoGoalLaptop": "Dizüstü",
+  "demoGoalEmergency": "Acil",
+  "demoGoalCar": "Araba",
+  "demoBillPhone": "Telefon",
+  "demoBillInternet": "İnternet",
+  "demoBillGym": "Spor salonu"
 }

@@ -2017,4 +2017,39 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'हर लक्ष्य';
+
+  @override
+  String get demoTry => 'नमूना डेटा के साथ आज़माएँ';
+
+  @override
+  String get demoTrySub =>
+      'चार लक्ष्य, बिल और तीन महीने का इतिहास, एक अलग प्रति में जो आपकी नहीं है और सहेजी नहीं जाती।';
+
+  @override
+  String get demoBanner =>
+      'नमूना डेटा: यहाँ कुछ भी आपका नहीं है और सहेजा नहीं जाता।';
+
+  @override
+  String get demoExit => 'बाहर';
+
+  @override
+  String get demoGoalTrip => 'यात्रा';
+
+  @override
+  String get demoGoalLaptop => 'लैपटॉप';
+
+  @override
+  String get demoGoalEmergency => 'आपातकाल';
+
+  @override
+  String get demoGoalCar => 'कार';
+
+  @override
+  String get demoBillPhone => 'फ़ोन';
+
+  @override
+  String get demoBillInternet => 'इंटरनेट';
+
+  @override
+  String get demoBillGym => 'जिम';
 }

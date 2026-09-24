@@ -2117,4 +2117,39 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'Chaque objectif';
+
+  @override
+  String get demoTry => 'Essayer avec des données d\'exemple';
+
+  @override
+  String get demoTrySub =>
+      'Quatre objectifs, des factures et trois mois d\'historique, dans une copie qui n\'est pas la vôtre et n\'est pas enregistrée.';
+
+  @override
+  String get demoBanner =>
+      'Données d\'exemple : rien ici n\'est à vous ni enregistré.';
+
+  @override
+  String get demoExit => 'Quitter';
+
+  @override
+  String get demoGoalTrip => 'Voyage';
+
+  @override
+  String get demoGoalLaptop => 'Ordinateur';
+
+  @override
+  String get demoGoalEmergency => 'Urgences';
+
+  @override
+  String get demoGoalCar => 'Voiture';
+
+  @override
+  String get demoBillPhone => 'Téléphone';
+
+  @override
+  String get demoBillInternet => 'Internet';
+
+  @override
+  String get demoBillGym => 'Salle de sport';
 }

@@ -563,5 +563,16 @@
   "goalsNextUp": "التالي: {goal}، {date}",
   "goalsTips": "طرق للوصول أسرع",
   "goalsTipsSub": "اسأل Upino، بناءً على إنفاقك",
-  "goalsDetailTitle": "كل هدف"
+  "goalsDetailTitle": "كل هدف",
+  "demoTry": "جرّبه ببيانات نموذجية",
+  "demoTrySub": "أربعة أهداف وفواتير وثلاثة أشهر من السجل، في نسخة ليست لك ولا تُحفظ.",
+  "demoBanner": "بيانات نموذجية: لا شيء هنا لك أو محفوظ.",
+  "demoExit": "خروج",
+  "demoGoalTrip": "رحلة",
+  "demoGoalLaptop": "حاسوب",
+  "demoGoalEmergency": "طوارئ",
+  "demoGoalCar": "سيارة",
+  "demoBillPhone": "الهاتف",
+  "demoBillInternet": "الإنترنت",
+  "demoBillGym": "النادي"
 }

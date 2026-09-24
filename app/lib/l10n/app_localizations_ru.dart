@@ -2024,4 +2024,38 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'Каждая цель';
+
+  @override
+  String get demoTry => 'Попробовать на примере';
+
+  @override
+  String get demoTrySub =>
+      'Четыре цели, счета и три месяца истории — в копии, которая не ваша и не сохраняется.';
+
+  @override
+  String get demoBanner => 'Пример: здесь ничего не ваше и не сохраняется.';
+
+  @override
+  String get demoExit => 'Выйти';
+
+  @override
+  String get demoGoalTrip => 'Поездка';
+
+  @override
+  String get demoGoalLaptop => 'Ноутбук';
+
+  @override
+  String get demoGoalEmergency => 'Запас';
+
+  @override
+  String get demoGoalCar => 'Машина';
+
+  @override
+  String get demoBillPhone => 'Телефон';
+
+  @override
+  String get demoBillInternet => 'Интернет';
+
+  @override
+  String get demoBillGym => 'Спортзал';
 }

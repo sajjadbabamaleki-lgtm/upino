@@ -11,6 +11,8 @@
 /// phone gets Persian back.
 library;
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../design/icon.dart';
@@ -67,11 +69,29 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage>
+    with SingleTickerProviderStateMixin {
   final _input = TextEditingController();
   final _scroll = ScrollController();
   late String _id;
   bool _listening = false;
+
+  /// A beat before a new answer, with dots in its place: an answer that is
+  /// there the instant the question is sent reads as canned. The answer is
+  /// worked out at once; only its showing waits. An animation rather than
+  /// a timer, so nothing is left pending when the page closes.
+  late final AnimationController _thinking = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 850),
+  )..addStatusListener((status) {
+      if (status == AnimationStatus.completed && mounted) {
+        setState(() => _thinkingAt = null);
+        _toBottom();
+      }
+    });
+
+  /// The turn whose answer is being "thought about", or null.
+  int? _thinkingAt;
 
   AppState get state => widget.state;
 
@@ -87,6 +107,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
+    _thinking.dispose();
     _input.dispose();
     _scroll.dispose();
     super.dispose();
@@ -98,6 +119,12 @@ class _ChatPageState extends State<ChatPage> {
     final app = Localizations.localeOf(context).languageCode;
     state.ask(_id, q, language: replyLanguage(q, app));
     _input.clear();
+    // A phone set to reduce motion gets the answer straight away.
+    if (!MediaQuery.disableAnimationsOf(context)) {
+      final turns = state.conversation(_id)?.turns.length ?? 0;
+      setState(() => _thinkingAt = turns - 1);
+      _thinking.forward(from: 0);
+    }
     _toBottom();
   }
 
@@ -172,7 +199,8 @@ class _ChatPageState extends State<ChatPage> {
                         // once there is one.
                         _InLanguage(
                           language: turns.firstOrNull?.language,
-                          child: _AnswerView(answer: greet(state), state: state),
+                          child:
+                              _AnswerView(answer: greet(state), state: state),
                         ),
                         if (resumed) ...[
                           const SizedBox(height: 10),
@@ -185,7 +213,7 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                           ),
                         ],
-                        for (final turn in turns) ...[
+                        for (final (i, turn) in turns.indexed) ...[
                           const SizedBox(height: 10),
                           _Bubble(
                             fromPlan: false,
@@ -195,19 +223,23 @@ class _ChatPageState extends State<ChatPage> {
                                   ?.copyWith(color: Colors.white),
                             ),
                           ),
-                          _InLanguage(
-                            language: turn.language,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                for (final answer
-                                    in reply(turn.question, state)) ...[
-                                  const SizedBox(height: 10),
-                                  _AnswerView(answer: answer, state: state),
+                          if (i == _thinkingAt) ...[
+                            const SizedBox(height: 10),
+                            _Typing(progress: _thinking),
+                          ] else
+                            _InLanguage(
+                              language: turn.language,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  for (final answer
+                                      in reply(turn.question, state)) ...[
+                                    const SizedBox(height: 10),
+                                    _AnswerView(answer: answer, state: state),
+                                  ],
                                 ],
-                              ],
+                              ),
                             ),
-                          ),
                         ],
                       ],
                     ),
@@ -394,7 +426,7 @@ class _InLanguage extends StatelessWidget {
 }
 
 class _Bubble extends StatelessWidget {
-  const _Bubble({required this.fromPlan, required this.child});
+  const _Bubble({required this.fromPlan, required this.child, super.key});
 
   final bool fromPlan;
   final Widget child;
@@ -683,8 +715,7 @@ class _AnswerView extends StatelessWidget {
                     : l.chatAdviceLess(
                         (a.previousTotal! - a.lastTotal!).display(),
                       ),
-              if (a.acquaintance == Acquaintance.learning)
-                l.chatAdviceLearning,
+              if (a.acquaintance == Acquaintance.learning) l.chatAdviceLearning,
             ],
           ],
         ),
@@ -720,5 +751,56 @@ class _AnswerView extends StatelessWidget {
         ),
       HelpAnswer() => say(const Key('chat-answer-help'), [l.chatHelp]),
     };
+  }
+}
+
+/// Three dots rising in turn, in a bubble on the plan's side.
+class _Typing extends StatelessWidget {
+  const _Typing({required this.progress});
+
+  final Animation<double> progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = isDark(context);
+    final dot = dark ? UpinoTokens.darkTextTertiary : UpinoTokens.textTertiary;
+    return _Bubble(
+      key: const Key('chat-typing'),
+      fromPlan: true,
+      child: SizedBox(
+        width: 40,
+        height: 18,
+        child: AnimatedBuilder(
+          animation: progress,
+          builder: (context, _) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              for (var i = 0; i < 3; i++)
+                Transform.translate(
+                  // Each dot rises and falls a third of a beat after the last.
+                  offset: Offset(
+                    0,
+                    -4 *
+                        math.max(
+                          0,
+                          math.sin(
+                            (progress.value * 3 - i / 3) * 2 * math.pi,
+                          ),
+                        ),
+                  ),
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: dot,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

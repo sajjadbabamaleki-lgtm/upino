@@ -2099,4 +2099,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'Cada meta';
+
+  @override
+  String get demoTry => 'Testar com dados de exemplo';
+
+  @override
+  String get demoTrySub =>
+      'Quatro metas, contas e três meses de histórico, numa cópia que não é sua e não é salva.';
+
+  @override
+  String get demoBanner => 'Dados de exemplo: nada aqui é seu nem é salvo.';
+
+  @override
+  String get demoExit => 'Sair';
+
+  @override
+  String get demoGoalTrip => 'Viagem';
+
+  @override
+  String get demoGoalLaptop => 'Notebook';
+
+  @override
+  String get demoGoalEmergency => 'Emergência';
+
+  @override
+  String get demoGoalCar => 'Carro';
+
+  @override
+  String get demoBillPhone => 'Telefone';
+
+  @override
+  String get demoBillInternet => 'Internet';
+
+  @override
+  String get demoBillGym => 'Academia';
 }

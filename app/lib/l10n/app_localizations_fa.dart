@@ -2015,4 +2015,39 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get goalsDetailTitle => 'جزئیات هر هدف';
+
+  @override
+  String get demoTry => 'امتحان با داده‌ی نمونه';
+
+  @override
+  String get demoTrySub =>
+      'چهار هدف، قبض‌ها و سه ماه سابقه، در یک نسخه‌ی جدا که مال شما نیست و ذخیره نمی‌شود.';
+
+  @override
+  String get demoBanner =>
+      'داده‌ی نمونه: هیچ‌چیز اینجا مال شما نیست و ذخیره نمی‌شود.';
+
+  @override
+  String get demoExit => 'خروج';
+
+  @override
+  String get demoGoalTrip => 'سفر';
+
+  @override
+  String get demoGoalLaptop => 'لپ‌تاپ';
+
+  @override
+  String get demoGoalEmergency => 'اضطراری';
+
+  @override
+  String get demoGoalCar => 'ماشین';
+
+  @override
+  String get demoBillPhone => 'تلفن';
+
+  @override
+  String get demoBillInternet => 'اینترنت';
+
+  @override
+  String get demoBillGym => 'باشگاه';
 }

@@ -211,7 +211,8 @@ is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
 
 **The pay gauge** on Home is a half ring with a segment for each day of the
-pay period, lit for the days still to go, so it drains as the period runs;
+pay period, lit for the days already gone, so it fills toward the pay; the
+segments light one after another as it appears, and the days count down;
 in its opening, the days to pay, and under it what is free once the pay
 comes.
 
@@ -269,6 +270,14 @@ month would mean for a goal, in days. It states facts; there is no score.
 
 Recording a spend suggests a category when similar past spends make one
 clear, and offers the other accounts it could be paid from.
+
+In the chat, a new answer comes after a short pause with typing dots, so it
+does not read as canned; the answer itself is worked out at once.
+
+**Try it with sample data** (Profile, and Goals while there are fewer than
+four) opens a copy of the app with four goals, bills and three months of
+history, replayed through the same engine. It is never saved and leaves the
+person's own plan untouched.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.
