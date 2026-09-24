@@ -192,16 +192,22 @@ class _TimelineCardState extends State<TimelineCard> {
             markerIndex: base.todayIndex,
             semanticLabel: l.timelineSemantics,
             series: [
+              // The balance, only where it is recorded fact: ahead, the one
+              // line is the room to spend. The projected balance is in the
+              // readout, where it does not compete.
               ChartSeries(
-                values: [for (final p in base.points) v(p.balance)],
-                color: faint,
-                width: 1.6,
-                dashFrom: base.todayIndex,
+                values: [
+                  for (final p in base.points)
+                    p.projected ? null : v(p.balance),
+                ],
+                color: faint.withValues(alpha: 0.45),
+                width: 1.4,
+                prominent: false,
               ),
               ChartSeries(
                 values: [for (final p in base.points) v(p.free)],
                 color: primary,
-                dashFrom: base.todayIndex,
+                width: 3,
                 fill: compare == null,
               ),
               if (compare != null)
@@ -277,7 +283,8 @@ class _TimelineCardState extends State<TimelineCard> {
             runSpacing: 4,
             children: [
               _Legend(color: primary, label: l.timelineFree),
-              _Legend(color: faint, label: l.timelineBalanceLegend),
+              if (base.todayIndex > 0)
+                _Legend(color: faint, label: l.timelineBalanceLegend),
               if (compare != null)
                 _Legend(color: critical, label: l.timelineWithPurchase),
               _Legend(color: primary, label: l.timelinePay, dot: true),

@@ -7,6 +7,7 @@
 /// the selected index back to say what they mean.
 library;
 
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class ChartSeries {
     this.dashFrom,
     this.fill = false,
     this.dashed = false,
+    this.prominent = true,
   });
 
   /// One value per x position; null leaves a gap.
@@ -27,7 +29,8 @@ class ChartSeries {
   final Color color;
   final double width;
 
-  /// Drawn dashed from this index on: where fact ends and projection begins.
+  /// Where fact ends and projection begins. Kept for callers; the chart
+  /// shows it as a shaded zone from the marker on rather than as dashes.
   final int? dashFrom;
 
   /// Dashed all the way, for a comparison line.
@@ -35,6 +38,10 @@ class ChartSeries {
 
   /// Shade the area under the line.
   final bool fill;
+
+  /// Gets a dot under the finger. A background line, such as the balance
+  /// behind the room to spend, does not.
+  final bool prominent;
 }
 
 class ChartMark {
@@ -150,12 +157,14 @@ class _ChartPainter extends CustomPainter {
   final Color ink;
   final Color faint;
 
-  static const _markBand = 16.0;
+  static const _markBand = 18.0;
+  static const _top = 10.0;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (count == 0) return;
-    final plotHeight = size.height - _markBand;
+    final plotBottom = size.height - _markBand;
+    final plotHeight = plotBottom - _top;
 
     var lo = 0.0;
     var hi = guide ?? 0.0;
@@ -167,23 +176,46 @@ class _ChartPainter extends CustomPainter {
       }
     }
     if (hi == lo) hi = lo + 1;
-    final span = hi - lo;
-    hi += span * 0.08;
+    hi += (hi - lo) * 0.06;
 
     double x(int i) {
       final t = count <= 1 ? 0.5 : i / (count - 1);
       return (rtl ? 1 - t : t) * size.width;
     }
 
-    double y(double v) => plotHeight - (v - lo) / (hi - lo) * plotHeight;
+    double y(double v) => _top + plotHeight - (v - lo) / (hi - lo) * plotHeight;
 
-    // Zero, when the lines go below it: below zero means owing.
+    // Ahead of the marker is projection: a faint wash rather than dashes,
+    // which break a line into noise wherever it turns.
+    final m = markerIndex;
+    // Only when there is a past to set it against; otherwise the whole
+    // chart would be one grey box.
+    if (m != null && m > 0 && m < count - 1) {
+      final left = x(m);
+      canvas.drawRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromLTRB(left, 0, size.width, plotBottom),
+          topRight: const Radius.circular(12),
+        ),
+        Paint()..color = ink.withValues(alpha: 0.035),
+      );
+    }
+
+    // A quiet floor, and zero when the lines go below it.
+    canvas.drawLine(
+      Offset(0, plotBottom),
+      Offset(size.width, plotBottom),
+      Paint()
+        ..color = faint
+        ..strokeWidth = 1,
+    );
     if (lo < 0) {
-      canvas.drawLine(
+      _dashedLine(
+        canvas,
         Offset(0, y(0)),
         Offset(size.width, y(0)),
         Paint()
-          ..color = faint
+          ..color = ink.withValues(alpha: 0.25)
           ..strokeWidth = 1,
       );
     }
@@ -194,64 +226,118 @@ class _ChartPainter extends CustomPainter {
         Offset(0, y(guide!)),
         Offset(size.width, y(guide!)),
         Paint()
-          ..color = ink.withValues(alpha: 0.35)
+          ..color = ink.withValues(alpha: 0.3)
           ..strokeWidth = 1.2,
       );
     }
 
-    if (markerIndex != null) {
-      _dashedLine(
-        canvas,
-        Offset(x(markerIndex!), 0),
-        Offset(x(markerIndex!), plotHeight),
+    if (m != null) {
+      canvas.drawLine(
+        Offset(x(m), _top - 4),
+        Offset(x(m), plotBottom),
         Paint()
-          ..color = ink.withValues(alpha: 0.25)
+          ..color = ink.withValues(alpha: 0.18)
           ..strokeWidth = 1,
-        dash: 3,
-        gap: 4,
       );
     }
 
     for (final s in series) {
-      _drawSeries(canvas, s, x, y, plotHeight);
+      _drawSeries(canvas, s, x, y, plotBottom);
     }
 
-    // Pay days, bills and the like, along the bottom.
-    for (final m in marks) {
-      if (m.index < 0 || m.index >= count) continue;
-      canvas.drawCircle(
-        Offset(x(m.index), size.height - _markBand / 2),
-        m.big ? 4 : 2.6,
-        Paint()..color = m.color,
-      );
+    // Pay days and bills along the floor.
+    for (final mark in marks) {
+      if (mark.index < 0 || mark.index >= count) continue;
+      final c = Offset(x(mark.index), size.height - _markBand / 2 + 1);
+      if (mark.big) {
+        canvas
+          ..drawCircle(
+              c, 5, Paint()..color = mark.color.withValues(alpha: 0.18),)
+          ..drawCircle(c, 2.8, Paint()..color = mark.color);
+      } else {
+        canvas.drawCircle(c, 2.2, Paint()..color = mark.color);
+      }
     }
 
-    // The finger.
+    // The finger: a soft line, and a ringed dot on each line it crosses.
     final sx = x(selected);
     canvas.drawLine(
-      Offset(sx, 0),
-      Offset(sx, plotHeight),
+      Offset(sx, _top - 4),
+      Offset(sx, plotBottom),
       Paint()
-        ..color = ink.withValues(alpha: 0.55)
-        ..strokeWidth = 1.2,
+        ..color = ink.withValues(alpha: 0.35)
+        ..strokeWidth = 1.2
+        ..strokeCap = StrokeCap.round,
     );
+    final ring = faint.computeLuminance() > 0.5
+        ? const Color(0xFFFFFFFF)
+        : const Color(0xFF1C1C21);
     for (final s in series) {
-      if (selected >= s.values.length) continue;
+      if (selected >= s.values.length || s.dashed || !s.prominent) continue;
       final v = s.values[selected];
       if (v == null) continue;
+      final p = Offset(sx, y(v));
       canvas
-        ..drawCircle(Offset(sx, y(v)), 5.5, Paint()..color = s.color)
-        ..drawCircle(
-          Offset(sx, y(v)),
-          5.5,
-          Paint()
-            ..color = faint.computeLuminance() > 0.5
-                ? const Color(0xFFFFFFFF)
-                : const Color(0xFF1C1C21)
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 2,
-        );
+        ..drawCircle(p, 9, Paint()..color = s.color.withValues(alpha: 0.16))
+        ..drawCircle(p, 5.5, Paint()..color = ring)
+        ..drawCircle(p, 3.8, Paint()..color = s.color);
     }
+    for (final s in series) {
+      if (selected >= s.values.length || !s.dashed) continue;
+      final v = s.values[selected];
+      if (v == null) continue;
+      final p = Offset(sx, y(v));
+      canvas
+        ..drawCircle(p, 5, Paint()..color = ring)
+        ..drawCircle(p, 3.4, Paint()..color = s.color);
+    }
+  }
+
+  /// A smooth path through the points that never overshoots them
+  /// (monotone cubic, Fritsch–Carlson): a flat stretch stays flat and a
+  /// step stays a step, only with its corners eased.
+  static Path _smooth(List<Offset> p) {
+    final path = Path()..moveTo(p.first.dx, p.first.dy);
+    if (p.length == 1) return path;
+    if (p.length == 2) return path..lineTo(p[1].dx, p[1].dy);
+    final n = p.length;
+    final d = List<double>.generate(n - 1, (i) {
+      final h = p[i + 1].dx - p[i].dx;
+      return h == 0 ? 0 : (p[i + 1].dy - p[i].dy) / h;
+    });
+    final m = List<double>.filled(n, 0);
+    m[0] = d[0];
+    m[n - 1] = d[n - 2];
+    for (var i = 1; i < n - 1; i++) {
+      m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    }
+    for (var i = 0; i < n - 1; i++) {
+      if (d[i] == 0) {
+        m[i] = 0;
+        m[i + 1] = 0;
+        continue;
+      }
+      final a = m[i] / d[i];
+      final b = m[i + 1] / d[i];
+      final r = a * a + b * b;
+      if (r > 9) {
+        final t = 3 / math.sqrt(r);
+        m[i] = t * a * d[i];
+        m[i + 1] = t * b * d[i];
+      }
+    }
+    for (var i = 0; i < n - 1; i++) {
+      final h = (p[i + 1].dx - p[i].dx) / 3;
+      path.cubicTo(
+        p[i].dx + h,
+        p[i].dy + m[i] * h,
+        p[i + 1].dx - h,
+        p[i + 1].dy - m[i + 1] * h,
+        p[i + 1].dx,
+        p[i + 1].dy,
+      );
+    }
+    return path;
   }
 
   void _drawSeries(
@@ -259,76 +345,65 @@ class _ChartPainter extends CustomPainter {
     ChartSeries s,
     double Function(int) x,
     double Function(double) y,
-    double plotHeight,
+    double plotBottom,
   ) {
-    final solid = Path();
-    final dashed = Path();
-    final area = Path();
-    var started = false;
-    var areaStarted = false;
-    int? lastIndex;
-    Offset? last;
-
+    // Runs of consecutive values; a null starts a new run.
+    final runs = <List<Offset>>[];
+    var run = <Offset>[];
     for (var i = 0; i < s.values.length && i < count; i++) {
       final v = s.values[i];
       if (v == null) {
-        started = false;
+        if (run.isNotEmpty) runs.add(run);
+        run = [];
         continue;
       }
-      final p = Offset(x(i), y(v));
-      final isDashed = s.dashed || (s.dashFrom != null && i > s.dashFrom!);
-      final path = isDashed ? dashed : solid;
-      if (!started) {
-        path.moveTo(p.dx, p.dy);
-        started = true;
-      } else {
-        // Continue from the previous point on whichever path this segment
-        // belongs to, so the switch to dashed leaves no gap.
-        path
-          ..moveTo(last!.dx, last.dy)
-          ..lineTo(p.dx, p.dy);
+      run.add(Offset(x(i), y(v)));
+    }
+    if (run.isNotEmpty) runs.add(run);
+    if (rtl) {
+      for (final r in runs) {
+        r.sort((a, b) => a.dx.compareTo(b.dx));
       }
-      if (s.fill) {
-        if (!areaStarted) {
-          area
-            ..moveTo(p.dx, plotHeight)
-            ..lineTo(p.dx, p.dy);
-          areaStarted = true;
-        } else {
-          area.lineTo(p.dx, p.dy);
-        }
-      }
-      last = p;
-      lastIndex = i;
     }
 
-    if (s.fill && areaStarted && last != null && lastIndex != null) {
-      area
-        ..lineTo(last.dx, plotHeight)
-        ..close();
-      canvas.drawPath(
-        area,
-        Paint()
-          ..shader = ui.Gradient.linear(
-            Offset(0, 0),
-            Offset(0, plotHeight),
-            [s.color.withValues(alpha: 0.22), s.color.withValues(alpha: 0.0)],
-          ),
-      );
-    }
-
-    final paint = Paint()
+    final line = Paint()
       ..color = s.color
       ..strokeWidth = s.width
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
-    canvas.drawPath(solid, paint);
-    for (final metric in dashed.computeMetrics()) {
-      var d = 0.0;
-      while (d < metric.length) {
-        canvas.drawPath(metric.extractPath(d, d + 6), paint);
-        d += 10;
+
+    for (final r in runs) {
+      final path = _smooth(r);
+      if (s.fill) {
+        final area = Path.from(path)
+          ..lineTo(r.last.dx, plotBottom)
+          ..lineTo(r.first.dx, plotBottom)
+          ..close();
+        final top = r.map((p) => p.dy).reduce((a, b) => a < b ? a : b);
+        canvas.drawPath(
+          area,
+          Paint()
+            ..shader = ui.Gradient.linear(
+              Offset(0, top),
+              Offset(0, plotBottom),
+              [
+                s.color.withValues(alpha: 0.28),
+                s.color.withValues(alpha: 0.02),
+              ],
+            ),
+        );
+      }
+      if (s.dashed) {
+        for (final metric in path.computeMetrics()) {
+          var dist = 0.0;
+          while (dist < metric.length) {
+            canvas.drawPath(metric.extractPath(dist, dist + 7), line);
+            dist += 12;
+          }
+        }
+      } else {
+        canvas.drawPath(path, line);
       }
     }
   }

@@ -68,56 +68,65 @@ class _Tile extends StatelessWidget {
         key: Key(action.keyName),
         borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
         onTap: action.onTap,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(6, 14, 6, 12),
-          child: Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: tint,
-                      shape: BoxShape.circle,
+        // Square, whatever the phone's width.
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: tint,
+                        shape: BoxShape.circle,
+                      ),
+                      child: UpinoIcon(action.icon, size: 20, color: ink),
                     ),
-                    child: UpinoIcon(action.icon, size: 21, color: ink),
-                  ),
-                  if (action.flagged)
-                    PositionedDirectional(
-                      top: -1,
-                      end: -1,
-                      child: Container(
-                        key: Key('${action.keyName}-flag'),
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: critical,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: cardColor(context),
-                            width: 2,
+                    if (action.flagged)
+                      PositionedDirectional(
+                        top: -1,
+                        end: -1,
+                        child: Container(
+                          key: Key('${action.keyName}-flag'),
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: critical,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: cardColor(context),
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                action.label,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                    ),
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 7),
+                // Whatever height is left: a long label in a narrow tile
+                // ends in an ellipsis rather than spilling out of the square.
+                Flexible(
+                  child: Text(
+                    action.label,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w600,
+                          height: 1.2,
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

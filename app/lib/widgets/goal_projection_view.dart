@@ -97,14 +97,14 @@ class _GoalProjectionViewState extends State<GoalProjectionView> {
             if (_pace != null)
               ChartSeries(
                 values: [for (final s in planned.saved) s.minor.toDouble()],
-                color: faint,
+                color: faint.withValues(alpha: 0.6),
                 width: 1.6,
                 dashed: true,
               ),
             ChartSeries(
               values: [for (final s in what.saved) s.minor.toDouble()],
               color: primary,
-              dashFrom: what.todayIndex,
+              width: 3,
               fill: true,
             ),
           ],
