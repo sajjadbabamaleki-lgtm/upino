@@ -241,7 +241,7 @@ void main() {
     });
 
     test('the schema version moved with the shape', () {
-      expect(schemaVersion, 9);
+      expect(schemaVersion, 10);
     });
   });
 

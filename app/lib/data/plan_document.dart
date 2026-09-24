@@ -10,10 +10,13 @@ import 'dart:convert';
 
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
+import '../domain/account.dart';
+import '../domain/bill.dart';
 import '../domain/category.dart';
 import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
+import '../domain/recovery.dart';
 import '../engine/money.dart';
 import '../state/app_state.dart' show ThemeChoice;
 import 'serialization.dart';
@@ -43,6 +46,11 @@ class PlanDocument {
     this.reminderEnabled = false,
     this.startedAt,
     this.conversations = const [],
+    this.bills = const [],
+    this.accounts = const [],
+    this.accountOf = const {},
+    this.recoveries = const [],
+    this.contributions = const [],
   });
 
   final String currency;
@@ -108,6 +116,23 @@ class PlanDocument {
   /// are recomputed from the plan when a conversation is shown.
   final List<Conversation> conversations;
 
+  /// Bills and subscriptions, each a claim on the money until it is paid.
+  final List<Bill> bills;
+
+  /// Accounts beyond the plan's own. The main account is not listed; its
+  /// opening balance is [openingBalance].
+  final List<Account> accounts;
+
+  /// Event id to the account a spend was paid from, for spends not paid from
+  /// the main account. Kept beside the ledger like a category.
+  final Map<String, String> accountOf;
+
+  /// Purchases that can be, or were, taken back.
+  final List<Recovery> recoveries;
+
+  /// Money put toward goals, and when.
+  final List<GoalContribution> contributions;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -130,6 +155,14 @@ class PlanDocument {
           'startedAt': startedAt!.toUtc().toIso8601String(),
         if (conversations.isNotEmpty)
           'conversations': conversations.map(conversationToJson).toList(),
+        if (bills.isNotEmpty) 'bills': bills.map(billToJson).toList(),
+        if (accounts.isNotEmpty)
+          'accounts': accounts.map(accountToJson).toList(),
+        if (accountOf.isNotEmpty) 'accountOf': accountOf,
+        if (recoveries.isNotEmpty)
+          'recoveries': recoveries.map(recoveryToJson).toList(),
+        if (contributions.isNotEmpty)
+          'contributions': contributions.map(contributionToJson).toList(),
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
           'categories': {
@@ -192,6 +225,13 @@ class PlanDocument {
           ? null
           : DateTime.parse(json['startedAt']! as String),
       conversations: listOf(json['conversations'], conversationFromJson),
+      bills: listOf(json['bills'], billFromJson),
+      accounts: listOf(json['accounts'], accountFromJson),
+      accountOf: json['accountOf'] == null
+          ? const {}
+          : Map<String, String>.from(json['accountOf'] as Map),
+      recoveries: listOf(json['recoveries'], recoveryFromJson),
+      contributions: listOf(json['contributions'], contributionFromJson),
       payCycleDays: json['payCycleDays'] as int? ?? 30,
       inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null

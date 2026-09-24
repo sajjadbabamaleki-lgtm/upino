@@ -10,9 +10,12 @@
 ///   §5 holds it. No decimal string, no double, nothing to re-parse wrongly.
 library;
 
+import '../domain/account.dart';
+import '../domain/bill.dart';
 import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
+import '../domain/recovery.dart';
 import '../engine/clock.dart';
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
@@ -30,7 +33,8 @@ import '../engine/money.dart';
 /// 7 — added bank-message suggestions and the evening reminder.
 /// 8 — added when the plan was started.
 /// 9 — added conversations with Ask.
-const int schemaVersion = 9;
+/// 10 — added bills, accounts, money coming back, and goal contributions.
+const int schemaVersion = 10;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);
@@ -378,4 +382,79 @@ Conversation conversationFromJson(Map<String, Object?> json) => Conversation(
             );
           }(),
       ],
+    );
+
+// --- bills -----------------------------------------------------------------
+
+Map<String, Object?> billToJson(Bill b) => {
+      'id': b.id,
+      'name': b.name,
+      'amount': moneyToJson(b.amount),
+      'every': b.every.name,
+      'nextDue': localDateToJson(b.nextDue),
+      'kind': b.kind.name,
+      if (b.debtAccountId != null) 'debtAccountId': b.debtAccountId,
+    };
+
+Bill billFromJson(Map<String, Object?> json) => Bill(
+      id: json['id']! as String,
+      name: json['name']! as String,
+      amount: moneyFromJson(json['amount']),
+      every: enumByName(BillEvery.values, json['every'], 'bill period'),
+      nextDue: localDateFromJson(json['nextDue']),
+      kind: json['kind'] == null
+          ? BillKind.bill
+          : enumByName(BillKind.values, json['kind'], 'bill kind'),
+      debtAccountId: json['debtAccountId'] as String?,
+    );
+
+// --- accounts ----------------------------------------------------------------
+
+Map<String, Object?> accountToJson(Account a) => {
+      'id': a.id,
+      'name': a.name,
+      'kind': a.kind.name,
+      'opening': moneyToJson(a.opening),
+      if (a.countedChoice != null) 'counted': a.countedChoice,
+    };
+
+Account accountFromJson(Map<String, Object?> json) => Account(
+      id: json['id']! as String,
+      name: json['name']! as String,
+      kind: enumByName(AccountKind.values, json['kind'], 'account kind'),
+      opening: moneyFromJson(json['opening']),
+      counted: json['counted'] as bool?,
+    );
+
+// --- money coming back --------------------------------------------------------
+
+Map<String, Object?> recoveryToJson(Recovery r) => {
+      'eventId': r.eventId,
+      'state': r.state.name,
+      'expected': moneyToJson(r.expected),
+      if (r.returnBy != null) 'returnBy': localDateToJson(r.returnBy!),
+    };
+
+Recovery recoveryFromJson(Map<String, Object?> json) => Recovery(
+      eventId: json['eventId']! as String,
+      state: enumByName(RecoveryState.values, json['state'], 'recovery state'),
+      expected: moneyFromJson(json['expected']),
+      returnBy: json['returnBy'] == null
+          ? null
+          : localDateFromJson(json['returnBy']),
+    );
+
+// --- goal contributions -------------------------------------------------------
+
+Map<String, Object?> contributionToJson(GoalContribution c) => {
+      'goalId': c.goalId,
+      'amount': moneyToJson(c.amount),
+      'at': c.at.toUtc().toIso8601String(),
+    };
+
+GoalContribution contributionFromJson(Map<String, Object?> json) =>
+    GoalContribution(
+      goalId: json['goalId']! as String,
+      amount: moneyFromJson(json['amount']),
+      at: DateTime.parse(json['at']! as String),
     );

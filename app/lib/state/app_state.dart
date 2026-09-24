@@ -7,12 +7,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../data/plan_document.dart';
+import '../domain/account.dart';
 import '../domain/bank_sms.dart';
+import '../domain/bill.dart';
 import '../domain/category.dart';
 import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
 import '../domain/inflation.dart';
+import '../domain/recovery.dart';
 import '../data/plan_store.dart';
 import '../engine/allocate.dart';
 import '../engine/clock.dart';
@@ -305,6 +308,13 @@ class AppState extends ChangeNotifier {
   final List<Goal> _goals = [];
   final List<Holding> _holdings = [];
   int _holdingSeq = 0;
+  final List<Bill> _bills = [];
+  int _billSeq = 0;
+  final List<Account> _accounts = [];
+  int _accountSeq = 0;
+  final Map<String, String> _accountOf = {};
+  final List<Recovery> _recoveries = [];
+  final List<GoalContribution> _contributions = [];
 
   String _currency = 'EUR';
   ThemeChoice _themeChoice = ThemeChoice.system;
@@ -430,6 +440,24 @@ class AppState extends ChangeNotifier {
       return n > seq ? n : seq;
     });
 
+    _bills
+      ..clear()
+      ..addAll(document.bills);
+    _billSeq = _seqOf(_bills.map((b) => b.id), 'b');
+    _accounts
+      ..clear()
+      ..addAll(document.accounts);
+    _accountSeq = _seqOf(_accounts.map((a) => a.id), 'a');
+    _accountOf
+      ..clear()
+      ..addAll(document.accountOf);
+    _recoveries
+      ..clear()
+      ..addAll(document.recoveries);
+    _contributions
+      ..clear()
+      ..addAll(document.contributions);
+
     _events
       ..clear()
       ..addAll(document.events);
@@ -456,6 +484,11 @@ class AppState extends ChangeNotifier {
       ..clear()
       ..addAll(document.incomeEvents);
   }
+
+  static int _seqOf(Iterable<String> ids, String prefix) => ids.fold(0, (seq, id) {
+        final n = int.tryParse(id.replaceFirst(prefix, '')) ?? 0;
+        return n > seq ? n : seq;
+      });
 
   /// Replace the whole plan with one from a backup. Nothing of the current
   /// plan is merged in: two logs cannot be interleaved without inventing an
@@ -492,6 +525,11 @@ class AppState extends ChangeNotifier {
         reminderEnabled: _reminderEnabled,
         startedAt: _startedAt,
         conversations: List.unmodifiable(_conversations),
+        bills: List.unmodifiable(_bills),
+        accounts: List.unmodifiable(_accounts),
+        accountOf: Map.of(_accountOf),
+        recoveries: List.unmodifiable(_recoveries),
+        contributions: List.unmodifiable(_contributions),
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -566,6 +604,31 @@ class AppState extends ChangeNotifier {
     for (var i = 0; i < _holdings.length; i++) {
       final h = _holdings[i];
       _holdings[i] = h.copyWith(unitPrice: r(h.unitPrice));
+    }
+    for (var i = 0; i < _bills.length; i++) {
+      _bills[i] = _bills[i].copyWith(amount: r(_bills[i].amount));
+    }
+    for (var i = 0; i < _accounts.length; i++) {
+      final a = _accounts[i];
+      _accounts[i] = Account(
+        id: a.id,
+        name: a.name,
+        kind: a.kind,
+        opening: r(a.opening),
+        counted: a.countedChoice,
+      );
+    }
+    for (var i = 0; i < _recoveries.length; i++) {
+      final c = _recoveries[i];
+      _recoveries[i] = c.to(c.state, expected: r(c.expected));
+    }
+    for (var i = 0; i < _contributions.length; i++) {
+      final c = _contributions[i];
+      _contributions[i] = GoalContribution(
+        goalId: c.goalId,
+        amount: r(c.amount),
+        at: c.at,
+      );
     }
 
     _persist();
@@ -662,25 +725,76 @@ class AppState extends ChangeNotifier {
     super.notifyListeners();
   }
 
-  PlanSnapshot _computeSnapshot() => computePlan(PlanInput(
-        currency: _currency,
-        now: _now,
-        utcOffset: _utcOffset,
-        includedAccounts: const [_accountId],
-        openingBalances: {
-          _accountId: _openingBalance ?? Money.zero(_currency),
-        },
-        events: _events,
-        claims: [..._claims, ..._goalClaims],
-        incomeEvents: _incomeEvents,
-        oldestConfirmationAt: _lastBalanceConfirmation,
-      ),);
+  PlanSnapshot _computeSnapshot() => computePlan(_input());
+
+  /// What the engine is given, for the live plan or for a what-if. A what-if
+  /// differs only in what it passes here; the claims, accounts and rules are
+  /// always the live plan's.
+  PlanInput _input({
+    DateTime? at,
+    List<LedgerEvent> extraEvents = const [],
+    List<IncomeEvent>? incomeEvents,
+  }) {
+    final now = at ?? _now;
+    final day = LocalDate.at(now, _utcOffset);
+    final income = incomeEvents ?? _incomeEvents;
+    final horizon = income
+            .where((i) => i.isProjectable && i.expectedDate > day)
+            .map((i) => i.expectedDate)
+            .fold<LocalDate?>(null, (a, b) => a == null || b < a ? b : a) ??
+        day;
+    return PlanInput(
+      currency: _currency,
+      now: now,
+      utcOffset: _utcOffset,
+      includedAccounts: _includedAccounts,
+      openingBalances: {
+        _accountId: _openingBalance ?? Money.zero(_currency),
+        for (final a in _accounts)
+          if (a.holdsMoney) a.id: a.opening,
+      },
+      events: [
+        // What was owed on a card when it was added is owed now, and is set
+        // aside like any other card spending until it is paid.
+        for (final a in _accounts)
+          if (a.kind == AccountKind.card && a.opening.minor > 0)
+            CardPurchaseEvent(
+              id: 'opening:${a.id}',
+              cardId: a.id,
+              amount: a.opening,
+            ),
+        ..._events,
+        ...extraEvents,
+      ],
+      // Goals included: leaving them out of a what-if made a purchase look
+      // free when it came out of a goal.
+      claims: [
+        ..._claims,
+        ..._goalClaimsAt(day),
+        for (final b in _bills) b.toClaim(day, horizon, _payCycleDays),
+      ],
+      incomeEvents: income,
+      cards: [
+        for (final a in _accounts)
+          if (a.kind == AccountKind.card) CardTerms(id: a.id),
+      ],
+      oldestConfirmationAt: _lastBalanceConfirmation,
+    );
+  }
+
+  List<String> get _includedAccounts => [
+        _accountId,
+        for (final a in _accounts)
+          if (a.counted) a.id,
+      ];
 
   /// Each goal contributes this period's required contribution, so the
   /// waterfall protects the schedule rather than the whole target (§8).
-  List<Claim> get _goalClaims => [
+  List<Claim> get _goalClaims => _goalClaimsAt(today);
+
+  List<Claim> _goalClaimsAt(LocalDate day) => [
         for (final goal in _goals)
-          if (goal.toClaim(today, _payCycleDays) case final claim?) claim,
+          if (goal.toClaim(day, _payCycleDays) case final claim?) claim,
       ];
 
   List<Goal> get goals => List.unmodifiable(_goals);
@@ -779,7 +893,7 @@ class AppState extends ChangeNotifier {
   /// skips a day that already has one.
   bool get spentToday {
     for (final e in _events) {
-      if (e is! ExpenseEvent) continue;
+      if (_spent(e) == null) continue;
       final at = _recordedAt[e.id];
       if (at != null && LocalDate.at(at, _utcOffset) == today) return true;
     }
@@ -860,9 +974,17 @@ class AppState extends ChangeNotifier {
         if (e is CorrectionEvent) e.voidsEventId,
     };
     return _events
-        .where((e) => e is ExpenseEvent && !voided.contains(e.id))
+        .where((e) => _spent(e) != null && !voided.contains(e.id))
         .length;
   }
+
+  /// What an event spent, whether from an account or on a card; null for
+  /// anything that is not a spend.
+  static Money? _spent(LedgerEvent e) => switch (e) {
+        ExpenseEvent(:final amount) => amount,
+        CardPurchaseEvent(:final amount) => amount,
+        _ => null,
+      };
 
   /// What the bell shows, most urgent first: a commitment that cannot be
   /// paid, then a figure that cannot be trusted, then pay that has not come,
@@ -1026,6 +1148,7 @@ class AppState extends ChangeNotifier {
     if (index < 0 || amount.minor <= 0) return;
     final goal = _goals[index];
     _goals[index] = goal.copyWith(saved: goal.saved + amount);
+    _contributions.add(GoalContribution(goalId: id, amount: amount, at: _now));
     _persist();
     notifyListeners();
   }
@@ -1112,13 +1235,18 @@ class AppState extends ChangeNotifier {
     Money amount, {
     String? receipt,
     SpendCategory? category,
+    String? accountId,
   }) {
     final id = 'e${++_eventSeq}';
-    _events.add(ExpenseEvent(
-      id: id,
-      accountId: _accountId,
-      amount: amount,
-    ),);
+    final from = accountId == null ? null : account(accountId);
+    _events.add(from?.kind == AccountKind.card
+        ? CardPurchaseEvent(id: id, cardId: from!.id, amount: amount)
+        : ExpenseEvent(
+            id: id,
+            accountId: from != null && from.canPay ? from.id : _accountId,
+            amount: amount,
+          ),);
+    if (from != null && from.canPay) _accountOf[id] = from.id;
     if (receipt != null) _receipts[id] = receipt;
     if (category != null) _categories[id] = category;
     _recordedAt[id] = _now;
@@ -1167,12 +1295,20 @@ class AppState extends ChangeNotifier {
     final since = until.subtract(Duration(days: days));
     final totals = <SpendCategory?, Money>{};
     for (final e in _events) {
-      if (e is! ExpenseEvent || voided.contains(e.id)) continue;
+      if (voided.contains(e.id)) continue;
       final at = _recordedAt[e.id];
       if (at == null || at.isBefore(since) || at.isAfter(until)) continue;
-      final key = _categories[e.id];
-      totals[key] = (totals[key] ?? Money.zero(_currency)) + e.amount;
+      // Money that came back takes its spend's sort, so a returned purchase
+      // does not stay counted as spending.
+      final (key, amount) = switch (e) {
+        RefundEvent(:final linkedExpenseId?, :final amount) =>
+          (_categories[linkedExpenseId], -amount),
+        _ => (_categories[e.id], _spent(e)),
+      };
+      if (amount == null) continue;
+      totals[key] = (totals[key] ?? Money.zero(_currency)) + amount;
     }
+    totals.removeWhere((_, v) => v.minor <= 0);
     final out = [
       for (final entry in totals.entries)
         (category: entry.key, total: entry.value),
@@ -1339,6 +1475,13 @@ class AppState extends ChangeNotifier {
     _recordedAt.clear();
     _holdings.clear();
     _holdingSeq = 0;
+    _bills.clear();
+    _billSeq = 0;
+    _accounts.clear();
+    _accountSeq = 0;
+    _accountOf.clear();
+    _recoveries.clear();
+    _contributions.clear();
     _suggestions.clear();
     _startedAt = null;
     _conversations.clear();
@@ -1536,14 +1679,10 @@ class AppState extends ChangeNotifier {
     List<LedgerEvent> extraEvents = const [],
     List<IncomeEvent>? incomeEvents,
   }) =>
-      computePlan(PlanInput(
-        currency: _currency,
-        now: at ?? _now,
-        utcOffset: _utcOffset,
-        includedAccounts: const [_accountId],
-        openingBalances: {_accountId: _openingBalance ?? Money.zero(_currency)},
-        events: [
-          ..._events,
+      computePlan(_input(
+        at: at,
+        incomeEvents: incomeEvents,
+        extraEvents: [
           ...extraEvents,
           if (extraExpense != null)
             ExpenseEvent(
@@ -1552,12 +1691,398 @@ class AppState extends ChangeNotifier {
               amount: extraExpense,
             ),
         ],
-        // The same claims as the live plan, goals included: leaving them
-        // out made a purchase look free when it came out of a goal.
-        claims: [..._claims, ..._goalClaims],
-        incomeEvents: incomeEvents ?? _incomeEvents,
-        oldestConfirmationAt: _lastBalanceConfirmation,
       ),);
+
+
+  // --- bills and subscriptions (Strategy §11.1) ------------------------------
+
+  List<Bill> get bills {
+    final sorted = [..._bills]
+      ..sort((Bill a, Bill b) => a.nextDue.compareTo(b.nextDue));
+    return List.unmodifiable(sorted);
+  }
+
+  void addBill({
+    required String name,
+    required Money amount,
+    required BillEvery every,
+    required LocalDate nextDue,
+    BillKind kind = BillKind.bill,
+    String? debtAccountId,
+  }) {
+    _bills.add(Bill(
+      id: 'b${++_billSeq}',
+      name: name,
+      amount: amount,
+      every: every,
+      nextDue: nextDue,
+      kind: kind,
+      debtAccountId: debtAccountId,
+    ),);
+    _persist();
+    notifyListeners();
+  }
+
+  void updateBill(
+    String id, {
+    String? name,
+    Money? amount,
+    BillEvery? every,
+    LocalDate? nextDue,
+    BillKind? kind,
+  }) {
+    final index = _bills.indexWhere((b) => b.id == id);
+    if (index < 0) return;
+    _bills[index] = _bills[index].copyWith(
+      name: name,
+      amount: amount,
+      every: every,
+      nextDue: nextDue,
+      kind: kind,
+    );
+    _persist();
+    notifyListeners();
+  }
+
+  void removeBill(String id) {
+    _bills.removeWhere((b) => b.id == id);
+    _persist();
+    notifyListeners();
+  }
+
+  /// Pay a bill: the money goes out, and the bill moves to its next date.
+  /// A repayment lowers what is owed on its loan or card instead of being
+  /// counted as spending.
+  void payBill(String id, {Money? amount}) {
+    final index = _bills.indexWhere((b) => b.id == id);
+    if (index < 0) return;
+    final bill = _bills[index];
+    final paid = amount ?? bill.amount;
+    final eventId = 'e${++_eventSeq}';
+    final debt = bill.debtAccountId == null
+        ? null
+        : _accounts.where((a) => a.id == bill.debtAccountId).firstOrNull;
+    _events.add(switch (debt?.kind) {
+      AccountKind.loan => DebtPaymentEvent(
+          id: eventId,
+          accountId: _accountId,
+          debtId: debt!.id,
+          amount: paid,
+        ),
+      AccountKind.card => CardSettlementEvent(
+          id: eventId,
+          accountId: _accountId,
+          cardId: debt!.id,
+          amount: paid,
+        ),
+      _ => ExpenseEvent(id: eventId, accountId: _accountId, amount: paid),
+    },);
+    if (debt == null) _categories[eventId] = SpendCategory.bills;
+    _recordedAt[eventId] = _now;
+    _bills[index] = bill.copyWith(nextDue: bill.after(bill.nextDue));
+    _persist();
+    notifyListeners();
+  }
+
+  /// Payments falling due from today through [days] ahead, soonest first.
+  /// One already overdue is included: it is still owed.
+  List<({Bill bill, LocalDate due})> upcomingBills({int days = 30}) {
+    final until = today.addDays(days);
+    final out = <({Bill bill, LocalDate due})>[
+      for (final b in _bills)
+        for (final d in b.dueBetween(today, until)) (bill: b, due: d),
+    ]..sort((a, b) => a.due.compareTo(b.due));
+    return out;
+  }
+
+  /// What the bills due in the next [days] add up to (§6.3).
+  Money billsDueWithin({int days = 30}) => Money.sum(
+        upcomingBills(days: days).map((u) => u.bill.amount),
+        _currency,
+      );
+
+  // --- pay arriving ----------------------------------------------------------
+
+  /// The pay came. It becomes money in the balance, and the next one is
+  /// expected a pay period after the one that came, at the same amount.
+  void confirmIncome(Money amount) {
+    final current = nextIncome;
+    final id = 'e${++_eventSeq}';
+    _events.add(IncomeConfirmedEvent(
+      id: id,
+      accountId: _accountId,
+      amount: amount,
+    ),);
+    _recordedAt[id] = _now;
+    if (current != null) {
+      var next = current.expectedDate.addDays(_payCycleDays);
+      if (next <= today) next = today.addDays(_payCycleDays);
+      _incomeEvents
+        ..clear()
+        ..add(IncomeEvent(
+          id: 'income-next',
+          expectedAmount: current.expectedAmount,
+          expectedDate: next,
+          state: IncomeState.expected,
+          expectedUpperAmount: current.expectedUpperAmount,
+        ),);
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  /// Whether the next pay is due, so Home can ask whether it came.
+  bool get payDue {
+    final i = nextIncome;
+    return i != null && i.isProjectable && i.expectedDate <= today;
+  }
+
+  // --- accounts (Strategy §7.2) ----------------------------------------------
+
+  /// Accounts beyond the plan's own, in the order they were added.
+  List<Account> get accounts => List.unmodifiable(_accounts);
+
+  Account? account(String id) =>
+      _accounts.where((a) => a.id == id).firstOrNull;
+
+  void addAccount({
+    required String name,
+    required AccountKind kind,
+    required Money opening,
+    bool? counted,
+  }) {
+    _accounts.add(Account(
+      id: 'a${++_accountSeq}',
+      name: name,
+      kind: kind,
+      opening: opening,
+      counted: counted,
+    ),);
+    _persist();
+    notifyListeners();
+  }
+
+  void updateAccount(String id, {String? name, bool? counted}) {
+    final index = _accounts.indexWhere((a) => a.id == id);
+    if (index < 0) return;
+    _accounts[index] = _accounts[index].copyWith(name: name, counted: counted);
+    _persist();
+    notifyListeners();
+  }
+
+  /// Whether anything was recorded against [id]. An account with history
+  /// cannot be removed: the record would stop adding up.
+  bool accountInUse(String id) =>
+      _accountOf.values.contains(id) ||
+      _bills.any((b) => b.debtAccountId == id) ||
+      _events.any((e) => switch (e) {
+            TransferEvent(:final fromAccountId, :final toAccountId) =>
+              fromAccountId == id || toAccountId == id,
+            CardSettlementEvent(:final cardId) => cardId == id,
+            DebtPaymentEvent(:final debtId) => debtId == id,
+            BalanceAdjustmentEvent(:final accountId) => accountId == id,
+            _ => false,
+          },);
+
+  bool removeAccount(String id) {
+    if (accountInUse(id)) return false;
+    _accounts.removeWhere((a) => a.id == id);
+    _persist();
+    notifyListeners();
+    return true;
+  }
+
+  /// What is in a money account, or what is owed on a card or loan.
+  Money accountBalance(String id) {
+    final ledger = snapshot.ledger;
+    if (id == _accountId) {
+      return ledger.balances[_accountId] ?? Money.zero(_currency);
+    }
+    final a = account(id);
+    if (a == null) return Money.zero(_currency);
+    return switch (a.kind) {
+      AccountKind.card =>
+        ledger.cardOutstanding[id] ?? Money.zero(_currency),
+      AccountKind.loan =>
+        a.opening + (ledger.debtPrincipal[id] ?? Money.zero(_currency)),
+      // An included account's balance starts from its opening balance in
+      // the engine; one left out starts from zero there, so it is added.
+      _ => a.counted
+          ? ledger.balances[id] ?? a.opening
+          : a.opening + (ledger.balances[id] ?? Money.zero(_currency)),
+    };
+  }
+
+  /// Money moved between two of the person's accounts: neither spent nor
+  /// earned (INV-03).
+  void transfer({
+    required String from,
+    required String to,
+    required Money amount,
+  }) {
+    if (from == to || amount.minor <= 0) return;
+    final id = 'e${++_eventSeq}';
+    _events.add(TransferEvent(
+      id: id,
+      fromAccountId: from,
+      toAccountId: to,
+      amount: amount,
+    ),);
+    _recordedAt[id] = _now;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Pay off some of a card from the main account: settling a debt, never a
+  /// second expense (INV-09).
+  void payCard(String cardId, Money amount) {
+    if (amount.minor <= 0) return;
+    final id = 'e${++_eventSeq}';
+    _events.add(CardSettlementEvent(
+      id: id,
+      accountId: _accountId,
+      cardId: cardId,
+      amount: amount,
+    ),);
+    _recordedAt[id] = _now;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Say what one account really holds. The difference is an adjustment,
+  /// never spending, as for the main account.
+  void confirmAccountBalance(String id, Money observed) {
+    if (id == _accountId) {
+      confirmBalance(observed);
+      return;
+    }
+    final a = account(id);
+    if (a == null || !a.holdsMoney) return;
+    final delta = observed - accountBalance(id);
+    if (delta.isZero) return;
+    final eventId = 'e${++_eventSeq}';
+    _events.add(BalanceAdjustmentEvent(
+      id: eventId,
+      accountId: id,
+      delta: delta,
+      reason: 'User confirmed observed balance',
+    ),);
+    _recordedAt[eventId] = _now;
+    _persist();
+    notifyListeners();
+  }
+
+  /// The account a spend was paid from; the main one unless it was another.
+  String accountOf(String eventId) => _accountOf[eventId] ?? _accountId;
+
+  // --- money coming back (Strategy §11.2) --------------------------------------
+
+  List<Recovery> get recoveries => List.unmodifiable(_recoveries);
+
+  Recovery? recoveryFor(String eventId) =>
+      _recoveries.where((r) => r.eventId == eventId).lastOrNull;
+
+  /// What may come back, shown apart: none of it is money yet.
+  Money get moneyComingBack => Money.sum(
+        _recoveries.where((r) => r.awaitingMoney).map((r) => r.expected),
+        _currency,
+      );
+
+  void _setRecovery(Recovery r) {
+    _recoveries
+      ..removeWhere((x) => x.eventId == r.eventId)
+      ..add(r);
+    _persist();
+    notifyListeners();
+  }
+
+  Money? _spendAmount(String eventId) {
+    for (final e in _events) {
+      if (e.id != eventId) continue;
+      return switch (e) {
+        ExpenseEvent(:final amount) => amount,
+        CardPurchaseEvent(:final amount) => amount,
+        _ => null,
+      };
+    }
+    return null;
+  }
+
+  /// A purchase that can still be taken back, until [returnBy] if known.
+  void markReturnable(String eventId, {LocalDate? returnBy}) {
+    final amount = _spendAmount(eventId);
+    if (amount == null) return;
+    _setRecovery(Recovery(
+      eventId: eventId,
+      state: RecoveryState.returnable,
+      expected: amount,
+      returnBy: returnBy,
+    ),);
+  }
+
+  /// Taken back, or a refund asked for: money expected, not yet money.
+  void expectRefund(String eventId, {Money? amount}) {
+    final spent = _spendAmount(eventId);
+    if (spent == null) return;
+    final current = recoveryFor(eventId);
+    _setRecovery(Recovery(
+      eventId: eventId,
+      state: RecoveryState.refundPending,
+      expected: amount ?? current?.expected ?? spent,
+      returnBy: current?.returnBy,
+    ),);
+  }
+
+  /// The refund arrived. Only now does it count, and it goes back to where
+  /// the spend came from.
+  void refundArrived(String eventId, Money amount) {
+    final spent = _spendAmount(eventId);
+    if (spent == null || amount.minor <= 0) return;
+    final id = 'e${++_eventSeq}';
+    _events.add(RefundEvent(
+      id: id,
+      accountId: accountOf(eventId) == _accountId ||
+              account(accountOf(eventId))?.holdsMoney != true
+          ? _accountId
+          : accountOf(eventId),
+      amount: amount,
+      linkedExpenseId: eventId,
+    ),);
+    _recordedAt[id] = _now;
+    final current = recoveryFor(eventId);
+    _recoveries
+      ..removeWhere((x) => x.eventId == eventId)
+      ..add(Recovery(
+        eventId: eventId,
+        state: RecoveryState.refunded,
+        expected: amount,
+        returnBy: current?.returnBy,
+      ),);
+    _persist();
+    notifyListeners();
+  }
+
+  /// Kept after all, or the refund is not coming.
+  void closeRecovery(String eventId) {
+    final current = recoveryFor(eventId);
+    if (current == null) return;
+    _setRecovery(current.to(RecoveryState.closed));
+  }
+
+  /// Money that came back put somewhere on purpose (§11.2): toward a goal,
+  /// or into the emergency buffer. Leaving it is the third choice and needs
+  /// no call.
+  void putRecoveredToward({String? goalId, bool buffer = false, required Money amount}) {
+    if (goalId != null) {
+      contributeToGoal(goalId, amount);
+    } else if (buffer) {
+      final current =
+          _claims.where((c) => c.id == 'buffer').firstOrNull?.amount;
+      setClaimAmount('buffer', (current ?? Money.zero(_currency)) + amount);
+    }
+  }
+
+  List<GoalContribution> get contributions => List.unmodifiable(_contributions);
 
   Allocation? allocationFor(String claimId) {
     for (final a in snapshot.allocations) {

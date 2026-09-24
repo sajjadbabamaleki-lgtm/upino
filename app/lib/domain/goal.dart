@@ -106,3 +106,17 @@ class Goal {
     );
   }
 }
+
+/// Money put toward a goal, and when. Kept so a month can say how much went
+/// to goals, which the goal's running total alone cannot.
+class GoalContribution {
+  const GoalContribution({
+    required this.goalId,
+    required this.amount,
+    required this.at,
+  });
+
+  final String goalId;
+  final Money amount;
+  final DateTime at;
+}
