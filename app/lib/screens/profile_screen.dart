@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../domain/account.dart';
 import '../design/icon.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
@@ -73,7 +74,7 @@ class ProfileScreen extends StatelessWidget {
       currency: state.currency,
       title: AppLocalizations.of(context).askBalanceTitle,
       explanation: AppLocalizations.of(context).askBalanceBlurb,
-      initial: state.snapshot.trustedAllocatableLiquidity,
+      initial: state.accountBalance(Account.mainId),
     );
     if (observed != null) state.confirmBalance(observed.amount);
   }

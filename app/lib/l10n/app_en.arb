@@ -1036,5 +1036,162 @@
   },
   "goalPaceNote": "Only a what-if: nothing changes until you choose.",
   "goalShowPath": "See how it gets there",
-  "goalHidePath": "Hide"
+  "goalHidePath": "Hide",
+  "billsTitle": "Bills and subscriptions",
+  "billAdd": "Add a bill or subscription",
+  "billAddSub": "Phone, internet, insurance, streaming… each is set aside before its date.",
+  "billEditNew": "New bill",
+  "billEditExisting": "Change this bill",
+  "billName": "What is it?",
+  "billNameHint": "e.g. Internet",
+  "billAmount": "Each payment",
+  "billEvery": "How often",
+  "billEveryWeek": "Weekly",
+  "billEveryMonth": "Monthly",
+  "billEveryQuarter": "Quarterly",
+  "billEveryYear": "Yearly",
+  "billNext": "Next payment",
+  "billKind": "It is a",
+  "billKindBill": "Bill",
+  "billKindSubscription": "Subscription",
+  "billRepays": "Repays",
+  "billRepaysNothing": "Nothing, it is a cost",
+  "billAddThis": "Add this bill",
+  "billDelete": "Delete this bill",
+  "billRow": "{every} · next {date}",
+  "@billRow": {
+    "placeholders": {
+      "every": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billOverdue": "Was due {date}",
+  "@billOverdue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billPay": "Mark as paid",
+  "billEdit": "Change it",
+  "dayToday": "Today",
+  "dayIn": "{days, plural, =1{In a day} other{In {days} days}}",
+  "@dayIn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dayAgo": "{days, plural, =1{A day ago} other{{days} days ago}}",
+  "@dayAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeComingUp": "Coming up",
+  "homeComingUpTotal": "{amount} in bills due in the next 30 days.",
+  "@homeComingUpTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payDueTitle": "Your pay was due {date}. Has it come?",
+  "@payDueTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "payDueSub": "Say what arrived, and the next pay is expected a period later.",
+  "payArrived": "It came",
+  "payArrivedTitle": "How much arrived?",
+  "planRecordPay": "Pay arrived",
+  "planRecordPaySub": "Record it, and the next one moves a period on",
+  "accountsTitle": "Accounts",
+  "accountMain": "Main account",
+  "accountKindBank": "Bank account",
+  "accountKindCash": "Cash",
+  "accountKindSavings": "Savings",
+  "accountKindCard": "Credit card",
+  "accountKindLoan": "Loan",
+  "accountAdd": "Add an account",
+  "accountAddSub": "Cash, savings, a card or a loan. No bank connection needed.",
+  "accountEditNew": "New account",
+  "accountNameHint": "e.g. Wallet",
+  "accountHolds": "What it holds now",
+  "accountOwes": "What is owed now",
+  "accountCounted": "Count it in the plan",
+  "accountCountedSub": "Money here can be spent this month.",
+  "accountOwed": "Owed {amount}",
+  "@accountOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNotCounted": "Not counted in the plan",
+  "accountConfirm": "Say what it really holds",
+  "accountMove": "Move money",
+  "accountMoveTo": "Move to {name}",
+  "@accountMoveTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountMoveBlurb": "Moving money between your own accounts is neither spending nor income.",
+  "accountPayCard": "Pay off some of it",
+  "accountPayBlurb": "Paid from the main account. It settles what is owed; it is not a second spend.",
+  "accountRemove": "Remove this account",
+  "accountInUse": "It has history, so it stays. You can stop counting it instead.",
+  "paidFrom": "Paid from",
+  "categorySuggested": "Suggested from your past spends. Tap another to change it.",
+  "recoverTitle": "Money coming back",
+  "recoverTotal": "{amount} may come back. It is not counted until it arrives.",
+  "@recoverTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverReturnable": "Can be returned",
+  "recoverExpect": "Returned, refund expected",
+  "recoverArrived": "Refund arrived",
+  "recoverKept": "Kept it",
+  "recoverPending": "Refund on its way",
+  "recoverRefunded": "Refunded",
+  "recoverPrompt": "Getting money back",
+  "recoverWhere": "{amount} came back. Where should it go?",
+  "@recoverWhere": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverToGoal": "Toward {goal}",
+  "@recoverToGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverToBuffer": "Into the emergency buffer",
+  "recoverLeave": "Leave it free to spend",
+  "accountStopCounting": "Stop counting it in the plan"
 }

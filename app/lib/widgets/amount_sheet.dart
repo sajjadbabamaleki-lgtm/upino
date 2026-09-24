@@ -23,8 +23,16 @@ import '../l10n/app_localizations.dart';
 /// What the sheet hands back: the amount, and the receipt photographed for
 /// it if there was one.
 class RecordedAmount {
-  const RecordedAmount(this.amount, {this.receipt, this.category});
+  const RecordedAmount(
+    this.amount, {
+    this.receipt,
+    this.category,
+    this.accountId,
+  });
   final Money amount;
+
+  /// The account it was paid from, when not the main one.
+  final String? accountId;
 
   /// What the spend was for, when the person said.
   final SpendCategory? category;
@@ -46,10 +54,20 @@ class AmountSheet extends StatefulWidget {
     this.allowReceipt = false,
     this.allowCategory = false,
     this.allowVoice = false,
+    this.payFrom = const [],
+    this.suggestCategory,
     super.key,
   });
 
   final String currency;
+
+  /// Accounts beyond the main one a spend can be paid from. Empty hides the
+  /// choice, so a plan with one account asks nothing more.
+  final List<({String id, String name})> payFrom;
+
+  /// A category the record points to for this amount, offered already
+  /// chosen and changed with one tap (Strategy §7.1).
+  final SpendCategory? Function(Money amount)? suggestCategory;
   final String title;
   final String? explanation;
   final Money? initial;
@@ -86,6 +104,8 @@ class AmountSheet extends StatefulWidget {
     bool allowReceipt = false,
     bool allowCategory = false,
     bool allowVoice = false,
+    List<({String id, String name})> payFrom = const [],
+    SpendCategory? Function(Money amount)? suggestCategory,
   }) =>
       showModalBottomSheet<RecordedAmount>(
         context: context,
@@ -100,6 +120,8 @@ class AmountSheet extends StatefulWidget {
           allowReceipt: allowReceipt,
           allowCategory: allowCategory,
           allowVoice: allowVoice,
+          payFrom: payFrom,
+          suggestCategory: suggestCategory,
           allowZero: allowZero,
           removeLabel: removeLabel,
           onRemove: removeLabel == null
@@ -151,6 +173,21 @@ class _AmountSheetState extends State<AmountSheet> {
 
   String? _receipt;
   SpendCategory? _category;
+
+  /// True while [_category] is the suggestion, not the person's choice.
+  bool _suggested = false;
+  bool _categoryTouched = false;
+  String? _from;
+
+  /// Offer the record's category for the amount now typed, unless the
+  /// person has already chosen one.
+  void _refreshSuggestion() {
+    if (_categoryTouched || widget.suggestCategory == null) return;
+    final amount = _parsed;
+    final guess = amount == null ? null : widget.suggestCategory!(amount);
+    _category = guess;
+    _suggested = guess != null;
+  }
   bool _busy = false;
 
   bool _listening = false;
@@ -216,6 +253,10 @@ class _AmountSheetState extends State<AmountSheet> {
       }
       if (spoken.category != null && widget.allowCategory) {
         _category = spoken.category;
+        _categoryTouched = true;
+        _suggested = false;
+      } else {
+        _refreshSuggestion();
       }
     });
   }
@@ -248,7 +289,12 @@ class _AmountSheetState extends State<AmountSheet> {
     final amount = _parsed;
     if (amount != null) {
       Navigator.of(context).pop(
-        RecordedAmount(amount, receipt: _receipt, category: _category),
+        RecordedAmount(
+          amount,
+          receipt: _receipt,
+          category: _category,
+          accountId: _from,
+        ),
       );
     }
   }
@@ -322,7 +368,7 @@ class _AmountSheetState extends State<AmountSheet> {
                             decimals > 0 ? RegExp(r'[0-9.]') : RegExp(r'[0-9]'),
                           ),
                         ],
-                        onChanged: (_) => setState(() {}),
+                        onChanged: (_) => setState(_refreshSuggestion),
                         onSubmitted: (_) => _save(),
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontFeatures: moneyFeatures),
@@ -366,8 +412,44 @@ class _AmountSheetState extends State<AmountSheet> {
                 CategoryChips(
                   selected: _category,
                   // A second tap on the chosen one takes the answer back.
-                  onSelect: (c) =>
-                      setState(() => _category = c == _category ? null : c),
+                  onSelect: (c) => setState(() {
+                    _category = c == _category ? null : c;
+                    _categoryTouched = true;
+                    _suggested = false;
+                  }),
+                ),
+                if (_suggested)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 6, 4, 0),
+                    child: Text(
+                      AppLocalizations.of(context).categorySuggested,
+                      key: const Key('amount-category-suggested'),
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+                    ),
+                  ),
+              ],
+              if (widget.payFrom.isNotEmpty) ...[
+                const SizedBox(height: 14),
+                Text(
+                  AppLocalizations.of(context).paidFrom,
+                  style: theme.textTheme.bodySmall,
+                ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (final (id, name) in [
+                      (null, AppLocalizations.of(context).accountMain),
+                      for (final a in widget.payFrom) (a.id, a.name),
+                    ])
+                      ChoiceChip(
+                        key: Key('pay-from-${id ?? 'main'}'),
+                        label: Text(name),
+                        selected: _from == id,
+                        onSelected: (_) => setState(() => _from = id),
+                      ),
+                  ],
                 ),
               ],
               const SizedBox(height: 18),

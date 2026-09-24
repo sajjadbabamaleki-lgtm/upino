@@ -1499,4 +1499,261 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get goalHidePath => 'إخفاء';
+
+  @override
+  String get billsTitle => 'الفواتير والاشتراكات';
+
+  @override
+  String get billAdd => 'إضافة فاتورة أو اشتراك';
+
+  @override
+  String get billAddSub =>
+      'الهاتف والإنترنت والتأمين والبث… كلٌّ يُحجز قبل موعده.';
+
+  @override
+  String get billEditNew => 'فاتورة جديدة';
+
+  @override
+  String get billEditExisting => 'تعديل الفاتورة';
+
+  @override
+  String get billName => 'ما هي؟';
+
+  @override
+  String get billNameHint => 'مثلًا الإنترنت';
+
+  @override
+  String get billAmount => 'كل دفعة';
+
+  @override
+  String get billEvery => 'كم مرة';
+
+  @override
+  String get billEveryWeek => 'أسبوعيًا';
+
+  @override
+  String get billEveryMonth => 'شهريًا';
+
+  @override
+  String get billEveryQuarter => 'كل 3 أشهر';
+
+  @override
+  String get billEveryYear => 'سنويًا';
+
+  @override
+  String get billNext => 'الدفعة التالية';
+
+  @override
+  String get billKind => 'النوع';
+
+  @override
+  String get billKindBill => 'فاتورة';
+
+  @override
+  String get billKindSubscription => 'اشتراك';
+
+  @override
+  String get billRepays => 'يسدد';
+
+  @override
+  String get billRepaysNothing => 'لا شيء، إنها تكلفة';
+
+  @override
+  String get billAddThis => 'أضف هذه الفاتورة';
+
+  @override
+  String get billDelete => 'احذف هذه الفاتورة';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · التالية $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'كان مستحقًا في $date';
+  }
+
+  @override
+  String get billPay => 'تم الدفع';
+
+  @override
+  String get billEdit => 'تعديل';
+
+  @override
+  String get dayToday => 'اليوم';
+
+  @override
+  String dayIn(int days) {
+    return 'بعد $days يوم';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return 'قبل $days يوم';
+  }
+
+  @override
+  String get homeComingUp => 'القادم';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount فواتير مستحقة خلال 30 يومًا.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'كان راتبك مستحقًا في $date. هل وصل؟';
+  }
+
+  @override
+  String get payDueSub => 'أخبرنا بما وصل، ويُتوقع الراتب التالي بعد فترة.';
+
+  @override
+  String get payArrived => 'وصل';
+
+  @override
+  String get payArrivedTitle => 'كم وصل؟';
+
+  @override
+  String get planRecordPay => 'وصل الراتب';
+
+  @override
+  String get planRecordPaySub => 'سجله لينتقل الراتب التالي فترة';
+
+  @override
+  String get accountsTitle => 'الحسابات';
+
+  @override
+  String get accountMain => 'الحساب الرئيسي';
+
+  @override
+  String get accountKindBank => 'حساب بنكي';
+
+  @override
+  String get accountKindCash => 'نقد';
+
+  @override
+  String get accountKindSavings => 'مدخرات';
+
+  @override
+  String get accountKindCard => 'بطاقة ائتمان';
+
+  @override
+  String get accountKindLoan => 'قرض';
+
+  @override
+  String get accountAdd => 'إضافة حساب';
+
+  @override
+  String get accountAddSub => 'نقد أو مدخرات أو بطاقة أو قرض. دون ربط بالبنك.';
+
+  @override
+  String get accountEditNew => 'حساب جديد';
+
+  @override
+  String get accountNameHint => 'مثلًا المحفظة';
+
+  @override
+  String get accountHolds => 'ما فيه الآن';
+
+  @override
+  String get accountOwes => 'المستحق الآن';
+
+  @override
+  String get accountCounted => 'احسبه في الخطة';
+
+  @override
+  String get accountCountedSub => 'يمكن إنفاق هذا المال هذا الشهر.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'مستحق $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'غير محسوب في الخطة';
+
+  @override
+  String get accountConfirm => 'أدخل رصيده الفعلي';
+
+  @override
+  String get accountMove => 'نقل المال';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'نقل إلى $name';
+  }
+
+  @override
+  String get accountMoveBlurb => 'نقل المال بين حساباتك ليس إنفاقًا ولا دخلًا.';
+
+  @override
+  String get accountPayCard => 'سداد جزء منه';
+
+  @override
+  String get accountPayBlurb =>
+      'يُدفع من الحساب الرئيسي. يسدد الدين، وليس إنفاقًا ثانيًا.';
+
+  @override
+  String get accountRemove => 'إزالة هذا الحساب';
+
+  @override
+  String get accountInUse =>
+      'له سجل، لذا يبقى. يمكنك إيقاف احتسابه بدلًا من ذلك.';
+
+  @override
+  String get paidFrom => 'الدفع من';
+
+  @override
+  String get categorySuggested =>
+      'مقترح من مصاريفك السابقة. اضغط غيره للتغيير.';
+
+  @override
+  String get recoverTitle => 'أموال عائدة';
+
+  @override
+  String recoverTotal(String amount) {
+    return 'قد يعود $amount. لا يُحتسب حتى يصل.';
+  }
+
+  @override
+  String get recoverReturnable => 'قابل للإرجاع';
+
+  @override
+  String get recoverExpect => 'أُعيد، والاسترداد متوقع';
+
+  @override
+  String get recoverArrived => 'وصل الاسترداد';
+
+  @override
+  String get recoverKept => 'احتفظت به';
+
+  @override
+  String get recoverPending => 'الاسترداد في الطريق';
+
+  @override
+  String get recoverRefunded => 'تم الاسترداد';
+
+  @override
+  String get recoverPrompt => 'استرداد المال';
+
+  @override
+  String recoverWhere(String amount) {
+    return 'عاد $amount. إلى أين يذهب؟';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'نحو $goal';
+  }
+
+  @override
+  String get recoverToBuffer => 'إلى احتياطي الطوارئ';
+
+  @override
+  String get recoverLeave => 'اتركه متاحًا للإنفاق';
+
+  @override
+  String get accountStopCounting => 'أوقف احتسابه في الخطة';
 }

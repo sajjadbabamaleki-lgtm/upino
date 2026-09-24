@@ -2675,6 +2675,468 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide'**
   String get goalHidePath;
+
+  /// No description provided for @billsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills and subscriptions'**
+  String get billsTitle;
+
+  /// No description provided for @billAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a bill or subscription'**
+  String get billAdd;
+
+  /// No description provided for @billAddSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone, internet, insurance, streaming… each is set aside before its date.'**
+  String get billAddSub;
+
+  /// No description provided for @billEditNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New bill'**
+  String get billEditNew;
+
+  /// No description provided for @billEditExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Change this bill'**
+  String get billEditExisting;
+
+  /// No description provided for @billName.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it?'**
+  String get billName;
+
+  /// No description provided for @billNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Internet'**
+  String get billNameHint;
+
+  /// No description provided for @billAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Each payment'**
+  String get billAmount;
+
+  /// No description provided for @billEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'How often'**
+  String get billEvery;
+
+  /// No description provided for @billEveryWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get billEveryWeek;
+
+  /// No description provided for @billEveryMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get billEveryMonth;
+
+  /// No description provided for @billEveryQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get billEveryQuarter;
+
+  /// No description provided for @billEveryYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get billEveryYear;
+
+  /// No description provided for @billNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next payment'**
+  String get billNext;
+
+  /// No description provided for @billKind.
+  ///
+  /// In en, this message translates to:
+  /// **'It is a'**
+  String get billKind;
+
+  /// No description provided for @billKindBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get billKindBill;
+
+  /// No description provided for @billKindSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get billKindSubscription;
+
+  /// No description provided for @billRepays.
+  ///
+  /// In en, this message translates to:
+  /// **'Repays'**
+  String get billRepays;
+
+  /// No description provided for @billRepaysNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing, it is a cost'**
+  String get billRepaysNothing;
+
+  /// No description provided for @billAddThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this bill'**
+  String get billAddThis;
+
+  /// No description provided for @billDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this bill'**
+  String get billDelete;
+
+  /// No description provided for @billRow.
+  ///
+  /// In en, this message translates to:
+  /// **'{every} · next {date}'**
+  String billRow(String every, String date);
+
+  /// No description provided for @billOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Was due {date}'**
+  String billOverdue(String date);
+
+  /// No description provided for @billPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as paid'**
+  String get billPay;
+
+  /// No description provided for @billEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Change it'**
+  String get billEdit;
+
+  /// No description provided for @dayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dayToday;
+
+  /// No description provided for @dayIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{In a day} other{In {days} days}}'**
+  String dayIn(int days);
+
+  /// No description provided for @dayAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{A day ago} other{{days} days ago}}'**
+  String dayAgo(int days);
+
+  /// No description provided for @homeComingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up'**
+  String get homeComingUp;
+
+  /// No description provided for @homeComingUpTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} in bills due in the next 30 days.'**
+  String homeComingUpTotal(String amount);
+
+  /// No description provided for @payDueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pay was due {date}. Has it come?'**
+  String payDueTitle(String date);
+
+  /// No description provided for @payDueSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Say what arrived, and the next pay is expected a period later.'**
+  String get payDueSub;
+
+  /// No description provided for @payArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'It came'**
+  String get payArrived;
+
+  /// No description provided for @payArrivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How much arrived?'**
+  String get payArrivedTitle;
+
+  /// No description provided for @planRecordPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay arrived'**
+  String get planRecordPay;
+
+  /// No description provided for @planRecordPaySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Record it, and the next one moves a period on'**
+  String get planRecordPaySub;
+
+  /// No description provided for @accountsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accountsTitle;
+
+  /// No description provided for @accountMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main account'**
+  String get accountMain;
+
+  /// No description provided for @accountKindBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank account'**
+  String get accountKindBank;
+
+  /// No description provided for @accountKindCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get accountKindCash;
+
+  /// No description provided for @accountKindSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get accountKindSavings;
+
+  /// No description provided for @accountKindCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit card'**
+  String get accountKindCard;
+
+  /// No description provided for @accountKindLoan.
+  ///
+  /// In en, this message translates to:
+  /// **'Loan'**
+  String get accountKindLoan;
+
+  /// No description provided for @accountAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an account'**
+  String get accountAdd;
+
+  /// No description provided for @accountAddSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash, savings, a card or a loan. No bank connection needed.'**
+  String get accountAddSub;
+
+  /// No description provided for @accountEditNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New account'**
+  String get accountEditNew;
+
+  /// No description provided for @accountNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Wallet'**
+  String get accountNameHint;
+
+  /// No description provided for @accountHolds.
+  ///
+  /// In en, this message translates to:
+  /// **'What it holds now'**
+  String get accountHolds;
+
+  /// No description provided for @accountOwes.
+  ///
+  /// In en, this message translates to:
+  /// **'What is owed now'**
+  String get accountOwes;
+
+  /// No description provided for @accountCounted.
+  ///
+  /// In en, this message translates to:
+  /// **'Count it in the plan'**
+  String get accountCounted;
+
+  /// No description provided for @accountCountedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Money here can be spent this month.'**
+  String get accountCountedSub;
+
+  /// No description provided for @accountOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'Owed {amount}'**
+  String accountOwed(String amount);
+
+  /// No description provided for @accountNotCounted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not counted in the plan'**
+  String get accountNotCounted;
+
+  /// No description provided for @accountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Say what it really holds'**
+  String get accountConfirm;
+
+  /// No description provided for @accountMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move money'**
+  String get accountMove;
+
+  /// No description provided for @accountMoveTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to {name}'**
+  String accountMoveTo(String name);
+
+  /// No description provided for @accountMoveBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Moving money between your own accounts is neither spending nor income.'**
+  String get accountMoveBlurb;
+
+  /// No description provided for @accountPayCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay off some of it'**
+  String get accountPayCard;
+
+  /// No description provided for @accountPayBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid from the main account. It settles what is owed; it is not a second spend.'**
+  String get accountPayBlurb;
+
+  /// No description provided for @accountRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this account'**
+  String get accountRemove;
+
+  /// No description provided for @accountInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'It has history, so it stays. You can stop counting it instead.'**
+  String get accountInUse;
+
+  /// No description provided for @paidFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid from'**
+  String get paidFrom;
+
+  /// No description provided for @categorySuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested from your past spends. Tap another to change it.'**
+  String get categorySuggested;
+
+  /// No description provided for @recoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Money coming back'**
+  String get recoverTitle;
+
+  /// No description provided for @recoverTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} may come back. It is not counted until it arrives.'**
+  String recoverTotal(String amount);
+
+  /// No description provided for @recoverReturnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Can be returned'**
+  String get recoverReturnable;
+
+  /// No description provided for @recoverExpect.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned, refund expected'**
+  String get recoverExpect;
+
+  /// No description provided for @recoverArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund arrived'**
+  String get recoverArrived;
+
+  /// No description provided for @recoverKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept it'**
+  String get recoverKept;
+
+  /// No description provided for @recoverPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund on its way'**
+  String get recoverPending;
+
+  /// No description provided for @recoverRefunded.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunded'**
+  String get recoverRefunded;
+
+  /// No description provided for @recoverPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting money back'**
+  String get recoverPrompt;
+
+  /// No description provided for @recoverWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} came back. Where should it go?'**
+  String recoverWhere(String amount);
+
+  /// No description provided for @recoverToGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Toward {goal}'**
+  String recoverToGoal(String goal);
+
+  /// No description provided for @recoverToBuffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Into the emergency buffer'**
+  String get recoverToBuffer;
+
+  /// No description provided for @recoverLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave it free to spend'**
+  String get recoverLeave;
+
+  /// No description provided for @accountStopCounting.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop counting it in the plan'**
+  String get accountStopCounting;
 }
 
 class _AppLocalizationsDelegate

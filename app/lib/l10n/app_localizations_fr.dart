@@ -1576,4 +1576,277 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get goalHidePath => 'Masquer';
+
+  @override
+  String get billsTitle => 'Factures et abonnements';
+
+  @override
+  String get billAdd => 'Ajouter une facture ou un abonnement';
+
+  @override
+  String get billAddSub =>
+      'Téléphone, internet, assurance, streaming… chacun est mis de côté avant sa date.';
+
+  @override
+  String get billEditNew => 'Nouvelle facture';
+
+  @override
+  String get billEditExisting => 'Modifier la facture';
+
+  @override
+  String get billName => 'De quoi s\'agit-il ?';
+
+  @override
+  String get billNameHint => 'ex. Internet';
+
+  @override
+  String get billAmount => 'Chaque paiement';
+
+  @override
+  String get billEvery => 'Fréquence';
+
+  @override
+  String get billEveryWeek => 'Hebdo';
+
+  @override
+  String get billEveryMonth => 'Mensuel';
+
+  @override
+  String get billEveryQuarter => 'Trimestriel';
+
+  @override
+  String get billEveryYear => 'Annuel';
+
+  @override
+  String get billNext => 'Prochain paiement';
+
+  @override
+  String get billKind => 'C\'est';
+
+  @override
+  String get billKindBill => 'Facture';
+
+  @override
+  String get billKindSubscription => 'Abonnement';
+
+  @override
+  String get billRepays => 'Rembourse';
+
+  @override
+  String get billRepaysNothing => 'Rien, c\'est une dépense';
+
+  @override
+  String get billAddThis => 'Ajouter la facture';
+
+  @override
+  String get billDelete => 'Supprimer la facture';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · prochain $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'Échue le $date';
+  }
+
+  @override
+  String get billPay => 'Marquer payée';
+
+  @override
+  String get billEdit => 'Modifier';
+
+  @override
+  String get dayToday => 'Aujourd\'hui';
+
+  @override
+  String dayIn(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Dans $days jours',
+      one: 'Dans un jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dayAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Il y a $days jours',
+      one: 'Il y a un jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeComingUp => 'À venir';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount de factures à régler dans les 30 prochains jours.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'Votre paie était prévue le $date. Est-elle arrivée ?';
+  }
+
+  @override
+  String get payDueSub =>
+      'Indiquez le montant reçu ; la paie suivante est attendue une période plus tard.';
+
+  @override
+  String get payArrived => 'Elle est arrivée';
+
+  @override
+  String get payArrivedTitle => 'Combien est arrivé ?';
+
+  @override
+  String get planRecordPay => 'Paie reçue';
+
+  @override
+  String get planRecordPaySub =>
+      'Enregistrez-la et la suivante avance d\'une période';
+
+  @override
+  String get accountsTitle => 'Comptes';
+
+  @override
+  String get accountMain => 'Compte principal';
+
+  @override
+  String get accountKindBank => 'Compte bancaire';
+
+  @override
+  String get accountKindCash => 'Espèces';
+
+  @override
+  String get accountKindSavings => 'Épargne';
+
+  @override
+  String get accountKindCard => 'Carte de crédit';
+
+  @override
+  String get accountKindLoan => 'Prêt';
+
+  @override
+  String get accountAdd => 'Ajouter un compte';
+
+  @override
+  String get accountAddSub =>
+      'Espèces, épargne, carte ou prêt. Sans connexion bancaire.';
+
+  @override
+  String get accountEditNew => 'Nouveau compte';
+
+  @override
+  String get accountNameHint => 'ex. Portefeuille';
+
+  @override
+  String get accountHolds => 'Ce qu\'il contient';
+
+  @override
+  String get accountOwes => 'Ce qui est dû';
+
+  @override
+  String get accountCounted => 'L\'inclure dans le plan';
+
+  @override
+  String get accountCountedSub => 'Cet argent peut être dépensé ce mois-ci.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'Dû $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'Hors du plan';
+
+  @override
+  String get accountConfirm => 'Indiquer le solde réel';
+
+  @override
+  String get accountMove => 'Déplacer de l\'argent';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'Vers $name';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'Déplacer de l\'argent entre vos comptes n\'est ni une dépense ni un revenu.';
+
+  @override
+  String get accountPayCard => 'En rembourser une partie';
+
+  @override
+  String get accountPayBlurb =>
+      'Payé depuis le compte principal. Il règle la dette ; ce n\'est pas une seconde dépense.';
+
+  @override
+  String get accountRemove => 'Retirer ce compte';
+
+  @override
+  String get accountInUse =>
+      'Il a un historique, il reste. Vous pouvez l\'exclure du plan.';
+
+  @override
+  String get paidFrom => 'Payé avec';
+
+  @override
+  String get categorySuggested =>
+      'Suggéré d\'après vos dépenses passées. Touchez-en un autre pour changer.';
+
+  @override
+  String get recoverTitle => 'Argent à récupérer';
+
+  @override
+  String recoverTotal(String amount) {
+    return '$amount pourraient revenir. Rien n\'est compté avant l\'arrivée.';
+  }
+
+  @override
+  String get recoverReturnable => 'Retournable';
+
+  @override
+  String get recoverExpect => 'Retourné, remboursement attendu';
+
+  @override
+  String get recoverArrived => 'Remboursement reçu';
+
+  @override
+  String get recoverKept => 'Je l\'ai gardé';
+
+  @override
+  String get recoverPending => 'Remboursement en cours';
+
+  @override
+  String get recoverRefunded => 'Remboursé';
+
+  @override
+  String get recoverPrompt => 'Récupérer de l\'argent';
+
+  @override
+  String recoverWhere(String amount) {
+    return '$amount sont revenus. Où les mettre ?';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'Vers $goal';
+  }
+
+  @override
+  String get recoverToBuffer => 'Dans la réserve d\'urgence';
+
+  @override
+  String get recoverLeave => 'Le laisser disponible';
+
+  @override
+  String get accountStopCounting => 'Ne plus l\'inclure dans le plan';
 }

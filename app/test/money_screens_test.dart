@@ -1,0 +1,234 @@
+// The screens for bills, pay arriving, accounts, getting money back and the
+// charts. Each drives the real app and checks what the plan did, not only
+// what was drawn.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/data/plan_document.dart';
+import 'package:upino/domain/account.dart';
+import 'package:upino/domain/bill.dart';
+import 'package:upino/domain/category.dart';
+import 'package:upino/domain/recovery.dart';
+import 'package:upino/engine/clock.dart';
+import 'package:upino/engine/money.dart';
+import 'package:upino/main.dart';
+import 'package:upino/state/app_state.dart';
+
+final now = DateTime.utc(2026, 10, 1, 10);
+Money eur(String v) => Money.parse(v, 'EUR');
+
+AppState funded({DateTime? at}) => AppState(now: at ?? now, utcOffset: Duration.zero)
+  ..completeOnboarding(
+    OnboardingDraft()
+      ..currentBalance = eur('1000.00')
+      ..incomeAmount = eur('2000.00')
+      ..nextIncomeDate = LocalDate.parse('2026-10-28')
+      ..rent = eur('400.00'),
+  );
+
+Future<void> open(WidgetTester tester, AppState state, {int tab = 0}) async {
+  tester.view
+    ..physicalSize = const Size(420, 1600)
+    ..devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(UpinoApp(state: state));
+  await tester.pumpAndSettle();
+  if (tab != 0) {
+    await tester.tap(find.byKey(Key('nav-$tab')));
+    await tester.pumpAndSettle();
+  }
+}
+
+Future<void> tapKey(WidgetTester tester, String key) async {
+  final f = find.byKey(Key(key));
+  await tester.ensureVisible(f);
+  await tester.pumpAndSettle();
+  await tester.tap(f);
+  await tester.pumpAndSettle();
+}
+
+void main() {
+  testWidgets('a bill added on Plan is set aside and listed on Home',
+      (tester) async {
+    final state = funded();
+    await open(tester, state, tab: 1);
+    await tapKey(tester, 'plan-bill-add');
+    await tester.enterText(find.byKey(const Key('bill-name')), 'Internet');
+    await tester.enterText(
+      find.descendant(
+        of: find.byKey(const Key('bill-amount')),
+        matching: find.byType(TextField),
+      ),
+      '30.00',
+    );
+    await tester.pump();
+    await tapKey(tester, 'bill-save');
+
+    expect(state.bills.single.name, 'Internet');
+    expect(state.bills.single.nextDue, LocalDate.parse('2026-10-08'));
+    expect(state.snapshot.safeToSpendNow, eur('570.00'));
+
+    await tester.tap(find.byKey(const Key('nav-0')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('home-coming-up')));
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('home-coming-up')),
+        matching: find.text('Internet'),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('a bill is paid from its row', (tester) async {
+    final state = funded()
+      ..addBill(
+        name: 'Phone',
+        amount: eur('20.00'),
+        every: BillEvery.month,
+        nextDue: LocalDate.parse('2026-10-05'),
+      );
+    await open(tester, state, tab: 1);
+    await tapKey(tester, 'plan-bill-${state.bills.single.id}');
+    await tester.tap(find.byKey(const Key('choice-pay')));
+    await tester.pumpAndSettle();
+    expect(state.bills.single.nextDue, LocalDate.parse('2026-11-05'));
+    expect(state.snapshot.trustedAllocatableLiquidity, eur('980.00'));
+  });
+
+  testWidgets('pay that is due is asked about on Home, and counts once it came',
+      (tester) async {
+    final state = AppState(
+      now: now.add(const Duration(days: 28)),
+      utcOffset: Duration.zero,
+    )..replaceWith(PlanDocument.decode(funded().toDocument().encode()));
+    await open(tester, state);
+    await tapKey(tester, 'home-pay-arrived');
+    expect(find.text('How much arrived?'), findsOneWidget);
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+    expect(state.snapshot.trustedAllocatableLiquidity, eur('3000.00'));
+    expect(state.payDue, isFalse);
+    expect(find.byKey(const Key('home-pay-due')), findsNothing);
+  });
+
+  testWidgets('an account is added on Plan and offered when spending',
+      (tester) async {
+    final state = funded();
+    await open(tester, state, tab: 1);
+    await tapKey(tester, 'plan-account-add');
+    await tester.tap(find.byKey(const Key('account-kind-card')));
+    await tester.pump();
+    await tester.enterText(find.byKey(const Key('account-name')), 'Visa');
+    await tester.enterText(
+      find.descendant(
+        of: find.byKey(const Key('account-opening')),
+        matching: find.byType(TextField),
+      ),
+      '0',
+    );
+    await tester.pump();
+    await tapKey(tester, 'account-save');
+    expect(state.accounts.single.kind, AccountKind.card);
+
+    await tester.tap(find.byKey(const Key('nav-0')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Record a spend'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).first, '50');
+    await tester.pump();
+    await tester.tap(find.byKey(Key('pay-from-${state.accounts.single.id}')));
+    await tester.pump();
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+
+    // Spent on the card: the bank is untouched, the card owes it, and it
+    // is set aside until paid.
+    expect(state.snapshot.trustedAllocatableLiquidity, eur('1000.00'));
+    expect(state.accountBalance(state.accounts.single.id), eur('50.00'));
+    expect(state.snapshot.safeToSpendNow, eur('550.00'));
+  });
+
+  testWidgets('a category is suggested from the record, and one tap changes it',
+      (tester) async {
+    final state = funded();
+    for (var i = 0; i < 3; i++) {
+      state.recordExpense(eur('12.00'), category: SpendCategory.food);
+    }
+    await open(tester, state);
+    await tester.tap(find.text('Record a spend'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).first, '11');
+    await tester.pump();
+    expect(find.byKey(const Key('amount-category-suggested')), findsOneWidget);
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+    expect(state.categoryFor(state.lastRecordedEventId!), SpendCategory.food);
+  });
+
+  testWidgets('a returned purchase is followed to its refund', (tester) async {
+    final state = funded()..recordExpense(eur('80.00'));
+    final spend = state.lastRecordedEventId!;
+    state.clearExpenseConfirmation();
+    await open(tester, state, tab: 3);
+
+    await tester.tap(find.text('−€80.00'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('recover-expect')));
+    await tester.pumpAndSettle();
+    expect(state.recoveryFor(spend)!.state, RecoveryState.refundPending);
+    expect(find.byKey(const Key('money-coming-back')), findsOneWidget);
+
+    await tester.tap(find.text('−€80.00'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('recover-arrived')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('choice-leave')));
+    await tester.pumpAndSettle();
+    expect(state.recoveryFor(spend)!.state, RecoveryState.refunded);
+    expect(state.snapshot.trustedAllocatableLiquidity, eur('1000.00'));
+  });
+
+  testWidgets('dragging the timeline reads another day', (tester) async {
+    final state = funded();
+    await open(tester, state);
+    final chart = find.byKey(const Key('timeline-chart'));
+    await tester.ensureVisible(chart);
+    await tester.pumpAndSettle();
+    // It opens on the pay day.
+    expect(find.text('October 28'), findsWidgets);
+    await tester.tapAt(tester.getTopLeft(chart) + const Offset(2, 40));
+    await tester.pump();
+    expect(find.text('Today'), findsWidgets);
+    expect(
+      tester.widget<Text>(find.byKey(const Key('timeline-free'))).data,
+      state.snapshot.safeToSpendNow.display(),
+    );
+  });
+
+  testWidgets('a goal path opens, and a new pace moves its date only when chosen',
+      (tester) async {
+    final state = funded()
+      ..addGoal(
+        name: 'Bike',
+        target: eur('600.00'),
+        targetDate: LocalDate.parse('2027-10-01'),
+      );
+    final goal = state.goals.single;
+    final before = goal.targetDate;
+    await open(tester, state, tab: 2);
+    await tapKey(tester, 'goal-path-${goal.id}');
+    expect(find.byKey(Key('goal-chart-${goal.id}')), findsOneWidget);
+
+    // All the way right: the most per period, the soonest date.
+    final slider = find.byKey(Key('goal-pace-${goal.id}'));
+    await tester.drag(slider, const Offset(400, 0));
+    await tester.pumpAndSettle();
+    expect(state.goals.single.targetDate, before);
+
+    await tapKey(tester, 'goal-pace-apply-${goal.id}');
+    expect(state.goals.single.targetDate < before, isTrue);
+  });
+}

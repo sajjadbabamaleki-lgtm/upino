@@ -8,6 +8,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../domain/account.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
@@ -23,6 +24,7 @@ import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/bill_editor_sheet.dart' show relativeDay;
 import '../widgets/alerts_sheet.dart';
 import '../widgets/bank_suggestions_sheet.dart';
 import '../widgets/top_bar.dart';
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             case BalanceStaleAlert():
               unawaited(_confirmBalance());
             case IncomeLateAlert():
-              setState(() => _tab = 1);
+              unawaited(_recordPay());
             case GoalBehindAlert():
               setState(() => _tab = 2);
             case BankMessagesAlert():
@@ -118,6 +120,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           }
         },
       );
+
+  Future<void> _recordPay() async {
+    final l = AppLocalizations.of(context);
+    final amount = await AmountSheet.show(
+      context,
+      currency: state.currency,
+      title: l.payArrivedTitle,
+      explanation: l.payDueSub,
+      initial: state.nextIncome?.expectedAmount,
+    );
+    if (amount != null) state.confirmIncome(amount.amount);
+  }
 
   Future<void> _recordExpense() async {
     final amount = await AmountSheet.show(
@@ -127,12 +141,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       allowReceipt: true,
       allowCategory: true,
       allowVoice: true,
+      payFrom: [
+        for (final a in state.payableAccounts) (id: a.id, name: a.name),
+      ],
+      suggestCategory: state.suggestCategory,
     );
     if (amount != null) {
       state.recordExpense(
         amount.amount,
         receipt: amount.receipt,
         category: amount.category,
+        accountId: amount.accountId,
       );
     }
   }
@@ -143,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       currency: state.currency,
       title: AppLocalizations.of(context).askBalanceTitle,
       explanation: AppLocalizations.of(context).askBalanceBlurb,
-      initial: state.snapshot.trustedAllocatableLiquidity,
+      initial: state.accountBalance(Account.mainId),
     );
     if (observed != null) state.confirmBalance(observed.amount);
   }
@@ -256,6 +275,38 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       ),
                     ],
 
+                    // Pay that should have come is asked about, never
+                    // assumed: it counts only once the person says it came.
+                    if (state.payDue) ...[
+                      const SizedBox(height: 12),
+                      UpinoCard(
+                        key: const Key('home-pay-due'),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              l.payDueTitle(formatDate(
+                                context,
+                                state.nextIncome!.expectedDate,
+                              ),),
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              l.payDueSub,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            const SizedBox(height: 12),
+                            FilledButton(
+                              key: const Key('home-pay-arrived'),
+                              onPressed: _recordPay,
+                              child: Text(l.payArrived),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+
                     const SizedBox(height: 14),
                     ActionRow(
                       key: const Key('home-ask'),
@@ -294,6 +345,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     SectionHeading(l.timelineTitle),
                     TimelineCard(state: state),
                     const SizedBox(height: 20),
+
+                    // Money already spoken for, as named payments with dates
+                    // rather than one total (§6.3).
+                    if (state.upcomingBills().isNotEmpty) ...[
+                      SectionHeading(
+                        l.homeComingUp,
+                        count: state.upcomingBills().length,
+                      ),
+                      _ComingUpCard(state: state),
+                      const SizedBox(height: 20),
+                    ],
 
                     SectionHeading(l.homeSetAsideFirst),
                     _ProtectedCard(snapshot: snapshot),
@@ -712,4 +774,72 @@ class _Grabber extends StatelessWidget {
           borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
         ),
       );
+}
+
+/// The next few payments falling due, soonest first, with what the next
+/// thirty days of bills come to.
+class _ComingUpCard extends StatelessWidget {
+  const _ComingUpCard({required this.state});
+
+  final AppState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final upcoming = state.upcomingBills();
+    final critical =
+        isDark(context) ? UpinoTokens.darkCritical : UpinoTokens.critical;
+    return UpinoCard(
+      key: const Key('home-coming-up'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.homeComingUpTotal(state.billsDueWithin().display()),
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 14),
+          for (var i = 0; i < upcoming.length && i < 4; i++) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        upcoming[i].bill.name,
+                        style: theme.textTheme.titleMedium,
+                      ),
+                      Text(
+                        upcoming[i].due < state.today
+                            ? l.billOverdue(
+                                formatDate(context, upcoming[i].due),
+                              )
+                            : '${formatDate(context, upcoming[i].due)}'
+                                '${UpinoTokens.separator}'
+                                '${relativeDay(l, upcoming[i].due, state.today)}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: upcoming[i].due < state.today
+                              ? critical
+                              : null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  upcoming[i].bill.amount.display(),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontFeatures: moneyFeatures),
+                ),
+              ],
+            ),
+            if (i != upcoming.length - 1 && i != 3)
+              Divider(height: 22, color: borderColor(context)),
+          ],
+        ],
+      ),
+    );
+  }
 }

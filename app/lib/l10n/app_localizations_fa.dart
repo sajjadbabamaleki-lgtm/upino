@@ -1517,4 +1517,264 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get goalHidePath => 'بستن';
+
+  @override
+  String get billsTitle => 'قبض‌ها و اشتراک‌ها';
+
+  @override
+  String get billAdd => 'افزودن قبض یا اشتراک';
+
+  @override
+  String get billAddSub =>
+      'تلفن، اینترنت، بیمه، اشتراک‌ها… هر کدام پیش از موعدش کنار گذاشته می‌شود.';
+
+  @override
+  String get billEditNew => 'قبض جدید';
+
+  @override
+  String get billEditExisting => 'ویرایش قبض';
+
+  @override
+  String get billName => 'چه چیزی است؟';
+
+  @override
+  String get billNameHint => 'مثلاً اینترنت';
+
+  @override
+  String get billAmount => 'مبلغ هر بار';
+
+  @override
+  String get billEvery => 'هر چند وقت';
+
+  @override
+  String get billEveryWeek => 'هفتگی';
+
+  @override
+  String get billEveryMonth => 'ماهانه';
+
+  @override
+  String get billEveryQuarter => 'سه‌ماهه';
+
+  @override
+  String get billEveryYear => 'سالانه';
+
+  @override
+  String get billNext => 'پرداخت بعدی';
+
+  @override
+  String get billKind => 'نوع';
+
+  @override
+  String get billKindBill => 'قبض';
+
+  @override
+  String get billKindSubscription => 'اشتراک';
+
+  @override
+  String get billRepays => 'بازپرداخت';
+
+  @override
+  String get billRepaysNothing => 'هیچ، یک هزینه است';
+
+  @override
+  String get billAddThis => 'افزودن این قبض';
+
+  @override
+  String get billDelete => 'حذف این قبض';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · بعدی $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'موعدش $date بود';
+  }
+
+  @override
+  String get billPay => 'پرداخت شد';
+
+  @override
+  String get billEdit => 'ویرایش';
+
+  @override
+  String get dayToday => 'امروز';
+
+  @override
+  String dayIn(int days) {
+    return '$days روز دیگر';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days روز پیش';
+  }
+
+  @override
+  String get homeComingUp => 'پرداخت‌های پیش رو';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount قبض در ۳۰ روز آینده سررسید می‌شود.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'حقوق شما $date موعدش بود. رسیده است؟';
+  }
+
+  @override
+  String get payDueSub =>
+      'بگویید چقدر رسید؛ حقوق بعدی یک دوره بعد انتظار می‌رود.';
+
+  @override
+  String get payArrived => 'رسید';
+
+  @override
+  String get payArrivedTitle => 'چقدر رسید؟';
+
+  @override
+  String get planRecordPay => 'حقوق رسید';
+
+  @override
+  String get planRecordPaySub => 'ثبتش کنید تا حقوق بعدی یک دوره جلو برود';
+
+  @override
+  String get accountsTitle => 'حساب‌ها';
+
+  @override
+  String get accountMain => 'حساب اصلی';
+
+  @override
+  String get accountKindBank => 'حساب بانکی';
+
+  @override
+  String get accountKindCash => 'پول نقد';
+
+  @override
+  String get accountKindSavings => 'پس‌انداز';
+
+  @override
+  String get accountKindCard => 'کارت اعتباری';
+
+  @override
+  String get accountKindLoan => 'وام';
+
+  @override
+  String get accountAdd => 'افزودن حساب';
+
+  @override
+  String get accountAddSub =>
+      'نقد، پس‌انداز، کارت یا وام. بدون نیاز به اتصال بانک.';
+
+  @override
+  String get accountEditNew => 'حساب جدید';
+
+  @override
+  String get accountNameHint => 'مثلاً کیف پول';
+
+  @override
+  String get accountHolds => 'موجودی فعلی';
+
+  @override
+  String get accountOwes => 'بدهی فعلی';
+
+  @override
+  String get accountCounted => 'در برنامه حساب شود';
+
+  @override
+  String get accountCountedSub => 'پول این حساب را می‌شود این ماه خرج کرد.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'بدهی $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'در برنامه حساب نمی‌شود';
+
+  @override
+  String get accountConfirm => 'موجودی واقعی را بگویید';
+
+  @override
+  String get accountMove => 'جابه‌جایی پول';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'انتقال به $name';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'جابه‌جایی پول بین حساب‌های خودتان نه خرج است نه درآمد.';
+
+  @override
+  String get accountPayCard => 'پرداخت بخشی از بدهی';
+
+  @override
+  String get accountPayBlurb =>
+      'از حساب اصلی پرداخت می‌شود. بدهی را تسویه می‌کند و خرج دوباره نیست.';
+
+  @override
+  String get accountRemove => 'حذف این حساب';
+
+  @override
+  String get accountInUse =>
+      'سابقه دارد، پس می‌ماند. می‌توانید آن را از برنامه خارج کنید.';
+
+  @override
+  String get paidFrom => 'پرداخت از';
+
+  @override
+  String get categorySuggested =>
+      'از روی خرج‌های قبلی پیشنهاد شد. برای تغییر، دیگری را بزنید.';
+
+  @override
+  String get recoverTitle => 'پولی که برمی‌گردد';
+
+  @override
+  String recoverTotal(String amount) {
+    return '$amount ممکن است برگردد. تا نرسد حساب نمی‌شود.';
+  }
+
+  @override
+  String get recoverReturnable => 'قابل مرجوع';
+
+  @override
+  String get recoverExpect => 'مرجوع شد، منتظر بازپرداخت';
+
+  @override
+  String get recoverArrived => 'پول برگشت';
+
+  @override
+  String get recoverKept => 'نگهش داشتم';
+
+  @override
+  String get recoverPending => 'بازپرداخت در راه است';
+
+  @override
+  String get recoverRefunded => 'برگشت داده شد';
+
+  @override
+  String get recoverPrompt => 'برگشت پول';
+
+  @override
+  String recoverWhere(String amount) {
+    return '$amount برگشت. کجا برود؟';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'برای $goal';
+  }
+
+  @override
+  String get recoverToBuffer => 'به ذخیرهٔ اضطراری';
+
+  @override
+  String get recoverLeave => 'آزاد برای خرج بماند';
+
+  @override
+  String get accountStopCounting => 'دیگر در برنامه حساب نشود';
 }

@@ -103,11 +103,8 @@ void main() {
       await tester.tap(find.byKey(const Key('alert-0')));
       await tester.pumpAndSettle();
 
-      // Late pay is dealt with on Plan.
-      expect(
-        tester.widget<Text>(find.byKey(const Key('top-title'))).data,
-        'Plan',
-      );
+      // Late pay is dealt with by saying whether it came.
+      expect(find.text('How much arrived?'), findsOneWidget);
     });
   });
 }

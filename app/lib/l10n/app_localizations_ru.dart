@@ -1527,4 +1527,264 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get goalHidePath => 'Скрыть';
+
+  @override
+  String get billsTitle => 'Счета и подписки';
+
+  @override
+  String get billAdd => 'Добавить счёт или подписку';
+
+  @override
+  String get billAddSub =>
+      'Телефон, интернет, страховка, стриминг… каждое откладывается до срока.';
+
+  @override
+  String get billEditNew => 'Новый счёт';
+
+  @override
+  String get billEditExisting => 'Изменить счёт';
+
+  @override
+  String get billName => 'Что это?';
+
+  @override
+  String get billNameHint => 'например, интернет';
+
+  @override
+  String get billAmount => 'Каждый платёж';
+
+  @override
+  String get billEvery => 'Как часто';
+
+  @override
+  String get billEveryWeek => 'Еженедельно';
+
+  @override
+  String get billEveryMonth => 'Ежемесячно';
+
+  @override
+  String get billEveryQuarter => 'Раз в квартал';
+
+  @override
+  String get billEveryYear => 'Ежегодно';
+
+  @override
+  String get billNext => 'Следующий платёж';
+
+  @override
+  String get billKind => 'Это';
+
+  @override
+  String get billKindBill => 'Счёт';
+
+  @override
+  String get billKindSubscription => 'Подписка';
+
+  @override
+  String get billRepays => 'Погашает';
+
+  @override
+  String get billRepaysNothing => 'Ничего, это расход';
+
+  @override
+  String get billAddThis => 'Добавить счёт';
+
+  @override
+  String get billDelete => 'Удалить счёт';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · следующий $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'Срок был $date';
+  }
+
+  @override
+  String get billPay => 'Отметить оплаченным';
+
+  @override
+  String get billEdit => 'Изменить';
+
+  @override
+  String get dayToday => 'Сегодня';
+
+  @override
+  String dayIn(int days) {
+    return 'Через $days дн.';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days дн. назад';
+  }
+
+  @override
+  String get homeComingUp => 'Скоро';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount по счетам в ближайшие 30 дней.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'Зарплата ожидалась $date. Пришла?';
+  }
+
+  @override
+  String get payDueSub =>
+      'Укажите, сколько пришло, — следующая ожидается через период.';
+
+  @override
+  String get payArrived => 'Пришла';
+
+  @override
+  String get payArrivedTitle => 'Сколько пришло?';
+
+  @override
+  String get planRecordPay => 'Зарплата пришла';
+
+  @override
+  String get planRecordPaySub => 'Запишите — следующая сдвинется на период';
+
+  @override
+  String get accountsTitle => 'Счета';
+
+  @override
+  String get accountMain => 'Основной счёт';
+
+  @override
+  String get accountKindBank => 'Банковский счёт';
+
+  @override
+  String get accountKindCash => 'Наличные';
+
+  @override
+  String get accountKindSavings => 'Сбережения';
+
+  @override
+  String get accountKindCard => 'Кредитная карта';
+
+  @override
+  String get accountKindLoan => 'Кредит';
+
+  @override
+  String get accountAdd => 'Добавить счёт';
+
+  @override
+  String get accountAddSub =>
+      'Наличные, сбережения, карта или кредит. Без подключения банка.';
+
+  @override
+  String get accountEditNew => 'Новый счёт';
+
+  @override
+  String get accountNameHint => 'например, кошелёк';
+
+  @override
+  String get accountHolds => 'Сколько там сейчас';
+
+  @override
+  String get accountOwes => 'Сколько должны сейчас';
+
+  @override
+  String get accountCounted => 'Учитывать в плане';
+
+  @override
+  String get accountCountedSub => 'Эти деньги можно тратить в этом месяце.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'Долг $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'Не учитывается';
+
+  @override
+  String get accountConfirm => 'Указать реальный остаток';
+
+  @override
+  String get accountMove => 'Перевести деньги';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'Перевести на «$name»';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'Перевод между своими счетами — не расход и не доход.';
+
+  @override
+  String get accountPayCard => 'Погасить часть';
+
+  @override
+  String get accountPayBlurb =>
+      'Оплата с основного счёта. Это погашение долга, а не вторая трата.';
+
+  @override
+  String get accountRemove => 'Удалить счёт';
+
+  @override
+  String get accountInUse =>
+      'У счёта есть история, он останется. Можно исключить его из плана.';
+
+  @override
+  String get paidFrom => 'Оплачено с';
+
+  @override
+  String get categorySuggested =>
+      'Подсказано по прошлым тратам. Нажмите другую, чтобы сменить.';
+
+  @override
+  String get recoverTitle => 'Деньги к возврату';
+
+  @override
+  String recoverTotal(String amount) {
+    return 'Может вернуться $amount. Не учитывается, пока не придёт.';
+  }
+
+  @override
+  String get recoverReturnable => 'Можно вернуть';
+
+  @override
+  String get recoverExpect => 'Возвращено, жду возврат денег';
+
+  @override
+  String get recoverArrived => 'Деньги вернулись';
+
+  @override
+  String get recoverKept => 'Оставил себе';
+
+  @override
+  String get recoverPending => 'Возврат в пути';
+
+  @override
+  String get recoverRefunded => 'Возвращено';
+
+  @override
+  String get recoverPrompt => 'Возврат денег';
+
+  @override
+  String recoverWhere(String amount) {
+    return 'Вернулось $amount. Куда их направить?';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'На цель «$goal»';
+  }
+
+  @override
+  String get recoverToBuffer => 'В резерв на непредвиденное';
+
+  @override
+  String get recoverLeave => 'Оставить свободными';
+
+  @override
+  String get accountStopCounting => 'Не учитывать в плане';
 }

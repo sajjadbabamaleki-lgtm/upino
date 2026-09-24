@@ -1521,4 +1521,264 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get goalHidePath => 'Gizle';
+
+  @override
+  String get billsTitle => 'Faturalar ve abonelikler';
+
+  @override
+  String get billAdd => 'Fatura veya abonelik ekle';
+
+  @override
+  String get billAddSub =>
+      'Telefon, internet, sigorta, yayın… her biri tarihinden önce ayrılır.';
+
+  @override
+  String get billEditNew => 'Yeni fatura';
+
+  @override
+  String get billEditExisting => 'Faturayı değiştir';
+
+  @override
+  String get billName => 'Bu ne?';
+
+  @override
+  String get billNameHint => 'ör. İnternet';
+
+  @override
+  String get billAmount => 'Her ödeme';
+
+  @override
+  String get billEvery => 'Ne sıklıkla';
+
+  @override
+  String get billEveryWeek => 'Haftalık';
+
+  @override
+  String get billEveryMonth => 'Aylık';
+
+  @override
+  String get billEveryQuarter => '3 aylık';
+
+  @override
+  String get billEveryYear => 'Yıllık';
+
+  @override
+  String get billNext => 'Sonraki ödeme';
+
+  @override
+  String get billKind => 'Türü';
+
+  @override
+  String get billKindBill => 'Fatura';
+
+  @override
+  String get billKindSubscription => 'Abonelik';
+
+  @override
+  String get billRepays => 'Öder';
+
+  @override
+  String get billRepaysNothing => 'Hiçbir şey, bir gider';
+
+  @override
+  String get billAddThis => 'Faturayı ekle';
+
+  @override
+  String get billDelete => 'Faturayı sil';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · sonraki $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return '$date tarihinde vadesi geçti';
+  }
+
+  @override
+  String get billPay => 'Ödendi olarak işaretle';
+
+  @override
+  String get billEdit => 'Değiştir';
+
+  @override
+  String get dayToday => 'Bugün';
+
+  @override
+  String dayIn(int days) {
+    return '$days gün sonra';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days gün önce';
+  }
+
+  @override
+  String get homeComingUp => 'Yaklaşanlar';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return 'Önümüzdeki 30 günde $amount fatura ödenecek.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'Maaşınız $date tarihinde bekleniyordu. Geldi mi?';
+  }
+
+  @override
+  String get payDueSub =>
+      'Ne kadar geldiğini söyleyin; sonraki maaş bir dönem sonra beklenir.';
+
+  @override
+  String get payArrived => 'Geldi';
+
+  @override
+  String get payArrivedTitle => 'Ne kadar geldi?';
+
+  @override
+  String get planRecordPay => 'Maaş geldi';
+
+  @override
+  String get planRecordPaySub => 'Kaydedin, sonraki bir dönem ilerler';
+
+  @override
+  String get accountsTitle => 'Hesaplar';
+
+  @override
+  String get accountMain => 'Ana hesap';
+
+  @override
+  String get accountKindBank => 'Banka hesabı';
+
+  @override
+  String get accountKindCash => 'Nakit';
+
+  @override
+  String get accountKindSavings => 'Birikim';
+
+  @override
+  String get accountKindCard => 'Kredi kartı';
+
+  @override
+  String get accountKindLoan => 'Kredi';
+
+  @override
+  String get accountAdd => 'Hesap ekle';
+
+  @override
+  String get accountAddSub =>
+      'Nakit, birikim, kart veya kredi. Banka bağlantısı gerekmez.';
+
+  @override
+  String get accountEditNew => 'Yeni hesap';
+
+  @override
+  String get accountNameHint => 'ör. Cüzdan';
+
+  @override
+  String get accountHolds => 'Şu an içindeki';
+
+  @override
+  String get accountOwes => 'Şu anki borç';
+
+  @override
+  String get accountCounted => 'Plana dahil et';
+
+  @override
+  String get accountCountedSub => 'Bu para bu ay harcanabilir.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'Borç $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'Plana dahil değil';
+
+  @override
+  String get accountConfirm => 'Gerçek bakiyeyi gir';
+
+  @override
+  String get accountMove => 'Para aktar';
+
+  @override
+  String accountMoveTo(String name) {
+    return '$name hesabına aktar';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'Kendi hesaplarınız arasında aktarım ne harcama ne gelirdir.';
+
+  @override
+  String get accountPayCard => 'Bir kısmını öde';
+
+  @override
+  String get accountPayBlurb =>
+      'Ana hesaptan ödenir. Borcu kapatır; ikinci bir harcama değildir.';
+
+  @override
+  String get accountRemove => 'Bu hesabı kaldır';
+
+  @override
+  String get accountInUse =>
+      'Geçmişi olduğu için kalır. Bunun yerine plandan çıkarabilirsiniz.';
+
+  @override
+  String get paidFrom => 'Ödeme kaynağı';
+
+  @override
+  String get categorySuggested =>
+      'Geçmiş harcamalarınıza göre önerildi. Değiştirmek için başkasına dokunun.';
+
+  @override
+  String get recoverTitle => 'Geri gelecek para';
+
+  @override
+  String recoverTotal(String amount) {
+    return '$amount geri gelebilir. Gelene kadar sayılmaz.';
+  }
+
+  @override
+  String get recoverReturnable => 'İade edilebilir';
+
+  @override
+  String get recoverExpect => 'İade edildi, geri ödeme bekleniyor';
+
+  @override
+  String get recoverArrived => 'Geri ödeme geldi';
+
+  @override
+  String get recoverKept => 'Tuttum';
+
+  @override
+  String get recoverPending => 'Geri ödeme yolda';
+
+  @override
+  String get recoverRefunded => 'İade edildi';
+
+  @override
+  String get recoverPrompt => 'Parayı geri alma';
+
+  @override
+  String recoverWhere(String amount) {
+    return '$amount geri geldi. Nereye gitsin?';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return '$goal için';
+  }
+
+  @override
+  String get recoverToBuffer => 'Acil durum tamponuna';
+
+  @override
+  String get recoverLeave => 'Harcanabilir kalsın';
+
+  @override
+  String get accountStopCounting => 'Plandan çıkar';
 }

@@ -1521,4 +1521,262 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get goalHidePath => 'छिपाएँ';
+
+  @override
+  String get billsTitle => 'बिल और सदस्यताएँ';
+
+  @override
+  String get billAdd => 'बिल या सदस्यता जोड़ें';
+
+  @override
+  String get billAddSub =>
+      'फ़ोन, इंटरनेट, बीमा, स्ट्रीमिंग… हर एक अपनी तारीख से पहले अलग रखा जाता है।';
+
+  @override
+  String get billEditNew => 'नया बिल';
+
+  @override
+  String get billEditExisting => 'बिल बदलें';
+
+  @override
+  String get billName => 'यह क्या है?';
+
+  @override
+  String get billNameHint => 'जैसे इंटरनेट';
+
+  @override
+  String get billAmount => 'हर भुगतान';
+
+  @override
+  String get billEvery => 'कितनी बार';
+
+  @override
+  String get billEveryWeek => 'साप्ताहिक';
+
+  @override
+  String get billEveryMonth => 'मासिक';
+
+  @override
+  String get billEveryQuarter => 'तिमाही';
+
+  @override
+  String get billEveryYear => 'वार्षिक';
+
+  @override
+  String get billNext => 'अगला भुगतान';
+
+  @override
+  String get billKind => 'यह है';
+
+  @override
+  String get billKindBill => 'बिल';
+
+  @override
+  String get billKindSubscription => 'सदस्यता';
+
+  @override
+  String get billRepays => 'चुकाता है';
+
+  @override
+  String get billRepaysNothing => 'कुछ नहीं, यह खर्च है';
+
+  @override
+  String get billAddThis => 'यह बिल जोड़ें';
+
+  @override
+  String get billDelete => 'यह बिल हटाएँ';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · अगला $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return '$date को देय था';
+  }
+
+  @override
+  String get billPay => 'भुगतान हो गया';
+
+  @override
+  String get billEdit => 'बदलें';
+
+  @override
+  String get dayToday => 'आज';
+
+  @override
+  String dayIn(int days) {
+    return '$days दिन में';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days दिन पहले';
+  }
+
+  @override
+  String get homeComingUp => 'आने वाले';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return 'अगले 30 दिनों में $amount के बिल देय।';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'आपका वेतन $date को आना था। क्या आ गया?';
+  }
+
+  @override
+  String get payDueSub => 'बताइए कितना आया; अगला वेतन एक अवधि बाद अपेक्षित है।';
+
+  @override
+  String get payArrived => 'आ गया';
+
+  @override
+  String get payArrivedTitle => 'कितना आया?';
+
+  @override
+  String get planRecordPay => 'वेतन आ गया';
+
+  @override
+  String get planRecordPaySub => 'दर्ज करें, अगला एक अवधि आगे जाएगा';
+
+  @override
+  String get accountsTitle => 'खाते';
+
+  @override
+  String get accountMain => 'मुख्य खाता';
+
+  @override
+  String get accountKindBank => 'बैंक खाता';
+
+  @override
+  String get accountKindCash => 'नकद';
+
+  @override
+  String get accountKindSavings => 'बचत';
+
+  @override
+  String get accountKindCard => 'क्रेडिट कार्ड';
+
+  @override
+  String get accountKindLoan => 'ऋण';
+
+  @override
+  String get accountAdd => 'खाता जोड़ें';
+
+  @override
+  String get accountAddSub =>
+      'नकद, बचत, कार्ड या ऋण। बैंक जोड़ने की ज़रूरत नहीं।';
+
+  @override
+  String get accountEditNew => 'नया खाता';
+
+  @override
+  String get accountNameHint => 'जैसे बटुआ';
+
+  @override
+  String get accountHolds => 'अभी कितना है';
+
+  @override
+  String get accountOwes => 'अभी कितना बकाया';
+
+  @override
+  String get accountCounted => 'योजना में गिनें';
+
+  @override
+  String get accountCountedSub => 'यह पैसा इस महीने खर्च हो सकता है।';
+
+  @override
+  String accountOwed(String amount) {
+    return 'बकाया $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'योजना में नहीं गिना';
+
+  @override
+  String get accountConfirm => 'असली शेष बताएँ';
+
+  @override
+  String get accountMove => 'पैसा स्थानांतरित करें';
+
+  @override
+  String accountMoveTo(String name) {
+    return '$name में भेजें';
+  }
+
+  @override
+  String get accountMoveBlurb => 'अपने खातों के बीच पैसा भेजना न खर्च है न आय।';
+
+  @override
+  String get accountPayCard => 'कुछ चुकाएँ';
+
+  @override
+  String get accountPayBlurb =>
+      'मुख्य खाते से भुगतान। यह बकाया चुकाता है; दूसरा खर्च नहीं।';
+
+  @override
+  String get accountRemove => 'यह खाता हटाएँ';
+
+  @override
+  String get accountInUse =>
+      'इसका इतिहास है, इसलिए रहेगा। आप इसे गिनना बंद कर सकते हैं।';
+
+  @override
+  String get paidFrom => 'भुगतान इससे';
+
+  @override
+  String get categorySuggested =>
+      'पिछले खर्चों से सुझाया गया। बदलने के लिए दूसरा चुनें।';
+
+  @override
+  String get recoverTitle => 'वापस आने वाला पैसा';
+
+  @override
+  String recoverTotal(String amount) {
+    return '$amount वापस आ सकता है। आने तक गिना नहीं जाता।';
+  }
+
+  @override
+  String get recoverReturnable => 'लौटाया जा सकता है';
+
+  @override
+  String get recoverExpect => 'लौटा दिया, रिफ़ंड अपेक्षित';
+
+  @override
+  String get recoverArrived => 'रिफ़ंड आ गया';
+
+  @override
+  String get recoverKept => 'रख लिया';
+
+  @override
+  String get recoverPending => 'रिफ़ंड रास्ते में';
+
+  @override
+  String get recoverRefunded => 'रिफ़ंड हुआ';
+
+  @override
+  String get recoverPrompt => 'पैसा वापस पाना';
+
+  @override
+  String recoverWhere(String amount) {
+    return '$amount वापस आया। इसे कहाँ रखें?';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return '$goal के लिए';
+  }
+
+  @override
+  String get recoverToBuffer => 'आपात बफ़र में';
+
+  @override
+  String get recoverLeave => 'खर्च के लिए खाली छोड़ें';
+
+  @override
+  String get accountStopCounting => 'योजना में गिनना बंद करें';
 }

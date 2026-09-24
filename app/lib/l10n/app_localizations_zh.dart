@@ -1452,4 +1452,257 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get goalHidePath => '收起';
+
+  @override
+  String get billsTitle => '账单和订阅';
+
+  @override
+  String get billAdd => '添加账单或订阅';
+
+  @override
+  String get billAddSub => '电话、网络、保险、流媒体……每项都会在到期前预留。';
+
+  @override
+  String get billEditNew => '新账单';
+
+  @override
+  String get billEditExisting => '修改账单';
+
+  @override
+  String get billName => '是什么？';
+
+  @override
+  String get billNameHint => '例如：网络';
+
+  @override
+  String get billAmount => '每次金额';
+
+  @override
+  String get billEvery => '多久一次';
+
+  @override
+  String get billEveryWeek => '每周';
+
+  @override
+  String get billEveryMonth => '每月';
+
+  @override
+  String get billEveryQuarter => '每季度';
+
+  @override
+  String get billEveryYear => '每年';
+
+  @override
+  String get billNext => '下次付款';
+
+  @override
+  String get billKind => '类型';
+
+  @override
+  String get billKindBill => '账单';
+
+  @override
+  String get billKindSubscription => '订阅';
+
+  @override
+  String get billRepays => '偿还';
+
+  @override
+  String get billRepaysNothing => '不偿还，是开支';
+
+  @override
+  String get billAddThis => '添加账单';
+
+  @override
+  String get billDelete => '删除账单';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · 下次 $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return '已于 $date 到期';
+  }
+
+  @override
+  String get billPay => '标记为已付';
+
+  @override
+  String get billEdit => '修改';
+
+  @override
+  String get dayToday => '今天';
+
+  @override
+  String dayIn(int days) {
+    return '$days 天后';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days 天前';
+  }
+
+  @override
+  String get homeComingUp => '即将到来';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '未来 30 天有 $amount 的账单到期。';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return '你的工资应于 $date 到账。到了吗？';
+  }
+
+  @override
+  String get payDueSub => '告诉我们到账多少，下次工资将在一个周期后预期到账。';
+
+  @override
+  String get payArrived => '已到账';
+
+  @override
+  String get payArrivedTitle => '到账多少？';
+
+  @override
+  String get planRecordPay => '工资已到账';
+
+  @override
+  String get planRecordPaySub => '记录后下次工资顺延一个周期';
+
+  @override
+  String get accountsTitle => '账户';
+
+  @override
+  String get accountMain => '主账户';
+
+  @override
+  String get accountKindBank => '银行账户';
+
+  @override
+  String get accountKindCash => '现金';
+
+  @override
+  String get accountKindSavings => '储蓄';
+
+  @override
+  String get accountKindCard => '信用卡';
+
+  @override
+  String get accountKindLoan => '贷款';
+
+  @override
+  String get accountAdd => '添加账户';
+
+  @override
+  String get accountAddSub => '现金、储蓄、信用卡或贷款，无需连接银行。';
+
+  @override
+  String get accountEditNew => '新账户';
+
+  @override
+  String get accountNameHint => '例如：钱包';
+
+  @override
+  String get accountHolds => '当前余额';
+
+  @override
+  String get accountOwes => '当前欠款';
+
+  @override
+  String get accountCounted => '计入计划';
+
+  @override
+  String get accountCountedSub => '这里的钱本月可以花。';
+
+  @override
+  String accountOwed(String amount) {
+    return '欠 $amount';
+  }
+
+  @override
+  String get accountNotCounted => '不计入计划';
+
+  @override
+  String get accountConfirm => '填写实际余额';
+
+  @override
+  String get accountMove => '转账';
+
+  @override
+  String accountMoveTo(String name) {
+    return '转到 $name';
+  }
+
+  @override
+  String get accountMoveBlurb => '在自己账户之间转账既不是支出也不是收入。';
+
+  @override
+  String get accountPayCard => '还一部分';
+
+  @override
+  String get accountPayBlurb => '从主账户支付。这是还款，不算第二次支出。';
+
+  @override
+  String get accountRemove => '删除此账户';
+
+  @override
+  String get accountInUse => '它有历史记录，所以保留。你可以改为不计入计划。';
+
+  @override
+  String get paidFrom => '支付方式';
+
+  @override
+  String get categorySuggested => '根据你过去的支出推荐。点其他类别可更改。';
+
+  @override
+  String get recoverTitle => '待退回的钱';
+
+  @override
+  String recoverTotal(String amount) {
+    return '可能退回 $amount，到账前不计入。';
+  }
+
+  @override
+  String get recoverReturnable => '可退货';
+
+  @override
+  String get recoverExpect => '已退货，等待退款';
+
+  @override
+  String get recoverArrived => '退款已到账';
+
+  @override
+  String get recoverKept => '留着了';
+
+  @override
+  String get recoverPending => '退款处理中';
+
+  @override
+  String get recoverRefunded => '已退款';
+
+  @override
+  String get recoverPrompt => '退款';
+
+  @override
+  String recoverWhere(String amount) {
+    return '退回了 $amount，放到哪里？';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return '用于$goal';
+  }
+
+  @override
+  String get recoverToBuffer => '放入应急备用金';
+
+  @override
+  String get recoverLeave => '留作可支配';
+
+  @override
+  String get accountStopCounting => '不再计入计划';
 }

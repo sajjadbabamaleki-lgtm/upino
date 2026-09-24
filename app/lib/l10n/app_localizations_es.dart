@@ -1558,4 +1558,277 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get goalHidePath => 'Ocultar';
+
+  @override
+  String get billsTitle => 'Facturas y suscripciones';
+
+  @override
+  String get billAdd => 'Añadir factura o suscripción';
+
+  @override
+  String get billAddSub =>
+      'Teléfono, internet, seguro, streaming… cada uno se aparta antes de su fecha.';
+
+  @override
+  String get billEditNew => 'Nueva factura';
+
+  @override
+  String get billEditExisting => 'Cambiar factura';
+
+  @override
+  String get billName => '¿Qué es?';
+
+  @override
+  String get billNameHint => 'p. ej. Internet';
+
+  @override
+  String get billAmount => 'Cada pago';
+
+  @override
+  String get billEvery => 'Cada cuánto';
+
+  @override
+  String get billEveryWeek => 'Semanal';
+
+  @override
+  String get billEveryMonth => 'Mensual';
+
+  @override
+  String get billEveryQuarter => 'Trimestral';
+
+  @override
+  String get billEveryYear => 'Anual';
+
+  @override
+  String get billNext => 'Próximo pago';
+
+  @override
+  String get billKind => 'Es';
+
+  @override
+  String get billKindBill => 'Factura';
+
+  @override
+  String get billKindSubscription => 'Suscripción';
+
+  @override
+  String get billRepays => 'Paga';
+
+  @override
+  String get billRepaysNothing => 'Nada, es un gasto';
+
+  @override
+  String get billAddThis => 'Añadir factura';
+
+  @override
+  String get billDelete => 'Eliminar factura';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · próximo $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'Vencía el $date';
+  }
+
+  @override
+  String get billPay => 'Marcar como pagada';
+
+  @override
+  String get billEdit => 'Cambiar';
+
+  @override
+  String get dayToday => 'Hoy';
+
+  @override
+  String dayIn(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'En $days días',
+      one: 'En un día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dayAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Hace $days días',
+      one: 'Hace un día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeComingUp => 'Próximos pagos';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount en facturas vencen en los próximos 30 días.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'Tu pago vencía el $date. ¿Ha llegado?';
+  }
+
+  @override
+  String get payDueSub =>
+      'Di cuánto llegó y el siguiente se espera un periodo después.';
+
+  @override
+  String get payArrived => 'Llegó';
+
+  @override
+  String get payArrivedTitle => '¿Cuánto llegó?';
+
+  @override
+  String get planRecordPay => 'Llegó el pago';
+
+  @override
+  String get planRecordPaySub =>
+      'Regístralo y el siguiente se mueve un periodo';
+
+  @override
+  String get accountsTitle => 'Cuentas';
+
+  @override
+  String get accountMain => 'Cuenta principal';
+
+  @override
+  String get accountKindBank => 'Cuenta bancaria';
+
+  @override
+  String get accountKindCash => 'Efectivo';
+
+  @override
+  String get accountKindSavings => 'Ahorros';
+
+  @override
+  String get accountKindCard => 'Tarjeta de crédito';
+
+  @override
+  String get accountKindLoan => 'Préstamo';
+
+  @override
+  String get accountAdd => 'Añadir cuenta';
+
+  @override
+  String get accountAddSub =>
+      'Efectivo, ahorros, una tarjeta o un préstamo. Sin conectar el banco.';
+
+  @override
+  String get accountEditNew => 'Nueva cuenta';
+
+  @override
+  String get accountNameHint => 'p. ej. Cartera';
+
+  @override
+  String get accountHolds => 'Lo que tiene ahora';
+
+  @override
+  String get accountOwes => 'Lo que se debe ahora';
+
+  @override
+  String get accountCounted => 'Contarla en el plan';
+
+  @override
+  String get accountCountedSub => 'Este dinero se puede gastar este mes.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'Debe $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'No cuenta en el plan';
+
+  @override
+  String get accountConfirm => 'Decir el saldo real';
+
+  @override
+  String get accountMove => 'Mover dinero';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'Mover a $name';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'Mover dinero entre tus cuentas no es gasto ni ingreso.';
+
+  @override
+  String get accountPayCard => 'Pagar una parte';
+
+  @override
+  String get accountPayBlurb =>
+      'Se paga desde la cuenta principal. Salda lo debido; no es un segundo gasto.';
+
+  @override
+  String get accountRemove => 'Quitar esta cuenta';
+
+  @override
+  String get accountInUse =>
+      'Tiene historial, así que se queda. Puedes dejar de contarla.';
+
+  @override
+  String get paidFrom => 'Pagado con';
+
+  @override
+  String get categorySuggested =>
+      'Sugerido por tus gastos anteriores. Toca otro para cambiarlo.';
+
+  @override
+  String get recoverTitle => 'Dinero por volver';
+
+  @override
+  String recoverTotal(String amount) {
+    return 'Pueden volver $amount. No cuenta hasta que llegue.';
+  }
+
+  @override
+  String get recoverReturnable => 'Se puede devolver';
+
+  @override
+  String get recoverExpect => 'Devuelto, reembolso pendiente';
+
+  @override
+  String get recoverArrived => 'Llegó el reembolso';
+
+  @override
+  String get recoverKept => 'Me lo quedé';
+
+  @override
+  String get recoverPending => 'Reembolso en camino';
+
+  @override
+  String get recoverRefunded => 'Reembolsado';
+
+  @override
+  String get recoverPrompt => 'Recuperar dinero';
+
+  @override
+  String recoverWhere(String amount) {
+    return 'Volvieron $amount. ¿A dónde van?';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'Para $goal';
+  }
+
+  @override
+  String get recoverToBuffer => 'Al colchón de emergencia';
+
+  @override
+  String get recoverLeave => 'Dejarlo libre para gastar';
+
+  @override
+  String get accountStopCounting => 'Dejar de contarla en el plan';
 }

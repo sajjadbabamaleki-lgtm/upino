@@ -1322,6 +1322,44 @@ class AppState extends ChangeNotifier {
     return out;
   }
 
+  /// A category for a spend of [amount], when the record makes one clear
+  /// (Strategy §7.1): at least three sorted spends of a similar size in the
+  /// last ninety days, most of them in one category. Otherwise nothing: a
+  /// guess the person has to undo costs more than no guess.
+  SpendCategory? suggestCategory(Money amount) {
+    if (amount.minor <= 0) return null;
+    final since = _now.subtract(const Duration(days: 90));
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final counts = <SpendCategory, int>{};
+    var similar = 0;
+    for (final e in _events) {
+      final spent = _spent(e);
+      final category = _categories[e.id];
+      final at = _recordedAt[e.id];
+      if (spent == null || category == null || at == null) continue;
+      if (voided.contains(e.id) || at.isBefore(since)) continue;
+      // Similar: within a third either way.
+      final lo = amount.minor * 2 ~/ 3;
+      final hi = amount.minor * 3 ~/ 2;
+      if (spent.minor < lo || spent.minor > hi) continue;
+      similar++;
+      counts[category] = (counts[category] ?? 0) + 1;
+    }
+    if (similar < 3) return null;
+    final top = counts.entries.reduce((a, b) => a.value >= b.value ? a : b);
+    return top.value * 10 >= similar * 6 ? top.key : null;
+  }
+
+  /// Where a spend can be paid from: the main account first, then any
+  /// cash, bank or card account.
+  List<({String id, String name, AccountKind kind})> get payableAccounts => [
+        for (final a in _accounts)
+          if (a.canPay) (id: a.id, name: a.name, kind: a.kind),
+      ];
+
   void attachReceipt(String eventId, String filename) {
     _receipts[eventId] = filename;
     _persist();

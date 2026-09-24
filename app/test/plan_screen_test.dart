@@ -190,6 +190,8 @@ void main() {
       final state = await openPlan(tester, funded());
       expect(find.byKey(const Key('plan-add-buffer')), findsOneWidget);
 
+      await tester.ensureVisible(find.byKey(const Key('plan-add-buffer')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('plan-add-buffer')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '150.00');

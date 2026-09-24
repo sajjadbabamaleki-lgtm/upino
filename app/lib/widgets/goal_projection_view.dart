@@ -150,7 +150,7 @@ class _GoalProjectionViewState extends State<GoalProjectionView> {
             what.finishes != goal.targetDate &&
             what.pace.minor > 0) ...[
           const SizedBox(height: 10),
-          Row(
+          Wrap(
             children: [
               TextButton(
                 key: Key('goal-pace-apply-${goal.id}'),
