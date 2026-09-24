@@ -574,5 +574,14 @@
   "demoGoalCar": "कार",
   "demoBillPhone": "फ़ोन",
   "demoBillInternet": "इंटरनेट",
-  "demoBillGym": "जिम"
+  "demoBillGym": "जिम",
+  "goalsSample": "नमूना लक्ष्य",
+  "goalsMine": "मेरे लक्ष्य",
+  "goalsSampleNote": "यह पेज कैसे काम करता है, यह दिखाने के लिए चार नमूना लक्ष्य। ये आपके नहीं हैं और आपकी योजना में कुछ नहीं बदलते।",
+  "voiceExample": "जैसे: “दो सौ रुपये, खाना”",
+  "voiceTitleListening": "सुन रहे हैं",
+  "voiceTitleHeard": "सुन लिया",
+  "voiceTitleFailed": "समझ नहीं आया",
+  "voiceStop": "रोकें",
+  "voiceRetry": "फिर से"
 }

@@ -574,5 +574,14 @@
   "demoGoalCar": "ماشین",
   "demoBillPhone": "تلفن",
   "demoBillInternet": "اینترنت",
-  "demoBillGym": "باشگاه"
+  "demoBillGym": "باشگاه",
+  "goalsSample": "هدف‌های نمونه",
+  "goalsMine": "هدف‌های من",
+  "goalsSampleNote": "چهار هدف نمونه، برای اینکه ببینید این صفحه چطور کار می‌کند. مال شما نیستند و چیزی در برنامه‌تان عوض نمی‌کنند.",
+  "voiceExample": "مثلاً: «دویست و پنجاه هزار تومن ناهار»",
+  "voiceTitleListening": "در حال شنیدن",
+  "voiceTitleHeard": "شنیده شد",
+  "voiceTitleFailed": "متوجه نشدم",
+  "voiceStop": "توقف",
+  "voiceRetry": "دوباره"
 }

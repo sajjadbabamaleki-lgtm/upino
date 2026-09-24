@@ -37,7 +37,21 @@ class GoalsScreen extends StatefulWidget {
 }
 
 class _GoalsScreenState extends State<GoalsScreen> {
-  AppState get state => widget.state;
+  /// Sample goals, built on first use: a copy that is not the person's
+  /// plan and is never saved.
+  AppState? _sample;
+
+  /// What the person picked on the switch; until then the page shows the
+  /// samples while there are fewer than four goals of their own, so the
+  /// rings can be seen whole.
+  bool? _sampleChosen;
+
+  bool get _showingSample => _sampleChosen ?? widget.state.goals.length < 4;
+
+  /// The plan on show: the samples or the person's own.
+  AppState get state => _showingSample
+      ? (_sample ??= sampleState(context, widget.state))
+      : widget.state;
   EdgeInsets get padding => widget.padding;
 
   /// A key for each goal's card, kept across builds so the rings and tiles
@@ -45,9 +59,12 @@ class _GoalsScreenState extends State<GoalsScreen> {
   final _cardKeys = <String, GlobalKey>{};
 
   Future<void> _create(BuildContext context) async {
-    final draft = await GoalEditorSheet.show(context, state: state);
+    // A new goal is always the person's own, so their goals come back.
+    final mine = widget.state;
+    final draft = await GoalEditorSheet.show(context, state: mine);
     if (draft == null) return;
-    state.addGoal(
+    if (mounted) setState(() => _sampleChosen = false);
+    mine.addGoal(
       name: draft.name,
       target: draft.target,
       targetDate: draft.targetDate,
@@ -113,121 +130,206 @@ class _GoalsScreenState extends State<GoalsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final goals = state.goals;
+    final sample = _showingSample;
+    final shown = state;
 
     return AnimatedBuilder(
-      animation: state,
-      builder: (context, _) => ListView(
-        padding: padding,
-        children: revealed([
-          // The page's name is in the capsule above, and the rings say
-          // the rest; a line under the name would only repeat them.
-          if (goals.isEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
-              child: Text(
-                l.goalsBlurbEmpty,
-                style: theme.textTheme.bodySmall,
+      animation: Listenable.merge([widget.state, shown]),
+      builder: (context, _) {
+        final goals = shown.goals;
+        return ListView(
+          padding: padding,
+          children: revealed([
+            // Samples or the person's own, while they have fewer than four.
+            if (sample || widget.state.goals.length < 4) ...[
+              _SampleSwitch(
+                sample: sample,
+                onChanged: (v) => setState(() => _sampleChosen = v),
               ),
-            ),
-          if (goals.isEmpty)
-            UpinoCard(
-              child: Text(
-                l.goalsEmptyCard,
-                style: theme.textTheme.bodySmall,
+              if (sample)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+                  child: Text(
+                    l.goalsSampleNote,
+                    key: const Key('goals-sample-note'),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              const SizedBox(height: 14),
+            ],
+            // The page's name is in the capsule above, and the rings say
+            // the rest; a line under the name would only repeat them.
+            if (goals.isEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+                child: Text(
+                  l.goalsBlurbEmpty,
+                  style: theme.textTheme.bodySmall,
+                ),
               ),
-            )
-          else ...[
-            // All the goals at once: rings round how far along they are
-            // together, on the page itself rather than in a card.
-            GoalsOrbit(
-              goals: [
-                for (var i = 0; i < goals.length && i < 4; i++)
-                  (goal: goals[i], color: i),
-              ],
-              overall: _overall(goals),
-              onOpen: (g) => _open(context, g),
-            ),
-            const SizedBox(height: 10),
-            _Summary(state: state),
-            const SizedBox(height: 10),
-            // A tile for each goal, two to a row, in the colour it has on
-            // the rings; the whole goal opens from it.
-            for (var i = 0; i < goals.length; i += 2) ...[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _GoalTile(
-                      state: state,
-                      goal: goals[i],
-                      color: goalColor(i),
-                      onTap: () => _open(context, goals[i]),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: i + 1 < goals.length
-                        ? _GoalTile(
-                            state: state,
-                            goal: goals[i + 1],
-                            color: goalColor(i + 1),
-                            onTap: () => _open(context, goals[i + 1]),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+            if (goals.isEmpty)
+              UpinoCard(
+                child: Text(
+                  l.goalsEmptyCard,
+                  style: theme.textTheme.bodySmall,
+                ),
+              )
+            else ...[
+              // All the goals at once: rings round how far along they are
+              // together, on the page itself rather than in a card.
+              GoalsOrbit(
+                // A new welcome when the page switches between samples and
+                // the person's own.
+                key: ValueKey(sample),
+                goals: [
+                  for (var i = 0; i < goals.length && i < 4; i++)
+                    (goal: goals[i], color: i),
                 ],
+                overall: _overall(goals),
+                onOpen: (g) => _open(context, g),
               ),
               const SizedBox(height: 10),
+              _Summary(state: state),
+              const SizedBox(height: 10),
+              // A tile for each goal, two to a row, in the colour it has on
+              // the rings; the whole goal opens from it.
+              for (var i = 0; i < goals.length; i += 2) ...[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: _GoalTile(
+                        state: state,
+                        goal: goals[i],
+                        color: goalColor(i),
+                        onTap: () => _open(context, goals[i]),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: i + 1 < goals.length
+                          ? _GoalTile(
+                              state: state,
+                              goal: goals[i + 1],
+                              color: goalColor(i + 1),
+                              onTap: () => _open(context, goals[i + 1]),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
             ],
-          ],
-          // The one action this tab has, where the eye lands after the
-          // overview. A floating button would sit on top of the nav bar.
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              key: const Key('goals-new'),
-              onPressed: () => _create(context),
-              icon: const Icon(Icons.add_rounded),
-              label: Text(l.goalsNew),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(54),
+            // The one action this tab has, where the eye lands after the
+            // overview. A floating button would sit on top of the nav bar.
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                key: const Key('goals-new'),
+                onPressed: () => _create(context),
+                icon: const Icon(Icons.add_rounded),
+                label: Text(l.goalsNew),
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(54),
+                ),
+              ),
+            ),
+            // Further down, each goal again, larger and whole: where it is
+            // heading, its path, adding money. The rings and tiles above
+            // scroll here.
+            if (goals.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              SectionHeading(l.goalsDetailTitle, count: goals.length),
+              for (var i = 0; i < goals.length; i++) ...[
+                _GoalCard(
+                  key: _cardKey(goals[i].id),
+                  state: state,
+                  goal: goals[i],
+                  color: goalColor(i),
+                  inflated: state.inflatedTarget(goals[i]),
+                  rate: state.inflationBasisPoints,
+                  today: state.today,
+                  payCycleDays: state.payCycleDays,
+                  onEdit: () => _edit(context, goals[i]),
+                  onContribute: () => _contribute(context, goals[i]),
+                ),
+                const SizedBox(height: 12),
+              ],
+              _InflationRow(state: state),
+            ],
+          ]),
+        );
+      },
+    );
+  }
+}
+
+/// Two halves of a pill: the sample goals, or the person's own.
+class _SampleSwitch extends StatelessWidget {
+  const _SampleSwitch({required this.sample, required this.onChanged});
+
+  final bool sample;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    Widget half(String key, String label, bool on, bool value) => Expanded(
+          child: GestureDetector(
+            key: Key(key),
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onChanged(value),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 38,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: on
+                    ? (dark ? UpinoTokens.darkSurfaceRaised : Colors.white)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+                boxShadow: on
+                    ? const [
+                        BoxShadow(
+                          color: Color(0x14000000),
+                          blurRadius: 6,
+                          offset: Offset(0, 1),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                  color: on
+                      ? (dark
+                          ? UpinoTokens.darkTextPrimary
+                          : UpinoTokens.textPrimary)
+                      : (dark
+                          ? UpinoTokens.darkTextSecondary
+                          : UpinoTokens.textSecondary),
+                ),
               ),
             ),
           ),
-          // To see the page with several goals before there are several.
-          if (goals.length < 4)
-            Center(
-              child: TextButton(
-                key: const Key('goals-demo'),
-                onPressed: () => DemoScreen.open(context, state),
-                child: Text(l.demoTry),
-              ),
-            ),
-          // Further down, each goal again, larger and whole: where it is
-          // heading, its path, adding money. The rings and tiles above
-          // scroll here.
-          if (goals.isNotEmpty) ...[
-            const SizedBox(height: 20),
-            SectionHeading(l.goalsDetailTitle, count: goals.length),
-            for (var i = 0; i < goals.length; i++) ...[
-              _GoalCard(
-                key: _cardKey(goals[i].id),
-                state: state,
-                goal: goals[i],
-                color: goalColor(i),
-                inflated: state.inflatedTarget(goals[i]),
-                rate: state.inflationBasisPoints,
-                today: state.today,
-                payCycleDays: state.payCycleDays,
-                onEdit: () => _edit(context, goals[i]),
-                onContribute: () => _contribute(context, goals[i]),
-              ),
-              const SizedBox(height: 12),
-            ],
-            _InflationRow(state: state),
-          ],
-        ]),
+        );
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: sunkenColor(context),
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+      ),
+      child: Row(
+        children: [
+          half('goals-show-sample', l.goalsSample, sample, true),
+          half('goals-show-mine', l.goalsMine, !sample, false),
+        ],
       ),
     );
   }

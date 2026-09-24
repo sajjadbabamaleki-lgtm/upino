@@ -1497,5 +1497,14 @@
   "demoGoalCar": "Car",
   "demoBillPhone": "Phone",
   "demoBillInternet": "Internet",
-  "demoBillGym": "Gym"
+  "demoBillGym": "Gym",
+  "goalsSample": "Sample goals",
+  "goalsMine": "My goals",
+  "goalsSampleNote": "Four sample goals, to show how this page works. They are not yours and change nothing in your plan.",
+  "voiceExample": "For example: “twelve fifty, lunch”",
+  "voiceTitleListening": "Listening",
+  "voiceTitleHeard": "Heard you",
+  "voiceTitleFailed": "Didn't catch that",
+  "voiceStop": "Stop",
+  "voiceRetry": "Again"
 }

@@ -220,6 +220,7 @@ void main() {
     final goal = state.goals.single;
     final before = goal.targetDate;
     await open(tester, state, tab: 2);
+    await tapKey(tester, 'goals-show-mine');
     await tapKey(tester, 'goal-tile-${goal.id}');
     await tapKey(tester, 'goal-path-${goal.id}');
     expect(find.byKey(Key('goal-chart-${goal.id}')), findsOneWidget);
@@ -275,8 +276,8 @@ void main() {
         targetDate: LocalDate.parse('2027-10-01'),
       );
     state.contributeToGoal(state.goals.single.id, eur('300.00'));
-    await open(tester, state);
-    await tester.tap(find.byKey(const Key('nav-2')));
+    await open(tester, state, tab: 2);
+    await tester.tap(find.byKey(const Key('goals-show-mine')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));
     // Early in the welcome the count has not reached the whole.
@@ -291,19 +292,21 @@ void main() {
     );
   });
 
-  testWidgets('sample data opens a copy with four goals and leaves the plan',
-      (tester) async {
+  testWidgets('goals open on four samples until there are four of your own, '
+      'and the samples leave the plan alone', (tester) async {
     final state = funded();
     final before = state.toDocument().encode();
     await open(tester, state, tab: 2);
-    await tapKey(tester, 'goals-demo');
-    expect(find.byKey(const Key('demo-banner')), findsOneWidget);
-    await tester.tap(find.byKey(const Key('nav-2')).last);
-    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('goals-sample-note')), findsOneWidget);
     expect(find.byKey(const Key('goals-orbit')), findsOneWidget);
     expect(find.text('TRIP'), findsNothing); // Latin names curve, painted
-    await tester.tap(find.byKey(const Key('demo-exit')));
-    await tester.pumpAndSettle();
+
+    await tapKey(tester, 'goals-show-mine');
+    expect(find.byKey(const Key('goals-sample-note')), findsNothing);
+    expect(find.byKey(const Key('goals-orbit')), findsNothing);
+
+    await tapKey(tester, 'goals-show-sample');
+    expect(find.byKey(const Key('goals-orbit')), findsOneWidget);
     expect(state.toDocument().encode(), before);
     expect(state.goals, isEmpty);
   });

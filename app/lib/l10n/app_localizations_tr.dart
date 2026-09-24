@@ -2054,4 +2054,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get demoBillGym => 'Spor salonu';
+
+  @override
+  String get goalsSample => 'Örnek hedefler';
+
+  @override
+  String get goalsMine => 'Hedeflerim';
+
+  @override
+  String get goalsSampleNote =>
+      'Bu sayfanın nasıl çalıştığını göstermek için dört örnek hedef. Sizin değiller ve planınızda hiçbir şeyi değiştirmezler.';
+
+  @override
+  String get voiceExample => 'Örneğin: “yüz elli lira, öğle yemeği”';
+
+  @override
+  String get voiceTitleListening => 'Dinleniyor';
+
+  @override
+  String get voiceTitleHeard => 'Duyuldu';
+
+  @override
+  String get voiceTitleFailed => 'Anlaşılamadı';
+
+  @override
+  String get voiceStop => 'Durdur';
+
+  @override
+  String get voiceRetry => 'Tekrar';
 }

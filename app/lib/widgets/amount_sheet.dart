@@ -71,6 +71,7 @@ class AmountSheet extends StatefulWidget {
   final String title;
   final String? explanation;
   final Money? initial;
+
   /// Null takes the localized default.
   final String? confirmLabel;
 
@@ -188,6 +189,7 @@ class _AmountSheetState extends State<AmountSheet> {
     _category = guess;
     _suggested = guess != null;
   }
+
   bool _busy = false;
 
   bool _listening = false;
@@ -263,7 +265,9 @@ class _AmountSheetState extends State<AmountSheet> {
 
   String _voiceMessage(AppLocalizations l) {
     if (_listening) {
-      return _heard!.isEmpty ? l.voiceListening : _heard!;
+      return _heard!.isEmpty
+          ? '${l.voiceListening}\n${l.voiceExample}'
+          : _heard!;
     }
     return switch (_voiceFailure) {
       null => l.voiceHeard(_heard!),
@@ -306,7 +310,8 @@ class _AmountSheetState extends State<AmountSheet> {
     final decimals = Currency.of(widget.currency).exponent;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         padding: const EdgeInsets.fromLTRB(22, 12, 22, 22),
         decoration: BoxDecoration(
@@ -342,7 +347,8 @@ class _AmountSheetState extends State<AmountSheet> {
               const SizedBox(height: 18),
               UpinoCard(
                 color: sunkenColor(context),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
@@ -373,9 +379,7 @@ class _AmountSheetState extends State<AmountSheet> {
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontFeatures: moneyFeatures),
                         decoration: InputDecoration(
-                          hintText: decimals == 0
-                              ? '0'
-                              : '0.${'0' * decimals}',
+                          hintText: decimals == 0 ? '0' : '0.${'0' * decimals}',
                           hintStyle: theme.textTheme.displayMedium
                               ?.copyWith(color: UpinoTokens.textTertiary),
                           border: InputBorder.none,
@@ -389,23 +393,14 @@ class _AmountSheetState extends State<AmountSheet> {
                 ),
               ),
               if (_heard != null) ...[
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    _voiceMessage(AppLocalizations.of(context)),
-                    key: const Key('amount-voice-heard'),
-                    style: theme.textTheme.bodySmall,
-                  ),
+                const SizedBox(height: 10),
+                _VoicePanel(
+                  listening: _listening,
+                  failed: _voiceFailure != null,
+                  message: _voiceMessage(AppLocalizations.of(context)),
+                  onStop: _listen,
+                  onRetry: _listen,
                 ),
-                if (!_listening && _voiceFailure == null)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
-                    child: Text(
-                      AppLocalizations.of(context).voicePrivacy,
-                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
-                    ),
-                  ),
               ],
               if (widget.allowCategory) ...[
                 const SizedBox(height: 14),
@@ -497,7 +492,6 @@ class _AmountSheetState extends State<AmountSheet> {
   }
 }
 
-
 /// Adding a receipt is offered, never required. A spend with no photograph
 /// is still a complete record of the money; the photograph is evidence about
 /// the purchase, which is a separate thing (§5, Purchase Lifecycle).
@@ -523,14 +517,20 @@ class _ReceiptRow extends StatelessWidget {
   final VoidCallback? onVoice;
   final bool listening;
 
+  /// A square beside the two photo buttons: the microphone alone, named
+  /// for screen readers.
   Widget _voiceButton(BuildContext context) => Padding(
         padding: const EdgeInsetsDirectional.only(start: 8),
-        child: _ReceiptButton(
-          key: const Key('amount-voice'),
-          icon: 'mic',
-          label: AppLocalizations.of(context).voiceButton,
-          onTap: onVoice!,
-          active: listening,
+        child: SizedBox.square(
+          dimension: 46,
+          child: _ReceiptButton(
+            key: const Key('amount-voice'),
+            icon: 'mic',
+            label: AppLocalizations.of(context).voiceButton,
+            iconOnly: true,
+            onTap: onVoice!,
+            active: listening,
+          ),
         ),
       );
 
@@ -578,15 +578,15 @@ class _ReceiptRow extends StatelessWidget {
           GestureDetector(
             key: const Key('receipt-clear'),
             onTap: onClear,
-            child: UpinoIcon('close',
+            child: UpinoIcon(
+              'close',
               size: 19,
               color: isDark(context)
                   ? UpinoTokens.darkTextTertiary
                   : UpinoTokens.textTertiary,
             ),
           ),
-          if (onVoice != null)
-            SizedBox(width: 118, child: _voiceButton(context)),
+          if (onVoice != null) _voiceButton(context),
         ],
       );
     }
@@ -610,7 +610,7 @@ class _ReceiptRow extends StatelessWidget {
             onTap: onGallery,
           ),
         ),
-        if (onVoice != null) Expanded(child: _voiceButton(context)),
+        if (onVoice != null) _voiceButton(context),
       ],
     );
   }
@@ -622,6 +622,7 @@ class _ReceiptButton extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.active = false,
+    this.iconOnly = false,
     super.key,
   });
 
@@ -629,51 +630,239 @@ class _ReceiptButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
+  /// Just the icon, the label kept for screen readers.
+  final bool iconOnly;
+
   /// Lit while it is doing its thing, which for the microphone is listening.
   final bool active;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        height: 46,
-        decoration: BoxDecoration(
-          color: active
-              ? (isDark(context)
-                  ? UpinoTokens.darkActionTint
-                  : UpinoTokens.actionTint)
-              : sunkenColor(context),
-          borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            UpinoIcon(
-              icon,
-              size: 18,
-              color: active
-                  ? (isDark(context)
-                      ? UpinoTokens.darkActionPrimary
-                      : UpinoTokens.actionPrimary)
-                  : UpinoTokens.textSecondary,
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyMedium,
-              ),
-            ),
-          ],
+    final color = active
+        ? (isDark(context)
+            ? UpinoTokens.darkActionPrimary
+            : UpinoTokens.actionPrimary)
+        : UpinoTokens.textSecondary;
+    return Semantics(
+      button: true,
+      label: iconOnly ? label : null,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 46,
+          decoration: BoxDecoration(
+            color: active
+                ? (isDark(context)
+                    ? UpinoTokens.darkActionTint
+                    : UpinoTokens.actionTint)
+                : sunkenColor(context),
+            borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+          ),
+          child: iconOnly
+              ? Center(child: UpinoIcon(icon, size: 20, color: color))
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    UpinoIcon(icon, size: 18, color: color),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
   }
+}
+
+/// What the microphone is doing, where the amount it fills is: a pulsing
+/// microphone while it listens, then what it heard or why it heard nothing,
+/// with a way to stop or to try again.
+class _VoicePanel extends StatefulWidget {
+  const _VoicePanel({
+    required this.listening,
+    required this.failed,
+    required this.message,
+    required this.onStop,
+    required this.onRetry,
+  });
+
+  final bool listening;
+  final bool failed;
+  final String message;
+  final VoidCallback onStop;
+  final VoidCallback onRetry;
+
+  @override
+  State<_VoicePanel> createState() => _VoicePanelState();
+}
+
+class _VoicePanelState extends State<_VoicePanel>
+    with SingleTickerProviderStateMixin {
+  late final _pulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1100),
+  );
+
+  void _sync() {
+    final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    if (widget.listening && !still) {
+      if (!_pulse.isAnimating) _pulse.repeat();
+    } else {
+      _pulse
+        ..stop()
+        ..value = 0;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_VoicePanel old) {
+    super.didUpdateWidget(old);
+    _sync();
+  }
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    final action =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final tint = dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint;
+    final critical = dark ? UpinoTokens.darkCritical : UpinoTokens.critical;
+    final accent = widget.failed ? critical : action;
+
+    return Container(
+      key: const Key('amount-voice-panel'),
+      padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 6, 12),
+      decoration: BoxDecoration(
+        color: widget.listening ? tint : sunkenColor(context),
+        borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
+      ),
+      child: Row(
+        children: [
+          SizedBox.square(
+            dimension: 44,
+            child: AnimatedBuilder(
+              animation: _pulse,
+              builder: (context, child) => CustomPaint(
+                painter: _PulsePainter(
+                  t: _pulse.value,
+                  color: accent,
+                  on: widget.listening,
+                ),
+                child: child,
+              ),
+              child: Center(
+                child: Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: accent,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: widget.listening
+                      ? const UpinoIcon('mic', size: 17, color: Colors.white)
+                      : Icon(
+                          widget.failed
+                              ? Icons.priority_high_rounded
+                              : Icons.check_rounded,
+                          size: 19,
+                          color: Colors.white,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.listening
+                      ? l.voiceTitleListening
+                      : widget.failed
+                          ? l.voiceTitleFailed
+                          : l.voiceTitleHeard,
+                  style: theme.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  widget.message,
+                  key: const Key('amount-voice-heard'),
+                  style: theme.textTheme.bodySmall,
+                ),
+                if (!widget.listening && !widget.failed)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      l.voicePrivacy,
+                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          TextButton(
+            key: Key(
+              widget.listening ? 'amount-voice-stop' : 'amount-voice-retry',
+            ),
+            onPressed: widget.listening ? widget.onStop : widget.onRetry,
+            child: Text(widget.listening ? l.voiceStop : l.voiceRetry),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Two rings spreading out from the microphone while it listens.
+class _PulsePainter extends CustomPainter {
+  _PulsePainter({required this.t, required this.color, required this.on});
+
+  final double t;
+  final Color color;
+  final bool on;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (!on) return;
+    final c = size.center(Offset.zero);
+    for (final phase in [0.0, 0.5]) {
+      final p = (t + phase) % 1;
+      canvas.drawCircle(
+        c,
+        17 + p * 5,
+        Paint()..color = color.withValues(alpha: 0.35 * (1 - p)),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_PulsePainter old) =>
+      old.t != t || old.color != color || old.on != on;
 }
 
 /// The words for a category, which belong to the screen and not the state.

@@ -1,14 +1,19 @@
 package com.upino.upino
 
 import android.Manifest
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.speech.RecognizerIntent
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private var pendingSmsPermission: MethodChannel.Result? = null
+    private var pendingSpeech: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -23,6 +28,54 @@ class MainActivity : FlutterActivity() {
                     else -> result.notImplemented()
                 }
             }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "upino/voice")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "recognize" -> recognize(
+                        call.argument<String>("locale"),
+                        call.argument<String>("prompt"),
+                        result,
+                    )
+                    else -> result.notImplemented()
+                }
+            }
+    }
+
+    /**
+     * The phone's own speech screen, for phones whose recogniser will not
+     * take requests from other apps directly. It records with its own
+     * microphone permission and hands back the words, or null.
+     */
+    private fun recognize(locale: String?, prompt: String?, result: MethodChannel.Result) {
+        pendingSpeech?.success(null)
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
+            )
+            if (locale != null) putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale)
+            if (prompt != null) putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        }
+        try {
+            pendingSpeech = result
+            startActivityForResult(intent, SPEECH_REQUEST)
+        } catch (error: ActivityNotFoundException) {
+            pendingSpeech = null
+            result.error("unavailable", error.message, null)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != SPEECH_REQUEST) return
+        val words = if (resultCode == Activity.RESULT_OK) {
+            data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+        } else {
+            null
+        }
+        pendingSpeech?.success(words)
+        pendingSpeech = null
     }
 
     private fun hasSmsPermission() =
@@ -89,5 +142,6 @@ class MainActivity : FlutterActivity() {
 
     private companion object {
         const val SMS_REQUEST = 4201
+        const val SPEECH_REQUEST = 4202
     }
 }

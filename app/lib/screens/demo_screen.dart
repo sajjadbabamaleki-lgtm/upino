@@ -10,6 +10,25 @@ import '../state/app_state.dart';
 import '../state/demo.dart';
 import 'home_screen.dart';
 
+/// Sample data in the reader's language, on [from]'s clock: a copy that is
+/// not the person's plan and is never saved.
+AppState sampleState(BuildContext context, AppState from) {
+  final l = AppLocalizations.of(context);
+  return buildDemo(
+    now: from.now,
+    utcOffset: from.utcOffset,
+    names: DemoNames(
+      goals: [
+        l.demoGoalTrip,
+        l.demoGoalLaptop,
+        l.demoGoalEmergency,
+        l.demoGoalCar,
+      ],
+      bills: [l.demoBillPhone, l.demoBillInternet, l.demoBillGym],
+    ),
+  );
+}
+
 class DemoScreen extends StatefulWidget {
   const DemoScreen({required this.from, super.key});
 
@@ -31,20 +50,7 @@ class _DemoScreenState extends State<DemoScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final l = AppLocalizations.of(context);
-    _demo ??= buildDemo(
-      now: widget.from.now,
-      utcOffset: widget.from.utcOffset,
-      names: DemoNames(
-        goals: [
-          l.demoGoalTrip,
-          l.demoGoalLaptop,
-          l.demoGoalEmergency,
-          l.demoGoalCar,
-        ],
-        bills: [l.demoBillPhone, l.demoBillInternet, l.demoBillGym],
-      ),
-    );
+    _demo ??= sampleState(context, widget.from);
   }
 
   @override

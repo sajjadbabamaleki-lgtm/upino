@@ -2164,4 +2164,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get demoBillGym => 'Gym';
+
+  @override
+  String get goalsSample => 'Sample goals';
+
+  @override
+  String get goalsMine => 'My goals';
+
+  @override
+  String get goalsSampleNote =>
+      'Four sample goals, to show how this page works. They are not yours and change nothing in your plan.';
+
+  @override
+  String get voiceExample => 'For example: “twelve fifty, lunch”';
+
+  @override
+  String get voiceTitleListening => 'Listening';
+
+  @override
+  String get voiceTitleHeard => 'Heard you';
+
+  @override
+  String get voiceTitleFailed => 'Didn\'t catch that';
+
+  @override
+  String get voiceStop => 'Stop';
+
+  @override
+  String get voiceRetry => 'Again';
 }

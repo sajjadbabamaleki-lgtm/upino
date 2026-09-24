@@ -110,6 +110,23 @@ void main() {
     await openSpend(tester, funded());
     final mic = tester.getRect(find.byKey(const Key('amount-voice')));
     final camera = tester.getRect(find.byKey(const Key('receipt-camera')));
+    final gallery = tester.getRect(find.byKey(const Key('receipt-gallery')));
     expect(mic.center.dy, closeTo(camera.center.dy, 1));
+    // The microphone square, the two photo buttons wider and equal.
+    expect(mic.width, closeTo(mic.height, 0.5));
+    expect(camera.width, greaterThan(mic.width * 2));
+    expect(camera.width, closeTo(gallery.width, 0.5));
+  });
+
+  testWidgets('what it heard shows in a panel with a way to try again',
+      (tester) async {
+    VoiceInput.instance =
+        _FakeVoice(const VoiceResult.failed(VoiceFailure.nothingHeard));
+    await openSpend(tester, funded());
+    await tester.tap(find.byKey(const Key('amount-voice')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('amount-voice-panel')), findsOneWidget);
+    expect(find.text("Didn't catch that"), findsOneWidget);
+    expect(find.byKey(const Key('amount-voice-retry')), findsOneWidget);
   });
 }

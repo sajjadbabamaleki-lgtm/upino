@@ -117,6 +117,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-2')));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('goals-show-mine')));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('goals-inflation')));
     await tester.pumpAndSettle();

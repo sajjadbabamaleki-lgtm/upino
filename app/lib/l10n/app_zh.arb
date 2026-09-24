@@ -574,5 +574,14 @@
   "demoGoalCar": "汽车",
   "demoBillPhone": "电话",
   "demoBillInternet": "网络",
-  "demoBillGym": "健身房"
+  "demoBillGym": "健身房",
+  "goalsSample": "示例目标",
+  "goalsMine": "我的目标",
+  "goalsSampleNote": "四个示例目标，展示此页面如何运作。它们不属于你，也不会改变你的计划。",
+  "voiceExample": "例如：“五十块，午饭”",
+  "voiceTitleListening": "正在听",
+  "voiceTitleHeard": "听到了",
+  "voiceTitleFailed": "没听清",
+  "voiceStop": "停止",
+  "voiceRetry": "再说一次"
 }

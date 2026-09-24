@@ -2050,4 +2050,32 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get demoBillGym => 'باشگاه';
+
+  @override
+  String get goalsSample => 'هدف‌های نمونه';
+
+  @override
+  String get goalsMine => 'هدف‌های من';
+
+  @override
+  String get goalsSampleNote =>
+      'چهار هدف نمونه، برای اینکه ببینید این صفحه چطور کار می‌کند. مال شما نیستند و چیزی در برنامه‌تان عوض نمی‌کنند.';
+
+  @override
+  String get voiceExample => 'مثلاً: «دویست و پنجاه هزار تومن ناهار»';
+
+  @override
+  String get voiceTitleListening => 'در حال شنیدن';
+
+  @override
+  String get voiceTitleHeard => 'شنیده شد';
+
+  @override
+  String get voiceTitleFailed => 'متوجه نشدم';
+
+  @override
+  String get voiceStop => 'توقف';
+
+  @override
+  String get voiceRetry => 'دوباره';
 }

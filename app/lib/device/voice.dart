@@ -8,6 +8,7 @@ library;
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -79,12 +80,19 @@ class SpeechVoiceInput implements VoiceInput {
   void _onError(SpeechRecognitionError error) {
     final code = error.errorMsg;
     _failure = switch (code) {
-      'error_network' || 'error_network_timeout' || 'error_server' ||
-      'error_server_disconnected' => VoiceFailure.network,
+      'error_network' ||
+      'error_network_timeout' ||
+      'error_server' ||
+      'error_server_disconnected' =>
+        VoiceFailure.network,
       'error_permission' ||
-      'error_insufficient_permissions' => VoiceFailure.noPermission,
-      'error_language_not_supported' || 'error_language_unavailable' ||
-      'error_recognizer_busy' || 'error_client' => VoiceFailure.unavailable,
+      'error_insufficient_permissions' =>
+        VoiceFailure.noPermission,
+      'error_language_not_supported' ||
+      'error_language_unavailable' ||
+      'error_recognizer_busy' ||
+      'error_client' =>
+        VoiceFailure.unavailable,
       _ => VoiceFailure.nothingHeard,
     };
     _finish();
@@ -101,11 +109,44 @@ class SpeechVoiceInput implements VoiceInput {
     );
   }
 
+  static const _system = MethodChannel('upino/voice');
+
+  /// The phone's own speech screen. Many phones (Xiaomi's among them) keep
+  /// a recogniser other apps cannot drive directly but still open this
+  /// screen, which records with its own permission.
+  Future<VoiceResult> _systemScreen(String localeId, VoiceFailure why) async {
+    try {
+      final words = await _system.invokeMethod<String>('recognize', {
+        'locale': localeId.replaceAll('_', '-'),
+      });
+      final text = words?.trim() ?? '';
+      return text.isEmpty
+          ? const VoiceResult.failed(VoiceFailure.nothingHeard)
+          : VoiceResult.heard(text);
+    } on Object catch (error) {
+      debugPrint('No speech screen: $error');
+      return VoiceResult.failed(why);
+    }
+  }
+
   @override
   Future<VoiceResult> listen({
     required String localeId,
     ValueChanged<String>? onPartial,
   }) async {
+    final direct = await _listenDirect(localeId, onPartial);
+    return switch (direct.failure) {
+      VoiceFailure.unavailable ||
+      VoiceFailure.network =>
+        _systemScreen(localeId, direct.failure!),
+      _ => direct,
+    };
+  }
+
+  Future<VoiceResult> _listenDirect(
+    String localeId,
+    ValueChanged<String>? onPartial,
+  ) async {
     if (!await _init()) {
       final allowed = await _speech.hasPermission;
       return VoiceResult.failed(

@@ -2027,4 +2027,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get demoBillGym => 'النادي';
+
+  @override
+  String get goalsSample => 'أهداف نموذجية';
+
+  @override
+  String get goalsMine => 'أهدافي';
+
+  @override
+  String get goalsSampleNote =>
+      'أربعة أهداف نموذجية لتوضيح طريقة عمل هذه الصفحة. ليست لك ولا تغيّر شيئًا في خطتك.';
+
+  @override
+  String get voiceExample => 'مثلًا: «خمسون ريالًا غداء»';
+
+  @override
+  String get voiceTitleListening => 'جارٍ الاستماع';
+
+  @override
+  String get voiceTitleHeard => 'تم السماع';
+
+  @override
+  String get voiceTitleFailed => 'لم أفهم ذلك';
+
+  @override
+  String get voiceStop => 'إيقاف';
+
+  @override
+  String get voiceRetry => 'مجددًا';
 }

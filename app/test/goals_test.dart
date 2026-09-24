@@ -289,6 +289,9 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('nav-2')));
       await tester.pumpAndSettle();
+      // With fewer than four goals the page opens on samples.
+      await tester.tap(find.byKey(const Key('goals-show-mine')));
+      await tester.pumpAndSettle();
       return state;
     }
 

@@ -3563,6 +3563,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gym'**
   String get demoBillGym;
+
+  /// No description provided for @goalsSample.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample goals'**
+  String get goalsSample;
+
+  /// No description provided for @goalsMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My goals'**
+  String get goalsMine;
+
+  /// No description provided for @goalsSampleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Four sample goals, to show how this page works. They are not yours and change nothing in your plan.'**
+  String get goalsSampleNote;
+
+  /// No description provided for @voiceExample.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: “twelve fifty, lunch”'**
+  String get voiceExample;
+
+  /// No description provided for @voiceTitleListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get voiceTitleListening;
+
+  /// No description provided for @voiceTitleHeard.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard you'**
+  String get voiceTitleHeard;
+
+  /// No description provided for @voiceTitleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t catch that'**
+  String get voiceTitleFailed;
+
+  /// No description provided for @voiceStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get voiceStop;
+
+  /// No description provided for @voiceRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get voiceRetry;
 }
 
 class _AppLocalizationsDelegate

@@ -1970,4 +1970,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get demoBillGym => '健身房';
+
+  @override
+  String get goalsSample => '示例目标';
+
+  @override
+  String get goalsMine => '我的目标';
+
+  @override
+  String get goalsSampleNote => '四个示例目标，展示此页面如何运作。它们不属于你，也不会改变你的计划。';
+
+  @override
+  String get voiceExample => '例如：“五十块，午饭”';
+
+  @override
+  String get voiceTitleListening => '正在听';
+
+  @override
+  String get voiceTitleHeard => '听到了';
+
+  @override
+  String get voiceTitleFailed => '没听清';
+
+  @override
+  String get voiceStop => '停止';
+
+  @override
+  String get voiceRetry => '再说一次';
 }

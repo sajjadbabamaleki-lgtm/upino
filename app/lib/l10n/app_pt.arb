@@ -574,5 +574,14 @@
   "demoGoalCar": "Carro",
   "demoBillPhone": "Telefone",
   "demoBillInternet": "Internet",
-  "demoBillGym": "Academia"
+  "demoBillGym": "Academia",
+  "goalsSample": "Metas de exemplo",
+  "goalsMine": "Minhas metas",
+  "goalsSampleNote": "Quatro metas de exemplo para mostrar como esta página funciona. Não são suas e não mudam nada no seu plano.",
+  "voiceExample": "Por exemplo: “doze e cinquenta, almoço”",
+  "voiceTitleListening": "Ouvindo",
+  "voiceTitleHeard": "Entendido",
+  "voiceTitleFailed": "Não entendi",
+  "voiceStop": "Parar",
+  "voiceRetry": "De novo"
 }
