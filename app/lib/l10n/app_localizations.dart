@@ -2028,16 +2028,10 @@ abstract class AppLocalizations {
   /// **'What you have does not reach this period\'s share of the goal.'**
   String get alertGoalBehindDetail;
 
-  /// No description provided for @chatIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'Ask me about your money: what you can spend, your next pay, where it went. Or type a price to see what buying it would do. Every figure comes from your plan.'**
-  String get chatIntro;
-
   /// No description provided for @chatHint.
   ///
   /// In en, this message translates to:
-  /// **'Ask, or type a price'**
+  /// **'Ask me anything, or type a price'**
   String get chatHint;
 
   /// No description provided for @chatSuggestSafe.
@@ -2073,7 +2067,7 @@ abstract class AppLocalizations {
   /// No description provided for @chatSafeStale.
   ///
   /// In en, this message translates to:
-  /// **'Your balance needs confirming, so treat this as an estimate.'**
+  /// **'One thing: your balance needs confirming, so treat this as an estimate.'**
   String get chatSafeStale;
 
   /// No description provided for @chatPay.
@@ -2085,38 +2079,194 @@ abstract class AppLocalizations {
   /// No description provided for @chatPayNone.
   ///
   /// In en, this message translates to:
-  /// **'No pay is expected yet. Add it on Plan.'**
+  /// **'I don\'t know your next pay yet. Add it on Plan and I\'ll keep an eye on it.'**
   String get chatPayNone;
 
   /// No description provided for @chatWhere.
   ///
   /// In en, this message translates to:
-  /// **'In the last 30 days:'**
+  /// **'Here\'s where it went in the last 30 days:'**
   String get chatWhere;
 
   /// No description provided for @chatWhereNone.
   ///
   /// In en, this message translates to:
-  /// **'No spends recorded in the last 30 days yet.'**
+  /// **'No spends in the last 30 days. Either it\'s been a quiet month or they haven\'t been recorded.'**
   String get chatWhereNone;
 
   /// No description provided for @chatAside.
   ///
   /// In en, this message translates to:
-  /// **'{amount} is set aside before anything is spendable:'**
+  /// **'{amount} is set aside before anything counts as spendable:'**
   String chatAside(String amount);
 
   /// No description provided for @chatPurchase.
   ///
   /// In en, this message translates to:
-  /// **'If it costs {amount}, here is what each choice leaves you:'**
+  /// **'Let\'s see what {amount} would do.'**
   String chatPurchase(String amount);
 
   /// No description provided for @chatHelp.
   ///
   /// In en, this message translates to:
-  /// **'I can tell you how much you can spend, when your next pay is, where your money went and what is set aside. Or type a price, like “a phone for 20 million”, to see what buying it would do.'**
+  /// **'Hmm, I didn\'t quite get that. I can tell you how much you can spend, when your pay comes, where your money went, what\'s set aside, or how to spend less. Or type a price, like “a phone for 20 million”, and I\'ll show you what buying it would do.'**
   String get chatHelp;
+
+  /// No description provided for @chatHelloNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! I\'m Upino. You\'re new here, so I only know the basics so far: your balance, your pay and what you set aside. That\'s already enough to tell you what you can spend and what a purchase would do. Keep recording your spends and after about a season I\'ll know your habits well enough to be your own money adviser.'**
+  String get chatHelloNew;
+
+  /// No description provided for @chatHelloLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back! I\'ve been learning from {days, plural, =1{1 day} other{{days} days}} and {spends, plural, =1{1 spend} other{{spends} spends}} so far. About {remaining} more days and I\'ll have a full season to go on.'**
+  String chatHelloLearning(int days, int spends, int remaining);
+
+  /// No description provided for @chatHelloFamiliar.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back! I\'ve seen {days} days of your money now, so ask me anything, including how to spend less.'**
+  String chatHelloFamiliar(int days);
+
+  /// No description provided for @chatHelloAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'By the way, {count, plural, =1{one thing needs you} other{{count} things need you}}: it\'s under the bell.'**
+  String chatHelloAlerts(int count);
+
+  /// No description provided for @chatPurchaseFits.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying it today keeps everything you must pay covered, with {left} still spare.'**
+  String chatPurchaseFits(String left);
+
+  /// No description provided for @chatPurchaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying it today would leave something you must pay short. If you wait until {date}, everything is covered.'**
+  String chatPurchaseWait(String date);
+
+  /// No description provided for @chatPurchaseStillShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Heads up: even after your pay on {date}, this would leave something you must pay short.'**
+  String chatPurchaseStillShort(String date);
+
+  /// No description provided for @chatPurchaseShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Buying it today would leave something you must pay short.'**
+  String get chatPurchaseShort;
+
+  /// No description provided for @chatSafePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread over {days} days, that\'s about {perDay} a day.'**
+  String chatSafePerDay(String perDay, int days);
+
+  /// No description provided for @chatSafeNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Right now there\'s nothing spare until {date}: everything you have is already promised to something you must pay.'**
+  String chatSafeNothing(String date);
+
+  /// No description provided for @chatPayIn.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s {days, plural, =1{in a day} other{in {days} days}}.'**
+  String chatPayIn(int days);
+
+  /// No description provided for @chatPayLate.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s late, so it isn\'t counted until you confirm it has arrived.'**
+  String get chatPayLate;
+
+  /// No description provided for @chatPayRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan counts on the lower end, so a good month is a bonus, not a hole.'**
+  String get chatPayRange;
+
+  /// No description provided for @chatWhereSoFar.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve only seen {days, plural, =1{1 day} other{{days} days}} so far, so this is a first look:'**
+  String chatWhereSoFar(int days);
+
+  /// No description provided for @chatWhereTop.
+  ///
+  /// In en, this message translates to:
+  /// **'{category} is the biggest: {share}% of it.'**
+  String chatWhereTop(String category, int share);
+
+  /// No description provided for @chatWhereTooSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s a bit early for that: I\'ve barely seen any spending yet. Record a few and ask me again next week.'**
+  String get chatWhereTooSoon;
+
+  /// No description provided for @chatAdviceTooSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'d love to help with that, but honestly I don\'t know your spending well enough yet, and advice without it would just be a guess. Record your spends (sorting them helps a lot) and ask me again in a few weeks.'**
+  String get chatAdviceTooSoon;
+
+  /// No description provided for @chatAdviceBiggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Your biggest spend in the last 30 days was {category}, at {amount}. Trimming it by a tenth would free about {tenth} a month.'**
+  String chatAdviceBiggest(String category, String amount, String tenth);
+
+  /// No description provided for @chatAdviceSort.
+  ///
+  /// In en, this message translates to:
+  /// **'I can see what you spend but not what it\'s on. Give your spends a category when you record them and I can tell you where to trim.'**
+  String get chatAdviceSort;
+
+  /// No description provided for @chatAdviceMore.
+  ///
+  /// In en, this message translates to:
+  /// **'You spent {amount} more than the month before.'**
+  String chatAdviceMore(String amount);
+
+  /// No description provided for @chatAdviceLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice: that\'s {amount} less than the month before.'**
+  String chatAdviceLess(String amount);
+
+  /// No description provided for @chatAdviceLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m still learning your habits, so take this as a first hint rather than the full picture.'**
+  String get chatAdviceLearning;
+
+  /// No description provided for @chatSmallHello.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! What would you like to know about your money?'**
+  String get chatSmallHello;
+
+  /// No description provided for @chatSmallThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Any time! I\'m here whenever you\'re about to spend.'**
+  String get chatSmallThanks;
+
+  /// No description provided for @chatSmallWho.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m Upino\'s assistant. I only know what\'s in your plan, and every number I give comes straight from it; nothing you tell me leaves this phone. I won\'t tell you yes or no, but I\'ll show you what each choice would leave you.'**
+  String get chatSmallWho;
+
+  /// No description provided for @chatSuggestAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'How can I spend less?'**
+  String get chatSuggestAdvice;
 }
 
 class _AppLocalizationsDelegate

@@ -1091,11 +1091,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get alertGoalBehindDetail => 'Eldeki para bu dönemin payına yetmiyor.';
 
   @override
-  String get chatIntro =>
-      'Paranızla ilgili sorun: ne kadar harcayabilirsiniz, sonraki maaş, para nereye gitti. Ya da bir fiyat yazıp almanın etkisini görün. Her rakam planınızdan gelir.';
-
-  @override
-  String get chatHint => 'Sorun ya da bir fiyat yazın';
+  String get chatHint => 'Ne istersen sor ya da fiyat yaz';
 
   @override
   String get chatSuggestSafe => 'Ne kadar harcayabilirim?';
@@ -1111,38 +1107,155 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String chatSafe(String amount, String date) {
-    return '$date tarihine kadar $amount harcayabilirsiniz.';
+    return '$date tarihine kadar $amount harcayabilirsin.';
   }
 
   @override
   String get chatSafeStale =>
-      'Bakiyenizin onaylanması gerekiyor; bunu tahmin olarak görün.';
+      'Bir şey: bakiyenin onaylanması gerekiyor, bunu tahmin olarak gör.';
 
   @override
   String chatPay(String amount, String date) {
-    return 'Sonraki maaşınız $amount, $date tarihinde bekleniyor.';
+    return 'Sonraki maaşın $amount, $date tarihinde bekleniyor.';
   }
 
   @override
-  String get chatPayNone => 'Henüz beklenen maaş yok. Plan\'dan ekleyin.';
+  String get chatPayNone =>
+      'Sonraki maaşını henüz bilmiyorum. Plan\'a ekle, takip edeyim.';
 
   @override
-  String get chatWhere => 'Son 30 günde:';
+  String get chatWhere => 'Son 30 günde para buraya gitti:';
 
   @override
-  String get chatWhereNone => 'Son 30 günde henüz harcama yok.';
+  String get chatWhereNone =>
+      'Son 30 günde harcama yok. Ya sakin bir aydı ya da kaydedilmedi.';
 
   @override
   String chatAside(String amount) {
-    return 'Harcamadan önce $amount ayrılır:';
+    return 'Harcanabilir sayılmadan önce $amount ayrıldı:';
   }
 
   @override
   String chatPurchase(String amount) {
-    return '$amount tutarındaysa, her seçenek size şunu bırakır:';
+    return 'Bakalım $amount ne yapar.';
   }
 
   @override
   String get chatHelp =>
-      'Ne kadar harcayabileceğinizi, maaşın ne zaman geleceğini, paranın nereye gittiğini ve ne ayrıldığını söyleyebilirim. Ya da “20 bin liralık telefon” gibi bir fiyat yazın.';
+      'Hmm, tam anlayamadım. Ne kadar harcayabileceğini, maaşın ne zaman geleceğini, paranın nereye gittiğini, ne ayrıldığını ya da nasıl daha az harcayacağını söyleyebilirim. Ya da bir fiyat yaz, almanın etkisini göstereyim.';
+
+  @override
+  String get chatHelloNew =>
+      'Merhaba! Ben Upino. Yenisin, o yüzden şimdilik sadece temel şeyleri biliyorum: bakiyeni, maaşını ve ayırdıklarını. Bu kadarı bile ne kadar harcayabileceğini ve bir alışverişin etkisini söylemeye yeter. Harcamalarını kaydetmeye devam et; yaklaşık bir mevsim sonra alışkanlıklarını kişisel danışmanın olacak kadar tanırım.';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return 'Tekrar hoş geldin! Şimdiye kadar $days gün ve $spends harcamadan öğrendim. Yaklaşık $remaining gün sonra elimde tam bir mevsim olacak.';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return 'Tekrar hoş geldin! Paranın $days gününü gördüm; ne istersen sor, daha az harcamayı bile.';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return 'Bu arada, seni bekleyen $count şey var: zilin altında.';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return 'Bugün alırsan ödemen gereken her şey karşılanır ve hâlâ $left artar.';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return 'Bugün alırsan ödemen gereken bir şey açıkta kalır. $date tarihine kadar beklersen her şey karşılanır.';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return 'Dikkat: $date maaşından sonra bile ödemen gereken bir şey açıkta kalır.';
+  }
+
+  @override
+  String get chatPurchaseShort =>
+      'Bugün alırsan ödemen gereken bir şey açıkta kalır.';
+
+  @override
+  String chatSafePerDay(String perDay, int days) {
+    return '$days güne yayarsan günde yaklaşık $perDay eder.';
+  }
+
+  @override
+  String chatSafeNothing(String date) {
+    return 'Şu an $date tarihine kadar boşta para yok: elindeki her şey ödemelere ayrılmış.';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return 'Yani $days gün sonra.';
+  }
+
+  @override
+  String get chatPayLate => 'Gecikti, geldiğini onaylayana kadar sayılmıyor.';
+
+  @override
+  String get chatPayRange =>
+      'Plan alt sınıra göre hesaplar; iyi bir ay ikramiyedir, açık değil.';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return 'Şimdiye kadar sadece $days gün gördüm, yani bu ilk bakış:';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return 'En büyüğü $category: toplamın %$share\'i.';
+  }
+
+  @override
+  String get chatWhereTooSoon =>
+      'Bunun için biraz erken: henüz neredeyse hiç harcama görmedim. Birkaç tane kaydet, gelecek hafta tekrar sor.';
+
+  @override
+  String get chatAdviceTooSoon =>
+      'Yardım etmeyi çok isterim ama açıkçası harcamalarını henüz yeterince tanımıyorum; onsuz tavsiye sadece tahmin olur. Harcamalarını kaydet (kategori vermek çok işe yarar), birkaç hafta sonra tekrar sor.';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return 'Son 30 günde en büyük harcaman $category: $amount. Onda birini kısarsan ayda yaklaşık $tenth açılır.';
+  }
+
+  @override
+  String get chatAdviceSort =>
+      'Ne kadar harcadığını görüyorum ama neye harcadığını değil. Kaydederken kategori ver, nereden kısacağını söyleyeyim.';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return 'Önceki aya göre $amount fazla harcadın.';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return 'Güzel: önceki aydan $amount az.';
+  }
+
+  @override
+  String get chatAdviceLearning =>
+      'Alışkanlıklarını hâlâ öğreniyorum, bunu tam tablo değil ilk ipucu olarak gör.';
+
+  @override
+  String get chatSmallHello => 'Merhaba! Paranla ilgili ne öğrenmek istersin?';
+
+  @override
+  String get chatSmallThanks =>
+      'Ne zaman istersen! Harcamadan önce hep buradayım.';
+
+  @override
+  String get chatSmallWho =>
+      'Ben Upino\'nun asistanıyım. Sadece planındakileri bilirim ve verdiğim her rakam doğrudan oradan gelir; hiçbir şey bu telefondan çıkmaz. Evet ya da hayır demem ama her seçeneğin sana ne bırakacağını gösteririm.';
+
+  @override
+  String get chatSuggestAdvice => 'Nasıl daha az harcarım?';
 }

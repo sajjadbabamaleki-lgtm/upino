@@ -1097,11 +1097,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Имеющихся денег не хватает на долю этого периода.';
 
   @override
-  String get chatIntro =>
-      'Спросите о деньгах: сколько можно тратить, когда зарплата, куда ушли деньги. Или введите цену и посмотрите, что будет после покупки. Все цифры — из вашего плана.';
-
-  @override
-  String get chatHint => 'Спросите или введите цену';
+  String get chatHint => 'Спросите что угодно или введите цену';
 
   @override
   String get chatSuggestSafe => 'Сколько можно потратить?';
@@ -1121,7 +1117,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get chatSafeStale => 'Баланс нужно подтвердить, так что это оценка.';
+  String get chatSafeStale =>
+      'Одно но: баланс нужно подтвердить, так что это оценка.';
 
   @override
   String chatPay(String amount, String date) {
@@ -1129,25 +1126,143 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get chatPayNone => 'Зарплата пока не указана. Добавьте её в Плане.';
+  String get chatPayNone =>
+      'Я пока не знаю следующую зарплату. Добавьте её в Плане, и я буду следить.';
 
   @override
-  String get chatWhere => 'За последние 30 дней:';
+  String get chatWhere => 'Вот куда ушли деньги за последние 30 дней:';
 
   @override
-  String get chatWhereNone => 'За последние 30 дней трат пока нет.';
+  String get chatWhereNone =>
+      'За 30 дней трат нет. Либо месяц был тихим, либо их не записали.';
 
   @override
   String chatAside(String amount) {
-    return 'До любых трат отложено $amount:';
+    return 'Прежде чем что-то можно тратить, отложено $amount:';
   }
 
   @override
   String chatPurchase(String amount) {
-    return 'Если это стоит $amount, вот что оставит каждый вариант:';
+    return 'Посмотрим, что изменят $amount.';
   }
 
   @override
   String get chatHelp =>
-      'Я могу сказать, сколько можно тратить, когда зарплата, куда ушли деньги и что отложено. Или введите цену, например «телефон за 50 тысяч».';
+      'Хм, не совсем понял. Я могу сказать, сколько можно тратить, когда зарплата, куда ушли деньги, что отложено или как тратить меньше. Или введите цену — покажу, что изменит покупка.';
+
+  @override
+  String get chatHelloNew =>
+      'Привет! Я Upino. Вы здесь недавно, поэтому пока я знаю только основное: баланс, зарплату и то, что отложено. Этого уже хватает, чтобы сказать, сколько можно тратить и что будет после покупки. Записывайте траты, и примерно через сезон я узнаю ваши привычки достаточно, чтобы стать вашим личным советником.';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return 'С возвращением! Я уже учусь на $days днях и $spends тратах. Ещё примерно $remaining дней — и у меня будет полный сезон.';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return 'С возвращением! Я видел уже $days дней ваших финансов — спрашивайте что угодно, даже как тратить меньше.';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return 'Кстати, $count дел ждут вас — они под колокольчиком.';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return 'Если купить сегодня, все обязательные платежи покрыты, и останется $left.';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return 'Покупка сегодня оставит обязательный платёж без покрытия. Если подождать до $date, всё будет покрыто.';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return 'Внимание: даже после зарплаты $date обязательный платёж останется без покрытия.';
+  }
+
+  @override
+  String get chatPurchaseShort =>
+      'Покупка сегодня оставит обязательный платёж без покрытия.';
+
+  @override
+  String chatSafePerDay(String perDay, int days) {
+    return 'Если растянуть на $days дней, это около $perDay в день.';
+  }
+
+  @override
+  String chatSafeNothing(String date) {
+    return 'Сейчас до $date ничего свободного нет: всё уже отложено на обязательные платежи.';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return 'То есть через $days дн.';
+  }
+
+  @override
+  String get chatPayLate =>
+      'Она задерживается, поэтому не учитывается, пока вы не подтвердите поступление.';
+
+  @override
+  String get chatPayRange =>
+      'План рассчитан на нижнюю границу, так что хороший месяц — это бонус, а не дыра.';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return 'Я видел пока только $days дн., так что это первый взгляд:';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return 'Больше всего — $category: $share% от всего.';
+  }
+
+  @override
+  String get chatWhereTooSoon =>
+      'Пока рановато: я почти не видел трат. Запишите несколько и спросите через неделю.';
+
+  @override
+  String get chatAdviceTooSoon =>
+      'Я бы с радостью помог, но честно — я пока плохо знаю ваши траты, а совет без этого был бы догадкой. Записывайте траты (категории очень помогают) и спросите через пару недель.';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return 'Больше всего за 30 дней ушло на «$category» — $amount. Если сократить на десятую часть, освободится около $tenth в месяц.';
+  }
+
+  @override
+  String get chatAdviceSort =>
+      'Я вижу, сколько вы тратите, но не на что. Указывайте категорию при записи — и я подскажу, где сократить.';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return 'Это на $amount больше, чем месяцем раньше.';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return 'Отлично: это на $amount меньше, чем месяцем раньше.';
+  }
+
+  @override
+  String get chatAdviceLearning =>
+      'Я ещё изучаю ваши привычки, так что это первая подсказка, а не полная картина.';
+
+  @override
+  String get chatSmallHello => 'Привет! Что хотите узнать о своих деньгах?';
+
+  @override
+  String get chatSmallThanks =>
+      'Всегда пожалуйста! Я рядом, когда соберётесь потратить.';
+
+  @override
+  String get chatSmallWho =>
+      'Я помощник Upino. Я знаю только ваш план, и каждая цифра — прямо из него; ничего не покидает телефон. Я не скажу «да» или «нет», но покажу, что оставит каждый вариант.';
+
+  @override
+  String get chatSuggestAdvice => 'Как тратить меньше?';
 }

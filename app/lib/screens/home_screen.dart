@@ -152,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final justRecorded = state.lastRecordedExpense;
@@ -226,19 +225,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   key: const PageStorageKey('tab-home'),
                   padding: contentPadding,
                   children: revealed([
-                    // The page's name is in the capsule above; what stays here
-                    // is the line that says what the figure covers.
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
-                      child: Text(
-                        l.homeUntilTotal(
-                          formatDate(context, snapshot.decisionHorizonEnd),
-                          snapshot.trustedAllocatableLiquidity.display(),
-                        ),
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-
                     StsHero(
                       snapshot: snapshot,
                       onConfirmBalance: _confirmBalance,

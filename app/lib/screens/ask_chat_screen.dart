@@ -127,6 +127,7 @@ class _AskChatScreenState extends State<AskChatScreen> {
       (SuggestedQuestion.nextPay, l.chatSuggestPay),
       (SuggestedQuestion.whereItWent, l.chatSuggestWhere),
       (SuggestedQuestion.setAside, l.chatSuggestAside),
+      (SuggestedQuestion.advice, l.chatSuggestAdvice),
     ];
 
     return AnimatedBuilder(
@@ -140,10 +141,8 @@ class _AskChatScreenState extends State<AskChatScreen> {
                 controller: _scroll,
                 padding: widget.padding.copyWith(bottom: 12),
                 children: [
-                  _Bubble(
-                    fromPlan: true,
-                    child: Text(l.chatIntro, style: theme.textTheme.bodyMedium),
-                  ),
+                  // Recomputed each time, so it grows with what it knows.
+                  _AnswerView(answer: greet(widget.state)),
                   for (final e in entries) ...[
                     const SizedBox(height: 10),
                     _Bubble(
@@ -291,6 +290,11 @@ class _AnswerView extends StatelessWidget {
     final body = theme.textTheme.bodyMedium;
     final money = body?.copyWith(fontFeatures: moneyFeatures);
 
+    Widget say(Key key, List<String> parts) => _Bubble(
+          fromPlan: true,
+          child: Text(parts.join(' '), key: key, style: body),
+        );
+
     Widget rows(List<(String, String)> lines) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -299,7 +303,9 @@ class _AnswerView extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 6),
                 child: Row(
                   children: [
-                    Expanded(child: Text(label, style: theme.textTheme.bodySmall)),
+                    Expanded(
+                      child: Text(label, style: theme.textTheme.bodySmall),
+                    ),
                     Text(value, style: money),
                   ],
                 ),
@@ -308,71 +314,117 @@ class _AnswerView extends StatelessWidget {
         );
 
     return switch (answer) {
+      GreetingAnswer(
+        :final acquaintance,
+        :final days,
+        :final spends,
+        :final alerts,
+        :final daysToSeason,
+      ) =>
+        say(const Key('chat-greeting'), [
+          switch (acquaintance) {
+            Acquaintance.newcomer => l.chatHelloNew,
+            Acquaintance.learning =>
+              l.chatHelloLearning(days, spends, daysToSeason),
+            Acquaintance.familiar => l.chatHelloFamiliar(days),
+          },
+          if (alerts > 0) l.chatHelloAlerts(alerts),
+        ]),
       PurchaseAnswer(:final scenarios) => Column(
           key: const Key('chat-answer-purchase'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _Bubble(
-              fromPlan: true,
-              child: Text(
-                l.chatPurchase(scenarios.amount.display()),
-                style: body,
-              ),
-            ),
+            say(const Key('chat-purchase-summary'), [
+              l.chatPurchase(scenarios.amount.display()),
+              if (!scenarios.breaksNow)
+                l.chatPurchaseFits(scenarios.buyNow.safeToSpendNow.display())
+              else if (scenarios.waitingHelps)
+                l.chatPurchaseWait(formatDate(context, scenarios.incomeDate!))
+              else if (scenarios.buyAfterIncome != null)
+                l.chatPurchaseStillShort(
+                  formatDate(context, scenarios.incomeDate!),
+                )
+              else
+                l.chatPurchaseShort,
+            ]),
             const SizedBox(height: 10),
             // The cards carry the "no verdict" line themselves.
             PurchaseScenarios(result: scenarios),
           ],
         ),
-      SafeToSpendAnswer(:final amount, :final until, :final trusted) =>
-        _Bubble(
-          fromPlan: true,
-          child: Text(
-            [
-              l.chatSafe(amount.display(), formatDate(context, until)),
-              if (!trusted) l.chatSafeStale,
-            ].join(' '),
-            key: const Key('chat-answer-safe'),
-            style: body,
-          ),
+      SafeToSpendAnswer(
+        :final amount,
+        :final until,
+        :final days,
+        :final perDay,
+        :final trusted,
+      ) =>
+        say(const Key('chat-answer-safe'), [
+          if (amount.isZero)
+            l.chatSafeNothing(formatDate(context, until))
+          else ...[
+            l.chatSafe(amount.display(), formatDate(context, until)),
+            if (days > 1) l.chatSafePerDay(perDay.display(), days),
+          ],
+          if (!trusted) l.chatSafeStale,
+        ]),
+      NextPayAnswer(:final income, :final inDays) => say(
+          const Key('chat-answer-pay'),
+          [
+            if (income == null)
+              l.chatPayNone
+            else ...[
+              l.chatPay(
+                income.isRange
+                    ? l.incomeRange(
+                        income.expectedAmount.display(),
+                        income.expectedUpperAmount!.display(),
+                      )
+                    : income.expectedAmount.display(),
+                formatDate(context, income.expectedDate),
+              ),
+              if (inDays != null && inDays > 0) l.chatPayIn(inDays),
+              if (inDays != null && inDays < 0) l.chatPayLate,
+              if (income.isRange) l.chatPayRange,
+            ],
+          ],
         ),
-      NextPayAnswer(:final income) => _Bubble(
-          fromPlan: true,
-          child: Text(
-            income == null
-                ? l.chatPayNone
-                : l.chatPay(
-                    income.isRange
-                        ? l.incomeRange(
-                            income.expectedAmount.display(),
-                            income.expectedUpperAmount!.display(),
-                          )
-                        : income.expectedAmount.display(),
-                    formatDate(context, income.expectedDate),
-                  ),
-            key: const Key('chat-answer-pay'),
-            style: body,
-          ),
-        ),
-      WhereItWentAnswer(:final rows) when rows.isEmpty => _Bubble(
-          fromPlan: true,
-          child: Text(
-            l.chatWhereNone,
-            key: const Key('chat-answer-where'),
-            style: body,
-          ),
-        ),
-      WhereItWentAnswer(rows: final list) => _Bubble(
+      WhereItWentAnswer(:final rows, :final daysSeen) when rows.isEmpty =>
+        say(const Key('chat-answer-where'), [
+          if (daysSeen < 7) l.chatWhereTooSoon else l.chatWhereNone,
+        ]),
+      final WhereItWentAnswer where => _Bubble(
           fromPlan: true,
           child: Column(
             key: const Key('chat-answer-where'),
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(l.chatWhere, style: body),
+              Text(
+                [
+                  if (where.daysSeen < 30)
+                    l.chatWhereSoFar(where.daysSeen)
+                  else
+                    l.chatWhere,
+                ].join(' '),
+                style: body,
+              ),
               rows([
-                for (final r in list)
+                for (final r in where.rows)
                   (categoryLabel(l, r.category), r.total.display()),
               ]),
+              if (where.topShare != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  l.chatWhereTop(
+                    categoryLabel(
+                      l,
+                      where.rows.firstWhere((r) => r.category != null).category,
+                    ),
+                    where.topShare!,
+                  ),
+                  style: body,
+                ),
+              ],
             ],
           ),
         ),
@@ -390,14 +442,44 @@ class _AnswerView extends StatelessWidget {
             ],
           ),
         ),
-      HelpAnswer() => _Bubble(
-          fromPlan: true,
-          child: Text(
-            l.chatHelp,
-            key: const Key('chat-answer-help'),
-            style: body,
-          ),
+      final AdviceAnswer a => say(
+          const Key('chat-answer-advice'),
+          [
+            if (a.acquaintance == Acquaintance.newcomer)
+              l.chatAdviceTooSoon
+            else ...[
+              if (a.biggest != null)
+                l.chatAdviceBiggest(
+                  categoryLabel(l, a.biggest),
+                  a.biggestTotal!.display(),
+                  a.tenPercent!.display(),
+                )
+              else
+                l.chatAdviceSort,
+              if (a.previousTotal != null && a.lastTotal != null)
+                a.lastTotal! > a.previousTotal!
+                    ? l.chatAdviceMore(
+                        (a.lastTotal! - a.previousTotal!).display(),
+                      )
+                    : l.chatAdviceLess(
+                        (a.previousTotal! - a.lastTotal!).display(),
+                      ),
+              if (a.acquaintance == Acquaintance.learning)
+                l.chatAdviceLearning,
+            ],
+          ],
         ),
+      SmallTalkAnswer(:final kind) => say(
+          const Key('chat-answer-smalltalk'),
+          [
+            switch (kind) {
+              SmallTalk.hello => l.chatSmallHello,
+              SmallTalk.thanks => l.chatSmallThanks,
+              SmallTalk.whoAreYou => l.chatSmallWho,
+            },
+          ],
+        ),
+      HelpAnswer() => say(const Key('chat-answer-help'), [l.chatHelp]),
     };
   }
 }

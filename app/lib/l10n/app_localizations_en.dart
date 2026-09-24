@@ -1098,11 +1098,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'What you have does not reach this period\'s share of the goal.';
 
   @override
-  String get chatIntro =>
-      'Ask me about your money: what you can spend, your next pay, where it went. Or type a price to see what buying it would do. Every figure comes from your plan.';
-
-  @override
-  String get chatHint => 'Ask, or type a price';
+  String get chatHint => 'Ask me anything, or type a price';
 
   @override
   String get chatSuggestSafe => 'How much can I spend?';
@@ -1123,7 +1119,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSafeStale =>
-      'Your balance needs confirming, so treat this as an estimate.';
+      'One thing: your balance needs confirming, so treat this as an estimate.';
 
   @override
   String chatPay(String amount, String date) {
@@ -1131,25 +1127,174 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get chatPayNone => 'No pay is expected yet. Add it on Plan.';
+  String get chatPayNone =>
+      'I don\'t know your next pay yet. Add it on Plan and I\'ll keep an eye on it.';
 
   @override
-  String get chatWhere => 'In the last 30 days:';
+  String get chatWhere => 'Here\'s where it went in the last 30 days:';
 
   @override
-  String get chatWhereNone => 'No spends recorded in the last 30 days yet.';
+  String get chatWhereNone =>
+      'No spends in the last 30 days. Either it\'s been a quiet month or they haven\'t been recorded.';
 
   @override
   String chatAside(String amount) {
-    return '$amount is set aside before anything is spendable:';
+    return '$amount is set aside before anything counts as spendable:';
   }
 
   @override
   String chatPurchase(String amount) {
-    return 'If it costs $amount, here is what each choice leaves you:';
+    return 'Let\'s see what $amount would do.';
   }
 
   @override
   String get chatHelp =>
-      'I can tell you how much you can spend, when your next pay is, where your money went and what is set aside. Or type a price, like “a phone for 20 million”, to see what buying it would do.';
+      'Hmm, I didn\'t quite get that. I can tell you how much you can spend, when your pay comes, where your money went, what\'s set aside, or how to spend less. Or type a price, like “a phone for 20 million”, and I\'ll show you what buying it would do.';
+
+  @override
+  String get chatHelloNew =>
+      'Hi! I\'m Upino. You\'re new here, so I only know the basics so far: your balance, your pay and what you set aside. That\'s already enough to tell you what you can spend and what a purchase would do. Keep recording your spends and after about a season I\'ll know your habits well enough to be your own money adviser.';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      spends,
+      locale: localeName,
+      other: '$spends spends',
+      one: '1 spend',
+    );
+    return 'Welcome back! I\'ve been learning from $_temp0 and $_temp1 so far. About $remaining more days and I\'ll have a full season to go on.';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return 'Welcome back! I\'ve seen $days days of your money now, so ask me anything, including how to spend less.';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count things need you',
+      one: 'one thing needs you',
+    );
+    return 'By the way, $_temp0: it\'s under the bell.';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return 'Buying it today keeps everything you must pay covered, with $left still spare.';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return 'Buying it today would leave something you must pay short. If you wait until $date, everything is covered.';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return 'Heads up: even after your pay on $date, this would leave something you must pay short.';
+  }
+
+  @override
+  String get chatPurchaseShort =>
+      'Buying it today would leave something you must pay short.';
+
+  @override
+  String chatSafePerDay(String perDay, int days) {
+    return 'Spread over $days days, that\'s about $perDay a day.';
+  }
+
+  @override
+  String chatSafeNothing(String date) {
+    return 'Right now there\'s nothing spare until $date: everything you have is already promised to something you must pay.';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'in $days days',
+      one: 'in a day',
+    );
+    return 'That\'s $_temp0.';
+  }
+
+  @override
+  String get chatPayLate =>
+      'It\'s late, so it isn\'t counted until you confirm it has arrived.';
+
+  @override
+  String get chatPayRange =>
+      'Your plan counts on the lower end, so a good month is a bonus, not a hole.';
+
+  @override
+  String chatWhereSoFar(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'I\'ve only seen $_temp0 so far, so this is a first look:';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return '$category is the biggest: $share% of it.';
+  }
+
+  @override
+  String get chatWhereTooSoon =>
+      'It\'s a bit early for that: I\'ve barely seen any spending yet. Record a few and ask me again next week.';
+
+  @override
+  String get chatAdviceTooSoon =>
+      'I\'d love to help with that, but honestly I don\'t know your spending well enough yet, and advice without it would just be a guess. Record your spends (sorting them helps a lot) and ask me again in a few weeks.';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return 'Your biggest spend in the last 30 days was $category, at $amount. Trimming it by a tenth would free about $tenth a month.';
+  }
+
+  @override
+  String get chatAdviceSort =>
+      'I can see what you spend but not what it\'s on. Give your spends a category when you record them and I can tell you where to trim.';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return 'You spent $amount more than the month before.';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return 'Nice: that\'s $amount less than the month before.';
+  }
+
+  @override
+  String get chatAdviceLearning =>
+      'I\'m still learning your habits, so take this as a first hint rather than the full picture.';
+
+  @override
+  String get chatSmallHello =>
+      'Hi! What would you like to know about your money?';
+
+  @override
+  String get chatSmallThanks =>
+      'Any time! I\'m here whenever you\'re about to spend.';
+
+  @override
+  String get chatSmallWho =>
+      'I\'m Upino\'s assistant. I only know what\'s in your plan, and every number I give comes straight from it; nothing you tell me leaves this phone. I won\'t tell you yes or no, but I\'ll show you what each choice would leave you.';
+
+  @override
+  String get chatSuggestAdvice => 'How can I spend less?';
 }

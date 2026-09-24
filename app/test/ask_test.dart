@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/domain/category.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
@@ -244,6 +245,126 @@ void main() {
           as SafeToSpendAnswer;
       expect(a.amount, state.snapshot.safeToSpendNow);
       expect(a.until, state.snapshot.decisionHorizonEnd);
+    });
+  });
+
+  group('getting to know the person', () {
+    AppState later(AppState from, int days) =>
+        AppState(now: DateTime.utc(2026, 10, 1, 10).add(Duration(days: days)))
+          ..replaceWith(from.toDocument());
+
+    test('a new plan is a newcomer, and says so', () {
+      final g = greet(funded());
+      expect(g.acquaintance, Acquaintance.newcomer);
+    });
+
+    test('weeks of recorded spending make it a learner', () {
+      final state = funded();
+      for (var i = 0; i < 6; i++) {
+        state.recordExpense(eur('10.00'));
+      }
+      expect(greet(later(state, 30)).acquaintance, Acquaintance.learning);
+      expect(greet(later(state, 30)).daysToSeason, 60);
+    });
+
+    test('a season makes it familiar', () {
+      final state = funded();
+      for (var i = 0; i < 6; i++) {
+        state.recordExpense(eur('10.00'));
+      }
+      expect(greet(later(state, 95)).acquaintance, Acquaintance.familiar);
+    });
+
+    test('the start date survives reopening', () {
+      final state = funded();
+      final reopened = later(state, 10);
+      expect(reopened.daysInUse, 10);
+    });
+
+    test('advice waits until it would be more than a guess', () {
+      final a = answerQuestion('how can I save more?', funded());
+      expect(a, isA<AdviceAnswer>());
+      expect((a as AdviceAnswer).biggest, isNull);
+      expect(a.acquaintance, Acquaintance.newcomer);
+    });
+
+    test('with history, advice names the biggest category and a tenth of it',
+        () {
+      final state = AppState(now: DateTime.utc(2026, 10, 1, 10))
+        ..completeOnboarding(
+          OnboardingDraft()
+            ..currentBalance = eur('3000.00')
+            ..incomeAmount = eur('2000.00')
+            ..nextIncomeDate = LocalDate.parse('2026-10-31'),
+        );
+      final month = later(state, 40);
+      for (var i = 0; i < 6; i++) {
+        month.recordExpense(eur('50.00'), category: SpendCategory.food);
+      }
+      month.recordExpense(eur('20.00'), category: SpendCategory.fun);
+      final a = answerQuestion('پس‌انداز بیشتر', month) as AdviceAnswer;
+      expect(a.acquaintance, Acquaintance.learning);
+      expect(a.biggest, SpendCategory.food);
+      expect(a.biggestTotal, eur('300.00'));
+      expect(a.tenPercent, eur('30.00'));
+    });
+  });
+
+  group('talking like a person', () {
+    test('greetings, thanks and who-are-you', () {
+      final state = funded();
+      expect((answerQuestion('سلام', state) as SmallTalkAnswer).kind,
+          SmallTalk.hello,);
+      expect((answerQuestion('merci, thanks!', state) as SmallTalkAnswer).kind,
+          SmallTalk.thanks,);
+      expect((answerQuestion('تو کی هستی؟', state) as SmallTalkAnswer).kind,
+          SmallTalk.whoAreYou,);
+    });
+
+    test('what can be spent, spread over the days it has to last', () {
+      final state = funded();
+      final a = answerQuestion('how much can I spend', state)
+          as SafeToSpendAnswer;
+      expect(a.days, a.until.differenceInDays(state.today) + 1);
+      expect(a.perDay.minor * a.days,
+          closeTo(a.amount.minor, a.days.toDouble()),);
+    });
+
+    test('pay is counted down in days', () {
+      final a = answerQuestion('when is my pay', funded()) as NextPayAnswer;
+      expect(a.inDays, 30);
+    });
+
+    testWidgets('the chat opens with the greeting for where the person is',
+        (tester) async {
+      tester.view
+        ..physicalSize = const Size(420, 1600)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining("You're new here"), findsOneWidget);
+    });
+
+    testWidgets('a purchase gets a one-line summary before the cards',
+        (tester) async {
+      tester.view
+        ..physicalSize = const Size(420, 1600)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const Key('chat-input')), '100');
+      await tester.tap(find.byKey(const Key('chat-send')));
+      await tester.pumpAndSettle();
+      expect(
+        find.textContaining('keeps everything you must pay covered'),
+        findsOneWidget,
+      );
     });
   });
 }

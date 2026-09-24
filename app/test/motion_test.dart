@@ -12,6 +12,7 @@ import 'package:upino/design/motion.dart';
 import 'package:upino/design/parts.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
+import 'package:upino/widgets/sts_hero.dart';
 import 'package:upino/screens/language_screen.dart';
 import 'package:upino/state/app_state.dart';
 import 'package:upino/widgets/upino_sheet.dart';
@@ -53,7 +54,7 @@ void main() {
       // One frame in: the animation has started and nothing has arrived.
       await tester.pump();
       // The first card on Home, now that the page's name is in the capsule.
-      final title = find.textContaining('in total');
+      final title = find.byType(StsHero);
       final early = tester.getTopLeft(title).dy;
       expect(
         tester.widget<Opacity>(
@@ -92,7 +93,7 @@ void main() {
           )
           .opacity;
 
-      expect(opacityAbove(find.textContaining('in total')), 1);
+      expect(opacityAbove(find.byType(StsHero)), 1);
       expect(opacityAbove(find.text('Set aside first')), lessThan(1));
 
       await tester.pumpAndSettle();
@@ -113,7 +114,7 @@ void main() {
       );
       await tester.pump();
       expect(find.byType(Opacity), findsNothing);
-      expect(find.textContaining('in total'), findsOneWidget);
+      expect(find.byType(StsHero), findsOneWidget);
     });
   });
 

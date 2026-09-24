@@ -40,6 +40,7 @@ class PlanDocument {
     this.smsSince,
     this.smsHandled = const [],
     this.reminderEnabled = false,
+    this.startedAt,
   });
 
   final String currency;
@@ -98,6 +99,9 @@ class PlanDocument {
   /// Whether the evening reminder is on.
   final bool reminderEnabled;
 
+  /// When the plan was set up, so Ask can tell how well it knows the person.
+  final DateTime? startedAt;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -116,6 +120,8 @@ class PlanDocument {
         if (smsSince != null) 'smsSince': smsSince!.toUtc().toIso8601String(),
         if (smsHandled.isNotEmpty) 'smsHandled': smsHandled,
         if (reminderEnabled) 'reminderEnabled': true,
+        if (startedAt != null)
+          'startedAt': startedAt!.toUtc().toIso8601String(),
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
           'categories': {
@@ -174,6 +180,9 @@ class PlanDocument {
         for (final id in (json['smsHandled'] as List?) ?? const []) id as String,
       ],
       reminderEnabled: json['reminderEnabled'] as bool? ?? false,
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt']! as String),
       payCycleDays: json['payCycleDays'] as int? ?? 30,
       inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null

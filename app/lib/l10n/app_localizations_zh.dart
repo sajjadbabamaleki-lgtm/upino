@@ -1041,11 +1041,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alertGoalBehindDetail => '现有资金不足以完成本期份额。';
 
   @override
-  String get chatIntro =>
-      '问我关于钱的问题：还能花多少、下次工资、钱花在哪。或输入价格，看看买下它会怎样。每个数字都来自你的计划。';
-
-  @override
-  String get chatHint => '提问或输入价格';
+  String get chatHint => '随便问，或输入一个价格';
 
   @override
   String get chatSuggestSafe => '我还能花多少？';
@@ -1065,7 +1061,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get chatSafeStale => '你的余额需要确认，此数字仅供参考。';
+  String get chatSafeStale => '提醒一下：你的余额需要确认，这个数字仅供参考。';
 
   @override
   String chatPay(String amount, String date) {
@@ -1073,25 +1069,134 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get chatPayNone => '还没有预计的工资，请在计划中添加。';
+  String get chatPayNone => '我还不知道你下次工资，在计划里加上吧，我会帮你盯着。';
 
   @override
-  String get chatWhere => '最近 30 天：';
+  String get chatWhere => '最近 30 天钱花在了这些地方：';
 
   @override
-  String get chatWhereNone => '最近 30 天还没有记录支出。';
+  String get chatWhereNone => '最近 30 天没有支出，要么这个月很省，要么还没记录。';
 
   @override
   String chatAside(String amount) {
-    return '可花之前先预留 $amount：';
+    return '在可花之前，先预留了 $amount：';
   }
 
   @override
   String chatPurchase(String amount) {
-    return '如果它要 $amount，每种选择的结果如下：';
+    return '来看看 $amount 会有什么影响。';
   }
 
   @override
   String get chatHelp =>
-      '我可以告诉你还能花多少、下次工资何时到、钱花在哪、预留了什么。也可以输入价格，比如“一部 3000 元的手机”，看看买下会怎样。';
+      '嗯，这个我没太明白。我可以告诉你还能花多少、工资什么时候到、钱花在哪、预留了什么，或怎么少花点。也可以输入一个价格，我给你看买下会怎样。';
+
+  @override
+  String get chatHelloNew =>
+      '你好！我是 Upino。你刚来，所以我目前只知道基本情况：余额、工资和预留的钱。这已经足够告诉你还能花多少、买东西会有什么影响。继续记录支出，大约一个季度后，我就能足够了解你的习惯，当你的私人理财顾问。';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return '欢迎回来！我已经从 $days 天、$spends 笔支出中学习。再过大约 $remaining 天，我就有一整个季度的数据了。';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return '欢迎回来！我已经了解你 $days 天的财务情况，随便问吧，包括怎么少花点。';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return '对了，有 $count 件事需要你处理，在铃铛里。';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return '今天买的话，所有必须支付的都有保障，还剩 $left 可用。';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return '今天买会让某项必须支付的款项不够。等到 $date 再买，就都能覆盖。';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return '注意：即使 $date 发了工资，也会有必须支付的款项不够。';
+  }
+
+  @override
+  String get chatPurchaseShort => '今天买会让某项必须支付的款项不够。';
+
+  @override
+  String chatSafePerDay(String perDay, int days) {
+    return '分摊到 $days 天，大约每天 $perDay。';
+  }
+
+  @override
+  String chatSafeNothing(String date) {
+    return '目前到 $date 前没有余钱：现有的钱都已留给必须支付的项目。';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return '也就是 $days 天后。';
+  }
+
+  @override
+  String get chatPayLate => '工资晚了，确认到账前不会计入。';
+
+  @override
+  String get chatPayRange => '计划按下限计算，所以收入好的月份是额外收获，而不是缺口。';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return '目前我只看了 $days 天，先大致看看：';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return '$category占比最大：$share%。';
+  }
+
+  @override
+  String get chatWhereTooSoon => '现在问还有点早：我几乎还没看到支出。记几笔，下周再问我吧。';
+
+  @override
+  String get chatAdviceTooSoon =>
+      '我很想帮忙，但说实话我还不够了解你的支出，没有这些的建议只是瞎猜。记录支出（分类很有帮助），过几周再问我吧。';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return '最近 30 天你最大的支出是$category，$amount。削减十分之一，每月大约能省出 $tenth。';
+  }
+
+  @override
+  String get chatAdviceSort => '我能看到你花了多少，但不知道花在哪。记录时加上分类，我就能告诉你该在哪里省。';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return '比上个月多花了 $amount。';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return '不错：比上个月少花了 $amount。';
+  }
+
+  @override
+  String get chatAdviceLearning => '我还在了解你的习惯，这只是初步提示，不是全貌。';
+
+  @override
+  String get chatSmallHello => '你好！想了解你的钱的哪些情况？';
+
+  @override
+  String get chatSmallThanks => '随时效劳！准备花钱时我都在。';
+
+  @override
+  String get chatSmallWho =>
+      '我是 Upino 的助手。我只了解你的计划，给出的每个数字都直接来自它，任何信息都不会离开这部手机。我不会替你说买或不买，但会告诉你每种选择会留下什么。';
+
+  @override
+  String get chatSuggestAdvice => '怎么少花点？';
 }

@@ -252,6 +252,7 @@ class AppState extends ChangeNotifier {
   final List<String> _smsHandled = [];
   final List<BankSuggestion> _suggestions = [];
   bool _reminderEnabled = false;
+  DateTime? _startedAt;
   int _goalSeq = 0;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
@@ -340,6 +341,7 @@ class AppState extends ChangeNotifier {
       ..clear()
       ..addAll(document.smsHandled);
     _reminderEnabled = document.reminderEnabled;
+    _startedAt = document.startedAt;
     _goals
       ..clear()
       ..addAll(document.goals);
@@ -412,6 +414,7 @@ class AppState extends ChangeNotifier {
         smsSince: _smsSince,
         smsHandled: List.unmodifiable(_smsHandled),
         reminderEnabled: _reminderEnabled,
+        startedAt: _startedAt,
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -709,6 +712,35 @@ class AppState extends ChangeNotifier {
   Duration get utcOffset => _utcOffset;
   DateTime get now => _now;
 
+  /// When this plan began. Saved from schema 8; for a plan older than that,
+  /// the earliest thing it knows the time of stands in.
+  DateTime? get startedAt {
+    if (_startedAt != null) return _startedAt;
+    DateTime? earliest = _lastBalanceConfirmation;
+    for (final at in _recordedAt.values) {
+      if (earliest == null || at.isBefore(earliest)) earliest = at;
+    }
+    return earliest;
+  }
+
+  /// Whole days the plan has been in use.
+  int get daysInUse {
+    final start = startedAt;
+    if (start == null) return 0;
+    return _now.difference(start).inDays;
+  }
+
+  /// Spends recorded that still count.
+  int get spendCount {
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    return _events
+        .where((e) => e is ExpenseEvent && !voided.contains(e.id))
+        .length;
+  }
+
   /// What the bell shows, most urgent first: a commitment that cannot be
   /// paid, then a figure that cannot be trusted, then pay that has not come,
   /// then goals falling behind, then messages to review.
@@ -886,6 +918,7 @@ class AppState extends ChangeNotifier {
     _payCycleDays = draft.payCycleDays ?? 30;
     _openingBalance = draft.currentBalance ?? Money.zero(_currency);
     _lastBalanceConfirmation = _now;
+    _startedAt = _now;
 
     _claims
       ..clear()
@@ -997,19 +1030,23 @@ class AppState extends ChangeNotifier {
   /// entries from before times were kept cannot be placed in a window.
   /// A null category is spending nobody sorted, shown as such rather than
   /// quietly folded into "other".
+  /// [before] moves the window back: `days: 30, before: 30` is the thirty
+  /// days before the last thirty, which is what a comparison needs.
   List<({SpendCategory? category, Money total})> spendingByCategory({
     int days = 30,
+    int before = 0,
   }) {
     final voided = <String>{
       for (final e in _events)
         if (e is CorrectionEvent) e.voidsEventId,
     };
-    final since = _now.subtract(Duration(days: days));
+    final until = _now.subtract(Duration(days: before));
+    final since = until.subtract(Duration(days: days));
     final totals = <SpendCategory?, Money>{};
     for (final e in _events) {
       if (e is! ExpenseEvent || voided.contains(e.id)) continue;
       final at = _recordedAt[e.id];
-      if (at == null || at.isBefore(since)) continue;
+      if (at == null || at.isBefore(since) || at.isAfter(until)) continue;
       final key = _categories[e.id];
       totals[key] = (totals[key] ?? Money.zero(_currency)) + e.amount;
     }
@@ -1180,6 +1217,7 @@ class AppState extends ChangeNotifier {
     _holdings.clear();
     _holdingSeq = 0;
     _suggestions.clear();
+    _startedAt = null;
     _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;

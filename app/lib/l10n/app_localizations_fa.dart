@@ -1090,11 +1090,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'پول فعلی به سهم این دوره از هدف نمی‌رسد.';
 
   @override
-  String get chatIntro =>
-      'دربارهٔ پولتان بپرسید: چقدر می‌توانید خرج کنید، حقوق بعدی، پول کجا رفت. یا یک قیمت بنویسید تا ببینید خریدنش چه اثری دارد. همهٔ عددها از برنامهٔ خودتان می‌آیند.';
-
-  @override
-  String get chatHint => 'بپرسید یا یک قیمت بنویسید';
+  String get chatHint => 'هرچی خواستی بپرس یا یه قیمت بنویس';
 
   @override
   String get chatSuggestSafe => 'چقدر می‌تونم خرج کنم؟';
@@ -1110,39 +1106,155 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String chatSafe(String amount, String date) {
-    return 'تا $date می‌توانید $amount خرج کنید.';
+    return 'تا $date می‌تونی $amount خرج کنی.';
   }
 
   @override
   String get chatSafeStale =>
-      'موجودی شما نیاز به تأیید دارد، پس این عدد را تقریبی بدانید.';
+      'فقط یه چیزی: موجودیت باید تأیید بشه، پس این عدد رو تقریبی در نظر بگیر.';
 
   @override
   String chatPay(String amount, String date) {
-    return 'حقوق بعدی شما $amount است که $date انتظار می‌رود.';
+    return 'حقوق بعدیت $amount هست و $date می‌رسه.';
   }
 
   @override
   String get chatPayNone =>
-      'هنوز حقوقی ثبت نشده. آن را در «برنامه» اضافه کنید.';
+      'هنوز حقوق بعدیت رو نمی‌دونم. توی «برنامه» اضافه‌اش کن تا حواسم بهش باشه.';
 
   @override
-  String get chatWhere => 'در ۳۰ روز گذشته:';
+  String get chatWhere => 'این ۳۰ روز پولت این‌جاها رفت:';
 
   @override
-  String get chatWhereNone => 'هنوز خرجی در ۳۰ روز گذشته ثبت نشده.';
+  String get chatWhereNone =>
+      '۳۰ روز گذشته خرجی ثبت نشده. یا ماه آرومی بوده یا خرج‌ها ثبت نشدن.';
 
   @override
   String chatAside(String amount) {
-    return '$amount پیش از هر خرجی کنار گذاشته شده:';
+    return '$amount قبل از هر خرجی کنار گذاشته شده:';
   }
 
   @override
   String chatPurchase(String amount) {
-    return 'اگر $amount باشد، هر انتخاب این نتیجه را دارد:';
+    return 'ببینیم $amount چه اثری داره.';
   }
 
   @override
   String get chatHelp =>
-      'می‌توانم بگویم چقدر می‌توانید خرج کنید، حقوق بعدی کی است، پول کجا رفت و چه چیزی کنار گذاشته شده. یا یک قیمت بنویسید، مثل «گوشی ۲۰ میلیونی»، تا ببینید خریدنش چه اثری دارد.';
+      'اوم، اینو درست نفهمیدم. می‌تونم بگم چقدر می‌تونی خرج کنی، حقوقت کی میاد، پولت کجا رفت، چی کنار گذاشته شده یا چطور کمتر خرج کنی. یا یه قیمت بنویس، مثل «گوشی ۲۰ میلیونی»، تا نشونت بدم خریدنش چه اثری داره.';
+
+  @override
+  String get chatHelloNew =>
+      'سلام! من Upino هستم. تازه اومدی، پس فعلاً فقط چیزهای اصلی رو ازت می‌دونم: موجودیت، حقوقت و چیزهایی که کنار گذاشتی. همین‌قدر کافیه که بگم چقدر می‌تونی خرج کنی و یه خرید چه اثری داره. خرج‌هات رو ثبت کن؛ بعد از حدود یه فصل اون‌قدر عادت‌هات رو می‌شناسم که بتونم مشاور مالی شخصی خودت باشم.';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return 'خوش برگشتی! تا حالا از $days روز و $spends خرج یاد گرفتم. حدود $remaining روز دیگه یه فصل کامل ازت می‌دونم.';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return 'خوش برگشتی! الان $days روز از پولت رو دیدم، پس هرچی خواستی بپرس، حتی اینکه چطور کمتر خرج کنی.';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return 'راستی، $count مورد منتظر توئه؛ زیر زنگوله‌ست.';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return 'اگه امروز بخری، همهٔ چیزهایی که باید بدی پوشش داده می‌شن و هنوز $left اضافه داری.';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return 'اگه امروز بخری، یکی از پرداخت‌های لازم کم میاره. اگه تا $date صبر کنی، همه‌چیز پوشش داده می‌شه.';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return 'حواست باشه: حتی بعد از حقوق $date هم یکی از پرداخت‌های لازم کم میاره.';
+  }
+
+  @override
+  String get chatPurchaseShort =>
+      'اگه امروز بخری، یکی از پرداخت‌های لازم کم میاره.';
+
+  @override
+  String chatSafePerDay(String perDay, int days) {
+    return 'اگه روی $days روز پخشش کنی، می‌شه روزی حدود $perDay.';
+  }
+
+  @override
+  String chatSafeNothing(String date) {
+    return 'الان تا $date پول اضافه‌ای نداری؛ هرچی داری برای پرداخت‌های لازم کنار گذاشته شده.';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return 'یعنی $days روز دیگه.';
+  }
+
+  @override
+  String get chatPayLate => 'دیر کرده، پس تا تأیید نکنی که رسیده حساب نمی‌شه.';
+
+  @override
+  String get chatPayRange =>
+      'برنامه روی حداقلش حساب می‌کنه، پس ماه خوب یه جایزه‌ست، نه یه چاله.';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return 'تا حالا فقط $days روز رو دیدم، پس این یه نگاه اولیه‌ست:';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return 'بیشترینش $category بوده: $share٪ کل خرج‌ها.';
+  }
+
+  @override
+  String get chatWhereTooSoon =>
+      'برای این یه کم زوده؛ هنوز تقریباً خرجی ازت ندیدم. چندتا ثبت کن و هفتهٔ بعد دوباره بپرس.';
+
+  @override
+  String get chatAdviceTooSoon =>
+      'دوست دارم کمک کنم، ولی راستش هنوز خرج‌هات رو اون‌قدر نمی‌شناسم، و توصیه بدون شناخت فقط یه حدسه. خرج‌هات رو ثبت کن (دسته‌بندی کردنشون خیلی کمک می‌کنه) و چند هفتهٔ دیگه دوباره بپرس.';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return 'بزرگ‌ترین خرجت توی ۳۰ روز گذشته $category بوده، $amount. اگه فقط یه دهمش رو کم کنی، ماهی حدود $tenth آزاد می‌شه.';
+  }
+
+  @override
+  String get chatAdviceSort =>
+      'مقدار خرج‌هات رو می‌بینم، ولی نمی‌دونم برای چی بوده. موقع ثبت دسته‌بندی‌شون کن تا بتونم بگم کجا رو کم کنی.';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return 'نسبت به ماه قبلش $amount بیشتر خرج کردی.';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return 'آفرین: نسبت به ماه قبلش $amount کمتر خرج کردی.';
+  }
+
+  @override
+  String get chatAdviceLearning =>
+      'هنوز دارم عادت‌هات رو یاد می‌گیرم، پس این رو یه سرنخ اولیه بدون، نه تصویر کامل.';
+
+  @override
+  String get chatSmallHello => 'سلام! دربارهٔ پولت چی می‌خوای بدونی؟';
+
+  @override
+  String get chatSmallThanks =>
+      'خواهش می‌کنم! هر وقت خواستی خرج کنی، من این‌جام.';
+
+  @override
+  String get chatSmallWho =>
+      'من دستیار Upino هستم. فقط چیزی رو می‌دونم که توی برنامه‌ته، و هر عددی که می‌گم مستقیم از همون میاد؛ هیچ‌چیز از این گوشی بیرون نمی‌ره. بهت نمی‌گم بخر یا نخر، ولی نشونت می‌دم هر انتخاب چی برات باقی می‌ذاره.';
+
+  @override
+  String get chatSuggestAdvice => 'چطور کمتر خرج کنم؟';
 }
