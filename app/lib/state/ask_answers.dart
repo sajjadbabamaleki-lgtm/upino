@@ -16,6 +16,7 @@
 /// question it does not recognise gets what it can answer, never a guess.
 library;
 
+import '../domain/bill.dart';
 import '../domain/category.dart';
 import '../domain/spoken_spend.dart';
 import '../engine/clock.dart';
@@ -23,6 +24,7 @@ import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../engine/plan.dart';
 import 'app_state.dart';
+import 'insights.dart';
 
 /// How well the chat knows the person, from how long the plan has run and
 /// how much of it has been recorded.
@@ -77,6 +79,19 @@ class GreetingAnswer extends AskAnswer {
 class PurchaseAnswer extends AskAnswer {
   const PurchaseAnswer(this.scenarios);
   final SpendScenarios scenarios;
+}
+
+/// The one move worth making now, or none (§6.2).
+class BestMoveAnswer extends AskAnswer {
+  const BestMoveAnswer(this.move);
+  final BestMove? move;
+}
+
+/// Bills falling due in the next thirty days (§6.3).
+class ComingUpAnswer extends AskAnswer {
+  const ComingUpAnswer(this.bills, this.total);
+  final List<({Bill bill, LocalDate due})> bills;
+  final Money total;
 }
 
 class MonthReviewAnswer extends AskAnswer {
@@ -265,7 +280,17 @@ final _whereWords = _words(
 );
 final _monthWords = _words(
   r'ماهم|این ماه|ماه (گذشته|قبل|پیش)|مرور ماه|خلاصه(ٔ|ی)? ماه|ماهانه|'
-  r'my month|this month|last month|month review|monthly|how did i do',
+  r'چی عوض شد|چه تغییری|'
+  r'my month|this month|last month|month review|monthly|how did i do|'
+  r'what changed',
+);
+final _moveWords = _words(
+  r'بهترین (کار|حرکت)|الان چی?‌?کار|قدم بعدی|چه کنم الان|'
+  r'what should i do|best move|next step|what now',
+);
+final _comingWords = _words(
+  r'قبض|اشتراک|پیش رو|سررسید|در راه|'
+  r'coming up|bills due|upcoming|subscriptions|what bills|due soon',
 );
 final _asideWords = _words(
   r'کنار|قبض|تعهد|اجاره|set aside|protected|bills|commitments|rent',
@@ -329,6 +354,8 @@ AskAnswer answerQuestion(String question, AppState state) {
   }
 
   if (_why.hasMatch(text)) return _explain(state);
+  if (_moveWords.hasMatch(text)) return BestMoveAnswer(state.bestMove);
+  if (_comingWords.hasMatch(text)) return _comingUp(state);
   if (_advice.hasMatch(text)) return _advise(state);
   if (_safeWords.hasMatch(text)) return _safeToSpend(state);
   if (aboutPay) return _nextPay(state);
@@ -359,7 +386,9 @@ WhyAnswer _explain(AppState state) {
 /// to be typed.
 enum SuggestedQuestion {
   safeToSpend,
+  bestMove,
   nextPay,
+  comingUp,
   whereItWent,
   setAside,
   monthReview,
@@ -368,7 +397,9 @@ enum SuggestedQuestion {
 
 AskAnswer answerSuggested(SuggestedQuestion q, AppState state) => switch (q) {
       SuggestedQuestion.safeToSpend => _safeToSpend(state),
+      SuggestedQuestion.bestMove => BestMoveAnswer(state.bestMove),
       SuggestedQuestion.nextPay => _nextPay(state),
+      SuggestedQuestion.comingUp => _comingUp(state),
       SuggestedQuestion.whereItWent => _whereItWent(state),
       SuggestedQuestion.setAside => _setAside(state),
       SuggestedQuestion.monthReview => MonthReviewAnswer(state.monthReview),
@@ -386,6 +417,9 @@ SafeToSpendAnswer _safeToSpend(AppState state) {
     trusted: s.confidenceState == ConfidenceState.trusted,
   );
 }
+
+ComingUpAnswer _comingUp(AppState state) =>
+    ComingUpAnswer(state.upcomingBills(), state.billsDueWithin());
 
 NextPayAnswer _nextPay(AppState state) {
   final income = state.nextIncome;

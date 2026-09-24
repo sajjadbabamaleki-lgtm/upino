@@ -1781,4 +1781,137 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'Plandan çıkar';
+
+  @override
+  String get moveTitle => 'En iyi adım';
+
+  @override
+  String get moveTagMove => 'Aktar';
+
+  @override
+  String get moveTagWait => 'Bekle';
+
+  @override
+  String get moveTagSave => 'Biriktir';
+
+  @override
+  String get moveTagSpend => 'Harca';
+
+  @override
+  String moveMove(String amount, String account) {
+    return 'Zorunlu ödemeyi karşılamak için $account hesabından $amount aktarın.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim için eksik var ve bu para planın dışında duruyor.';
+  }
+
+  @override
+  String get moveDoIt => 'Aktar';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'Ekstralara ara verin: $date tarihinde zorunlu bir ödeme için $amount eksik kalır.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'Tahmin o güne kadar maaşınızı, faturaları ve yaşam giderlerini sayar.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'Maaşınıza $days gün var. Beklemek $now olan payı $later yapar.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'Aklınızdaki şey bekleyebilirse. Her iki durumda da risk yok.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '$goal için $amount tutarını $account hesabına aktarın.';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'Hedefe yaklaşık $days gün önce ulaşılır ve serbest kalan para yine de normal ayınızın iki katıdır.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return '$date tarihine kadar güvendesiniz: $amount kullanmanız için serbest.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'Faturalar ve hedefler zaten ayrıldı, ileride eksik yok ve bu normal harcamanızın epey üstünde.';
+
+  @override
+  String get moveNotNow => 'Şimdi değil';
+
+  @override
+  String get moveNone =>
+      'Şu an önerilecek bir adım yok. Planınız olduğu gibi duruyor.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'Gelen maaş: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'Hedeflere ayrılan: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'Şu an: $free harcanabilir, $aside ayrılmış.';
+  }
+
+  @override
+  String get monthAheadTitle => 'Önümüzdeki 30 gün';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count fatura, toplam $amount.';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'Sonraki maaşınız $date tarihinde bekleniyor.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'En sıkışık gün $date, $amount serbest.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return '$date tarihinde zorunlu bir ödeme için $amount eksik kalır.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'Bilmeye değer';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category önceki aya göre $amount arttı.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'Böyle sürerse, her ay $goal hedefinin yaklaşık $days günü eder.';
+  }
+
+  @override
+  String get chatSuggestMove => 'Şimdi ne yapmalıyım?';
+
+  @override
+  String get chatSuggestComing => 'Hangi faturalar yaklaşıyor?';
+
+  @override
+  String get chatComingNone =>
+      'Önümüzdeki 30 günde fatura yok. Faturalarınızı Plan\'a ekleyin, takip edeyim.';
 }

@@ -1779,4 +1779,137 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'योजना में गिनना बंद करें';
+
+  @override
+  String get moveTitle => 'सबसे अच्छा कदम';
+
+  @override
+  String get moveTagMove => 'स्थानांतरित';
+
+  @override
+  String get moveTagWait => 'रुकें';
+
+  @override
+  String get moveTagSave => 'बचाएँ';
+
+  @override
+  String get moveTagSpend => 'खर्च करें';
+
+  @override
+  String moveMove(String amount, String account) {
+    return 'ज़रूरी भुगतान के लिए $account से $amount स्थानांतरित करें।';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim में कमी है, और यह पैसा योजना से बाहर पड़ा है।';
+  }
+
+  @override
+  String get moveDoIt => 'स्थानांतरित करें';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'अतिरिक्त खर्च रोकें: $date को ज़रूरी भुगतान में $amount कम पड़ेगा।';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'अनुमान उस दिन तक आपका वेतन, बिल और जीवन-खर्च गिनता है।';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'आपका वेतन $days दिन दूर है। इंतज़ार करने से $now की गुंजाइश $later हो जाती है।';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'केवल अगर जो सोच रहे हैं वह रुक सकता है। किसी भी हाल में जोखिम नहीं।';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '$goal के लिए $amount को $account में रखें।';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'यह लगभग $days दिन पहले पूरा होगा, और खाली पैसा फिर भी आपके सामान्य महीने का दोगुना रहेगा।';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return '$date तक आप सुरक्षित हैं: $amount इस्तेमाल के लिए खाली है।';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'बिल और लक्ष्य पहले से अलग रखे हैं, आगे कुछ कम नहीं पड़ता, और यह आपके सामान्य खर्च से काफ़ी ज़्यादा है।';
+
+  @override
+  String get moveNotNow => 'अभी नहीं';
+
+  @override
+  String get moveNone =>
+      'अभी सुझाने लायक कोई कदम नहीं है। आपकी योजना जैसी है वैसी ठीक है।';
+
+  @override
+  String monthIncome(String amount) {
+    return 'आया वेतन: $amount।';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'लक्ष्यों में डाला: $amount।';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'अभी: $free खर्च योग्य, $aside अलग रखा।';
+  }
+
+  @override
+  String get monthAheadTitle => 'अगले 30 दिन';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count बिल, कुल $amount।';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'अगला वेतन $date को अपेक्षित है।';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'सबसे तंग दिन $date है, $amount खाली के साथ।';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return '$date को ज़रूरी भुगतान में $amount कम पड़ेगा।';
+  }
+
+  @override
+  String get monthWorthKnowing => 'जानने लायक';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category पिछले महीने से $amount बढ़ा है।';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'ऐसा चलता रहा तो यह हर महीने $goal के लगभग $days दिन के बराबर है।';
+  }
+
+  @override
+  String get chatSuggestMove => 'अब मुझे क्या करना चाहिए?';
+
+  @override
+  String get chatSuggestComing => 'कौन से बिल आने वाले हैं?';
+
+  @override
+  String get chatComingNone =>
+      'अगले 30 दिनों में कोई बिल देय नहीं है। प्लान में अपने बिल जोड़ें, मैं उन पर नज़र रखूँगा।';
 }

@@ -1777,4 +1777,137 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'دیگر در برنامه حساب نشود';
+
+  @override
+  String get moveTitle => 'بهترین حرکت';
+
+  @override
+  String get moveTagMove => 'جابه‌جایی';
+
+  @override
+  String get moveTagWait => 'صبر';
+
+  @override
+  String get moveTagSave => 'پس‌انداز';
+
+  @override
+  String get moveTagSpend => 'خرج';
+
+  @override
+  String moveMove(String amount, String account) {
+    return '$amount را از $account منتقل کنید تا پرداخت ضروری پوشش داده شود.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim کم دارد و این پول بیرون از برنامه مانده است.';
+  }
+
+  @override
+  String get moveDoIt => 'منتقل کن';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'فعلاً خرج اضافه نکنید: در $date یک پرداخت ضروری $amount کم می‌آورد.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'پیش‌بینی، حقوق و قبض‌ها و هزینهٔ زندگی را تا آن روز حساب می‌کند.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'حقوق شما $days روز دیگر می‌رسد. صبر کردن، $now فضای خرج را به $later می‌رساند.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'فقط اگر کاری که در نظر دارید می‌تواند صبر کند. در هر حال چیزی به خطر نمی‌افتد.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '$amount را برای $goal به $account منتقل کنید.';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'حدود $days روز زودتر به هدف می‌رسید و آنچه آزاد می‌ماند هنوز دو برابر خرج معمول یک ماه شماست.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return 'تا $date پوشش دارید: $amount آزاد برای خرج است.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'قبض‌ها و هدف‌ها از قبل کنار گذاشته شده، چیزی در پیش رو کم نمی‌آید و این مبلغ خیلی بیشتر از خرج معمول شماست.';
+
+  @override
+  String get moveNotNow => 'الان نه';
+
+  @override
+  String get moveNone =>
+      'فعلاً حرکتی که ارزش پیشنهاد داشته باشد نیست. برنامه‌ات همین‌طور که هست پابرجاست.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'حقوق دریافتی: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'برای هدف‌ها کنار گذاشته شد: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'اکنون: $free قابل خرج، $aside کنار گذاشته.';
+  }
+
+  @override
+  String get monthAheadTitle => '۳۰ روز آینده';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count قبض، جمعاً $amount.';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'حقوق بعدی $date انتظار می‌رود.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'تنگ‌ترین روز $date است، با $amount قابل خرج.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return 'در $date یک پرداخت ضروری $amount کم می‌آورد.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'دانستنش مفید است';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category نسبت به ماه قبل $amount بیشتر شده.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'اگر ادامه پیدا کند، هر ماه حدود $days روز از $goal است.';
+  }
+
+  @override
+  String get chatSuggestMove => 'الان بهترین کار چیه؟';
+
+  @override
+  String get chatSuggestComing => 'چه قبض‌هایی در راه است؟';
+
+  @override
+  String get chatComingNone =>
+      'در ۳۰ روز آینده قبضی سررسید نمی‌شود. قبض‌هایت را در «برنامه» اضافه کن تا حواسم بهشان باشد.';
 }

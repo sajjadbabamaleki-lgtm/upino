@@ -128,7 +128,13 @@ class MonthReview {
     this.upBy,
     this.down,
     this.downBy,
+    this.income,
+    this.toGoals,
   });
+
+  /// Pay that came in over the thirty days, and what went to goals.
+  final Money? income;
+  final Money? toGoals;
 
   /// A month is thirty days here, matching the spending window.
   static const month = 30;
@@ -1322,6 +1328,24 @@ class AppState extends ChangeNotifier {
     return out;
   }
 
+  /// How many spends each category had over the last [days].
+  Map<SpendCategory, int> spendCountsByCategory({int days = 30}) {
+    final since = _now.subtract(Duration(days: days));
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    final out = <SpendCategory, int>{};
+    for (final e in _events) {
+      final category = _categories[e.id];
+      final at = _recordedAt[e.id];
+      if (_spent(e) == null || category == null || at == null) continue;
+      if (voided.contains(e.id) || at.isBefore(since)) continue;
+      out[category] = (out[category] ?? 0) + 1;
+    }
+    return out;
+  }
+
   /// A category for a spend of [amount], when the record makes one clear
   /// (Strategy §7.1): at least three sorted spends of a similar size in the
   /// last ninety days, most of them in one category. Otherwise nothing: a
@@ -1685,6 +1709,8 @@ class AppState extends ChangeNotifier {
       downBy: downBy,
       goals: goals.length,
       goalsOnTrack: goals.where((a) => a.shortfall.minor <= 0).length,
+      income: incomeWithin(),
+      toGoals: toGoalsWithin(),
     );
   }
 
@@ -2123,6 +2149,12 @@ class AppState extends ChangeNotifier {
   /// no call.
   void putRecoveredToward({String? goalId, bool buffer = false, required Money amount}) {
     if (goalId != null) {
+      // Toward a goal means out of reach: into savings kept outside the
+      // plan, when there is such an account, so it is not counted twice.
+      final savings = savingsOutsidePlan;
+      if (savings != null) {
+        transfer(from: _accountId, to: savings.id, amount: amount);
+      }
       contributeToGoal(goalId, amount);
     } else if (buffer) {
       final current =
@@ -2132,6 +2164,61 @@ class AppState extends ChangeNotifier {
   }
 
   List<GoalContribution> get contributions => List.unmodifiable(_contributions);
+
+  /// The suggestion the person set aside with "not now", for this session.
+  /// Not saved: a new day may deserve a fresh look.
+  String? get dismissedMove => _dismissedMove;
+  String? _dismissedMove;
+
+  void dismissMove(String key) {
+    _dismissedMove = key;
+    notifyListeners();
+  }
+
+  /// A savings account kept out of the plan, where goal money can go.
+  Account? get savingsOutsidePlan => _accounts
+      .where((a) => a.kind == AccountKind.savings && !a.counted)
+      .firstOrNull;
+
+  /// Pay that came in over the last [days], as recorded.
+  Money incomeWithin({int days = 30}) {
+    final since = _now.subtract(Duration(days: days));
+    final voided = {
+      for (final e in _events)
+        if (e is CorrectionEvent) e.voidsEventId,
+    };
+    return Money.sum(
+      [
+        for (final e in _events)
+          if (e is IncomeConfirmedEvent &&
+              !voided.contains(e.id) &&
+              !(_recordedAt[e.id]?.isBefore(since) ?? true))
+            e.amount,
+      ],
+      _currency,
+    );
+  }
+
+  /// What was put toward goals over the last [days].
+  Money toGoalsWithin({int days = 30}) {
+    final since = _now.subtract(Duration(days: days));
+    return Money.sum(
+      [
+        for (final c in _contributions)
+          if (!c.at.isBefore(since)) c.amount,
+      ],
+      _currency,
+    );
+  }
+
+  /// Move money toward a goal on purpose: out of the plan into savings,
+  /// and recorded against the goal.
+  void saveTowardGoal(String goalId, Money amount) {
+    final savings = savingsOutsidePlan;
+    if (savings == null || amount.minor <= 0) return;
+    transfer(from: _accountId, to: savings.id, amount: amount);
+    contributeToGoal(goalId, amount);
+  }
 
   /// A what-if on the live plan: the same claims, accounts and rules, with
   /// only the moment, some extra events or the expected income changed.

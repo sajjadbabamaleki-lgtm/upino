@@ -24,6 +24,8 @@ import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/best_move_card.dart';
+import '../state/insights.dart';
 import '../widgets/bill_editor_sheet.dart' show relativeDay;
 import '../widgets/alerts_sheet.dart';
 import '../widgets/bank_suggestions_sheet.dart';
@@ -172,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final l = AppLocalizations.of(context);
     final snapshot = state.snapshot;
     final justRecorded = state.lastRecordedExpense;
+    final move = state.bestMove;
     final attention =
         snapshot.allocations.where((a) => a.shortfall.minor > 0).toList();
 
@@ -305,6 +308,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           ],
                         ),
                       ),
+                    ],
+
+                    // One suggestion, when one is worth making (§6.2).
+                    if (move != null && move.key != state.dismissedMove) ...[
+                      const SizedBox(height: 12),
+                      BestMoveCard(state: state, move: move),
                     ],
 
                     const SizedBox(height: 14),

@@ -1705,4 +1705,132 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get accountStopCounting => '不再计入计划';
+
+  @override
+  String get moveTitle => '最佳一步';
+
+  @override
+  String get moveTagMove => '转移';
+
+  @override
+  String get moveTagWait => '等待';
+
+  @override
+  String get moveTagSave => '储蓄';
+
+  @override
+  String get moveTagSpend => '可花';
+
+  @override
+  String moveMove(String amount, String account) {
+    return '从 $account 转 $amount 来支付必须支付的款项。';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim资金不足，而这笔钱在计划之外闲置。';
+  }
+
+  @override
+  String get moveDoIt => '转移';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return '先别额外花钱：$date 时必须支付的款项会差 $amount。';
+  }
+
+  @override
+  String get moveWaitGapWhy => '预测计入了到那天为止的工资、账单和生活开支。';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return '还有 $days 天发工资。等到那时，可支配金额会从 $now 变成 $later。';
+  }
+
+  @override
+  String get moveWaitPayWhy => '前提是你想买的东西能等。无论如何都没有风险。';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '把 $amount 转到 $account，用于$goal。';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return '大约提前 $days 天达成，剩下的可支配金额仍是你平常一个月开支的两倍。';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return '到 $date 为止都有保障：$amount 可自由使用。';
+  }
+
+  @override
+  String get moveSpendWhy => '账单和目标都已预留，未来没有缺口，而且这远高于你平常的开支。';
+
+  @override
+  String get moveNotNow => '暂不';
+
+  @override
+  String get moveNone => '目前没有值得建议的操作，你的计划保持现状即可。';
+
+  @override
+  String monthIncome(String amount) {
+    return '到账工资：$amount。';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return '投入目标：$amount。';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return '目前：可支配 $free，已预留 $aside。';
+  }
+
+  @override
+  String get monthAheadTitle => '未来 30 天';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count 笔账单，共 $amount。';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return '下次工资预计 $date 到账。';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return '最紧的一天是 $date，可支配 $amount。';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return '$date 时必须支付的款项会差 $amount。';
+  }
+
+  @override
+  String get monthWorthKnowing => '值得了解';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category比上个月多了 $amount。';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return '如果持续下去，每个月大约相当于$goal的 $days 天进度。';
+  }
+
+  @override
+  String get chatSuggestMove => '我接下来该做什么？';
+
+  @override
+  String get chatSuggestComing => '接下来有哪些账单？';
+
+  @override
+  String get chatComingNone => '未来 30 天没有账单到期。在“计划”中添加你的账单，我会帮你跟踪。';
 }

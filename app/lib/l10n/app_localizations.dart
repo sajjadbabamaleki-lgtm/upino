@@ -3137,6 +3137,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stop counting it in the plan'**
   String get accountStopCounting;
+
+  /// No description provided for @moveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Best move'**
+  String get moveTitle;
+
+  /// No description provided for @moveTagMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get moveTagMove;
+
+  /// No description provided for @moveTagWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait'**
+  String get moveTagWait;
+
+  /// No description provided for @moveTagSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get moveTagSave;
+
+  /// No description provided for @moveTagSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend'**
+  String get moveTagSpend;
+
+  /// No description provided for @moveMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {amount} from {account} to cover what must be paid.'**
+  String moveMove(String amount, String account);
+
+  /// No description provided for @moveMoveWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'{claim} is short, and this money is sitting outside the plan.'**
+  String moveMoveWhy(String claim);
+
+  /// No description provided for @moveDoIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Move it'**
+  String get moveDoIt;
+
+  /// No description provided for @moveWaitGap.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold back on extras: on {date}, something that must be paid would be {amount} short.'**
+  String moveWaitGap(String date, String amount);
+
+  /// No description provided for @moveWaitGapWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'The projection counts your pay, bills and living costs up to that day.'**
+  String get moveWaitGapWhy;
+
+  /// No description provided for @moveWaitPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pay is {days, plural, =1{a day} other{{days} days}} away. Waiting for it turns {now} of room into {later}.'**
+  String moveWaitPay(int days, String now, String later);
+
+  /// No description provided for @moveWaitPayWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Only if what you have in mind can wait. Nothing is at risk either way.'**
+  String get moveWaitPayWhy;
+
+  /// No description provided for @moveSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {amount} to {account} for {goal}.'**
+  String moveSave(String amount, String account, String goal);
+
+  /// No description provided for @moveSaveWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'It gets there about {days, plural, =1{a day} other{{days} days}} sooner, and what stays free is still twice your usual month.'**
+  String moveSaveWhy(int days);
+
+  /// No description provided for @moveSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re covered until {date}: {amount} is free to use.'**
+  String moveSpend(String amount, String date);
+
+  /// No description provided for @moveSpendWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills and goals are already set aside, nothing ahead comes up short, and this is well above your usual spending.'**
+  String get moveSpendWhy;
+
+  /// No description provided for @moveNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get moveNotNow;
+
+  /// No description provided for @moveNone.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no move worth suggesting right now. Your plan stands as it is.'**
+  String get moveNone;
+
+  /// No description provided for @monthIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay that came in: {amount}.'**
+  String monthIncome(String amount);
+
+  /// No description provided for @monthToGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Put toward goals: {amount}.'**
+  String monthToGoals(String amount);
+
+  /// No description provided for @monthNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now: {free} free to spend, {aside} set aside.'**
+  String monthNow(String free, String aside);
+
+  /// No description provided for @monthAheadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The next 30 days'**
+  String get monthAheadTitle;
+
+  /// No description provided for @monthAheadBills.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{One bill comes to {amount}.} other{{count} bills come to {amount}.}}'**
+  String monthAheadBills(int count, String amount);
+
+  /// No description provided for @monthAheadPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next pay is expected {date}.'**
+  String monthAheadPay(String date);
+
+  /// No description provided for @monthAheadTightest.
+  ///
+  /// In en, this message translates to:
+  /// **'The tightest day is {date}, with {amount} free.'**
+  String monthAheadTightest(String date, String amount);
+
+  /// No description provided for @monthAheadShort.
+  ///
+  /// In en, this message translates to:
+  /// **'On {date}, something that must be paid would be {amount} short.'**
+  String monthAheadShort(String date, String amount);
+
+  /// No description provided for @monthWorthKnowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Worth knowing'**
+  String get monthWorthKnowing;
+
+  /// No description provided for @insightUp.
+  ///
+  /// In en, this message translates to:
+  /// **'{category} is up {amount} on the month before.'**
+  String insightUp(String category, String amount);
+
+  /// No description provided for @insightGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept up, that is about {days, plural, =1{a day} other{{days} days}} of {goal} every month.'**
+  String insightGoal(int days, String goal);
+
+  /// No description provided for @chatSuggestMove.
+  ///
+  /// In en, this message translates to:
+  /// **'What should I do next?'**
+  String get chatSuggestMove;
+
+  /// No description provided for @chatSuggestComing.
+  ///
+  /// In en, this message translates to:
+  /// **'What bills are coming up?'**
+  String get chatSuggestComing;
+
+  /// No description provided for @chatComingNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No bills are due in the next 30 days. Add the ones you pay on Plan and I\'ll keep track of them.'**
+  String get chatComingNone;
 }
 
 class _AppLocalizationsDelegate

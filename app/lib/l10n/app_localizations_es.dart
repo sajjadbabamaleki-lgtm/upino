@@ -1831,4 +1831,161 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'Dejar de contarla en el plan';
+
+  @override
+  String get moveTitle => 'Mejor jugada';
+
+  @override
+  String get moveTagMove => 'Mover';
+
+  @override
+  String get moveTagWait => 'Esperar';
+
+  @override
+  String get moveTagSave => 'Ahorrar';
+
+  @override
+  String get moveTagSpend => 'Gastar';
+
+  @override
+  String moveMove(String amount, String account) {
+    return 'Mueve $amount de $account para cubrir lo que hay que pagar.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return 'A $claim le falta dinero, y este está fuera del plan.';
+  }
+
+  @override
+  String get moveDoIt => 'Moverlo';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'Frena los extras: el $date faltarían $amount para algo que hay que pagar.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'La proyección cuenta tu pago, facturas y gastos de vida hasta ese día.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days días',
+      one: 'un día',
+    );
+    return 'Tu pago llega en $_temp0. Esperar convierte $now de margen en $later.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'Solo si lo que tienes en mente puede esperar. No hay riesgo en ningún caso.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return 'Mueve $amount a $account para $goal.';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days días',
+      one: 'un día',
+    );
+    return 'Llega unos $_temp0 antes, y lo libre sigue siendo el doble de tu mes habitual.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return 'Estás cubierto hasta el $date: $amount están libres para usar.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'Facturas y metas ya están apartadas, no falta nada más adelante y esto supera con creces tu gasto habitual.';
+
+  @override
+  String get moveNotNow => 'Ahora no';
+
+  @override
+  String get moveNone =>
+      'Ahora mismo no hay ninguna jugada que valga la pena sugerir. Tu plan sigue como está.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'Pago recibido: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'Destinado a metas: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'Ahora: $free libres, $aside apartados.';
+  }
+
+  @override
+  String get monthAheadTitle => 'Los próximos 30 días';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count facturas suman $amount.',
+      one: 'Una factura suma $amount.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'Tu próximo pago se espera el $date.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'El día más justo es el $date, con $amount libres.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return 'El $date faltarían $amount para algo que hay que pagar.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'Vale la pena saber';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category sube $amount respecto al mes anterior.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days días',
+      one: 'un día',
+    );
+    return 'Si sigue así, son unos $_temp0 de $goal cada mes.';
+  }
+
+  @override
+  String get chatSuggestMove => '¿Qué hago ahora?';
+
+  @override
+  String get chatSuggestComing => '¿Qué facturas vienen?';
+
+  @override
+  String get chatComingNone =>
+      'No vence ninguna factura en los próximos 30 días. Añade las tuyas en Plan y las seguiré.';
 }

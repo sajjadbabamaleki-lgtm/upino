@@ -18,6 +18,7 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
+import '../widgets/best_move_card.dart' show bestMoveLines;
 import '../widgets/month_review.dart';
 import '../widgets/top_bar.dart' show UpinoMark;
 import 'ask_chat_screen.dart';
@@ -358,6 +359,11 @@ String answerPreview(BuildContext context, AskAnswer answer) {
       l.askHubAsidePreview(total.display(), claims.length),
     MonthReviewAnswer(:final review) =>
       monthReviewLines(l, review).take(2).join(' '),
+    BestMoveAnswer(:final move) =>
+      move == null ? l.moveNone : bestMoveLines(context, move).$1,
+    ComingUpAnswer(:final bills, :final total) => bills.isEmpty
+        ? l.chatComingNone
+        : l.homeComingUpTotal(total.display()),
     AdviceAnswer(:final acquaintance) when
         acquaintance == Acquaintance.newcomer =>
       l.chatAdviceTooSoon,

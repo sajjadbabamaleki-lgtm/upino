@@ -1787,4 +1787,136 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'Не учитывать в плане';
+
+  @override
+  String get moveTitle => 'Лучший шаг';
+
+  @override
+  String get moveTagMove => 'Перевести';
+
+  @override
+  String get moveTagWait => 'Подождать';
+
+  @override
+  String get moveTagSave => 'Отложить';
+
+  @override
+  String get moveTagSpend => 'Тратить';
+
+  @override
+  String moveMove(String amount, String account) {
+    return 'Переведите $amount с «$account», чтобы покрыть обязательный платёж.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return 'На «$claim» не хватает, а эти деньги лежат вне плана.';
+  }
+
+  @override
+  String get moveDoIt => 'Перевести';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'Повремените с лишним: $date на обязательный платёж не хватит $amount.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'Прогноз учитывает зарплату, счета и траты на жизнь до этого дня.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'До зарплаты $days дн. Если подождать, свободных денег станет не $now, а $later.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'Только если задуманное может подождать. Риска нет в любом случае.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return 'Переведите $amount на «$account» для цели «$goal».';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'Цель будет достигнута примерно на $days дн. раньше, а свободных денег останется вдвое больше обычного месяца.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return 'До $date всё покрыто: $amount свободны.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'Счета и цели уже отложены, впереди ничего не проседает, и это заметно больше ваших обычных трат.';
+
+  @override
+  String get moveNotNow => 'Не сейчас';
+
+  @override
+  String get moveNone => 'Сейчас нечего посоветовать. План в порядке как есть.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'Поступила зарплата: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'Отложено на цели: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'Сейчас: свободно $free, отложено $aside.';
+  }
+
+  @override
+  String get monthAheadTitle => 'Следующие 30 дней';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return 'Счетов: $count, на $amount.';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'Следующая зарплата ожидается $date.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'Самый напряжённый день — $date, свободно $amount.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return '$date на обязательный платёж не хватит $amount.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'Стоит знать';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '«$category» выросло на $amount к прошлому месяцу.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'Если так пойдёт, это около $days дн. цели «$goal» каждый месяц.';
+  }
+
+  @override
+  String get chatSuggestMove => 'Что мне сейчас лучше сделать?';
+
+  @override
+  String get chatSuggestComing => 'Какие счета впереди?';
+
+  @override
+  String get chatComingNone =>
+      'В ближайшие 30 дней счетов нет. Добавьте свои в «План», и я буду за ними следить.';
 }

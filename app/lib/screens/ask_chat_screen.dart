@@ -26,6 +26,7 @@ import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
+import '../widgets/best_move_card.dart' show bestMoveLines, moveTag;
 import '../widgets/month_review.dart';
 import '../widgets/purchase_scenarios.dart';
 import '../widgets/timeline_card.dart';
@@ -315,7 +316,9 @@ class _Suggestions extends StatelessWidget {
 /// words a person would type them.
 List<(SuggestedQuestion, String)> suggestedQuestions(AppLocalizations l) => [
       (SuggestedQuestion.safeToSpend, l.chatSuggestSafe),
+      (SuggestedQuestion.bestMove, l.chatSuggestMove),
       (SuggestedQuestion.nextPay, l.chatSuggestPay),
+      (SuggestedQuestion.comingUp, l.chatSuggestComing),
       (SuggestedQuestion.whereItWent, l.chatSuggestWhere),
       (SuggestedQuestion.setAside, l.chatSuggestAside),
       (SuggestedQuestion.monthReview, l.chatSuggestMonth),
@@ -516,10 +519,59 @@ class _AnswerView extends StatelessWidget {
             PurchaseScenarios(result: scenarios),
           ],
         ),
-      MonthReviewAnswer(:final review) => say(
-          const Key('chat-answer-month'),
-          monthReviewLines(l, review),
-        ),
+      MonthReviewAnswer() => () {
+          final close = monthClose(context, state);
+          return Column(
+            key: const Key('chat-answer-month'),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              say(const Key('chat-month-past'), close.past),
+              if (close.ahead.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                say(
+                  const Key('chat-month-ahead'),
+                  ['${l.monthAheadTitle}:', ...close.ahead],
+                ),
+              ],
+              if (close.worth.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                say(
+                  const Key('chat-month-worth'),
+                  ['${l.monthWorthKnowing}:', ...close.worth],
+                ),
+              ],
+            ],
+          );
+        }(),
+      BestMoveAnswer(:final move) => move == null
+          ? say(const Key('chat-answer-move'), [l.moveNone])
+          : () {
+              final (what, why) = bestMoveLines(context, move);
+              return say(
+                const Key('chat-answer-move'),
+                ['${moveTag(l, move.kind)}:', what, why],
+              );
+            }(),
+      ComingUpAnswer(:final bills, :final total) => bills.isEmpty
+          ? say(const Key('chat-answer-coming'), [l.chatComingNone])
+          : _Bubble(
+              fromPlan: true,
+              child: Column(
+                key: const Key('chat-answer-coming'),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(l.homeComingUpTotal(total.display()), style: body),
+                  rows([
+                    for (final b in bills.take(6))
+                      (
+                        '${b.bill.name}${UpinoTokens.separator}'
+                            '${formatDate(context, b.due)}',
+                        b.bill.amount.display(),
+                      ),
+                  ]),
+                ],
+              ),
+            ),
       SafeToSpendAnswer(
         :final amount,
         :final until,

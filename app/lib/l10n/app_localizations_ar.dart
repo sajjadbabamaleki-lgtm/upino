@@ -1756,4 +1756,136 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountStopCounting => 'أوقف احتسابه في الخطة';
+
+  @override
+  String get moveTitle => 'أفضل خطوة';
+
+  @override
+  String get moveTagMove => 'انقل';
+
+  @override
+  String get moveTagWait => 'انتظر';
+
+  @override
+  String get moveTagSave => 'ادّخر';
+
+  @override
+  String get moveTagSpend => 'أنفق';
+
+  @override
+  String moveMove(String amount, String account) {
+    return 'انقل $amount من $account لتغطية ما يجب دفعه.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim ناقص، وهذا المال خارج الخطة.';
+  }
+
+  @override
+  String get moveDoIt => 'انقله';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'أجّل الكماليات: في $date سينقص $amount من دفعة لا بد منها.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'يحسب التوقع راتبك وفواتيرك ومعيشتك حتى ذلك اليوم.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'راتبك بعد $days يوم. الانتظار يحوّل $now المتاحة إلى $later.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'فقط إن كان ما تفكر فيه يحتمل الانتظار. لا خطر في الحالتين.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return 'انقل $amount إلى $account من أجل $goal.';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'يصل قبل نحو $days يوم، ويبقى المتاح ضعف إنفاقك الشهري المعتاد.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return 'أنت مغطى حتى $date: $amount متاح لك.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'الفواتير والأهداف محجوزة، ولا نقص قادم، وهذا أعلى بكثير من إنفاقك المعتاد.';
+
+  @override
+  String get moveNotNow => 'ليس الآن';
+
+  @override
+  String get moveNone => 'لا توجد خطوة تستحق الاقتراح الآن. خطتك قائمة كما هي.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'الدخل الوارد: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'وُضع للأهداف: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'الآن: $free متاح، و$aside محجوز.';
+  }
+
+  @override
+  String get monthAheadTitle => 'الأيام الثلاثون القادمة';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count فواتير بمجموع $amount.';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'يُتوقع راتبك التالي في $date.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'أضيق يوم هو $date، بمبلغ متاح $amount.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return 'في $date سينقص $amount من دفعة لا بد منها.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'يستحق المعرفة';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category ارتفع $amount عن الشهر السابق.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'إن استمر، فهو نحو $days يوم من $goal كل شهر.';
+  }
+
+  @override
+  String get chatSuggestMove => 'ماذا أفعل الآن؟';
+
+  @override
+  String get chatSuggestComing => 'ما الفواتير القادمة؟';
+
+  @override
+  String get chatComingNone =>
+      'لا فواتير مستحقة خلال 30 يومًا. أضف فواتيرك في «الخطة» وسأتابعها.';
 }

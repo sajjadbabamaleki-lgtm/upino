@@ -1,16 +1,19 @@
-/// Month Close (§13): the last thirty days in a few plain facts, the same
-/// on Activity and in the chat. No score, no grade and no advice: what went
-/// out, what moved most, and whether the goals are keeping up.
+/// Month Close (Strategy §13): what happened over the last thirty days,
+/// where things stand, what the next thirty need, and anything worth
+/// knowing — the same on Activity and in the chat. No score, no grade: what
+/// went out and came in, what moved, and what is coming.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/dates.dart';
 import '../state/app_state.dart';
+import '../state/insights.dart';
 import 'amount_sheet.dart' show categoryLabel;
 
-/// The review as sentences, in the order they are best read.
+/// The last thirty days as sentences, in the order they are best read.
 List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
   if (!r.ready) return [l.monthTooSoon(r.daysToReady)];
   final change = r.change;
@@ -23,6 +26,8 @@ List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
         l.monthMore(change.display())
       else
         l.monthLess((-change).display()),
+    if ((r.income?.minor ?? 0) > 0) l.monthIncome(r.income!.display()),
+    if ((r.toGoals?.minor ?? 0) > 0) l.monthToGoals(r.toGoals!.display()),
     if (r.up case final up?) l.monthUp(categoryLabel(l, up), r.upBy!.display()),
     if (r.down case final down?)
       l.monthDown(categoryLabel(l, down), r.downBy!.display()),
@@ -30,16 +35,70 @@ List<String> monthReviewLines(AppLocalizations l, MonthReview r) {
   ];
 }
 
-class MonthReviewCard extends StatelessWidget {
-  const MonthReviewCard({required this.review, super.key});
+/// The whole close: behind, now, ahead and worth knowing.
+({List<String> past, List<String> ahead, List<String> worth}) monthClose(
+  BuildContext context,
+  AppState state,
+) {
+  final l = AppLocalizations.of(context);
+  final r = state.monthReview;
+  final s = state.snapshot;
+  final a = state.monthAhead;
+  final short = a.shortOn;
+  final tight = a.tightest;
+  return (
+    past: [
+      ...monthReviewLines(l, r),
+      if (r.ready)
+        l.monthNow(s.safeToSpendNow.display(), s.protectedTotal.display()),
+    ],
+    ahead: [
+      if (a.billCount > 0) l.monthAheadBills(a.billCount, a.billTotal.display()),
+      if (a.nextPay != null) l.monthAheadPay(formatDate(context, a.nextPay!)),
+      if (short != null)
+        l.monthAheadShort(formatDate(context, short.day), short.gap!.display())
+      else if (tight != null)
+        l.monthAheadTightest(
+          formatDate(context, tight.day),
+          tight.free!.display(),
+        ),
+    ],
+    worth: [
+      for (final i in state.insights) ...[
+        l.insightUp(categoryLabel(l, i.category), i.up.display()),
+        if (i.goal != null && (i.goalDays ?? 0) > 0)
+          l.insightGoal(i.goalDays!, i.goal!.name),
+      ],
+    ],
+  );
+}
 
-  final MonthReview review;
+class MonthReviewCard extends StatelessWidget {
+  const MonthReviewCard({required this.state, super.key});
+
+  final AppState state;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final lines = monthReviewLines(l, review);
+    final close = monthClose(context, state);
+
+    Widget lines(List<String> items) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var i = 0; i < items.length; i++) ...[
+              Text(
+                items[i],
+                style: i == 0
+                    ? theme.textTheme.bodyMedium
+                    : theme.textTheme.bodySmall,
+              ),
+              if (i != items.length - 1) const SizedBox(height: 6),
+            ],
+          ],
+        );
+
     return UpinoCard(
       key: const Key('month-review'),
       child: Column(
@@ -49,14 +108,22 @@ class MonthReviewCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(l.monthWindow, style: theme.textTheme.bodySmall),
           const SizedBox(height: 12),
-          for (var i = 0; i < lines.length; i++) ...[
+          lines(close.past),
+          if (close.ahead.isNotEmpty) ...[
+            Divider(height: 28, color: borderColor(context)),
+            Text(l.monthAheadTitle, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 8),
+            lines(close.ahead),
+          ],
+          if (close.worth.isNotEmpty) ...[
+            Divider(height: 28, color: borderColor(context)),
             Text(
-              lines[i],
-              style: i == 0
-                  ? theme.textTheme.bodyMedium
-                  : theme.textTheme.bodySmall,
+              l.monthWorthKnowing,
+              key: const Key('month-worth-knowing'),
+              style: theme.textTheme.titleMedium,
             ),
-            if (i != lines.length - 1) const SizedBox(height: 6),
+            const SizedBox(height: 8),
+            lines(close.worth),
           ],
         ],
       ),

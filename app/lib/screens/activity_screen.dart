@@ -125,7 +125,7 @@ class ActivityScreen extends StatelessWidget {
         // and nothing else tells the person nothing they did not know.
         // Once there is a month to look back on.
         if (review.ready) ...[
-          MonthReviewCard(review: review),
+          MonthReviewCard(state: state),
           const SizedBox(height: 10),
         ],
         // Money on its way back is shown apart: it is not money yet.
