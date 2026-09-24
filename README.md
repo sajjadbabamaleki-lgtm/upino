@@ -187,10 +187,10 @@ the mark and the page's name on the left, the bell and Profile on the right.
 
 | Screen | Where | Holds |
 |---|---|---|
-| Home | tab | The decision: Safe-to-Spend, what is short, how much is already spoken for and until when, why the figure moved |
-| Plan | tab | Commitments, income and balance — listed in waterfall order |
-| Goals | tab | Targets, progress and what each needs from this pay period |
-| Activity | tab | What was recorded, how to correct it, and the month review |
+| Home | tab | The decision: Safe-to-Spend, the best move if there is one, whether pay that is due has come, the timeline ahead, bills coming up, what is set aside and why the figure moved |
+| Plan | tab | Accounts, income, bills and subscriptions, goals and commitments — in waterfall order |
+| Goals | tab | Targets, where each is heading at the pace the plan can hold, and a path chart with a pace slider |
+| Activity | tab | What was recorded, how to correct it, money coming back, and the month close |
 | Ask | tab | A chat about the plan, answered by the plan (below) |
 | Alerts | bell | What needs the person, derived from the plan, never stored |
 | Profile | capsule | Balance confirmation, confidence, theme, backup, starting over |
@@ -210,10 +210,51 @@ keep only their questions; answers are recomputed from the plan whenever one
 is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
 
-The month review compares the last thirty days with the thirty before: what
-went out, the category that rose and the one that fell most, and how many
-goals are on track. It appears on Activity after a month of use and can be
-asked for in the chat. It states facts; there is no score.
+**The timeline** (Home, and in the chat for a purchase) is a chart you run a
+finger along. Behind today it is the balance as the record stood each day;
+ahead it is the engine run forward, day by day, on stated assumptions — the
+pay on its date and every period after, bills on theirs, what is set aside
+for living spent evenly, and nothing else — so a plan spent as intended
+keeps its room level until the pay lifts it. For a purchase it draws the
+plan without it and with it bought today or after the pay. Charts run left
+to right in every language: mirrored, a rising line reads as a falling one.
+
+**Goals** show when each is reached at the pace the plan can actually hold
+for it, which is less than it asks for when money is short. The path chart
+has a pace slider; moving it only shows the new date, which is applied when
+the person chooses.
+
+**Bills and subscriptions** become claims: one due before the pay is held
+in full, a weekly one once per payment, and a quarterly or yearly one is
+built up over its period as a sinking fund, worked out from the dates with
+nothing stored. Paying one moves it to its next date. A bill can repay a
+loan or card instead of being a cost.
+
+**Accounts** need no bank connection: cash and bank accounts count, savings
+only when asked, a card's spending is set aside until the card is paid, and
+a loan goes down with its repayments. Moving money between accounts is
+neither spending nor income.
+
+**Money coming back** — a purchase that can be returned, or a refund on its
+way — is shown apart and counts only when it arrives. It is then put toward
+a goal, the buffer, or left free, on purpose.
+
+**Best move** is one suggestion on Home when one is worth making, with its
+reason: MOVE money sitting outside the plan to cover what is short, WAIT
+when something ahead would come up short or pay is days away, SAVE spare
+room into savings for the goal furthest behind, or SPEND, said plainly when
+everything is covered with room to spare. Each rule names its evidence;
+with thin evidence nothing is shown.
+
+**The month close** compares the last thirty days with the thirty before —
+what went out and came in, what went to goals, the category that rose and
+the one that fell most, how the goals stand — then the next thirty days:
+bills, the next pay, and the tightest day or a shortfall ahead. After two
+months of record it names a real rise in a category and what that much each
+month would mean for a goal, in days. It states facts; there is no score.
+
+Recording a spend suggests a category when similar past spends make one
+clear, and offers the other accounts it could be paid from.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.
