@@ -1261,4 +1261,83 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'कम खर्च कैसे करूँ?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'नई बातचीत';
+
+  @override
+  String get chatResumed => 'यहाँ के जवाब आज की आपकी योजना से निकाले गए हैं।';
+
+  @override
+  String get chatWhy => 'यह आँकड़ा ऐसे बनता है:';
+
+  @override
+  String get chatWhyHave => 'आपके पास';
+
+  @override
+  String get chatWhySetAside => 'पहले अलग रखा';
+
+  @override
+  String get chatWhyLeft => 'खर्च योग्य';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'मैं ठीक हूँ, पूछने के लिए शुक्रिया! आपका पैसा वहीं है जहाँ छोड़ा था। क्या जानना है?';
+
+  @override
+  String get chatSmallBye => 'फिर मिलेंगे! अगले बड़े खर्च से पहले आइएगा।';
+
+  @override
+  String get chatSmallOkay => 'और कुछ देखना है?';
+
+  @override
+  String get askHubTitle => 'Upino से बात करें';
+
+  @override
+  String get askHubNew =>
+      'पूछें कितना खर्च कर सकते हैं, किसी खरीद का असर, या वेतन कब आएगा। मैं अभी आपको जान रहा हूँ; जितना दर्ज करेंगे, उतना काम आऊँगा।';
+
+  @override
+  String askHubLearning(int days) {
+    return 'आपकी आदतें सीख रहा हूँ: लगभग $days दिन में सलाह के लिए पूरा मौसम होगा।';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'अब आपका पैसा अच्छी तरह जानता हूँ। कुछ भी पूछें, कम खर्च कैसे करें भी।';
+
+  @override
+  String get askHubStart => 'बातचीत शुरू करें';
+
+  @override
+  String get askHubCommon => 'आम सवाल';
+
+  @override
+  String get askHubHistory => 'आपकी बातचीत';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count सवाल';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$count प्रतिबद्धताओं के लिए $amount अलग रखा';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'यह बातचीत हटाएँ?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'सिर्फ़ बातचीत हटेगी। योजना में कुछ नहीं बदलेगा।';
+
+  @override
+  String get chatSmallHi => 'नमस्ते!';
+
+  @override
+  String get chatSmallHiFine => 'नमस्ते! मैं ठीक हूँ, शुक्रिया।';
 }

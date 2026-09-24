@@ -1297,4 +1297,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'How can I spend less?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'New chat';
+
+  @override
+  String get chatResumed =>
+      'Answers here are worked out from your plan as it is today.';
+
+  @override
+  String get chatWhy => 'Here\'s how the figure comes about:';
+
+  @override
+  String get chatWhyHave => 'What you have';
+
+  @override
+  String get chatWhySetAside => 'Set aside first';
+
+  @override
+  String get chatWhyLeft => 'Safe to spend';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'I\'m good, thanks for asking! Your money\'s where I left it. What would you like to know?';
+
+  @override
+  String get chatSmallBye => 'Bye! Come back before your next big spend.';
+
+  @override
+  String get chatSmallOkay => 'Anything else you\'d like to check?';
+
+  @override
+  String get askHubTitle => 'Talk to Upino';
+
+  @override
+  String get askHubNew =>
+      'Ask what you can spend, what a purchase would do, or when your pay comes. I\'m still getting to know you, so I\'ll get more useful as you record.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'I\'m learning your habits: about $days more days and I\'ll have a full season to advise from.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'I know your money well now. Ask me anything, including how to spend less.';
+
+  @override
+  String get askHubStart => 'Start a conversation';
+
+  @override
+  String get askHubCommon => 'Common questions';
+
+  @override
+  String get askHubHistory => 'Your conversations';
+
+  @override
+  String askHubTurns(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions',
+      one: '1 question',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount set aside across $count commitments';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'Delete this conversation?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'Only the conversation goes. Nothing in your plan changes.';
+
+  @override
+  String get chatSmallHi => 'Hi!';
+
+  @override
+  String get chatSmallHiFine => 'Hi! I\'m good, thanks.';
 }

@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/domain/category.dart';
+import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
@@ -141,7 +142,7 @@ void main() {
     testWidgets('reached from Home, answers a price with all three scenarios',
         (tester) async {
       await open(tester, funded(balance: '1000.00', rent: '900.00'));
-      expect(find.byType(AskChatScreen), findsOneWidget);
+      expect(find.byType(ChatPage), findsOneWidget);
 
       await ask(tester, '500');
 
@@ -205,14 +206,139 @@ void main() {
       expect(find.byKey(const Key('chat-answer-help')), findsOneWidget);
     });
 
-    testWidgets('the conversation survives switching tabs', (tester) async {
-      await open(tester, funded());
+    testWidgets('a conversation is kept, and reopens from the Ask tab',
+        (tester) async {
+      final state = funded();
+      await open(tester, state);
       await ask(tester, 'when is my next pay?');
-      await tester.tap(find.byKey(const Key('nav-0')));
+      await tester.tap(find.byKey(const Key('chat-back')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.pumpAndSettle();
+      final past = state.conversations.single;
+      await tester.tap(find.byKey(Key('ask-past-${past.id}')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('chat-answer-pay')), findsOneWidget);
+    });
+
+    testWidgets('Persian gets Persian back, in an English app', (tester) async {
+      await open(tester, funded());
+      await ask(tester, 'سلام');
+      expect(find.text('سلام! دربارهٔ پولت چی می‌خوای بدونی؟'), findsOneWidget);
+      // The opening and the chips follow the conversation into Persian.
+      expect(find.textContaining("You're new here"), findsNothing);
+      expect(find.text('چقدر می‌تونم خرج کنم؟'), findsOneWidget);
+    });
+
+    testWidgets('a greeting and a question get both', (tester) async {
+      await open(tester, funded());
+      await ask(tester, 'سلام، چقدر می‌تونم خرج کنم؟');
+      expect(find.byKey(const Key('chat-answer-smalltalk')), findsOneWidget);
+      expect(find.byKey(const Key('chat-answer-safe')), findsOneWidget);
+    });
+
+    testWidgets('why explains the figure', (tester) async {
+      await open(tester, funded());
+      await ask(tester, 'چرا؟');
+      expect(find.byKey(const Key('chat-answer-why')), findsOneWidget);
+    });
+  });
+
+  group('the Ask tab', () {
+    Future<void> openHub(WidgetTester tester, AppState state) async {
+      tester.view
+        ..physicalSize = const Size(420, 2000)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('nav-4')));
       await tester.pumpAndSettle();
+    }
+
+    testWidgets('is a hub, not a text box', (tester) async {
+      await openHub(tester, funded());
+      expect(find.byKey(const Key('ask-hero')), findsOneWidget);
+      expect(find.byType(ChatPage), findsNothing);
+      await tester.tap(find.byKey(const Key('ask-start')));
+      await tester.pumpAndSettle();
+      expect(find.byType(ChatPage), findsOneWidget);
+    });
+
+    testWidgets('common questions show part of their answer already',
+        (tester) async {
+      final state = funded();
+      await openHub(tester, state);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('ask-common-safeToSpend')),
+          matching: find.textContaining(state.snapshot.safeToSpendNow.display()),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a common question opens the chat already asked',
+        (tester) async {
+      final state = funded();
+      await openHub(tester, state);
+      await tester.tap(find.byKey(const Key('ask-common-nextPay')));
+      await tester.pumpAndSettle();
       expect(find.byKey(const Key('chat-answer-pay')), findsOneWidget);
+      expect(state.conversations, hasLength(1));
+    });
+
+    testWidgets('a past conversation can be deleted, after a yes',
+        (tester) async {
+      final state = funded();
+      final id = state.startConversation();
+      state.ask(id, 'hi');
+      await openHub(tester, state);
+      await tester.drag(find.byKey(Key('ask-past-$id')), const Offset(-500, 0));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('ask-delete-yes')));
+      await tester.pumpAndSettle();
+      expect(state.conversations, isEmpty);
+    });
+  });
+
+  group('conversations are kept', () {
+    test('questions and their language survive reopening', () async {
+      final store = InMemoryPlanStore();
+      final state = AppState(
+        now: DateTime.utc(2026, 10, 1, 10),
+        store: store,
+      )..completeOnboarding(
+          OnboardingDraft()
+            ..currentBalance = eur('2000.00')
+            ..incomeAmount = eur('2000.00')
+            ..nextIncomeDate = LocalDate.parse('2026-10-31'),
+        );
+      final id = state.startConversation();
+      state
+        ..ask(id, 'سلام', language: 'fa')
+        ..ask(id, 'how much can I spend');
+      final reopened = AppState(now: DateTime.utc(2026, 10, 2), store: store);
+      await reopened.restore();
+      final c = reopened.conversations.single;
+      expect(c.turns.map((t) => t.question), ['سلام', 'how much can I spend']);
+      expect(c.turns.first.language, 'fa');
+    });
+
+    test('opening a chat and leaving saves nothing', () {
+      final state = funded()..startConversation();
+      expect(state.conversations, isEmpty);
+    });
+  });
+
+  group('the reply language', () {
+    test('follows the question', () {
+      expect(replyLanguage('سلام', 'en'), 'fa');
+      expect(replyLanguage('hello', 'fa'), 'en');
+      expect(replyLanguage('hello', 'en'), isNull);
+      expect(replyLanguage('مرحبا', 'ar'), 'ar');
+      expect(replyLanguage('1500', 'fa'), isNull);
     });
   });
 
@@ -311,6 +437,34 @@ void main() {
   });
 
   group('talking like a person', () {
+    test('how are you, bye and ok', () {
+      final state = funded();
+      expect((answerQuestion('خوبی؟', state) as SmallTalkAnswer).kind,
+          SmallTalk.howAreYou,);
+      expect((answerQuestion('چطوری', state) as SmallTalkAnswer).kind,
+          SmallTalk.howAreYou,);
+      expect((answerQuestion('خداحافظ', state) as SmallTalkAnswer).kind,
+          SmallTalk.bye,);
+      expect((answerQuestion('باشه', state) as SmallTalkAnswer).kind,
+          SmallTalk.okay,);
+    });
+
+    test('a greeting with a question is both', () {
+      final r = reply('سلام خوبی؟ حقوقم کی میاد', funded());
+      expect((r.first as SmallTalkAnswer).kind, SmallTalk.hiFine);
+      expect(r.last, isA<NextPayAnswer>());
+      expect(r, hasLength(2));
+
+      final hello = reply('سلام خوبی', funded());
+      expect((hello.single as SmallTalkAnswer).kind, SmallTalk.howAreYou);
+    });
+
+    test('why adds up to the figure', () {
+      final state = funded(balance: '1000.00', rent: '400.00');
+      final a = answerQuestion('why?', state) as WhyAnswer;
+      expect(a.left, state.snapshot.safeToSpendNow);
+    });
+
     test('greetings, thanks and who-are-you', () {
       final state = funded();
       expect((answerQuestion('سلام', state) as SmallTalkAnswer).kind,
@@ -343,7 +497,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: funded()));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('home-ask')));
       await tester.pumpAndSettle();
       expect(find.textContaining("You're new here"), findsOneWidget);
     });
@@ -356,7 +510,7 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(UpinoApp(state: funded()));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('home-ask')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byKey(const Key('chat-input')), '100');
       await tester.tap(find.byKey(const Key('chat-send')));

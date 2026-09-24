@@ -1266,4 +1266,90 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => '¿Cómo gasto menos?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'Nuevo chat';
+
+  @override
+  String get chatResumed =>
+      'Las respuestas se calculan con tu plan tal como está hoy.';
+
+  @override
+  String get chatWhy => 'Así sale la cifra:';
+
+  @override
+  String get chatWhyHave => 'Lo que tienes';
+
+  @override
+  String get chatWhySetAside => 'Apartado primero';
+
+  @override
+  String get chatWhyLeft => 'Para gastar';
+
+  @override
+  String get chatSmallHowAreYou =>
+      '¡Bien, gracias por preguntar! Tu dinero sigue donde lo dejamos. ¿Qué quieres saber?';
+
+  @override
+  String get chatSmallBye => '¡Adiós! Vuelve antes de tu próximo gran gasto.';
+
+  @override
+  String get chatSmallOkay => '¿Algo más que quieras ver?';
+
+  @override
+  String get askHubTitle => 'Habla con Upino';
+
+  @override
+  String get askHubNew =>
+      'Pregunta cuánto puedes gastar, qué haría una compra o cuándo cobras. Aún te estoy conociendo; cuanto más anotes, más útil seré.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'Estoy aprendiendo tus hábitos: en unos $days días tendré una temporada completa para aconsejarte.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'Ya conozco bien tu dinero. Pregúntame lo que quieras, incluso cómo gastar menos.';
+
+  @override
+  String get askHubStart => 'Empezar a hablar';
+
+  @override
+  String get askHubCommon => 'Preguntas frecuentes';
+
+  @override
+  String get askHubHistory => 'Tus conversaciones';
+
+  @override
+  String askHubTurns(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count preguntas',
+      one: '1 pregunta',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount apartados en $count compromisos';
+  }
+
+  @override
+  String get askHubDeleteTitle => '¿Borrar esta conversación?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'Solo se borra la conversación. Tu plan no cambia.';
+
+  @override
+  String get chatSmallHi => '¡Hola!';
+
+  @override
+  String get chatSmallHiFine => '¡Hola! Bien, gracias.';
 }

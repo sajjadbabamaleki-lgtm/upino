@@ -2267,6 +2267,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How can I spend less?'**
   String get chatSuggestAdvice;
+
+  /// No description provided for @chatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino'**
+  String get chatTitle;
+
+  /// No description provided for @chatNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New chat'**
+  String get chatNew;
+
+  /// No description provided for @chatResumed.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers here are worked out from your plan as it is today.'**
+  String get chatResumed;
+
+  /// No description provided for @chatWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s how the figure comes about:'**
+  String get chatWhy;
+
+  /// No description provided for @chatWhyHave.
+  ///
+  /// In en, this message translates to:
+  /// **'What you have'**
+  String get chatWhyHave;
+
+  /// No description provided for @chatWhySetAside.
+  ///
+  /// In en, this message translates to:
+  /// **'Set aside first'**
+  String get chatWhySetAside;
+
+  /// No description provided for @chatWhyLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to spend'**
+  String get chatWhyLeft;
+
+  /// No description provided for @chatSmallHowAreYou.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m good, thanks for asking! Your money\'s where I left it. What would you like to know?'**
+  String get chatSmallHowAreYou;
+
+  /// No description provided for @chatSmallBye.
+  ///
+  /// In en, this message translates to:
+  /// **'Bye! Come back before your next big spend.'**
+  String get chatSmallBye;
+
+  /// No description provided for @chatSmallOkay.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything else you\'d like to check?'**
+  String get chatSmallOkay;
+
+  /// No description provided for @askHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to Upino'**
+  String get askHubTitle;
+
+  /// No description provided for @askHubNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask what you can spend, what a purchase would do, or when your pay comes. I\'m still getting to know you, so I\'ll get more useful as you record.'**
+  String get askHubNew;
+
+  /// No description provided for @askHubLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m learning your habits: about {days} more days and I\'ll have a full season to advise from.'**
+  String askHubLearning(int days);
+
+  /// No description provided for @askHubFamiliar.
+  ///
+  /// In en, this message translates to:
+  /// **'I know your money well now. Ask me anything, including how to spend less.'**
+  String get askHubFamiliar;
+
+  /// No description provided for @askHubStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a conversation'**
+  String get askHubStart;
+
+  /// No description provided for @askHubCommon.
+  ///
+  /// In en, this message translates to:
+  /// **'Common questions'**
+  String get askHubCommon;
+
+  /// No description provided for @askHubHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Your conversations'**
+  String get askHubHistory;
+
+  /// No description provided for @askHubTurns.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question} other{{count} questions}}'**
+  String askHubTurns(int count);
+
+  /// No description provided for @askHubAsidePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} set aside across {count} commitments'**
+  String askHubAsidePreview(String amount, int count);
+
+  /// No description provided for @askHubDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this conversation?'**
+  String get askHubDeleteTitle;
+
+  /// No description provided for @askHubDeleteBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the conversation goes. Nothing in your plan changes.'**
+  String get askHubDeleteBlurb;
+
+  /// No description provided for @chatSmallHi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi!'**
+  String get chatSmallHi;
+
+  /// No description provided for @chatSmallHiFine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! I\'m good, thanks.'**
+  String get chatSmallHiFine;
 }
 
 class _AppLocalizationsDelegate

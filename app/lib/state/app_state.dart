@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import '../data/plan_document.dart';
 import '../domain/bank_sms.dart';
 import '../domain/category.dart';
+import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
 import '../domain/inflation.dart';
@@ -253,6 +254,8 @@ class AppState extends ChangeNotifier {
   final List<BankSuggestion> _suggestions = [];
   bool _reminderEnabled = false;
   DateTime? _startedAt;
+  final List<Conversation> _conversations = [];
+  int _conversationSeq = 0;
   int _goalSeq = 0;
   Money? _openingBalance;
   DateTime? _lastBalanceConfirmation;
@@ -342,6 +345,13 @@ class AppState extends ChangeNotifier {
       ..addAll(document.smsHandled);
     _reminderEnabled = document.reminderEnabled;
     _startedAt = document.startedAt;
+    _conversations
+      ..clear()
+      ..addAll(document.conversations);
+    _conversationSeq = _conversations.fold(0, (seq, c) {
+      final n = int.tryParse(c.id.replaceFirst('c', '')) ?? 0;
+      return n > seq ? n : seq;
+    });
     _goals
       ..clear()
       ..addAll(document.goals);
@@ -415,6 +425,7 @@ class AppState extends ChangeNotifier {
         smsHandled: List.unmodifiable(_smsHandled),
         reminderEnabled: _reminderEnabled,
         startedAt: _startedAt,
+        conversations: List.unmodifiable(_conversations),
       );
 
   /// Every mutation persists. Saving is fire-and-forget so recording a spend
@@ -711,6 +722,52 @@ class AppState extends ChangeNotifier {
 
   Duration get utcOffset => _utcOffset;
   DateTime get now => _now;
+
+  // --- conversations with Ask ----------------------------------------------
+
+  /// Kept to the most recent, so the saved plan does not grow without end.
+  static const maxConversations = 30;
+  static const maxTurns = 60;
+
+  /// Newest first.
+  List<Conversation> get conversations =>
+      List.unmodifiable(_conversations.reversed);
+
+  Conversation? conversation(String id) =>
+      _conversations.where((c) => c.id == id).firstOrNull;
+
+  /// Begins a conversation and returns its id. Nothing is saved until the
+  /// first question, so opening the chat and leaving leaves no empty entry.
+  String startConversation() => 'c${++_conversationSeq}';
+
+  void ask(String conversationId, String question, {String? language}) {
+    final turn = ChatTurn(
+      question: question,
+      askedAt: _now,
+      language: language,
+    );
+    final index = _conversations.indexWhere((c) => c.id == conversationId);
+    if (index < 0) {
+      _conversations.add(
+        Conversation(id: conversationId, startedAt: _now, turns: [turn]),
+      );
+      if (_conversations.length > maxConversations) {
+        _conversations.removeAt(0);
+      }
+    } else {
+      final c = _conversations[index];
+      if (c.turns.length >= maxTurns) return;
+      _conversations[index] = c.withTurn(turn);
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  void deleteConversation(String id) {
+    _conversations.removeWhere((c) => c.id == id);
+    _persist();
+    notifyListeners();
+  }
 
   /// When this plan began. Saved from schema 8; for a plan older than that,
   /// the earliest thing it knows the time of stands in.
@@ -1218,6 +1275,8 @@ class AppState extends ChangeNotifier {
     _holdingSeq = 0;
     _suggestions.clear();
     _startedAt = null;
+    _conversations.clear();
+    _conversationSeq = 0;
     _goalSeq = 0;
     _openingBalance = null;
     _lastBalanceConfirmation = null;

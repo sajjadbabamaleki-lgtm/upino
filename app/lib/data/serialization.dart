@@ -10,6 +10,7 @@
 ///   §5 holds it. No decimal string, no double, nothing to re-parse wrongly.
 library;
 
+import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
 import '../engine/clock.dart';
@@ -28,7 +29,8 @@ import '../engine/money.dart';
 /// 6 — added holdings outside the plan.
 /// 7 — added bank-message suggestions and the evening reminder.
 /// 8 — added when the plan was started.
-const int schemaVersion = 8;
+/// 9 — added conversations with Ask.
+const int schemaVersion = 9;
 
 class UnreadablePlanDocument implements Exception {
   const UnreadablePlanDocument(this.reason);
@@ -346,3 +348,34 @@ Holding holdingFromJson(Map<String, Object?> json) {
     pricedOn: localDateFromJson(json['pricedOn']),
   );
 }
+
+// --- conversations ---------------------------------------------------------
+
+Map<String, Object?> conversationToJson(Conversation c) => {
+      'id': c.id,
+      'startedAt': c.startedAt.toUtc().toIso8601String(),
+      'turns': [
+        for (final t in c.turns)
+          {
+            'question': t.question,
+            'askedAt': t.askedAt.toUtc().toIso8601String(),
+            if (t.language != null) 'language': t.language,
+          },
+      ],
+    };
+
+Conversation conversationFromJson(Map<String, Object?> json) => Conversation(
+      id: json['id']! as String,
+      startedAt: DateTime.parse(json['startedAt']! as String),
+      turns: [
+        for (final raw in (json['turns'] as List?) ?? const [])
+          () {
+            final t = Map<String, Object?>.from(raw as Map);
+            return ChatTurn(
+              question: t['question']! as String,
+              askedAt: DateTime.parse(t['askedAt']! as String),
+              language: t['language'] as String?,
+            );
+          }(),
+      ],
+    );

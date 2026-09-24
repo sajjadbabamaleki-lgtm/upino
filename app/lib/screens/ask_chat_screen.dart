@@ -1,9 +1,14 @@
-/// Ask, as a conversation: questions about the plan, answered by the plan.
+/// Ask, as a conversation on its own page: questions about the plan,
+/// answered by the plan.
 ///
 /// Every answer is built from the engine's own snapshot or, for a purchase,
-/// the same three full plans the Ask screen shows (Strategic Evolution
-/// §3.3). The chat never says yes or no to a purchase; it shows what each
-/// choice would leave, and the decision stays with the person (§7).
+/// the same three full plans the scenario cards show (Strategic Evolution
+/// §3.3). It never says yes or no to a purchase; it shows what each choice
+/// would leave, and the decision stays with the person (§7).
+///
+/// A reply comes back in the language the question was written in, whatever
+/// the app itself is set to: Persian typed into an app following an English
+/// phone gets Persian back.
 library;
 
 import 'package:flutter/material.dart';
@@ -13,6 +18,8 @@ import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
 import '../device/voice.dart';
+import '../domain/conversation.dart';
+import '../engine/clock.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../l10n/labels.dart';
@@ -21,46 +28,59 @@ import '../state/ask_answers.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
 import '../widgets/purchase_scenarios.dart';
 
-/// One exchange: what was asked, and what the plan answered.
-class ChatEntry {
-  const ChatEntry({required this.question, required this.answer});
-  final String question;
-  final AskAnswer answer;
-}
-
-/// Kept by the home screen, so the conversation survives switching tabs.
-/// Not saved: every answer is recomputed from the plan on demand, and an old
-/// answer to an old plan is not worth keeping.
-class ChatLog extends ChangeNotifier {
-  final List<ChatEntry> _entries = [];
-  List<ChatEntry> get entries => List.unmodifiable(_entries);
-
-  void add(ChatEntry entry) {
-    _entries.add(entry);
-    notifyListeners();
-  }
-}
-
-class AskChatScreen extends StatefulWidget {
-  const AskChatScreen({
+class ChatPage extends StatefulWidget {
+  const ChatPage({
     required this.state,
-    required this.log,
-    required this.padding,
+    this.conversationId,
+    this.firstQuestion,
     super.key,
   });
 
   final AppState state;
-  final ChatLog log;
-  final EdgeInsets padding;
+
+  /// An earlier conversation to carry on, or null to start a new one.
+  final String? conversationId;
+
+  /// Asked as soon as the page opens, for a question chosen elsewhere.
+  final String? firstQuestion;
+
+  static Future<void> open(
+    BuildContext context,
+    AppState state, {
+    String? conversationId,
+    String? firstQuestion,
+  }) =>
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => ChatPage(
+            state: state,
+            conversationId: conversationId,
+            firstQuestion: firstQuestion,
+          ),
+        ),
+      );
 
   @override
-  State<AskChatScreen> createState() => _AskChatScreenState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _AskChatScreenState extends State<AskChatScreen> {
+class _ChatPageState extends State<ChatPage> {
   final _input = TextEditingController();
   final _scroll = ScrollController();
+  late String _id;
   bool _listening = false;
+
+  AppState get state => widget.state;
+
+  @override
+  void initState() {
+    super.initState();
+    _id = widget.conversationId ?? state.startConversation();
+    final first = widget.firstQuestion;
+    if (first != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _ask(first));
+    }
+  }
 
   @override
   void dispose() {
@@ -71,20 +91,14 @@ class _AskChatScreenState extends State<AskChatScreen> {
 
   void _ask(String question) {
     final q = question.trim();
-    if (q.isEmpty) return;
-    widget.log.add(
-      ChatEntry(question: q, answer: answerQuestion(q, widget.state)),
-    );
+    if (q.isEmpty || !mounted) return;
+    final app = Localizations.localeOf(context).languageCode;
+    state.ask(_id, q, language: replyLanguage(q, app));
     _input.clear();
     _toBottom();
   }
 
-  void _askSuggested(SuggestedQuestion q, String asText) {
-    widget.log.add(
-      ChatEntry(question: asText, answer: answerSuggested(q, widget.state)),
-    );
-    _toBottom();
-  }
+  void _newConversation() => setState(() => _id = state.startConversation());
 
   void _toBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -122,7 +136,182 @@ class _AskChatScreenState extends State<AskChatScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final suggestions = [
+
+    return Scaffold(
+      body: SafeArea(
+        child: _PageDirection(
+          direction: Directionality.of(context),
+          child: AnimatedBuilder(
+            animation: state,
+            builder: (context, _) {
+              final conversation = state.conversation(_id);
+              final turns = conversation?.turns ?? const <ChatTurn>[];
+              final resumed = turns.isNotEmpty &&
+                  LocalDate.at(turns.first.askedAt, state.utcOffset) !=
+                      state.today;
+              return Column(
+                children: [
+                  _ChatHeader(
+                    onBack: () => Navigator.of(context).pop(),
+                    onNew: turns.isEmpty ? null : _newConversation,
+                  ),
+                  Expanded(
+                    child: ListView(
+                      controller: _scroll,
+                      padding: const EdgeInsets.fromLTRB(
+                        UpinoTokens.gutter,
+                        4,
+                        UpinoTokens.gutter,
+                        12,
+                      ),
+                      children: [
+                        // The opening follows the conversation's language
+                        // once there is one.
+                        _InLanguage(
+                          language: turns.firstOrNull?.language,
+                          child: _AnswerView(answer: greet(state)),
+                        ),
+                        if (resumed) ...[
+                          const SizedBox(height: 10),
+                          Center(
+                            child: Text(
+                              l.chatResumed,
+                              key: const Key('chat-resumed'),
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                        for (final turn in turns) ...[
+                          const SizedBox(height: 10),
+                          _Bubble(
+                            fromPlan: false,
+                            child: Text(
+                              turn.question,
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                          ),
+                          _InLanguage(
+                            language: turn.language,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                for (final answer
+                                    in reply(turn.question, state)) ...[
+                                  const SizedBox(height: 10),
+                                  _AnswerView(answer: answer),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  _InLanguage(
+                    language: turns.lastOrNull?.language,
+                    child: _Suggestions(onAsk: _ask),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      UpinoTokens.gutter,
+                      10,
+                      UpinoTokens.gutter,
+                      12,
+                    ),
+                    child: Container(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(18, 4, 6, 4),
+                      decoration: BoxDecoration(
+                        color: cardColor(context),
+                        borderRadius:
+                            BorderRadius.circular(UpinoTokens.radiusPill),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              key: const Key('chat-input'),
+                              controller: _input,
+                              textInputAction: TextInputAction.send,
+                              onSubmitted: _ask,
+                              style: theme.textTheme.bodyMedium,
+                              decoration: InputDecoration(
+                                hintText: l.chatHint,
+                                hintStyle: theme.textTheme.bodyMedium
+                                    ?.copyWith(color: UpinoTokens.textTertiary),
+                                border: InputBorder.none,
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                          if (VoiceInput.instance != null)
+                            IconButton(
+                              key: const Key('chat-voice'),
+                              onPressed: _speak,
+                              icon: UpinoIcon(
+                                'mic',
+                                size: 21,
+                                color: _listening
+                                    ? (isDark(context)
+                                        ? UpinoTokens.darkActionPrimary
+                                        : UpinoTokens.actionPrimary)
+                                    : UpinoTokens.textTertiary,
+                              ),
+                            ),
+                          IconButton.filled(
+                            key: const Key('chat-send'),
+                            onPressed: () => _ask(_input.text),
+                            icon: const Icon(
+                              Icons.arrow_upward_rounded,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One-tap questions above the input, in the conversation's language.
+class _Suggestions extends StatelessWidget {
+  const _Suggestions({required this.onAsk});
+
+  final ValueChanged<String> onAsk;
+
+  @override
+  Widget build(BuildContext context) {
+    final suggestions = suggestedQuestions(AppLocalizations.of(context));
+    return SizedBox(
+      height: 40,
+      child: ListView.separated(
+        key: const Key('chat-suggestions'),
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: UpinoTokens.gutter),
+        itemCount: suggestions.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, i) => ActionChip(
+          key: Key('chat-suggest-${suggestions[i].$1.name}'),
+          label: Text(suggestions[i].$2),
+          onPressed: () => onAsk(suggestions[i].$2),
+        ),
+      ),
+    );
+  }
+}
+
+/// The questions offered as chips and as the hub's common questions, in the
+/// words a person would type them.
+List<(SuggestedQuestion, String)> suggestedQuestions(AppLocalizations l) => [
       (SuggestedQuestion.safeToSpend, l.chatSuggestSafe),
       (SuggestedQuestion.nextPay, l.chatSuggestPay),
       (SuggestedQuestion.whereItWent, l.chatSuggestWhere),
@@ -130,112 +319,72 @@ class _AskChatScreenState extends State<AskChatScreen> {
       (SuggestedQuestion.advice, l.chatSuggestAdvice),
     ];
 
-    return AnimatedBuilder(
-      animation: widget.log,
-      builder: (context, _) {
-        final entries = widget.log.entries;
-        return Column(
-          children: [
-            Expanded(
-              child: ListView(
-                controller: _scroll,
-                padding: widget.padding.copyWith(bottom: 12),
-                children: [
-                  // Recomputed each time, so it grows with what it knows.
-                  _AnswerView(answer: greet(widget.state)),
-                  for (final e in entries) ...[
-                    const SizedBox(height: 10),
-                    _Bubble(
-                      fromPlan: false,
-                      child: Text(
-                        e.question,
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    _AnswerView(answer: e.answer),
-                  ],
-                ],
-              ),
+class _ChatHeader extends StatelessWidget {
+  const _ChatHeader({required this.onBack, this.onNew});
+
+  final VoidCallback onBack;
+  final VoidCallback? onNew;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+      child: Row(
+        children: [
+          IconButton(
+            key: const Key('chat-back'),
+            onPressed: onBack,
+            icon: const UpinoIcon('back', size: 24),
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          ),
+          Expanded(
+            child: Text(l.chatTitle, style: theme.textTheme.titleLarge),
+          ),
+          if (onNew != null)
+            TextButton(
+              key: const Key('chat-new'),
+              onPressed: onNew,
+              child: Text(l.chatNew),
             ),
-            SizedBox(
-              height: 40,
-              child: ListView.separated(
-                key: const Key('chat-suggestions'),
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: UpinoTokens.gutter,
-                ),
-                itemCount: suggestions.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
-                itemBuilder: (context, i) => ActionChip(
-                  key: Key('chat-suggest-${suggestions[i].$1.name}'),
-                  label: Text(suggestions[i].$2),
-                  onPressed: () =>
-                      _askSuggested(suggestions[i].$1, suggestions[i].$2),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                UpinoTokens.gutter,
-                10,
-                UpinoTokens.gutter,
-                widget.padding.bottom,
-              ),
-              child: Container(
-                padding: const EdgeInsetsDirectional.fromSTEB(18, 4, 6, 4),
-                decoration: BoxDecoration(
-                  color: cardColor(context),
-                  borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        key: const Key('chat-input'),
-                        controller: _input,
-                        textInputAction: TextInputAction.send,
-                        onSubmitted: _ask,
-                        style: theme.textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                          hintText: l.chatHint,
-                          hintStyle: theme.textTheme.bodyMedium
-                              ?.copyWith(color: UpinoTokens.textTertiary),
-                          border: InputBorder.none,
-                          isDense: true,
-                        ),
-                      ),
-                    ),
-                    if (VoiceInput.instance != null)
-                      IconButton(
-                        key: const Key('chat-voice'),
-                        onPressed: _speak,
-                        icon: UpinoIcon(
-                          'mic',
-                          size: 21,
-                          color: _listening
-                              ? (isDark(context)
-                                  ? UpinoTokens.darkActionPrimary
-                                  : UpinoTokens.actionPrimary)
-                              : UpinoTokens.textTertiary,
-                        ),
-                      ),
-                    IconButton.filled(
-                      key: const Key('chat-send'),
-                      onPressed: () => _ask(_input.text),
-                      icon: const Icon(Icons.arrow_upward_rounded, size: 20),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
+}
+
+/// The page's own direction, carried past a reply shown in another language
+/// so bubbles keep their sides while their text reads its own way.
+class _PageDirection extends InheritedWidget {
+  const _PageDirection({required this.direction, required super.child});
+
+  final TextDirection direction;
+
+  static TextDirection of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_PageDirection>()?.direction ??
+      Directionality.of(context);
+
+  @override
+  bool updateShouldNotify(_PageDirection old) => old.direction != direction;
+}
+
+/// Shows [child] in [language] when there is one: its words, its dates and
+/// its direction.
+class _InLanguage extends StatelessWidget {
+  const _InLanguage({required this.language, required this.child});
+
+  final String? language;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => language == null
+      ? child
+      : Localizations.override(
+          context: context,
+          locale: Locale(language!),
+          child: child,
+        );
 }
 
 class _Bubble extends StatelessWidget {
@@ -248,10 +397,12 @@ class _Bubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = isDark(context);
     const r = Radius.circular(20);
+    // Sides follow the page, not the reply: a Persian answer in an English
+    // app is still the app's side of the conversation.
+    final rtl = _PageDirection.of(context) == TextDirection.rtl;
+    final onLeft = fromPlan != rtl;
     return Align(
-      alignment: fromPlan
-          ? AlignmentDirectional.centerStart
-          : AlignmentDirectional.centerEnd,
+      alignment: onLeft ? Alignment.centerLeft : Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.sizeOf(context).width * 0.82,
@@ -264,11 +415,12 @@ class _Bubble extends StatelessWidget {
                 : (dark
                     ? UpinoTokens.darkActionPrimary
                     : UpinoTokens.actionPrimary),
-            borderRadius: BorderRadiusDirectional.only(
-              topStart: r,
-              topEnd: r,
-              bottomStart: fromPlan ? const Radius.circular(6) : r,
-              bottomEnd: fromPlan ? r : const Radius.circular(6),
+            // The small corner points at whoever said it.
+            borderRadius: BorderRadius.only(
+              topLeft: r,
+              topRight: r,
+              bottomLeft: onLeft ? const Radius.circular(6) : r,
+              bottomRight: onLeft ? r : const Radius.circular(6),
             ),
           ),
           child: child,
@@ -476,8 +628,28 @@ class _AnswerView extends StatelessWidget {
               SmallTalk.hello => l.chatSmallHello,
               SmallTalk.thanks => l.chatSmallThanks,
               SmallTalk.whoAreYou => l.chatSmallWho,
+              SmallTalk.howAreYou => l.chatSmallHowAreYou,
+              SmallTalk.bye => l.chatSmallBye,
+              SmallTalk.okay => l.chatSmallOkay,
+              SmallTalk.hi => l.chatSmallHi,
+              SmallTalk.hiFine => l.chatSmallHiFine,
             },
           ],
+        ),
+      WhyAnswer(:final have, :final setAside, :final left) => _Bubble(
+          fromPlan: true,
+          child: Column(
+            key: const Key('chat-answer-why'),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l.chatWhy, style: body),
+              rows([
+                (l.chatWhyHave, have.display()),
+                (l.chatWhySetAside, '−${setAside.display()}'),
+                (l.chatWhyLeft, left.display()),
+              ]),
+            ],
+          ),
         ),
       HelpAnswer() => say(const Key('chat-answer-help'), [l.chatHelp]),
     };

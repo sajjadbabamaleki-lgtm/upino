@@ -1199,4 +1199,79 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => '怎么少花点？';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => '新对话';
+
+  @override
+  String get chatResumed => '这里的回答按你今天的计划重新计算。';
+
+  @override
+  String get chatWhy => '这个数字是这样算出来的：';
+
+  @override
+  String get chatWhyHave => '你现有的钱';
+
+  @override
+  String get chatWhySetAside => '先预留的';
+
+  @override
+  String get chatWhyLeft => '可放心花';
+
+  @override
+  String get chatSmallHowAreYou => '我很好，谢谢关心！你的钱都还在原处。想了解什么？';
+
+  @override
+  String get chatSmallBye => '再见！下次大笔花钱前再来找我。';
+
+  @override
+  String get chatSmallOkay => '还有别的想看看吗？';
+
+  @override
+  String get askHubTitle => '和 Upino 聊聊';
+
+  @override
+  String get askHubNew => '问问还能花多少、买东西的影响或工资何时到。我还在了解你，记录越多，我越有用。';
+
+  @override
+  String askHubLearning(int days) {
+    return '我在学习你的习惯：再过大约 $days 天，就有一整个季度可以给建议了。';
+  }
+
+  @override
+  String get askHubFamiliar => '我现在很了解你的财务了，随便问吧，包括怎么少花点。';
+
+  @override
+  String get askHubStart => '开始对话';
+
+  @override
+  String get askHubCommon => '常见问题';
+
+  @override
+  String get askHubHistory => '你的对话';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count 个问题';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '为 $count 项承诺预留了 $amount';
+  }
+
+  @override
+  String get askHubDeleteTitle => '删除这段对话？';
+
+  @override
+  String get askHubDeleteBlurb => '只删除对话，你的计划不会改变。';
+
+  @override
+  String get chatSmallHi => '你好！';
+
+  @override
+  String get chatSmallHiFine => '你好！我很好，谢谢。';
 }

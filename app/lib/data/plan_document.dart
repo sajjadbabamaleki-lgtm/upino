@@ -11,6 +11,7 @@ import 'dart:convert';
 import '../engine/domain.dart';
 import '../engine/ledger.dart';
 import '../domain/category.dart';
+import '../domain/conversation.dart';
 import '../domain/goal.dart';
 import '../domain/holding.dart';
 import '../engine/money.dart';
@@ -41,6 +42,7 @@ class PlanDocument {
     this.smsHandled = const [],
     this.reminderEnabled = false,
     this.startedAt,
+    this.conversations = const [],
   });
 
   final String currency;
@@ -102,6 +104,10 @@ class PlanDocument {
   /// When the plan was set up, so Ask can tell how well it knows the person.
   final DateTime? startedAt;
 
+  /// What was asked of Ask, oldest first. Only questions are kept; answers
+  /// are recomputed from the plan when a conversation is shown.
+  final List<Conversation> conversations;
+
   Map<String, Object?> toJson() => {
         'schemaVersion': schemaVersion,
         'currency': currency,
@@ -122,6 +128,8 @@ class PlanDocument {
         if (reminderEnabled) 'reminderEnabled': true,
         if (startedAt != null)
           'startedAt': startedAt!.toUtc().toIso8601String(),
+        if (conversations.isNotEmpty)
+          'conversations': conversations.map(conversationToJson).toList(),
         if (receipts.isNotEmpty) 'receipts': receipts,
         if (categories.isNotEmpty)
           'categories': {
@@ -183,6 +191,7 @@ class PlanDocument {
       startedAt: json['startedAt'] == null
           ? null
           : DateTime.parse(json['startedAt']! as String),
+      conversations: listOf(json['conversations'], conversationFromJson),
       payCycleDays: json['payCycleDays'] as int? ?? 30,
       inflationBasisPoints: json['inflationBasisPoints'] as int?,
       themeChoice: json['themeChoice'] == null

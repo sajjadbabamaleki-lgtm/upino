@@ -340,6 +340,41 @@ void main() {
     );
   });
 
+  testWidgets('03h the Ask tab', (tester) async {
+    final state = fundedState();
+    final id = state.startConversation();
+    state.ask(id, 'Can I buy a phone for 1500?');
+    await shootApp(
+      tester,
+      '03h-ask-hub',
+      state,
+      size: const Size(400, 1250),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('nav-4')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
+  testWidgets('03i a conversation in Persian', (tester) async {
+    await shootApp(
+      tester,
+      '03i-ask-fa',
+      fundedState(),
+      size: const Size(400, 1000),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('home-ask')));
+        await tester.pumpAndSettle();
+        await tester.enterText(
+          find.byKey(const Key('chat-input')),
+          'سلام خوبی؟ چقدر می‌تونم خرج کنم؟',
+        );
+        await tester.tap(find.byKey(const Key('chat-send')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
   testWidgets('03e goals', (tester) async {
     final state = fundedState()
       ..addGoal(

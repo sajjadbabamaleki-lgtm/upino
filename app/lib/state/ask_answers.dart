@@ -166,11 +166,38 @@ class AdviceAnswer extends AskAnswer {
   final Money? lastTotal;
 }
 
-enum SmallTalk { hello, thanks, whoAreYou }
+enum SmallTalk {
+  hello,
+  thanks,
+  whoAreYou,
+  howAreYou,
+  bye,
+  okay,
+
+  /// A greeting that comes with a question: a short hello, then the answer.
+  hi,
+
+  /// The same, when it also asked how things are.
+  hiFine,
+}
 
 class SmallTalkAnswer extends AskAnswer {
   const SmallTalkAnswer(this.kind);
   final SmallTalk kind;
+}
+
+/// "Why?" — how the figure it last gave, or the main figure, comes about:
+/// what there is, what is set aside first, what is left.
+class WhyAnswer extends AskAnswer {
+  const WhyAnswer({
+    required this.have,
+    required this.setAside,
+    required this.left,
+  });
+
+  final Money have;
+  final Money setAside;
+  final Money left;
 }
 
 /// Not understood: say what can be asked instead of guessing.
@@ -178,13 +205,46 @@ class HelpAnswer extends AskAnswer {
   const HelpAnswer();
 }
 
+/// Which language to answer in: the one the question was written in.
+///
+/// A person who types Persian into an app that follows an English phone
+/// still expects Persian back. Arabic script is Persian unless the app is
+/// in Arabic; Latin script in a Persian or Arabic app is English. Null
+/// means the app's own language is the right one.
+String? replyLanguage(String question, String appLanguage) {
+  final arabicScript = RegExp(r'[\u0600-\u06FF]').hasMatch(question);
+  final latin = RegExp(r'[A-Za-z]').hasMatch(question);
+  if (arabicScript) {
+    if (appLanguage == 'fa' || appLanguage == 'ar') return appLanguage;
+    return 'fa';
+  }
+  if (latin && (appLanguage == 'fa' || appLanguage == 'ar')) return 'en';
+  return null;
+}
+
 RegExp _words(String pattern) => RegExp(pattern, caseSensitive: false);
 
-final _hello = _words(r'^\s*(سلام|درود|salam|hi|hello|hey)\b|^\s*(سلام|درود)');
+// Dart's \b only knows ASCII word characters, so Persian words are bounded
+// by start, end, space or punctuation explicitly.
+const _end = r'(?=$|[\s،,.!؟?])';
+
+final _hello = _words(
+  r'^\s*(سلام|درود|salam|hi|hello|hey|صبح بخیر|عصر بخیر|شب بخیر|good morning|good evening)'
+  '$_end',
+);
+final _howAreYou = _words(
+  r'خوبی|چطوری|چطورید|خوبید|حالت چطوره|حالت خوبه|how are you|how.?s it going',
+);
+final _bye = _words(r'خداحافظ|خدانگهدار|فعلا|بای\b|bye|goodbye|see you');
+final _okay = _words(
+  r'^\s*(باشه|اوکی|اوکیه|حله|خب|خوبه|عالیه|فهمیدم|ok|okay|got it|cool|great|nice)'
+  '$_end',
+);
+final _why = _words(r'^\s*(چرا|از کجا|why|how come)' '$_end');
 final _thanks = _words(r'مرسی|ممنون|سپاس|دمت گرم|thank|thanks|cheers');
 final _who = _words(
-  r'کی هستی|تو کی|چی هستی|چیکار (می|مي)?‌?تونی|چه کار (می|مي)?‌?توانی|'
-  r'who are you|what are you|what can you do',
+  r'کی هستی|تو کی|چی هستی|اسمت چیه|چیکار (می|مي)?‌?تونی|چه کار (می|مي)?‌?توانی|'
+  r'who are you|what are you|your name|what can you do',
 );
 final _advice = _words(
   r'پس‌?\s*انداز|صرفه\s*جویی|نصیحت|پیشنهاد|راهنمایی|مشاوره|چیکار کنم|'
@@ -192,8 +252,9 @@ final _advice = _words(
   r'cut back',
 );
 final _safeWords = _words(
-  r'چقدر\s*(می|مي)?\s*‌?\s*(تونم|توانم)|قابل\s*خرج|می‌تونم خرج|'
-  r'safe to spend|how much can i|can i spend|left to spend|how much do i have',
+  r'چقدر\s*(می|مي)?\s*‌?\s*(تونم|توانم)|قابل\s*خرج|می‌تونم خرج|چقدر پول دارم|'
+  r'چقدر مونده|safe to spend|how much can i|can i spend|left to spend|'
+  r'how much do i have',
 );
 final _payWords = _words(
   r'حقوق|درآمد|واریزی|پرداخت بعدی|salary|pay\b|payday|income|paid next',
@@ -205,6 +266,12 @@ final _asideWords = _words(
   r'کنار|قبض|تعهد|اجاره|set aside|protected|bills|commitments|rent',
 );
 
+/// Greetings and pleasantries at the start of a message, so "hi, how much
+/// can I spend?" is heard as a greeting and a question.
+final _leadingPleasantry = _words(
+  r'^\s*(سلام|درود|salam|hi|hello|hey|خوبی|چطوری)\s*[،,.!؟?]*\s*',
+);
+
 /// The chat's opening line, recomputed whenever the chat is shown.
 GreetingAnswer greet(AppState state) => GreetingAnswer(
       acquaintance: Acquaintance.of(state),
@@ -212,6 +279,37 @@ GreetingAnswer greet(AppState state) => GreetingAnswer(
       spends: state.spendCount,
       alerts: state.alerts.length,
     );
+
+/// Everything said in reply to one message: usually one answer, sometimes a
+/// greeting and then the answer.
+List<AskAnswer> reply(String question, AppState state) {
+  final text = question.trim();
+  final lead = _leadingPleasantry.firstMatch(text);
+  if (lead != null && lead.end < text.length) {
+    // Pleasantries can come in a row: "سلام خوبی؟ ..." — strip them all.
+    var rest = text.substring(lead.end).trim();
+    for (var m = _leadingPleasantry.firstMatch(rest);
+        m != null && m.end < rest.length;
+        m = _leadingPleasantry.firstMatch(rest)) {
+      rest = rest.substring(m.end).trim();
+    }
+    final askedHow = _howAreYou.hasMatch(text);
+    final answer = answerQuestion(rest, state);
+    // Nothing but pleasantries: answer them as such.
+    if (answer is SmallTalkAnswer || answer is HelpAnswer) {
+      return [
+        SmallTalkAnswer(askedHow ? SmallTalk.howAreYou : SmallTalk.hello),
+      ];
+    }
+    // A greeting with a question gets a short hello, not a second question
+    // back before the answer.
+    return [
+      SmallTalkAnswer(askedHow ? SmallTalk.hiFine : SmallTalk.hi),
+      answer,
+    ];
+  }
+  return [answerQuestion(text, state)];
+}
 
 AskAnswer answerQuestion(String question, AppState state) {
   final text = question.trim();
@@ -225,15 +323,30 @@ AskAnswer answerQuestion(String question, AppState state) {
     return PurchaseAnswer(state.simulatePurchase(amount));
   }
 
+  if (_why.hasMatch(text)) return _explain(state);
   if (_advice.hasMatch(text)) return _advise(state);
   if (_safeWords.hasMatch(text)) return _safeToSpend(state);
   if (aboutPay) return _nextPay(state);
   if (_whereWords.hasMatch(text)) return _whereItWent(state);
   if (_asideWords.hasMatch(text)) return _setAside(state);
   if (_who.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.whoAreYou);
+  if (_howAreYou.hasMatch(text)) {
+    return const SmallTalkAnswer(SmallTalk.howAreYou);
+  }
   if (_thanks.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.thanks);
+  if (_bye.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.bye);
   if (_hello.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.hello);
+  if (_okay.hasMatch(text)) return const SmallTalkAnswer(SmallTalk.okay);
   return const HelpAnswer();
+}
+
+WhyAnswer _explain(AppState state) {
+  final s = state.snapshot;
+  return WhyAnswer(
+    have: s.trustedAllocatableLiquidity,
+    setAside: s.protectedTotal,
+    left: s.safeToSpendNow,
+  );
 }
 
 /// The questions offered as one-tap chips, so the first message never has

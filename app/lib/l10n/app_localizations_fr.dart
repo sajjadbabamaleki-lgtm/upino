@@ -1283,4 +1283,91 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'Comment dépenser moins ?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'Nouvelle discussion';
+
+  @override
+  String get chatResumed =>
+      'Les réponses sont calculées sur votre plan tel qu’il est aujourd’hui.';
+
+  @override
+  String get chatWhy => 'Voici d’où vient le chiffre :';
+
+  @override
+  String get chatWhyHave => 'Ce que vous avez';
+
+  @override
+  String get chatWhySetAside => 'Mis de côté d’abord';
+
+  @override
+  String get chatWhyLeft => 'Dépensable';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'Très bien, merci de demander ! Votre argent est là où on l’a laissé. Que voulez-vous savoir ?';
+
+  @override
+  String get chatSmallBye =>
+      'À bientôt ! Repassez avant votre prochaine grosse dépense.';
+
+  @override
+  String get chatSmallOkay => 'Autre chose à vérifier ?';
+
+  @override
+  String get askHubTitle => 'Parlez à Upino';
+
+  @override
+  String get askHubNew =>
+      'Demandez ce que vous pouvez dépenser, l’effet d’un achat ou quand arrive la paie. J’apprends encore à vous connaître : plus vous notez, plus je suis utile.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'J’apprends vos habitudes : encore environ $days jours et j’aurai une saison complète pour conseiller.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'Je connais bien votre argent maintenant. Demandez-moi tout, même comment dépenser moins.';
+
+  @override
+  String get askHubStart => 'Commencer';
+
+  @override
+  String get askHubCommon => 'Questions fréquentes';
+
+  @override
+  String get askHubHistory => 'Vos discussions';
+
+  @override
+  String askHubTurns(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions',
+      one: '1 question',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount mis de côté pour $count engagements';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'Supprimer cette discussion ?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'Seule la discussion disparaît. Votre plan ne change pas.';
+
+  @override
+  String get chatSmallHi => 'Salut !';
+
+  @override
+  String get chatSmallHiFine => 'Salut ! Très bien, merci.';
 }

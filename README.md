@@ -195,13 +195,18 @@ the mark and the page's name on the left, the bell and Profile on the right.
 | Alerts | bell | What needs the person, derived from the plan, never stored |
 | Profile | capsule | Balance confirmation, confidence, theme, backup, starting over |
 
-**Ask is a conversation with the engine, not with a language model.** A
-question is matched against a few intents in Persian and English — how much
-can be spent, the next pay, where the money went, what is set aside — and a
-price anywhere in it makes it a purchase, answered with the same three full
-plans the scenario cards show. Every figure is read from the engine; nothing
-leaves the phone, and a question it does not recognise gets the list of what
-it can answer rather than a guess. It never says yes or no to a purchase.
+**Ask is a conversation with the engine, not with a language model.** The
+tab is a hub: a card that opens the chat on its own page, the common
+questions with part of their answer already showing, and past conversations.
+A question is matched against a few intents in Persian and English — how much
+can be spent, the next pay, where the money went, what is set aside, why, how
+to spend less, and ordinary pleasantries — and a price anywhere in it makes
+it a purchase, answered with the same three full plans the scenario cards
+show. Replies come back in the language the question was written in. Every
+figure is read from the engine and nothing leaves the phone. Conversations
+keep only their questions; answers are recomputed from the plan whenever one
+is shown. It never says yes or no to a purchase, and advice waits until
+there is enough history for it to be more than a guess.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.

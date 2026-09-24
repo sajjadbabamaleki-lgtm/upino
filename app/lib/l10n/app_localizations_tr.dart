@@ -1258,4 +1258,85 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'Nasıl daha az harcarım?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'Yeni sohbet';
+
+  @override
+  String get chatResumed =>
+      'Buradaki yanıtlar planının bugünkü haline göre hesaplandı.';
+
+  @override
+  String get chatWhy => 'Rakam şöyle çıkıyor:';
+
+  @override
+  String get chatWhyHave => 'Elindeki';
+
+  @override
+  String get chatWhySetAside => 'Önce ayrılan';
+
+  @override
+  String get chatWhyLeft => 'Harcanabilir';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'İyiyim, sorduğun için teşekkürler! Paran bıraktığımız yerde. Ne öğrenmek istersin?';
+
+  @override
+  String get chatSmallBye =>
+      'Görüşürüz! Bir sonraki büyük harcamadan önce uğra.';
+
+  @override
+  String get chatSmallOkay => 'Bakmak istediğin başka bir şey var mı?';
+
+  @override
+  String get askHubTitle => 'Upino ile konuş';
+
+  @override
+  String get askHubNew =>
+      'Ne kadar harcayabileceğini, bir alışverişin etkisini ya da maaşın ne zaman geleceğini sor. Seni hâlâ tanıyorum; ne kadar kaydedersen o kadar işe yararım.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'Alışkanlıklarını öğreniyorum: yaklaşık $days gün sonra tavsiye için tam bir mevsimim olacak.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'Artık paranı iyi tanıyorum. Ne istersen sor, daha az harcamayı bile.';
+
+  @override
+  String get askHubStart => 'Sohbete başla';
+
+  @override
+  String get askHubCommon => 'Sık sorulanlar';
+
+  @override
+  String get askHubHistory => 'Sohbetlerin';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count soru';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$count yükümlülük için $amount ayrıldı';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'Bu sohbet silinsin mi?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'Sadece sohbet silinir. Planında bir şey değişmez.';
+
+  @override
+  String get chatSmallHi => 'Merhaba!';
+
+  @override
+  String get chatSmallHiFine => 'Merhaba! İyiyim, teşekkürler.';
 }

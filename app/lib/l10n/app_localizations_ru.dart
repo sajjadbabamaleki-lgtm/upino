@@ -1265,4 +1265,85 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'Как тратить меньше?';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'Новый чат';
+
+  @override
+  String get chatResumed =>
+      'Ответы здесь посчитаны по вашему плану на сегодня.';
+
+  @override
+  String get chatWhy => 'Вот как получается эта цифра:';
+
+  @override
+  String get chatWhyHave => 'Что у вас есть';
+
+  @override
+  String get chatWhySetAside => 'Отложено в первую очередь';
+
+  @override
+  String get chatWhyLeft => 'Можно тратить';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'Всё хорошо, спасибо! Ваши деньги на месте. Что хотите узнать?';
+
+  @override
+  String get chatSmallBye =>
+      'Пока! Заглядывайте перед следующей крупной тратой.';
+
+  @override
+  String get chatSmallOkay => 'Хотите проверить что-то ещё?';
+
+  @override
+  String get askHubTitle => 'Поговорите с Upino';
+
+  @override
+  String get askHubNew =>
+      'Спросите, сколько можно тратить, что изменит покупка или когда зарплата. Я ещё знакомлюсь с вами — чем больше записей, тем полезнее я буду.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'Изучаю ваши привычки: примерно через $days дней у меня будет полный сезон для советов.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'Теперь я хорошо знаю ваши финансы. Спрашивайте что угодно, даже как тратить меньше.';
+
+  @override
+  String get askHubStart => 'Начать разговор';
+
+  @override
+  String get askHubCommon => 'Частые вопросы';
+
+  @override
+  String get askHubHistory => 'Ваши разговоры';
+
+  @override
+  String askHubTurns(int count) {
+    return 'Вопросов: $count';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount отложено на $count обязательств';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'Удалить этот разговор?';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'Удалится только разговор. План не изменится.';
+
+  @override
+  String get chatSmallHi => 'Привет!';
+
+  @override
+  String get chatSmallHiFine => 'Привет! Всё хорошо, спасибо.';
 }

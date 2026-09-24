@@ -27,6 +27,7 @@ import '../widgets/alerts_sheet.dart';
 import '../widgets/bank_suggestions_sheet.dart';
 import '../widgets/top_bar.dart';
 import 'ask_chat_screen.dart';
+import 'ask_hub_screen.dart';
 import 'activity_screen.dart';
 import 'goals_screen.dart';
 import 'plan_screen.dart';
@@ -62,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    _chat.dispose();
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_spendRequests?.cancel());
     super.dispose();
@@ -86,9 +86,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   static const _askTab = 4;
   static const _profileTab = 5;
-
-  /// The conversation on Ask, kept here so it survives switching tabs.
-  final _chat = ChatLog();
 
   AppState get state => widget.state;
 
@@ -212,10 +209,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   state: state,
                   padding: contentPadding,
                 ),
-              4 => AskChatScreen(
+              4 => AskHubScreen(
                   key: const PageStorageKey('tab-ask'),
                   state: state,
-                  log: _chat,
                   padding: contentPadding,
                 ),
               5 => ProfileScreen(
@@ -265,7 +261,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       title: l.askTitle,
                       subtitle: l.askBlurb,
                       trailing: const RowAffordance(icon: 'ask'),
-                      onTap: () => setState(() => _tab = _askTab),
+                      // Straight into a conversation: the card is itself the
+                      // question "can I afford this?".
+                      onTap: () => ChatPage.open(context, state),
                     ),
 
                     const SizedBox(height: 20),

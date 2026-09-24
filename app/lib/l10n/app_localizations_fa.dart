@@ -1257,4 +1257,84 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'چطور کمتر خرج کنم؟';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'گفتگوی تازه';
+
+  @override
+  String get chatResumed =>
+      'جواب‌های این گفتگو از روی برنامهٔ امروزت حساب شده‌اند.';
+
+  @override
+  String get chatWhy => 'این عدد این‌طوری به دست میاد:';
+
+  @override
+  String get chatWhyHave => 'پولی که داری';
+
+  @override
+  String get chatWhySetAside => 'اول کنار گذاشته شده';
+
+  @override
+  String get chatWhyLeft => 'قابل خرج';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'خوبم، مرسی که پرسیدی! پولت همون‌جاییه که گذاشته بودیم. چی می‌خوای بدونی؟';
+
+  @override
+  String get chatSmallBye => 'خداحافظ! قبل از خرج بزرگ بعدیت سر بزن.';
+
+  @override
+  String get chatSmallOkay => 'چیز دیگه‌ای هست که بخوای ببینی؟';
+
+  @override
+  String get askHubTitle => 'با Upino حرف بزن';
+
+  @override
+  String get askHubNew =>
+      'بپرس چقدر می‌تونی خرج کنی، یه خرید چه اثری داره یا حقوقت کی میاد. هنوز دارم باهات آشنا می‌شم، پس هرچی بیشتر ثبت کنی، مفیدتر می‌شم.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'دارم عادت‌هات رو یاد می‌گیرم: حدود $days روز دیگه یه فصل کامل برای مشاوره دادن دارم.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'الان پولت رو خوب می‌شناسم. هرچی خواستی بپرس، حتی اینکه چطور کمتر خرج کنی.';
+
+  @override
+  String get askHubStart => 'شروع گفتگو';
+
+  @override
+  String get askHubCommon => 'سؤال‌های رایج';
+
+  @override
+  String get askHubHistory => 'گفتگوهای تو';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count سؤال';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount برای $count تعهد کنار گذاشته شده';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'این گفتگو پاک شود؟';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'فقط گفتگو پاک می‌شود. چیزی در برنامه‌ات عوض نمی‌شود.';
+
+  @override
+  String get chatSmallHi => 'سلام!';
+
+  @override
+  String get chatSmallHiFine => 'سلام! خوبم، مرسی.';
 }

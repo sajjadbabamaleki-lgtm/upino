@@ -776,5 +776,52 @@
   "chatSmallHello": "Hi! What would you like to know about your money?",
   "chatSmallThanks": "Any time! I'm here whenever you're about to spend.",
   "chatSmallWho": "I'm Upino's assistant. I only know what's in your plan, and every number I give comes straight from it; nothing you tell me leaves this phone. I won't tell you yes or no, but I'll show you what each choice would leave you.",
-  "chatSuggestAdvice": "How can I spend less?"
+  "chatSuggestAdvice": "How can I spend less?",
+  "chatTitle": "Upino",
+  "chatNew": "New chat",
+  "chatResumed": "Answers here are worked out from your plan as it is today.",
+  "chatWhy": "Here's how the figure comes about:",
+  "chatWhyHave": "What you have",
+  "chatWhySetAside": "Set aside first",
+  "chatWhyLeft": "Safe to spend",
+  "chatSmallHowAreYou": "I'm good, thanks for asking! Your money's where I left it. What would you like to know?",
+  "chatSmallBye": "Bye! Come back before your next big spend.",
+  "chatSmallOkay": "Anything else you'd like to check?",
+  "askHubTitle": "Talk to Upino",
+  "askHubNew": "Ask what you can spend, what a purchase would do, or when your pay comes. I'm still getting to know you, so I'll get more useful as you record.",
+  "askHubLearning": "I'm learning your habits: about {days} more days and I'll have a full season to advise from.",
+  "@askHubLearning": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubFamiliar": "I know your money well now. Ask me anything, including how to spend less.",
+  "askHubStart": "Start a conversation",
+  "askHubCommon": "Common questions",
+  "askHubHistory": "Your conversations",
+  "askHubTurns": "{count, plural, =1{1 question} other{{count} questions}}",
+  "@askHubTurns": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubAsidePreview": "{amount} set aside across {count} commitments",
+  "@askHubAsidePreview": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubDeleteTitle": "Delete this conversation?",
+  "askHubDeleteBlurb": "Only the conversation goes. Nothing in your plan changes.",
+  "chatSmallHi": "Hi!",
+  "chatSmallHiFine": "Hi! I'm good, thanks."
 }

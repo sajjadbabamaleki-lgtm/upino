@@ -1242,4 +1242,82 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatSuggestAdvice => 'كيف أنفق أقل؟';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'محادثة جديدة';
+
+  @override
+  String get chatResumed => 'الإجابات هنا محسوبة من خطتك كما هي اليوم.';
+
+  @override
+  String get chatWhy => 'هكذا يُحسب الرقم:';
+
+  @override
+  String get chatWhyHave => 'ما لديك';
+
+  @override
+  String get chatWhySetAside => 'يُجنَّب أولًا';
+
+  @override
+  String get chatWhyLeft => 'آمن للإنفاق';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'أنا بخير، شكرًا لسؤالك! مالك حيث تركناه. ماذا تودّ أن تعرف؟';
+
+  @override
+  String get chatSmallBye => 'إلى اللقاء! عُد قبل إنفاقك الكبير القادم.';
+
+  @override
+  String get chatSmallOkay => 'هل هناك شيء آخر تريد التحقق منه؟';
+
+  @override
+  String get askHubTitle => 'تحدّث مع Upino';
+
+  @override
+  String get askHubNew =>
+      'اسأل كم يمكنك أن تنفق، أو أثر شراء ما، أو متى يصل راتبك. ما زلت أتعرّف عليك، فكلما سجّلت أكثر صرت أنفع.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'أتعلّم عاداتك: بعد نحو $days يومًا سيكون لديّ فصل كامل للنصح.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'أعرف أموالك جيدًا الآن. اسألني أي شيء، حتى كيف تنفق أقل.';
+
+  @override
+  String get askHubStart => 'ابدأ محادثة';
+
+  @override
+  String get askHubCommon => 'أسئلة شائعة';
+
+  @override
+  String get askHubHistory => 'محادثاتك';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count أسئلة';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount مجنّبة لـ$count التزامات';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'حذف هذه المحادثة؟';
+
+  @override
+  String get askHubDeleteBlurb => 'تُحذف المحادثة فقط، ولا يتغير شيء في خطتك.';
+
+  @override
+  String get chatSmallHi => 'مرحبًا!';
+
+  @override
+  String get chatSmallHiFine => 'مرحبًا! أنا بخير، شكرًا.';
 }
