@@ -123,6 +123,55 @@ class BankSuggestion {
   final String? sender;
 }
 
+/// Something about the plan that needs the person, for the bell at the top.
+///
+/// Derived from the plan every time, never stored: an alert that outlived
+/// its cause would be the app saying something that is no longer true.
+sealed class PlanAlert {
+  const PlanAlert();
+}
+
+/// The balance has not been confirmed recently enough to trust the figure.
+class BalanceStaleAlert extends PlanAlert {
+  const BalanceStaleAlert({required this.days, required this.reviewRequired});
+
+  /// Days since the last confirmation, or null if there has never been one.
+  final int? days;
+  final bool reviewRequired;
+}
+
+/// Pay was expected by now and has not been confirmed.
+class IncomeLateAlert extends PlanAlert {
+  const IncomeLateAlert(this.expectedOn);
+  final LocalDate expectedOn;
+}
+
+/// Something that must be paid is not covered by what there is.
+class UnfundedAlert extends PlanAlert {
+  const UnfundedAlert({
+    required this.claimId,
+    required this.label,
+    required this.short,
+  });
+
+  final String claimId;
+  final String label;
+  final Money short;
+}
+
+/// A goal is not getting what it needs this period.
+class GoalBehindAlert extends PlanAlert {
+  const GoalBehindAlert({required this.name, required this.short});
+  final String name;
+  final Money short;
+}
+
+/// Bank messages are waiting to be recorded or skipped.
+class BankMessagesAlert extends PlanAlert {
+  const BankMessagesAlert(this.count);
+  final int count;
+}
+
 /// Which theme the app follows. Stored with the plan so it survives a
 /// reinstall on the same device, and defaults to whatever the phone is set
 /// to rather than imposing a choice.
@@ -659,6 +708,44 @@ class AppState extends ChangeNotifier {
 
   Duration get utcOffset => _utcOffset;
   DateTime get now => _now;
+
+  /// What the bell shows, most urgent first: a commitment that cannot be
+  /// paid, then a figure that cannot be trusted, then pay that has not come,
+  /// then goals falling behind, then messages to review.
+  List<PlanAlert> get alerts {
+    if (!_onboarded) return const [];
+    final snap = snapshot;
+    final out = <PlanAlert>[];
+    for (final a in snap.allocations) {
+      if (a.shortfall.minor <= 0) continue;
+      if (a.claimId.startsWith('goal:')) continue;
+      if (!a.priority.isMandatory) continue;
+      out.add(UnfundedAlert(
+        claimId: a.claimId,
+        label: a.label,
+        short: a.shortfall,
+      ),);
+    }
+    if (snap.confidenceState != ConfidenceState.trusted) {
+      out.add(BalanceStaleAlert(
+        days: snap.balanceAgeInDays,
+        reviewRequired: snap.confidenceState == ConfidenceState.reviewRequired,
+      ),);
+    }
+    for (final i in _incomeEvents) {
+      if (i.state == IncomeState.expected && i.expectedDate < today) {
+        out.add(IncomeLateAlert(i.expectedDate));
+      }
+    }
+    for (final a in snap.allocations) {
+      if (a.shortfall.minor <= 0 || !a.claimId.startsWith('goal:')) continue;
+      out.add(GoalBehindAlert(name: a.label, short: a.shortfall));
+    }
+    if (_suggestions.isNotEmpty) {
+      out.add(BankMessagesAlert(_suggestions.length));
+    }
+    return out;
+  }
 
   List<Holding> get holdings => List.unmodifiable(_holdings);
 

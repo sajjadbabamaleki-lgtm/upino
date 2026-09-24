@@ -84,7 +84,8 @@ void main() {
     await tester.tap(cta);
     await tester.pumpAndSettle();
 
-    expect(find.text('Your plan'), findsOneWidget);
+    // Home, named in the capsule rather than by a heading of its own.
+    expect(find.byKey(const Key('top-title')), findsOneWidget);
     // 3000 − 1200 rent − 400 essentials = 1400.
     expect(find.text('€1,400.00'), findsOneWidget);
     expect(state.snapshot.safeToSpendNow.toString(), '1400.00 EUR');
@@ -231,7 +232,7 @@ void _reopenTests() {
       expect(second.isOnboarded, isTrue);
       expect(find.byKey(const Key('change-currency')), findsNothing);
       expect(find.text('Set up your plan'), findsNothing);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(find.byKey(const Key('top-title')), findsOneWidget);
       expect(find.text('€2,975.00'), findsOneWidget);
       expect(second.snapshot.ledger.cumulativeSpending,
           Money.parse('25.00', 'EUR'),);

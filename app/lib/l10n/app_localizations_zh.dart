@@ -1006,4 +1006,92 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get no => '否';
+
+  @override
+  String get navAsk => '提问';
+
+  @override
+  String get alertsTitle => '需要处理';
+
+  @override
+  String get alertsEmpty => '目前没有需要处理的事项，计划是最新的。';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label还差 $amount';
+  }
+
+  @override
+  String get alertUnfundedDetail => '一项必须支付的款项目前资金不足。';
+
+  @override
+  String alertIncomeLate(String date) {
+    return '工资原定于 $date 到账';
+  }
+
+  @override
+  String get alertIncomeLateDetail => '到账前不计入。若日期有变，请在计划中修改。';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name本期落后 $amount';
+  }
+
+  @override
+  String get alertGoalBehindDetail => '现有资金不足以完成本期份额。';
+
+  @override
+  String get chatIntro =>
+      '问我关于钱的问题：还能花多少、下次工资、钱花在哪。或输入价格，看看买下它会怎样。每个数字都来自你的计划。';
+
+  @override
+  String get chatHint => '提问或输入价格';
+
+  @override
+  String get chatSuggestSafe => '我还能花多少？';
+
+  @override
+  String get chatSuggestPay => '下次工资什么时候？';
+
+  @override
+  String get chatSuggestWhere => '钱花在哪了？';
+
+  @override
+  String get chatSuggestAside => '预留了什么？';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return '到 $date 前你可以花 $amount。';
+  }
+
+  @override
+  String get chatSafeStale => '你的余额需要确认，此数字仅供参考。';
+
+  @override
+  String chatPay(String amount, String date) {
+    return '下次工资 $amount，预计 $date 到账。';
+  }
+
+  @override
+  String get chatPayNone => '还没有预计的工资，请在计划中添加。';
+
+  @override
+  String get chatWhere => '最近 30 天：';
+
+  @override
+  String get chatWhereNone => '最近 30 天还没有记录支出。';
+
+  @override
+  String chatAside(String amount) {
+    return '可花之前先预留 $amount：';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return '如果它要 $amount，每种选择的结果如下：';
+  }
+
+  @override
+  String get chatHelp =>
+      '我可以告诉你还能花多少、下次工资何时到、钱花在哪、预留了什么。也可以输入价格，比如“一部 3000 元的手机”，看看买下会怎样。';
 }

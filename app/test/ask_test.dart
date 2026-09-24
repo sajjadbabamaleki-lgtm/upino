@@ -9,7 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
-import 'package:upino/screens/ask_screen.dart';
+import 'package:upino/screens/ask_chat_screen.dart';
+import 'package:upino/state/ask_answers.dart';
 import 'package:upino/state/app_state.dart';
 
 Money eur(String v) => Money.parse(v, 'EUR');
@@ -118,7 +119,7 @@ void main() {
     });
   });
 
-  group('the screen', () {
+  group('the chat', () {
     Future<void> open(WidgetTester tester, AppState state) async {
       tester.view
         ..physicalSize = const Size(420, 1600)
@@ -130,15 +131,18 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('reached from Home and shows all three scenarios',
+    Future<void> ask(WidgetTester tester, String text) async {
+      await tester.enterText(find.byKey(const Key('chat-input')), text);
+      await tester.tap(find.byKey(const Key('chat-send')));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('reached from Home, answers a price with all three scenarios',
         (tester) async {
       await open(tester, funded(balance: '1000.00', rent: '900.00'));
-      expect(find.byType(AskScreen), findsOneWidget);
+      expect(find.byType(AskChatScreen), findsOneWidget);
 
-      await tester.enterText(find.byKey(const Key('ask-amount')), '500');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('ask-run')));
-      await tester.pumpAndSettle();
+      await ask(tester, '500');
 
       expect(find.byKey(const Key('ask-do-not-buy')), findsOneWidget);
       expect(find.byKey(const Key('ask-buy-now')), findsOneWidget);
@@ -149,10 +153,7 @@ void main() {
       // §7 puts the decision with the user. If a "recommended" chip ever
       // appears on one of these cards, this test is what should stop it.
       await open(tester, funded(balance: '1000.00', rent: '900.00'));
-      await tester.enterText(find.byKey(const Key('ask-amount')), '500');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('ask-run')));
-      await tester.pumpAndSettle();
+      await ask(tester, 'a phone for 500');
 
       expect(find.text('Upino does not say yes or no. The trade-off is yours.'),
           findsOneWidget,);
@@ -164,10 +165,7 @@ void main() {
     testWidgets('states the assumption on the card that depends on it',
         (tester) async {
       await open(tester, funded(balance: '1000.00', rent: '900.00'));
-      await tester.enterText(find.byKey(const Key('ask-amount')), '500');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('ask-run')));
-      await tester.pumpAndSettle();
+      await ask(tester, '500');
 
       expect(
         find.descendant(
@@ -178,47 +176,74 @@ void main() {
       );
     });
 
-    testWidgets('running it records nothing', (tester) async {
+    testWidgets('asking records nothing', (tester) async {
       final state = funded();
       await open(tester, state);
-      await tester.enterText(find.byKey(const Key('ask-amount')), '700');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('ask-run')));
-      await tester.pumpAndSettle();
+      await ask(tester, '700');
 
       expect(state.activity, isEmpty);
       expect(state.snapshot.ledger.cumulativeSpending, eur('0.00'));
     });
 
-    testWidgets('the action stays disabled until an amount is entered',
-        (tester) async {
-      await open(tester, funded());
-      final run = find.byKey(const Key('ask-run'));
-      expect(tester.widget<FilledButton>(run).onPressed, isNull);
-
-      await tester.enterText(find.byKey(const Key('ask-amount')), '0');
+    testWidgets('a suggestion is answered from the plan', (tester) async {
+      final state = funded();
+      await open(tester, state);
+      await tester.tap(find.byKey(const Key('chat-suggest-safeToSpend')));
       await tester.pumpAndSettle();
-      // Zero is not a purchase, so it is not a question either.
-      expect(tester.widget<FilledButton>(run).onPressed, isNull);
 
-      await tester.enterText(find.byKey(const Key('ask-amount')), '25');
-      await tester.pumpAndSettle();
-      expect(tester.widget<FilledButton>(run).onPressed, isNotNull);
+      expect(
+        find.textContaining(state.snapshot.safeToSpendNow.display()),
+        findsWidgets,
+      );
     });
 
-    testWidgets('changing the amount clears the previous answer',
-        (tester) async {
+    testWidgets('a question it cannot read gets what it can answer, '
+        'not a guess', (tester) async {
       await open(tester, funded());
-      await tester.enterText(find.byKey(const Key('ask-amount')), '700');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('ask-run')));
-      await tester.pumpAndSettle();
-      expect(find.byKey(const Key('ask-buy-now')), findsOneWidget);
+      await ask(tester, 'tell me a joke');
+      expect(find.byKey(const Key('chat-answer-help')), findsOneWidget);
+    });
 
-      await tester.enterText(find.byKey(const Key('ask-amount')), '900');
+    testWidgets('the conversation survives switching tabs', (tester) async {
+      await open(tester, funded());
+      await ask(tester, 'when is my next pay?');
+      await tester.tap(find.byKey(const Key('nav-0')));
       await tester.pumpAndSettle();
-      // A stale answer beside a new number is worse than no answer.
-      expect(find.byKey(const Key('ask-buy-now')), findsNothing);
+      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('chat-answer-pay')), findsOneWidget);
+    });
+  });
+
+  group('understanding the question', () {
+    test('a price in Persian is a purchase', () {
+      final a = answerQuestion('یه گوشی ۲۰ میلیونی بخرم؟', funded());
+      expect(a, isA<PurchaseAnswer>());
+      expect((a as PurchaseAnswer).scenarios.amount, eur('20000000.00'));
+    });
+
+    test('a number about pay is not a purchase', () {
+      expect(answerQuestion('حقوقم ۲۰ میلیونه کی میاد؟', funded()),
+          isA<NextPayAnswer>(),);
+    });
+
+    test('the everyday questions, in both languages', () {
+      final state = funded();
+      expect(answerQuestion('چقدر می‌تونم خرج کنم؟', state),
+          isA<SafeToSpendAnswer>(),);
+      expect(answerQuestion('How much can I spend?', state),
+          isA<SafeToSpendAnswer>(),);
+      expect(answerQuestion('پولم کجا رفت؟', state), isA<WhereItWentAnswer>());
+      expect(answerQuestion('what is set aside for bills', state),
+          isA<SetAsideAnswer>(),);
+    });
+
+    test('the safe-to-spend answer is the plan\'s own figure', () {
+      final state = funded();
+      final a = answerQuestion('how much can i spend', state)
+          as SafeToSpendAnswer;
+      expect(a.amount, state.snapshot.safeToSpendNow);
+      expect(a.until, state.snapshot.decisionHorizonEnd);
     });
   });
 }

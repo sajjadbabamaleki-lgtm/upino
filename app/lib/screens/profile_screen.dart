@@ -122,11 +122,7 @@ class ProfileScreen extends StatelessWidget {
     return ListView(
       padding: padding,
       children: revealed([
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Text(l.profileTitle, style: theme.textTheme.headlineLarge),
-        ),
-
+        // The page's name is in the capsule above.
         SectionHeading(l.profileYourData),
         _CurrencyRow(state: state),
         const SizedBox(height: 10),

@@ -118,18 +118,12 @@ class PlanScreen extends StatelessWidget {
     return ListView(
       padding: padding,
       children: revealed([
+        // The page's name is in the capsule above.
         Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l.planTitle, style: theme.textTheme.headlineLarge),
-              const SizedBox(height: 2),
-              Text(
-                l.planBlurb,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+          child: Text(
+            l.planBlurb,
+            style: theme.textTheme.bodySmall,
           ),
         ),
         SectionHeading(l.planMoneyAndIncome),

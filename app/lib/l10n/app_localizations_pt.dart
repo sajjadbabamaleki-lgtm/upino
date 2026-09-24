@@ -1064,4 +1064,97 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get no => 'Não';
+
+  @override
+  String get navAsk => 'Perguntar';
+
+  @override
+  String get alertsTitle => 'Precisa de si';
+
+  @override
+  String get alertsEmpty => 'Nada precisa de si agora. O plano está em dia.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return 'Faltam $amount para $label';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'Algo que tem de pagar não está coberto pelo que tem.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'O seu salário era esperado a $date';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'Não conta até chegar. Mude a data no Plano se mudou.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name está $amount atrasado este período';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'O que tem não chega à parte deste período.';
+
+  @override
+  String get chatIntro =>
+      'Pergunte sobre o seu dinheiro: quanto pode gastar, o próximo salário, para onde foi. Ou escreva um preço para ver o efeito de comprar. Cada valor vem do seu plano.';
+
+  @override
+  String get chatHint => 'Pergunte ou escreva um preço';
+
+  @override
+  String get chatSuggestSafe => 'Quanto posso gastar?';
+
+  @override
+  String get chatSuggestPay => 'Quando recebo?';
+
+  @override
+  String get chatSuggestWhere => 'Para onde foi o dinheiro?';
+
+  @override
+  String get chatSuggestAside => 'O que está reservado?';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'Pode gastar $amount até $date.';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'O seu saldo precisa de confirmação; trate isto como estimativa.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'O próximo salário é $amount, previsto a $date.';
+  }
+
+  @override
+  String get chatPayNone =>
+      'Ainda não há salário previsto. Adicione-o no Plano.';
+
+  @override
+  String get chatWhere => 'Nos últimos 30 dias:';
+
+  @override
+  String get chatWhereNone => 'Ainda não há gastos nos últimos 30 dias.';
+
+  @override
+  String chatAside(String amount) {
+    return '$amount fica reservado antes de poder gastar:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'Se custar $amount, eis o que cada escolha lhe deixa:';
+  }
+
+  @override
+  String get chatHelp =>
+      'Posso dizer quanto pode gastar, quando recebe, para onde foi o dinheiro e o que está reservado. Ou escreva um preço, como «um telemóvel de 500», para ver o efeito.';
 }

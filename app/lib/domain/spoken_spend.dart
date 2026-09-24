@@ -46,6 +46,17 @@ const _scales = {
 const _hundred = {'hundred'};
 const _half = {'نیم', 'half'};
 const _joiners = {'و', 'and'};
+const _articles = {'a', 'یه', 'یک'};
+
+/// "میلیونی", "هزاری", "تومنی": the adjective a price is said with, which
+/// names the same number as the word without its ی.
+String _stem(String t) {
+  if (t.length > 2 && t.endsWith('ی')) {
+    final stem = t.substring(0, t.length - 1);
+    if (_scales.containsKey(stem) || _toman.contains(stem)) return stem;
+  }
+  return t;
+}
 const _counters = {'تا', 'عدد', 'دونه', 'بسته'};
 
 const _toman = {'تومن', 'تومان', 'toman', 'tomans'};
@@ -150,7 +161,7 @@ Money? _amount(List<String> tokens, String planCurrency) {
   var inCents = false;
 
   for (var i = 0; i < tokens.length; i++) {
-    final t = tokens[i];
+    final t = _stem(tokens[i]);
     if (_toman.contains(t)) {
       toman = true;
       continue;
@@ -185,7 +196,19 @@ Money? _amount(List<String> tokens, String planCurrency) {
       if (t == 'a' && i + 1 < tokens.length && _half.contains(tokens[i + 1])) {
         continue;
       }
-      // "a" only counts as one in front of a scale: "a thousand".
+      // "a", "یه" and "یک" are articles as often as numbers: they only
+      // count as one in front of another number word. "یه گوشی" is a phone,
+      // not one rial; "یک میلیون" is a million.
+      final next = i + 1 < tokens.length ? _stem(tokens[i + 1]) : null;
+      final countsAsOne = next != null &&
+          (_scales.containsKey(next) ||
+              _hundred.contains(next) ||
+              _half.contains(next) ||
+              _joiners.contains(next) ||
+              _units.containsKey(next));
+      if (_articles.contains(t) && !started && !countsAsOne) {
+        continue;
+      }
       if (t == 'a' &&
           !(i + 1 < tokens.length &&
               (_scales.containsKey(tokens[i + 1]) ||

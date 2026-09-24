@@ -1051,4 +1051,98 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get no => 'خیر';
+
+  @override
+  String get navAsk => 'بپرس';
+
+  @override
+  String get alertsTitle => 'نیاز به توجه';
+
+  @override
+  String get alertsEmpty =>
+      'فعلاً چیزی به توجه شما نیاز ندارد. برنامه به‌روز است.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label $amount کم دارد';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'چیزی که باید پرداخت شود با پول فعلی پوشش داده نمی‌شود.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'حقوق شما برای $date انتظار می‌رفت';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'تا نرسد حساب نمی‌شود. اگر تاریخش عوض شده، در «برنامه» اصلاحش کنید.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name در این دوره $amount عقب است';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'پول فعلی به سهم این دوره از هدف نمی‌رسد.';
+
+  @override
+  String get chatIntro =>
+      'دربارهٔ پولتان بپرسید: چقدر می‌توانید خرج کنید، حقوق بعدی، پول کجا رفت. یا یک قیمت بنویسید تا ببینید خریدنش چه اثری دارد. همهٔ عددها از برنامهٔ خودتان می‌آیند.';
+
+  @override
+  String get chatHint => 'بپرسید یا یک قیمت بنویسید';
+
+  @override
+  String get chatSuggestSafe => 'چقدر می‌تونم خرج کنم؟';
+
+  @override
+  String get chatSuggestPay => 'حقوق بعدی کی میاد؟';
+
+  @override
+  String get chatSuggestWhere => 'پولم کجا رفت؟';
+
+  @override
+  String get chatSuggestAside => 'چه چیزی کنار گذاشته شده؟';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'تا $date می‌توانید $amount خرج کنید.';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'موجودی شما نیاز به تأیید دارد، پس این عدد را تقریبی بدانید.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'حقوق بعدی شما $amount است که $date انتظار می‌رود.';
+  }
+
+  @override
+  String get chatPayNone =>
+      'هنوز حقوقی ثبت نشده. آن را در «برنامه» اضافه کنید.';
+
+  @override
+  String get chatWhere => 'در ۳۰ روز گذشته:';
+
+  @override
+  String get chatWhereNone => 'هنوز خرجی در ۳۰ روز گذشته ثبت نشده.';
+
+  @override
+  String chatAside(String amount) {
+    return '$amount پیش از هر خرجی کنار گذاشته شده:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'اگر $amount باشد، هر انتخاب این نتیجه را دارد:';
+  }
+
+  @override
+  String get chatHelp =>
+      'می‌توانم بگویم چقدر می‌توانید خرج کنید، حقوق بعدی کی است، پول کجا رفت و چه چیزی کنار گذاشته شده. یا یک قیمت بنویسید، مثل «گوشی ۲۰ میلیونی»، تا ببینید خریدنش چه اثری دارد.';
 }

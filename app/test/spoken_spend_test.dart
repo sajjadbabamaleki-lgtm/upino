@@ -42,6 +42,16 @@ void main() {
       expect(irr('نون بیست هزار و دو تا شیر').amount, Money(20000, 'IRR'));
     });
 
+    test('an article is not the number one', () {
+      expect(irr('یه گوشی ۲۰ میلیونی').amount, Money(20000000, 'IRR'));
+      expect(irr('یک میلیون').amount, Money(1000000, 'IRR'));
+      expect(irr('یه میلیون و دویست').amount, Money(1000200, 'IRR'));
+    });
+
+    test('a price said as an adjective', () {
+      expect(irr('کفش ۸۰۰ هزاری').amount, Money(800000, 'IRR'));
+    });
+
     test('nothing numeric gives no amount', () {
       final s = irr('نون');
       expect(s.amount, isNull);

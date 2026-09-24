@@ -52,6 +52,8 @@ UI_ICONS = {
     'ask': 'solar:question-square-linear',
     'camera': 'solar:camera-minimalistic-linear',
     'mic': 'solar:microphone-3-linear',
+    'bell': 'solar:bell-linear',
+    'chat': 'solar:chat-round-line-linear',
     'gallery': 'solar:gallery-minimalistic-linear',
     'back': 'mingcute:left-line',
     'receipt': 'solar:document-text-linear',

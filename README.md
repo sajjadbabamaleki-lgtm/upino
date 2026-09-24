@@ -182,15 +182,26 @@ on, in the smallest and most damaging way available.
 
 ### Screens
 
-Four destinations, as §32.9 specifies.
+Five tabs in the bottom bar, and a capsule across the top that mirrors it:
+the mark and the page's name on the left, the bell and Profile on the right.
 
-| Screen | Holds |
-|---|---|
-| Home | The decision: Safe-to-Spend, what is short, why the figure moved |
-| Plan | Commitments, income and balance — listed in waterfall order |
-| Goals | Targets, progress and what each needs from this pay period |
-| Activity | What was recorded, and how to correct it |
-| Profile | Balance confirmation, confidence, theme, starting over |
+| Screen | Where | Holds |
+|---|---|---|
+| Home | tab | The decision: Safe-to-Spend, what is short, why the figure moved |
+| Plan | tab | Commitments, income and balance — listed in waterfall order |
+| Goals | tab | Targets, progress and what each needs from this pay period |
+| Activity | tab | What was recorded, and how to correct it |
+| Ask | tab | A chat about the plan, answered by the plan (below) |
+| Alerts | bell | What needs the person, derived from the plan, never stored |
+| Profile | capsule | Balance confirmation, confidence, theme, backup, starting over |
+
+**Ask is a conversation with the engine, not with a language model.** A
+question is matched against a few intents in Persian and English — how much
+can be spent, the next pay, where the money went, what is set aside — and a
+price anywhere in it makes it a purchase, answered with the same three full
+plans the scenario cards show. Every figure is read from the engine; nothing
+leaves the phone, and a question it does not recognise gets the list of what
+it can answer rather than a guess. It never says yes or no to a purchase.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.

@@ -1054,4 +1054,95 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get no => 'Hayır';
+
+  @override
+  String get navAsk => 'Sor';
+
+  @override
+  String get alertsTitle => 'İlgi bekliyor';
+
+  @override
+  String get alertsEmpty => 'Şu an ilgi bekleyen bir şey yok. Plan güncel.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label için $amount eksik';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'Ödemeniz gereken bir şey eldekiyle karşılanmıyor.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'Maaşınız $date tarihinde bekleniyordu';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'Gelene kadar sayılmaz. Tarih değiştiyse Plan\'dan güncelleyin.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name bu dönem $amount geride';
+  }
+
+  @override
+  String get alertGoalBehindDetail => 'Eldeki para bu dönemin payına yetmiyor.';
+
+  @override
+  String get chatIntro =>
+      'Paranızla ilgili sorun: ne kadar harcayabilirsiniz, sonraki maaş, para nereye gitti. Ya da bir fiyat yazıp almanın etkisini görün. Her rakam planınızdan gelir.';
+
+  @override
+  String get chatHint => 'Sorun ya da bir fiyat yazın';
+
+  @override
+  String get chatSuggestSafe => 'Ne kadar harcayabilirim?';
+
+  @override
+  String get chatSuggestPay => 'Sonraki maaş ne zaman?';
+
+  @override
+  String get chatSuggestWhere => 'Param nereye gitti?';
+
+  @override
+  String get chatSuggestAside => 'Ne ayrıldı?';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return '$date tarihine kadar $amount harcayabilirsiniz.';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'Bakiyenizin onaylanması gerekiyor; bunu tahmin olarak görün.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'Sonraki maaşınız $amount, $date tarihinde bekleniyor.';
+  }
+
+  @override
+  String get chatPayNone => 'Henüz beklenen maaş yok. Plan\'dan ekleyin.';
+
+  @override
+  String get chatWhere => 'Son 30 günde:';
+
+  @override
+  String get chatWhereNone => 'Son 30 günde henüz harcama yok.';
+
+  @override
+  String chatAside(String amount) {
+    return 'Harcamadan önce $amount ayrılır:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return '$amount tutarındaysa, her seçenek size şunu bırakır:';
+  }
+
+  @override
+  String get chatHelp =>
+      'Ne kadar harcayabileceğinizi, maaşın ne zaman geleceğini, paranın nereye gittiğini ve ne ayrıldığını söyleyebilirim. Ya da “20 bin liralık telefon” gibi bir fiyat yazın.';
 }

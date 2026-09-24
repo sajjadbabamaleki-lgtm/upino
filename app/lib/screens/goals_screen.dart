@@ -74,18 +74,12 @@ class GoalsScreen extends StatelessWidget {
       builder: (context, _) => ListView(
         padding: padding,
         children: revealed([
+          // The page's name is in the capsule above.
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(l.goalsTitle, style: theme.textTheme.headlineLarge),
-                const SizedBox(height: 2),
-                Text(
-                  goals.isEmpty ? l.goalsBlurbEmpty : l.goalsBlurb,
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+            child: Text(
+              goals.isEmpty ? l.goalsBlurbEmpty : l.goalsBlurb,
+              style: theme.textTheme.bodySmall,
             ),
           ),
           if (goals.isEmpty)

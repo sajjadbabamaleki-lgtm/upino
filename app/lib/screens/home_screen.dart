@@ -23,9 +23,11 @@ import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/alerts_sheet.dart';
 import '../widgets/bank_suggestions_sheet.dart';
+import '../widgets/top_bar.dart';
+import 'ask_chat_screen.dart';
 import 'activity_screen.dart';
-import 'ask_screen.dart';
 import 'goals_screen.dart';
 import 'plan_screen.dart';
 import 'profile_screen.dart';
@@ -60,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _chat.dispose();
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_spendRequests?.cancel());
     super.dispose();
@@ -81,7 +84,42 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   int _tab = 0;
 
+  static const _askTab = 4;
+  static const _profileTab = 5;
+
+  /// The conversation on Ask, kept here so it survives switching tabs.
+  final _chat = ChatLog();
+
   AppState get state => widget.state;
+
+  String _titleFor(AppLocalizations l) => switch (_tab) {
+        1 => l.navPlan,
+        2 => l.navGoals,
+        3 => l.navActivity,
+        _askTab => l.navAsk,
+        _profileTab => l.profileTitle,
+        _ => l.navHome,
+      };
+
+  Future<void> _openAlerts() => AlertsSheet.show(
+        context,
+        state: state,
+        onAct: (alert) {
+          switch (alert) {
+            case UnfundedAlert():
+              setState(() => _tab = 0);
+              _showBreakdown(state.snapshot);
+            case BalanceStaleAlert():
+              unawaited(_confirmBalance());
+            case IncomeLateAlert():
+              setState(() => _tab = 1);
+            case GoalBehindAlert():
+              setState(() => _tab = 2);
+            case BankMessagesAlert():
+              unawaited(BankSuggestionsSheet.show(context, state));
+          }
+        },
+      );
 
   Future<void> _recordExpense() async {
     final amount = await AmountSheet.show(
@@ -138,7 +176,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         children: [
           SafeArea(
             bottom: false,
-            child: switch (_tab) {
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    UpinoTokens.gutter,
+                    8,
+                    UpinoTokens.gutter,
+                    14,
+                  ),
+                  child: UpinoTopBar(
+                    title: _titleFor(l),
+                    alertCount: state.alerts.length,
+                    onAlerts: _openAlerts,
+                    onProfile: () => setState(() => _tab = _profileTab),
+                    profileSelected: _tab == _profileTab,
+                  ),
+                ),
+                Expanded(
+                  child: switch (_tab) {
               1 => PlanScreen(
                   key: const PageStorageKey('tab-plan'),
                   state: state,
@@ -155,7 +211,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   state: state,
                   padding: contentPadding,
                 ),
-              4 => ProfileScreen(
+              4 => AskChatScreen(
+                  key: const PageStorageKey('tab-ask'),
+                  state: state,
+                  log: _chat,
+                  padding: contentPadding,
+                ),
+              5 => ProfileScreen(
                   key: const PageStorageKey('tab-profile'),
                   state: state,
                   padding: contentPadding,
@@ -164,24 +226,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   key: const PageStorageKey('tab-home'),
                   padding: contentPadding,
                   children: revealed([
+                    // The page's name is in the capsule above; what stays here
+                    // is the line that says what the figure covers.
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l.homeTitle,
-                            style: theme.textTheme.headlineLarge,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            l.homeUntilTotal(
-                              formatDate(context, snapshot.decisionHorizonEnd),
-                              snapshot.trustedAllocatableLiquidity.display(),
-                            ),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
+                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+                      child: Text(
+                        l.homeUntilTotal(
+                          formatDate(context, snapshot.decisionHorizonEnd),
+                          snapshot.trustedAllocatableLiquidity.display(),
+                        ),
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
 
@@ -223,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       title: l.askTitle,
                       subtitle: l.askBlurb,
                       trailing: const RowAffordance(icon: 'ask'),
-                      onTap: () => AskScreen.open(context, state),
+                      onTap: () => setState(() => _tab = _askTab),
                     ),
 
                     const SizedBox(height: 20),
@@ -264,6 +318,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   ]),
                 ),
             },
+                ),
+              ],
+            ),
           ),
           Positioned(
             left: 0,
@@ -276,7 +333,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             right: UpinoTokens.gutter,
             bottom: navBottomGap,
             child: UpinoNavBar(
-              index: _tab,
+              // Profile lives in the capsule, so on Profile no tab is lit.
+              index: _tab == _profileTab ? -1 : _tab,
               onSelect: (i) => setState(() => _tab = i),
             ),
           ),

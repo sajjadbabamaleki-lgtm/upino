@@ -1040,4 +1040,94 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get no => 'لا';
+
+  @override
+  String get navAsk => 'اسأل';
+
+  @override
+  String get alertsTitle => 'يحتاج انتباهك';
+
+  @override
+  String get alertsEmpty => 'لا شيء يحتاجك الآن. الخطة محدّثة.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return 'ينقص $label مبلغ $amount';
+  }
+
+  @override
+  String get alertUnfundedDetail => 'شيء يجب دفعه غير مغطّى بما لديك.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'كان راتبك متوقعًا في $date';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'لا يُحتسب حتى يصل. غيّر التاريخ في الخطة إن تغيّر.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name متأخر بمبلغ $amount هذه الفترة';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'ما لديك لا يكفي حصة هذه الفترة من الهدف.';
+
+  @override
+  String get chatIntro =>
+      'اسألني عن مالك: ما يمكنك إنفاقه، راتبك القادم، أين ذهب المال. أو اكتب سعرًا لترى أثر شرائه. كل رقم يأتي من خطتك.';
+
+  @override
+  String get chatHint => 'اسأل أو اكتب سعرًا';
+
+  @override
+  String get chatSuggestSafe => 'كم يمكنني أن أنفق؟';
+
+  @override
+  String get chatSuggestPay => 'متى راتبي القادم؟';
+
+  @override
+  String get chatSuggestWhere => 'أين ذهب مالي؟';
+
+  @override
+  String get chatSuggestAside => 'ما المبلغ المجنّب؟';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'يمكنك إنفاق $amount حتى $date.';
+  }
+
+  @override
+  String get chatSafeStale => 'رصيدك يحتاج إلى تأكيد، فاعتبر هذا تقديرًا.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'راتبك القادم $amount، متوقع في $date.';
+  }
+
+  @override
+  String get chatPayNone => 'لا يوجد راتب متوقع بعد. أضفه في الخطة.';
+
+  @override
+  String get chatWhere => 'في آخر 30 يومًا:';
+
+  @override
+  String get chatWhereNone => 'لم تُسجّل مصروفات في آخر 30 يومًا بعد.';
+
+  @override
+  String chatAside(String amount) {
+    return 'يُجنَّب $amount قبل أي إنفاق:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'إن كان سعره $amount، فهذا ما يتركه لك كل خيار:';
+  }
+
+  @override
+  String get chatHelp =>
+      'أستطيع إخبارك كم يمكنك أن تنفق، ومتى راتبك القادم، وأين ذهب مالك، وما المجنّب. أو اكتب سعرًا مثل «هاتف بمليون» لترى أثر شرائه.';
 }

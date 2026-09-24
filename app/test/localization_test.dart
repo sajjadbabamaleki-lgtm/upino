@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upino/design/icon.dart';
+import 'package:upino/design/parts.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
@@ -41,6 +42,9 @@ Future<void> pumpApp(WidgetTester tester, AppState state) async {
   await tester.pumpWidget(UpinoApp(state: state));
   await tester.pumpAndSettle();
 }
+
+String? topTitle(WidgetTester tester) =>
+    tester.widget<Text>(find.byKey(const Key('top-title'))).data;
 
 void main() {
   group('the catalogues', () {
@@ -95,25 +99,31 @@ void main() {
       final state = funded();
       expect(state.languageCode, isNull);
       await pumpApp(tester, state);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(topTitle(tester), 'Home');
     });
 
     testWidgets('changes the words on screen at once', (tester) async {
       final state = funded();
       await pumpApp(tester, state);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(topTitle(tester), 'Home');
 
       state.setLanguageCode('fa');
       await tester.pumpAndSettle();
 
-      expect(find.text('Your plan'), findsNothing);
-      expect(find.text('برنامهٔ شما'), findsOneWidget);
+      expect(find.text('Home'), findsNothing);
+      expect(topTitle(tester), 'خانه');
     });
 
     testWidgets('reaches the bottom bar too', (tester) async {
       final state = funded()..setLanguageCode('tr');
       await pumpApp(tester, state);
-      expect(find.text('Ana sayfa'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(UpinoNavBar),
+          matching: find.text('Ana sayfa'),
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('is stored with the plan and read back', (tester) async {
@@ -129,7 +139,7 @@ void main() {
       expect(second.languageCode, 'es');
 
       await pumpApp(tester, second);
-      expect(find.text('Tu plan'), findsOneWidget);
+      expect(topTitle(tester), 'Inicio');
     });
   });
 
@@ -159,10 +169,10 @@ void main() {
       // Mirroring is the whole point: nothing on a screen asks which way it
       // runs, so if Directionality did not reach the layout this would fail.
       await pumpApp(tester, funded()..setLanguageCode('en'));
-      final ltr = tester.getTopLeft(find.text('Your plan')).dx;
+      final ltr = tester.getTopLeft(find.byKey(const Key('top-title'))).dx;
 
       await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final rtl = tester.getTopRight(find.text('برنامهٔ شما')).dx;
+      final rtl = tester.getTopRight(find.byKey(const Key('top-title'))).dx;
 
       expect(ltr, lessThan(210));
       expect(rtl, greaterThan(210));
@@ -211,7 +221,7 @@ void main() {
 
     testWidgets('is reachable again from Profile', (tester) async {
       await pumpApp(tester, funded());
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
 
       final row = find.byKey(const Key('profile-language'));

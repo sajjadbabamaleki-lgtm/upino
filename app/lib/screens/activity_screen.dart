@@ -59,18 +59,12 @@ class ActivityScreen extends StatelessWidget {
     return ListView(
       padding: padding,
       children: revealed([
+        // The page's name is in the capsule above.
         Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l.activityTitle, style: theme.textTheme.headlineLarge),
-              const SizedBox(height: 2),
-              Text(
-                entries.isEmpty ? l.activityBlurbEmpty : l.activityBlurb,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+          child: Text(
+            entries.isEmpty ? l.activityBlurbEmpty : l.activityBlurb,
+            style: theme.textTheme.bodySmall,
           ),
         ),
         // Only once something has been sorted: a card that says "Not sorted"

@@ -1973,6 +1973,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get no;
+
+  /// No description provided for @navAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get navAsk;
+
+  /// No description provided for @alertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs you'**
+  String get alertsTitle;
+
+  /// No description provided for @alertsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs you right now. The plan is up to date.'**
+  String get alertsEmpty;
+
+  /// No description provided for @alertUnfunded.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} is {amount} short'**
+  String alertUnfunded(String label, String amount);
+
+  /// No description provided for @alertUnfundedDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Something you must pay is not covered by what you have.'**
+  String get alertUnfundedDetail;
+
+  /// No description provided for @alertIncomeLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pay was expected on {date}'**
+  String alertIncomeLate(String date);
+
+  /// No description provided for @alertIncomeLateDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'It is not counted until it arrives. Change the date on Plan if it moved.'**
+  String get alertIncomeLateDetail;
+
+  /// No description provided for @alertGoalBehind.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is {amount} behind this period'**
+  String alertGoalBehind(String name, String amount);
+
+  /// No description provided for @alertGoalBehindDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'What you have does not reach this period\'s share of the goal.'**
+  String get alertGoalBehindDetail;
+
+  /// No description provided for @chatIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask me about your money: what you can spend, your next pay, where it went. Or type a price to see what buying it would do. Every figure comes from your plan.'**
+  String get chatIntro;
+
+  /// No description provided for @chatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask, or type a price'**
+  String get chatHint;
+
+  /// No description provided for @chatSuggestSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'How much can I spend?'**
+  String get chatSuggestSafe;
+
+  /// No description provided for @chatSuggestPay.
+  ///
+  /// In en, this message translates to:
+  /// **'When is my next pay?'**
+  String get chatSuggestPay;
+
+  /// No description provided for @chatSuggestWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Where did my money go?'**
+  String get chatSuggestWhere;
+
+  /// No description provided for @chatSuggestAside.
+  ///
+  /// In en, this message translates to:
+  /// **'What is set aside?'**
+  String get chatSuggestAside;
+
+  /// No description provided for @chatSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'You can spend {amount} until {date}.'**
+  String chatSafe(String amount, String date);
+
+  /// No description provided for @chatSafeStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Your balance needs confirming, so treat this as an estimate.'**
+  String get chatSafeStale;
+
+  /// No description provided for @chatPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next pay is {amount}, expected on {date}.'**
+  String chatPay(String amount, String date);
+
+  /// No description provided for @chatPayNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No pay is expected yet. Add it on Plan.'**
+  String get chatPayNone;
+
+  /// No description provided for @chatWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'In the last 30 days:'**
+  String get chatWhere;
+
+  /// No description provided for @chatWhereNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No spends recorded in the last 30 days yet.'**
+  String get chatWhereNone;
+
+  /// No description provided for @chatAside.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} is set aside before anything is spendable:'**
+  String chatAside(String amount);
+
+  /// No description provided for @chatPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'If it costs {amount}, here is what each choice leaves you:'**
+  String chatPurchase(String amount);
+
+  /// No description provided for @chatHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'I can tell you how much you can spend, when your next pay is, where your money went and what is set aside. Or type a price, like “a phone for 20 million”, to see what buying it would do.'**
+  String get chatHelp;
 }
 
 class _AppLocalizationsDelegate

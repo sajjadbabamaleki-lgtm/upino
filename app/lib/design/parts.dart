@@ -320,11 +320,13 @@ class UpinoNavBar extends StatelessWidget {
     'plan',
     'goals',
     'activity',
-    'profile',
+    'chat',
   ];
 
+  /// Profile moved to the capsule at the top; its place went to Ask, the
+  /// thing only this app does.
   static List<String> labelsOf(AppLocalizations l) =>
-      [l.navHome, l.navPlan, l.navGoals, l.navActivity, l.navProfile];
+      [l.navHome, l.navPlan, l.navGoals, l.navActivity, l.navAsk];
 
   static int get destinationCount => _icons.length;
 

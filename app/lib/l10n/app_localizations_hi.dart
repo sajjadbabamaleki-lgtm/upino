@@ -1056,4 +1056,96 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get no => 'नहीं';
+
+  @override
+  String get navAsk => 'पूछें';
+
+  @override
+  String get alertsTitle => 'ध्यान चाहिए';
+
+  @override
+  String get alertsEmpty => 'अभी कुछ ध्यान नहीं चाहिए। योजना अद्यतन है।';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label में $amount कम है';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'जो चुकाना ज़रूरी है, वह आपके पैसे से पूरा नहीं होता।';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'आपका वेतन $date को आना था';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'आने तक गिना नहीं जाता। तारीख बदली हो तो योजना में बदलें।';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name इस अवधि में $amount पीछे है';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'आपके पैसे इस अवधि के हिस्से तक नहीं पहुँचते।';
+
+  @override
+  String get chatIntro =>
+      'अपने पैसे के बारे में पूछें: कितना खर्च कर सकते हैं, अगला वेतन, पैसा कहाँ गया। या कोई दाम लिखें और देखें खरीदने से क्या होगा। हर आँकड़ा आपकी योजना से आता है।';
+
+  @override
+  String get chatHint => 'पूछें या दाम लिखें';
+
+  @override
+  String get chatSuggestSafe => 'कितना खर्च कर सकता हूँ?';
+
+  @override
+  String get chatSuggestPay => 'अगला वेतन कब है?';
+
+  @override
+  String get chatSuggestWhere => 'मेरा पैसा कहाँ गया?';
+
+  @override
+  String get chatSuggestAside => 'क्या अलग रखा है?';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'आप $date तक $amount खर्च कर सकते हैं।';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'आपके बैलेंस की पुष्टि बाकी है, इसे अनुमान समझें।';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'आपका अगला वेतन $amount है, $date को अपेक्षित।';
+  }
+
+  @override
+  String get chatPayNone => 'अभी कोई वेतन अपेक्षित नहीं। योजना में जोड़ें।';
+
+  @override
+  String get chatWhere => 'पिछले 30 दिनों में:';
+
+  @override
+  String get chatWhereNone => 'पिछले 30 दिनों में अभी कोई खर्च दर्ज नहीं।';
+
+  @override
+  String chatAside(String amount) {
+    return 'कुछ भी खर्च करने से पहले $amount अलग रखा है:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'अगर यह $amount का है, तो हर विकल्प से यह बचता है:';
+  }
+
+  @override
+  String get chatHelp =>
+      'मैं बता सकता हूँ कितना खर्च कर सकते हैं, अगला वेतन कब है, पैसा कहाँ गया और क्या अलग रखा है। या कोई दाम लिखें, जैसे “20 हज़ार का फ़ोन”।';
 }

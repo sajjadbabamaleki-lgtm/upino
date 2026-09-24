@@ -1075,4 +1075,98 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get no => 'Non';
+
+  @override
+  String get navAsk => 'Demander';
+
+  @override
+  String get alertsTitle => 'À traiter';
+
+  @override
+  String get alertsEmpty =>
+      'Rien à traiter pour l’instant. Le plan est à jour.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return 'Il manque $amount pour $label';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'Une dépense obligatoire n’est pas couverte par ce que vous avez.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'Votre paie était attendue le $date';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'Elle ne compte pas avant d’arriver. Changez la date dans Plan si elle a bougé.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name a $amount de retard cette période';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'Ce que vous avez ne couvre pas la part de cette période.';
+
+  @override
+  String get chatIntro =>
+      'Demandez-moi : ce que vous pouvez dépenser, votre prochaine paie, où est passé l’argent. Ou tapez un prix pour voir l’effet d’un achat. Chaque chiffre vient de votre plan.';
+
+  @override
+  String get chatHint => 'Posez une question ou tapez un prix';
+
+  @override
+  String get chatSuggestSafe => 'Combien puis-je dépenser ?';
+
+  @override
+  String get chatSuggestPay => 'Quand est ma prochaine paie ?';
+
+  @override
+  String get chatSuggestWhere => 'Où est passé mon argent ?';
+
+  @override
+  String get chatSuggestAside => 'Qu’est-ce qui est mis de côté ?';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'Vous pouvez dépenser $amount jusqu’au $date.';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'Votre solde doit être confirmé : considérez ceci comme une estimation.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'Votre prochaine paie est de $amount, attendue le $date.';
+  }
+
+  @override
+  String get chatPayNone =>
+      'Aucune paie prévue pour l’instant. Ajoutez-la dans Plan.';
+
+  @override
+  String get chatWhere => 'Ces 30 derniers jours :';
+
+  @override
+  String get chatWhereNone => 'Aucune dépense notée ces 30 derniers jours.';
+
+  @override
+  String chatAside(String amount) {
+    return '$amount est mis de côté avant toute dépense :';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'S’il coûte $amount, voici ce que chaque choix vous laisse :';
+  }
+
+  @override
+  String get chatHelp =>
+      'Je peux vous dire combien dépenser, quand arrive la paie, où est passé l’argent et ce qui est mis de côté. Ou tapez un prix, comme « un téléphone à 500 », pour voir l’effet.';
 }

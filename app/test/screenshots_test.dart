@@ -282,7 +282,7 @@ void main() {
       fundedState(),
       size: const Size(400, 900),
       after: (tester) async {
-        await tester.tap(find.byKey(const Key('nav-4')));
+        await tester.tap(find.byKey(const Key('top-profile')));
         await tester.pumpAndSettle();
         final row = find.byKey(const Key('profile-language'));
         await tester.scrollUntilVisible(
@@ -311,7 +311,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('nav-4')));
+    await tester.tap(find.byKey(const Key('top-profile')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),
@@ -328,9 +328,13 @@ void main() {
       after: (tester) async {
         await tester.tap(find.byKey(const Key('home-ask')));
         await tester.pumpAndSettle();
-        await tester.enterText(find.byKey(const Key('ask-amount')), '1500');
+        await tester.tap(find.byKey(const Key('chat-suggest-safeToSpend')));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(const Key('ask-run')));
+        await tester.enterText(
+          find.byKey(const Key('chat-input')),
+          'A phone for 1500?',
+        );
+        await tester.tap(find.byKey(const Key('chat-send')));
         await tester.pumpAndSettle();
       },
     );

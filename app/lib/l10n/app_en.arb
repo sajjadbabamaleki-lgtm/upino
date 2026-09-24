@@ -550,5 +550,90 @@
     }
   },
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "navAsk": "Ask",
+  "alertsTitle": "Needs you",
+  "alertsEmpty": "Nothing needs you right now. The plan is up to date.",
+  "alertUnfunded": "{label} is {amount} short",
+  "@alertUnfunded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "alertUnfundedDetail": "Something you must pay is not covered by what you have.",
+  "alertIncomeLate": "Your pay was expected on {date}",
+  "@alertIncomeLate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "alertIncomeLateDetail": "It is not counted until it arrives. Change the date on Plan if it moved.",
+  "alertGoalBehind": "{name} is {amount} behind this period",
+  "@alertGoalBehind": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "alertGoalBehindDetail": "What you have does not reach this period's share of the goal.",
+  "chatIntro": "Ask me about your money: what you can spend, your next pay, where it went. Or type a price to see what buying it would do. Every figure comes from your plan.",
+  "chatHint": "Ask, or type a price",
+  "chatSuggestSafe": "How much can I spend?",
+  "chatSuggestPay": "When is my next pay?",
+  "chatSuggestWhere": "Where did my money go?",
+  "chatSuggestAside": "What is set aside?",
+  "chatSafe": "You can spend {amount} until {date}.",
+  "@chatSafe": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatSafeStale": "Your balance needs confirming, so treat this as an estimate.",
+  "chatPay": "Your next pay is {amount}, expected on {date}.",
+  "@chatPay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPayNone": "No pay is expected yet. Add it on Plan.",
+  "chatWhere": "In the last 30 days:",
+  "chatWhereNone": "No spends recorded in the last 30 days yet.",
+  "chatAside": "{amount} is set aside before anything is spendable:",
+  "@chatAside": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPurchase": "If it costs {amount}, here is what each choice leaves you:",
+  "@chatPurchase": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatHelp": "I can tell you how much you can spend, when your next pay is, where your money went and what is set aside. Or type a price, like “a phone for 20 million”, to see what buying it would do."
 }

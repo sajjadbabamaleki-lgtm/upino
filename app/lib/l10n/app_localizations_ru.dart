@@ -1059,4 +1059,95 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get no => 'Нет';
+
+  @override
+  String get navAsk => 'Спросить';
+
+  @override
+  String get alertsTitle => 'Требует внимания';
+
+  @override
+  String get alertsEmpty => 'Сейчас ничего не требует внимания. План актуален.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return 'На «$label» не хватает $amount';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'Обязательный платёж не покрыт имеющимися деньгами.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'Зарплата ожидалась $date';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'Не учитывается, пока не придёт. Если дата сдвинулась, измените её в Плане.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '«$name» отстаёт на $amount в этом периоде';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'Имеющихся денег не хватает на долю этого периода.';
+
+  @override
+  String get chatIntro =>
+      'Спросите о деньгах: сколько можно тратить, когда зарплата, куда ушли деньги. Или введите цену и посмотрите, что будет после покупки. Все цифры — из вашего плана.';
+
+  @override
+  String get chatHint => 'Спросите или введите цену';
+
+  @override
+  String get chatSuggestSafe => 'Сколько можно потратить?';
+
+  @override
+  String get chatSuggestPay => 'Когда зарплата?';
+
+  @override
+  String get chatSuggestWhere => 'Куда ушли деньги?';
+
+  @override
+  String get chatSuggestAside => 'Что отложено?';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'До $date можно потратить $amount.';
+  }
+
+  @override
+  String get chatSafeStale => 'Баланс нужно подтвердить, так что это оценка.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'Следующая зарплата — $amount, ожидается $date.';
+  }
+
+  @override
+  String get chatPayNone => 'Зарплата пока не указана. Добавьте её в Плане.';
+
+  @override
+  String get chatWhere => 'За последние 30 дней:';
+
+  @override
+  String get chatWhereNone => 'За последние 30 дней трат пока нет.';
+
+  @override
+  String chatAside(String amount) {
+    return 'До любых трат отложено $amount:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'Если это стоит $amount, вот что оставит каждый вариант:';
+  }
+
+  @override
+  String get chatHelp =>
+      'Я могу сказать, сколько можно тратить, когда зарплата, куда ушли деньги и что отложено. Или введите цену, например «телефон за 50 тысяч».';
 }

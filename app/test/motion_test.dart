@@ -52,7 +52,8 @@ void main() {
 
       // One frame in: the animation has started and nothing has arrived.
       await tester.pump();
-      final title = find.text('Your plan');
+      // The first card on Home, now that the page's name is in the capsule.
+      final title = find.textContaining('in total');
       final early = tester.getTopLeft(title).dy;
       expect(
         tester.widget<Opacity>(
@@ -91,7 +92,7 @@ void main() {
           )
           .opacity;
 
-      expect(opacityAbove(find.text('Your plan')), 1);
+      expect(opacityAbove(find.textContaining('in total')), 1);
       expect(opacityAbove(find.text('Set aside first')), lessThan(1));
 
       await tester.pumpAndSettle();
@@ -112,14 +113,14 @@ void main() {
       );
       await tester.pump();
       expect(find.byType(Opacity), findsNothing);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(find.textContaining('in total'), findsOneWidget);
     });
   });
 
   group('the picker sheets', () {
     testWidgets('bring their rows in one after another', (tester) async {
       await pumpApp(tester, funded());
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
       final row = find.byKey(const Key('profile-language'));
       await tester.scrollUntilVisible(row, 200);
