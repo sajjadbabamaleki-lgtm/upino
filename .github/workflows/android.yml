@@ -92,9 +92,14 @@ jobs:
       # is a fraction of a debug APK's size. Signed with the committed debug
       # key (android/app/build.gradle.kts) so every build installs over the
       # last; a store build needs its own key.
+      # Each build gets a higher versionCode (the run number), so a phone
+      # always takes the new APK as an update of the one it has; with every
+      # build at versionCode 1, some installers refuse it.
       - name: Build APK
         working-directory: app
-        run: flutter build apk --release --flavor direct
+        run: >-
+          flutter build apk --release --flavor direct
+          --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
