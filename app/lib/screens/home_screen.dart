@@ -163,9 +163,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final systemBottom = MediaQuery.viewPaddingOf(context).bottom;
     final navBottomGap = _navBottomGap + systemBottom;
 
+    // No top padding: the capsule's own 14 below it is the gap to the
+    // first card, the same 14 that separates the cards under it.
     final contentPadding = EdgeInsets.fromLTRB(
       UpinoTokens.gutter,
-      8,
+      0,
       UpinoTokens.gutter,
       120 + systemBottom,
     );
