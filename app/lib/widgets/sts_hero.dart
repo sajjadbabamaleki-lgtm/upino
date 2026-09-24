@@ -111,7 +111,8 @@ class _GradientHero extends StatelessWidget {
               snapshot.protectedTotal.display(),
             ),
           ),
-          const SizedBox(height: 26),
+          // 22 to the button as well, as measured on screen.
+          const SizedBox(height: 17),
           if (degraded)
             _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
           else if (onQuickExpense != null)
