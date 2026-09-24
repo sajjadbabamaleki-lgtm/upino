@@ -2056,16 +2056,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get demoBillGym => 'Spor salonu';
 
   @override
-  String get goalsSample => 'Örnek hedefler';
-
-  @override
-  String get goalsMine => 'Hedeflerim';
-
-  @override
-  String get goalsSampleNote =>
-      'Bu sayfanın nasıl çalıştığını göstermek için dört örnek hedef. Sizin değiller ve planınızda hiçbir şeyi değiştirmezler.';
-
-  @override
   String get voiceExample => 'Örneğin: “yüz elli lira, öğle yemeği”';
 
   @override

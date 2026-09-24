@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/screens/goals_screen.dart';
 import 'package:upino/data/plan_document.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/data/serialization.dart';
@@ -52,6 +53,8 @@ AppState funded({PlanStore? store}) => AppState(
       );
 
 void main() {
+  // These look at the person's own goals, not the samples.
+  setUp(() => GoalsScreen.samplesWhenFew = false);
   group('the funding schedule', () {
     test('spreads the remainder over the periods that are left', () {
       // 365 days at 30 per period is 13 periods; €1,200 over 13.
@@ -288,9 +291,6 @@ void main() {
       await tester.pumpWidget(UpinoApp(state: state));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('nav-2')));
-      await tester.pumpAndSettle();
-      // With fewer than four goals the page opens on samples.
-      await tester.tap(find.byKey(const Key('goals-show-mine')));
       await tester.pumpAndSettle();
       return state;
     }

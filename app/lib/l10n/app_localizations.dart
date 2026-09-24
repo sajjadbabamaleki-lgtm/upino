@@ -3564,24 +3564,6 @@ abstract class AppLocalizations {
   /// **'Gym'**
   String get demoBillGym;
 
-  /// No description provided for @goalsSample.
-  ///
-  /// In en, this message translates to:
-  /// **'Sample goals'**
-  String get goalsSample;
-
-  /// No description provided for @goalsMine.
-  ///
-  /// In en, this message translates to:
-  /// **'My goals'**
-  String get goalsMine;
-
-  /// No description provided for @goalsSampleNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Four sample goals, to show how this page works. They are not yours and change nothing in your plan.'**
-  String get goalsSampleNote;
-
   /// No description provided for @voiceExample.
   ///
   /// In en, this message translates to:

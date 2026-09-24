@@ -2029,16 +2029,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get demoBillGym => 'النادي';
 
   @override
-  String get goalsSample => 'أهداف نموذجية';
-
-  @override
-  String get goalsMine => 'أهدافي';
-
-  @override
-  String get goalsSampleNote =>
-      'أربعة أهداف نموذجية لتوضيح طريقة عمل هذه الصفحة. ليست لك ولا تغيّر شيئًا في خطتك.';
-
-  @override
   String get voiceExample => 'مثلًا: «خمسون ريالًا غداء»';
 
   @override

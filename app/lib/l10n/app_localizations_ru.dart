@@ -2060,16 +2060,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get demoBillGym => 'Спортзал';
 
   @override
-  String get goalsSample => 'Примеры целей';
-
-  @override
-  String get goalsMine => 'Мои цели';
-
-  @override
-  String get goalsSampleNote =>
-      'Четыре примера целей, чтобы показать, как работает эта страница. Они не ваши и ничего не меняют в плане.';
-
-  @override
   String get voiceExample => 'Например: «двести рублей, обед»';
 
   @override

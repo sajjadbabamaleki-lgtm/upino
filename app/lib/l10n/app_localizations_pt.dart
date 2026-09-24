@@ -2135,16 +2135,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get demoBillGym => 'Academia';
 
   @override
-  String get goalsSample => 'Metas de exemplo';
-
-  @override
-  String get goalsMine => 'Minhas metas';
-
-  @override
-  String get goalsSampleNote =>
-      'Quatro metas de exemplo para mostrar como esta página funciona. Não são suas e não mudam nada no seu plano.';
-
-  @override
   String get voiceExample => 'Por exemplo: “doze e cinquenta, almoço”';
 
   @override

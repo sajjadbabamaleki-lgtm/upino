@@ -32,6 +32,10 @@ class GoalsScreen extends StatefulWidget {
   final AppState state;
   final EdgeInsets padding;
 
+  /// Off in tests that look at the person's own goals.
+  @visibleForTesting
+  static bool samplesWhenFew = true;
+
   @override
   State<GoalsScreen> createState() => _GoalsScreenState();
 }
@@ -41,12 +45,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
   /// plan and is never saved.
   AppState? _sample;
 
-  /// What the person picked on the switch; until then the page shows the
-  /// samples while there are fewer than four goals of their own, so the
-  /// rings can be seen whole.
+  /// Set once the person makes a goal of their own here; until then the
+  /// page shows the samples while there are fewer than four of their own,
+  /// so the rings can be seen whole.
   bool? _sampleChosen;
 
-  bool get _showingSample => _sampleChosen ?? widget.state.goals.length < 4;
+  bool get _showingSample =>
+      _sampleChosen ??
+      (GoalsScreen.samplesWhenFew && widget.state.goals.length < 4);
 
   /// The plan on show: the samples or the person's own.
   AppState get state => _showingSample
@@ -140,23 +146,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
         return ListView(
           padding: padding,
           children: revealed([
-            // Samples or the person's own, while they have fewer than four.
-            if (sample || widget.state.goals.length < 4) ...[
-              _SampleSwitch(
-                sample: sample,
-                onChanged: (v) => setState(() => _sampleChosen = v),
-              ),
-              if (sample)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-                  child: Text(
-                    l.goalsSampleNote,
-                    key: const Key('goals-sample-note'),
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ),
-              const SizedBox(height: 14),
-            ],
             // The page's name is in the capsule above, and the rings say
             // the rest; a line under the name would only repeat them.
             if (goals.isEmpty)
@@ -261,76 +250,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
           ]),
         );
       },
-    );
-  }
-}
-
-/// Two halves of a pill: the sample goals, or the person's own.
-class _SampleSwitch extends StatelessWidget {
-  const _SampleSwitch({required this.sample, required this.onChanged});
-
-  final bool sample;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final dark = isDark(context);
-    Widget half(String key, String label, bool on, bool value) => Expanded(
-          child: GestureDetector(
-            key: Key(key),
-            behavior: HitTestBehavior.opaque,
-            onTap: () => onChanged(value),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 38,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: on
-                    ? (dark ? UpinoTokens.darkSurfaceRaised : Colors.white)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-                boxShadow: on
-                    ? const [
-                        BoxShadow(
-                          color: Color(0x14000000),
-                          blurRadius: 6,
-                          offset: Offset(0, 1),
-                        ),
-                      ]
-                    : null,
-              ),
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w600,
-                  color: on
-                      ? (dark
-                          ? UpinoTokens.darkTextPrimary
-                          : UpinoTokens.textPrimary)
-                      : (dark
-                          ? UpinoTokens.darkTextSecondary
-                          : UpinoTokens.textSecondary),
-                ),
-              ),
-            ),
-          ),
-        );
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: sunkenColor(context),
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-      ),
-      child: Row(
-        children: [
-          half('goals-show-sample', l.goalsSample, sample, true),
-          half('goals-show-mine', l.goalsMine, !sample, false),
-        ],
-      ),
     );
   }
 }

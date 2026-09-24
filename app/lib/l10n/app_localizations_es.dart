@@ -2135,16 +2135,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get demoBillGym => 'Gimnasio';
 
   @override
-  String get goalsSample => 'Metas de ejemplo';
-
-  @override
-  String get goalsMine => 'Mis metas';
-
-  @override
-  String get goalsSampleNote =>
-      'Cuatro metas de ejemplo para ver cómo funciona esta página. No son tuyas y no cambian nada en tu plan.';
-
-  @override
   String get voiceExample => 'Por ejemplo: «doce cincuenta, comida»';
 
   @override

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/screens/goals_screen.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/domain/goal.dart';
 import 'package:upino/domain/inflation.dart';
@@ -33,6 +34,8 @@ Future<AppState> funded(PlanStore store) async {
 }
 
 void main() {
+  // These look at the person's own goals, not the samples.
+  setUp(() => GoalsScreen.samplesWhenFew = false);
   group('the arithmetic', () {
     test('a year at 35% adds 35%', () {
       expect(inflated(eur('1000.00'), 3500, 365), eur('1350.00'));
@@ -116,8 +119,6 @@ void main() {
     await tester.pumpWidget(UpinoApp(state: state));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('nav-2')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('goals-show-mine')));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('goals-inflation')));

@@ -2154,16 +2154,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get demoBillGym => 'Salle de sport';
 
   @override
-  String get goalsSample => 'Objectifs d\'exemple';
-
-  @override
-  String get goalsMine => 'Mes objectifs';
-
-  @override
-  String get goalsSampleNote =>
-      'Quatre objectifs d\'exemple pour montrer comment fonctionne cette page. Ils ne sont pas à vous et ne changent rien à votre plan.';
-
-  @override
   String get voiceExample => 'Par exemple : « douze cinquante, déjeuner »';
 
   @override

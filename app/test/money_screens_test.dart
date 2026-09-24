@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/screens/goals_screen.dart';
 import 'package:upino/data/plan_document.dart';
 import 'package:upino/domain/account.dart';
 import 'package:upino/domain/bill.dart';
@@ -49,6 +50,8 @@ Future<void> tapKey(WidgetTester tester, String key) async {
 }
 
 void main() {
+  // These look at the person's own goals, not the samples.
+  setUp(() => GoalsScreen.samplesWhenFew = false);
   testWidgets('a bill added on Plan is set aside and listed on Home',
       (tester) async {
     final state = funded();
@@ -220,7 +223,6 @@ void main() {
     final goal = state.goals.single;
     final before = goal.targetDate;
     await open(tester, state, tab: 2);
-    await tapKey(tester, 'goals-show-mine');
     await tapKey(tester, 'goal-tile-${goal.id}');
     await tapKey(tester, 'goal-path-${goal.id}');
     expect(find.byKey(Key('goal-chart-${goal.id}')), findsOneWidget);
@@ -276,8 +278,8 @@ void main() {
         targetDate: LocalDate.parse('2027-10-01'),
       );
     state.contributeToGoal(state.goals.single.id, eur('300.00'));
-    await open(tester, state, tab: 2);
-    await tester.tap(find.byKey(const Key('goals-show-mine')));
+    await open(tester, state);
+    await tester.tap(find.byKey(const Key('nav-2')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));
     // Early in the welcome the count has not reached the whole.
@@ -294,19 +296,14 @@ void main() {
 
   testWidgets('goals open on four samples until there are four of your own, '
       'and the samples leave the plan alone', (tester) async {
+    GoalsScreen.samplesWhenFew = true;
+    addTearDown(() => GoalsScreen.samplesWhenFew = false);
     final state = funded();
     final before = state.toDocument().encode();
     await open(tester, state, tab: 2);
-    expect(find.byKey(const Key('goals-sample-note')), findsOneWidget);
     expect(find.byKey(const Key('goals-orbit')), findsOneWidget);
     expect(find.text('TRIP'), findsNothing); // Latin names curve, painted
-
-    await tapKey(tester, 'goals-show-mine');
-    expect(find.byKey(const Key('goals-sample-note')), findsNothing);
-    expect(find.byKey(const Key('goals-orbit')), findsNothing);
-
-    await tapKey(tester, 'goals-show-sample');
-    expect(find.byKey(const Key('goals-orbit')), findsOneWidget);
+    expect(find.text('Each goal'), findsOneWidget);
     expect(state.toDocument().encode(), before);
     expect(state.goals, isEmpty);
   });
