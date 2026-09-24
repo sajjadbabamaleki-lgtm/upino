@@ -210,18 +210,20 @@ keep only their questions; answers are recomputed from the plan whenever one
 is shown. It never says yes or no to a purchase, and advice waits until
 there is enough history for it to be more than a guess.
 
-**The timeline** (Home, and in the chat for a purchase) is a chart you run a
-finger along. Behind today it is the balance as the record stood each day;
-ahead it is the engine run forward, day by day, on stated assumptions — the
-pay on its date and every period after, bills on theirs, what is set aside
-for living spent evenly, and nothing else — so a plan spent as intended
-keeps its room level until the pay lifts it. For a purchase it draws the
-plan without it and with it bought today or after the pay. Charts run left
-to right in every language: mirrored, a rising line reads as a falling one.
+**The timeline** (Home, and in the chat for a purchase) is a column chart
+you run a finger along: one column a day for the next 45 days, the room to
+spend on that day, with the one under the finger solid and its figures in
+the readout above. Every column is the engine run forward on stated
+assumptions — the pay on its date and every period after, bills on theirs,
+what is set aside for living spent evenly, and nothing else — so a plan
+spent as intended keeps its columns level until the pay lifts them. For a
+purchase, the columns are the room after it, bought today or after the
+pay, with the plan without it pale behind; a day something that must be
+paid would be short is red. Charts run left to right in every language.
 
 **Goals** show when each is reached at the pace the plan can actually hold
 for it, which is less than it asks for when money is short. The path chart
-has a pace slider; moving it only shows the new date, which is applied when
+(a column a week, the target as a line) has a pace slider; moving it only shows the new date, which is applied when
 the person chooses.
 
 **Bills and subscriptions** become claims: one due before the pay is held

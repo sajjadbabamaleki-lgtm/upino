@@ -98,11 +98,13 @@ class _GradientHero extends StatelessWidget {
             background: const Color(0x2EFFFFFF),
             foreground: UpinoTokens.textOnInverse,
           ),
-          // Measured so the badge, the figure and the line under it sit 22
-          // apart, the same as the button's distance from the card's edge.
-          const SizedBox(height: 14),
+          // Measured on screen so the badge, the figure and the line under
+          // it sit 22 apart, the same as the button's distance from the
+          // card's edge. Below the figure it is measured from the digits'
+          // baseline, not the comma that hangs under it.
+          const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-          const SizedBox(height: 18),
+          const SizedBox(height: 11),
           _HeroMeta(
             l.heroUntilSetAside(
               formatDate(context, snapshot.decisionHorizonEnd),
@@ -390,13 +392,14 @@ class _Figure extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Text(
           amount.display(),
-          // 15% under the display size, with a tight line box so the space
-          // around the figure is the space set around it, not font leading.
+          // Well under the display size (50 → 36), with a tight line box so
+          // the space around the figure is the space set around it, not
+          // font leading.
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
                 color: color,
                 fontFeatures: moneyFeatures,
-                fontSize: 42.5,
-                letterSpacing: -1.7,
+                fontSize: 36,
+                letterSpacing: -1.4,
                 height: 1.0,
               ),
         ),

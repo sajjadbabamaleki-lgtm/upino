@@ -16,13 +16,13 @@ import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/projection.dart';
-import 'scrub_chart.dart';
+import 'scrub_bars.dart';
 
 class TimelineCard extends StatefulWidget {
   const TimelineCard({
     required this.state,
     this.purchase,
-    this.daysAhead = 60,
+    this.daysAhead = 45,
     this.startAtPay,
     super.key,
   });
@@ -64,11 +64,12 @@ class _TimelineCardState extends State<TimelineCard> {
     _forPurchase = widget.purchase;
     _forTiming = _timing;
     if (planChanged) {
-      _base = widget.state.timeline(daysAhead: widget.daysAhead);
+      _base = widget.state.timeline(daysBack: 0, daysAhead: widget.daysAhead);
     }
     _compare = widget.purchase == null
         ? null
         : widget.state.timeline(
+            daysBack: 0,
             daysAhead: widget.daysAhead,
             purchase: widget.purchase,
             timing: _timing,
@@ -92,8 +93,6 @@ class _TimelineCardState extends State<TimelineCard> {
     final dark = isDark(context);
     final primary =
         dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
-    final faint =
-        dark ? UpinoTokens.darkTextTertiary : UpinoTokens.textTertiary;
     final critical = dark ? UpinoTokens.darkCritical : UpinoTokens.critical;
 
     final base = _base;
@@ -184,46 +183,31 @@ class _TimelineCardState extends State<TimelineCard> {
             ),
           ],
           const SizedBox(height: 14),
-          ScrubChart(
+          ScrubBars(
             key: const Key('timeline-chart'),
-            count: base.points.length,
             selected: i,
             onSelect: (n) => setState(() => _selected = n),
-            markerIndex: base.todayIndex,
             semanticLabel: l.timelineSemantics,
-            series: [
-              // The balance, only where it is recorded fact: ahead, the one
-              // line is the room to spend. The projected balance is in the
-              // readout, where it does not compete.
-              ChartSeries(
-                values: [
-                  for (final p in base.points)
-                    p.projected ? null : v(p.balance),
-                ],
-                color: faint.withValues(alpha: 0.45),
-                width: 1.4,
-                prominent: false,
-              ),
-              ChartSeries(
-                values: [for (final p in base.points) v(p.free)],
-                color: primary,
-                width: 3,
-                fill: compare == null,
-              ),
-              if (compare != null)
-                ChartSeries(
-                  values: [for (final p in compare.points) v(p.free)],
-                  color: critical,
-                  dashed: true,
-                ),
-            ],
+            color: compare == null ? primary : critical,
+            // One column a day: the room to spend, or with a purchase the
+            // room after it, with the plan without it pale behind.
+            values: [for (final p in (compare ?? base).points) v(p.free)],
+            ghost: compare == null
+                ? null
+                : [for (final p in base.points) v(p.free)],
+            ghostColor: primary.withValues(alpha: 0.18),
+            alert: {
+              for (var k = 0; k < (compare ?? base).points.length; k++)
+                if (((compare ?? base).points[k].gap?.minor ?? 0) > 0) k,
+            },
+            alertColor: critical,
             marks: [
               for (final m in base.marks)
-                ChartMark(
-                  base.points.indexWhere((p) => p.day == m.day),
-                  m.kind == TimelineMarkKind.pay ? primary : faint,
-                  big: m.kind == TimelineMarkKind.pay,
-                ),
+                if (m.kind == TimelineMarkKind.pay)
+                  BarMark(
+                    base.points.indexWhere((p) => p.day == m.day),
+                    primary,
+                  ),
             ],
           ),
           const SizedBox(height: 6),
@@ -282,9 +266,12 @@ class _TimelineCardState extends State<TimelineCard> {
             spacing: 14,
             runSpacing: 4,
             children: [
-              _Legend(color: primary, label: l.timelineFree),
-              if (base.todayIndex > 0)
-                _Legend(color: faint, label: l.timelineBalanceLegend),
+              _Legend(
+                color: compare == null
+                    ? primary
+                    : primary.withValues(alpha: 0.25),
+                label: l.timelineFree,
+              ),
               if (compare != null)
                 _Legend(color: critical, label: l.timelineWithPurchase),
               _Legend(color: primary, label: l.timelinePay, dot: true),

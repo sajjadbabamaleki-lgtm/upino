@@ -14,7 +14,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/projection.dart';
-import 'scrub_chart.dart';
+import 'scrub_bars.dart';
 
 class GoalProjectionView extends StatefulWidget {
   const GoalProjectionView({required this.state, required this.goal, super.key});
@@ -84,38 +84,25 @@ class _GoalProjectionViewState extends State<GoalProjectionView> {
           ],
         ),
         const SizedBox(height: 10),
-        ScrubChart(
+        ScrubBars(
           key: Key('goal-chart-${goal.id}'),
           height: 130,
-          count: what.days.length,
           selected: i,
           onSelect: (n) => setState(() => _selected = n),
-          markerIndex: what.todayIndex,
           guide: goal.target.minor.toDouble(),
           semanticLabel: l.goalChartSemantics(goal.name),
-          series: [
-            if (_pace != null)
-              ChartSeries(
-                values: [for (final s in planned.saved) s.minor.toDouble()],
-                color: faint.withValues(alpha: 0.6),
-                width: 1.6,
-                dashed: true,
-              ),
-            ChartSeries(
-              values: [for (final s in what.saved) s.minor.toDouble()],
-              color: primary,
-              width: 3,
-              fill: true,
-            ),
-          ],
+          // A column a week: saved so far, then where the pace takes it. A
+          // new pace is drawn over the plan's own, which stays pale behind.
+          color: what.onTrack || what.finishes == null ? primary : critical,
+          values: [for (final s in what.saved) s.minor.toDouble()],
+          ghost: _pace == null
+              ? null
+              : [for (final s in planned.saved) s.minor.toDouble()],
+          ghostColor: faint.withValues(alpha: 0.25),
           marks: [
-            if (targetIndex >= 0) ChartMark(targetIndex, faint, big: true),
+            if (targetIndex >= 0) BarMark(targetIndex, faint),
             if (finishIndex >= 0)
-              ChartMark(
-                finishIndex,
-                what.onTrack ? primary : critical,
-                big: true,
-              ),
+              BarMark(finishIndex, what.onTrack ? primary : critical),
           ],
         ),
         const SizedBox(height: 6),
