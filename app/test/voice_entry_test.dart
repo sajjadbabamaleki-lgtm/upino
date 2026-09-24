@@ -11,17 +11,17 @@ import 'package:upino/state/app_state.dart';
 import 'package:upino/widgets/amount_sheet.dart';
 
 class _FakeVoice implements VoiceInput {
-  _FakeVoice(this.said);
-  final String? said;
+  _FakeVoice(this.result);
+  final VoiceResult result;
   String? askedFor;
 
   @override
-  Future<String?> listen({
+  Future<VoiceResult> listen({
     required String localeId,
     ValueChanged<String>? onPartial,
   }) async {
     askedFor = localeId;
-    return said;
+    return result;
   }
 
   @override
@@ -62,7 +62,7 @@ void main() {
 
   testWidgets('what is heard fills the amount and the category, and nothing '
       'is recorded until Save', (tester) async {
-    final voice = _FakeVoice('دویست و پنجاه هزار تومن نون');
+    final voice = _FakeVoice(const VoiceResult.heard('دویست و پنجاه هزار تومن نون'));
     VoiceInput.instance = voice;
     final state = funded(language: 'fa');
     await openSpend(tester, state);
@@ -86,10 +86,30 @@ void main() {
 
   testWidgets('nothing heard says so and leaves the field alone',
       (tester) async {
-    VoiceInput.instance = _FakeVoice(null);
+    VoiceInput.instance =
+        _FakeVoice(const VoiceResult.failed(VoiceFailure.nothingHeard));
     await openSpend(tester, funded());
     await tester.tap(find.byKey(const Key('amount-voice')));
     await tester.pumpAndSettle();
     expect(find.text('No amount heard. Try again, or type it.'), findsOneWidget);
+  });
+
+  testWidgets('a phone with no recogniser says so instead of going quiet',
+      (tester) async {
+    VoiceInput.instance =
+        _FakeVoice(const VoiceResult.failed(VoiceFailure.unavailable));
+    await openSpend(tester, funded());
+    await tester.tap(find.byKey(const Key('amount-voice')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('no speech recognition'), findsOneWidget);
+  });
+
+  testWidgets('the microphone sits beside the camera, not in the amount',
+      (tester) async {
+    VoiceInput.instance = _FakeVoice(const VoiceResult.heard('10'));
+    await openSpend(tester, funded());
+    final mic = tester.getRect(find.byKey(const Key('amount-voice')));
+    final camera = tester.getRect(find.byKey(const Key('receipt-camera')));
+    expect(mic.center.dy, closeTo(camera.center.dy, 1));
   });
 }

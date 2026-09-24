@@ -302,5 +302,10 @@
   "voiceListening": "A ouvir… diga o valor e para quê foi.",
   "voiceHeard": "Ouvido: “{text}”. Confira o valor e guarde.",
   "voiceNothing": "Nenhum valor ouvido. Tente de novo ou escreva-o.",
-  "voicePrivacy": "O telemóvel converte voz em texto. Sem reconhecimento offline, passa pelo serviço de voz do telemóvel."
+  "voicePrivacy": "O telemóvel converte voz em texto. Sem reconhecimento offline, passa pelo serviço de voz do telemóvel.",
+  "voiceButton": "Diga",
+  "voiceUnavailable": "Este telemóvel não tem reconhecimento de voz que a app possa usar. Escreva o valor.",
+  "voiceNoPermission": "O Upino não tem permissão para usar o microfone. Pode dá-la nas definições.",
+  "voiceNetwork": "O reconhecimento de voz deste telemóvel precisa de internet e não conseguiu ligar-se.",
+  "voiceNoAmount": "Ouvido “{text}”, mas sem valor. Tente de novo ou escreva-o."
 }

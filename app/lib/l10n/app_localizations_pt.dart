@@ -1038,4 +1038,24 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'O telemóvel converte voz em texto. Sem reconhecimento offline, passa pelo serviço de voz do telemóvel.';
+
+  @override
+  String get voiceButton => 'Diga';
+
+  @override
+  String get voiceUnavailable =>
+      'Este telemóvel não tem reconhecimento de voz que a app possa usar. Escreva o valor.';
+
+  @override
+  String get voiceNoPermission =>
+      'O Upino não tem permissão para usar o microfone. Pode dá-la nas definições.';
+
+  @override
+  String get voiceNetwork =>
+      'O reconhecimento de voz deste telemóvel precisa de internet e não conseguiu ligar-se.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'Ouvido “$text”, mas sem valor. Tente de novo ou escreva-o.';
+  }
 }

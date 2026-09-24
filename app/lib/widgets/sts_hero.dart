@@ -268,7 +268,9 @@ class _HeroShell extends StatelessWidget {
               if (decoration2 != null)
                 Positioned(top: -6, right: -6, child: decoration2!),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 16, 22, 16),
+                // The bottom matches the sides, so the button at the foot of
+                // the card sits in an even frame rather than on its edge.
+                padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
                 child: child,
               ),
             ],

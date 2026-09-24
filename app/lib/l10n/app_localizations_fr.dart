@@ -1049,4 +1049,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'Votre téléphone transforme la voix en texte. Sans reconnaissance hors ligne, cela passe par son service vocal.';
+
+  @override
+  String get voiceButton => 'Dites-le';
+
+  @override
+  String get voiceUnavailable =>
+      'Ce téléphone n’a pas de reconnaissance vocale utilisable. Tapez le montant.';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino n’a pas accès au micro. Vous pouvez l’autoriser dans les réglages.';
+
+  @override
+  String get voiceNetwork =>
+      'La reconnaissance vocale de ce téléphone a besoin d’internet et n’a pas pu s’y connecter.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'Entendu « $text », mais sans montant. Réessayez ou tapez-le.';
+  }
 }

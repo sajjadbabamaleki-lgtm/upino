@@ -536,5 +536,17 @@
     }
   },
   "voiceNothing": "No amount heard. Try again, or type it.",
-  "voicePrivacy": "Your phone turns speech into text. On phones without offline speech, that goes through the phone's speech service."
+  "voicePrivacy": "Your phone turns speech into text. On phones without offline speech, that goes through the phone's speech service.",
+  "voiceButton": "Say it",
+  "voiceUnavailable": "This phone has no speech recognition the app can use. Type the amount instead.",
+  "voiceNoPermission": "Upino was not allowed to use the microphone. You can allow it in the phone's settings.",
+  "voiceNetwork": "Speech recognition on this phone needs the internet and could not reach it.",
+  "voiceNoAmount": "Heard “{text}”, but no amount in it. Try again, or type it.",
+  "@voiceNoAmount": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  }
 }

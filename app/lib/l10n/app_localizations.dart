@@ -1931,6 +1931,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your phone turns speech into text. On phones without offline speech, that goes through the phone\'s speech service.'**
   String get voicePrivacy;
+
+  /// No description provided for @voiceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Say it'**
+  String get voiceButton;
+
+  /// No description provided for @voiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no speech recognition the app can use. Type the amount instead.'**
+  String get voiceUnavailable;
+
+  /// No description provided for @voiceNoPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino was not allowed to use the microphone. You can allow it in the phone\'s settings.'**
+  String get voiceNoPermission;
+
+  /// No description provided for @voiceNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition on this phone needs the internet and could not reach it.'**
+  String get voiceNetwork;
+
+  /// No description provided for @voiceNoAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Heard “{text}”, but no amount in it. Try again, or type it.'**
+  String voiceNoAmount(String text);
 }
 
 class _AppLocalizationsDelegate

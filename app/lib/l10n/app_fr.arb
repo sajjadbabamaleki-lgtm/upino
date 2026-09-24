@@ -302,5 +302,10 @@
   "voiceListening": "J’écoute… dites le montant et à quoi il a servi.",
   "voiceHeard": "Entendu : « {text} ». Vérifiez le montant, puis enregistrez.",
   "voiceNothing": "Aucun montant entendu. Réessayez ou tapez-le.",
-  "voicePrivacy": "Votre téléphone transforme la voix en texte. Sans reconnaissance hors ligne, cela passe par son service vocal."
+  "voicePrivacy": "Votre téléphone transforme la voix en texte. Sans reconnaissance hors ligne, cela passe par son service vocal.",
+  "voiceButton": "Dites-le",
+  "voiceUnavailable": "Ce téléphone n’a pas de reconnaissance vocale utilisable. Tapez le montant.",
+  "voiceNoPermission": "Upino n’a pas accès au micro. Vous pouvez l’autoriser dans les réglages.",
+  "voiceNetwork": "La reconnaissance vocale de ce téléphone a besoin d’internet et n’a pas pu s’y connecter.",
+  "voiceNoAmount": "Entendu « {text} », mais sans montant. Réessayez ou tapez-le."
 }

@@ -1033,4 +1033,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'Your phone turns speech into text. On phones without offline speech, that goes through the phone\'s speech service.';
+
+  @override
+  String get voiceButton => 'Say it';
+
+  @override
+  String get voiceUnavailable =>
+      'This phone has no speech recognition the app can use. Type the amount instead.';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino was not allowed to use the microphone. You can allow it in the phone\'s settings.';
+
+  @override
+  String get voiceNetwork =>
+      'Speech recognition on this phone needs the internet and could not reach it.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'Heard “$text”, but no amount in it. Try again, or type it.';
+  }
 }

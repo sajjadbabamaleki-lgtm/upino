@@ -158,7 +158,9 @@ class _AmountSheetState extends State<AmountSheet> {
   /// What the recogniser heard, shown so the person can check it against
   /// the figure it produced. Null before the microphone is used.
   String? _heard;
-  bool _heardNothing = false;
+
+  /// Why the last attempt produced nothing, when it did.
+  VoiceFailure? _voiceFailure;
 
   Future<void> _listen() async {
     final voice = VoiceInput.instance;
@@ -171,9 +173,9 @@ class _AmountSheetState extends State<AmountSheet> {
     setState(() {
       _listening = true;
       _heard = '';
-      _heardNothing = false;
+      _voiceFailure = null;
     });
-    final text = await voice.listen(
+    final result = await voice.listen(
       localeId: switch (language) {
         'fa' => 'fa_IR',
         'ar' => 'ar_SA',
@@ -192,20 +194,22 @@ class _AmountSheetState extends State<AmountSheet> {
       },
     );
     if (!mounted) return;
-    applySpoken(text);
+    applySpoken(result);
   }
 
   /// Fill the fields from what was said. Public to the sheet's tests, which
   /// have no microphone.
   @visibleForTesting
-  void applySpoken(String? text) {
+  void applySpoken(VoiceResult result) {
+    final text = result.text;
     final spoken = text == null
         ? const SpokenSpend()
         : parseSpokenSpend(text, planCurrency: widget.currency);
     setState(() {
       _listening = false;
       _heard = text ?? '';
-      _heardNothing = spoken.amount == null;
+      _voiceFailure = result.failure ??
+          (spoken.amount == null ? VoiceFailure.nothingHeard : null);
       final amount = spoken.amount;
       if (amount != null) {
         _controller.text = amount.display(withSymbol: false, grouped: false);
@@ -214,6 +218,20 @@ class _AmountSheetState extends State<AmountSheet> {
         _category = spoken.category;
       }
     });
+  }
+
+  String _voiceMessage(AppLocalizations l) {
+    if (_listening) {
+      return _heard!.isEmpty ? l.voiceListening : _heard!;
+    }
+    return switch (_voiceFailure) {
+      null => l.voiceHeard(_heard!),
+      VoiceFailure.unavailable => l.voiceUnavailable,
+      VoiceFailure.noPermission => l.voiceNoPermission,
+      VoiceFailure.network => l.voiceNetwork,
+      VoiceFailure.nothingHeard =>
+        _heard!.isEmpty ? l.voiceNothing : l.voiceNoAmount(_heard!),
+    };
   }
 
   Future<void> _addReceipt(ImageSource source) async {
@@ -321,20 +339,6 @@ class _AmountSheetState extends State<AmountSheet> {
                         ),
                       ),
                     ),
-                    if (widget.allowVoice && VoiceInput.instance != null)
-                      IconButton(
-                        key: const Key('amount-voice'),
-                        onPressed: _listen,
-                        icon: UpinoIcon(
-                          'mic',
-                          size: 24,
-                          color: _listening
-                              ? (isDark(context)
-                                  ? UpinoTokens.darkActionPrimary
-                                  : UpinoTokens.actionPrimary)
-                              : UpinoTokens.textTertiary,
-                        ),
-                      ),
                   ],
                 ),
               ),
@@ -343,18 +347,12 @@ class _AmountSheetState extends State<AmountSheet> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
-                    _listening
-                        ? (_heard!.isEmpty
-                            ? AppLocalizations.of(context).voiceListening
-                            : _heard!)
-                        : _heardNothing
-                            ? AppLocalizations.of(context).voiceNothing
-                            : AppLocalizations.of(context).voiceHeard(_heard!),
+                    _voiceMessage(AppLocalizations.of(context)),
                     key: const Key('amount-voice-heard'),
                     style: theme.textTheme.bodySmall,
                   ),
                 ),
-                if (!_listening)
+                if (!_listening && _voiceFailure == null)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
                     child: Text(
@@ -387,6 +385,10 @@ class _AmountSheetState extends State<AmountSheet> {
                   onCamera: () => _addReceipt(ImageSource.camera),
                   onGallery: () => _addReceipt(ImageSource.gallery),
                   onClear: () => setState(() => _receipt = null),
+                  listening: _listening,
+                  onVoice: widget.allowVoice && VoiceInput.instance != null
+                      ? _listen
+                      : null,
                 ),
               ],
               if (widget.onRemove != null) ...[
@@ -424,6 +426,8 @@ class _ReceiptRow extends StatelessWidget {
     required this.onCamera,
     required this.onGallery,
     required this.onClear,
+    this.onVoice,
+    this.listening = false,
   });
 
   final String? receipt;
@@ -431,6 +435,22 @@ class _ReceiptRow extends StatelessWidget {
   final VoidCallback onCamera;
   final VoidCallback onGallery;
   final VoidCallback onClear;
+
+  /// Saying the spend, beside photographing its receipt: both are ways to
+  /// fill the sheet without typing. Null where the phone has no recogniser.
+  final VoidCallback? onVoice;
+  final bool listening;
+
+  Widget _voiceButton(BuildContext context) => Padding(
+        padding: const EdgeInsetsDirectional.only(start: 8),
+        child: _ReceiptButton(
+          key: const Key('amount-voice'),
+          icon: 'mic',
+          label: AppLocalizations.of(context).voiceButton,
+          onTap: onVoice!,
+          active: listening,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -483,6 +503,8 @@ class _ReceiptRow extends StatelessWidget {
                   : UpinoTokens.textTertiary,
             ),
           ),
+          if (onVoice != null)
+            SizedBox(width: 118, child: _voiceButton(context)),
         ],
       );
     }
@@ -506,6 +528,7 @@ class _ReceiptRow extends StatelessWidget {
             onTap: onGallery,
           ),
         ),
+        if (onVoice != null) Expanded(child: _voiceButton(context)),
       ],
     );
   }
@@ -516,12 +539,16 @@ class _ReceiptButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.active = false,
     super.key,
   });
 
   final String icon;
   final String label;
   final VoidCallback onTap;
+
+  /// Lit while it is doing its thing, which for the microphone is listening.
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -532,13 +559,25 @@ class _ReceiptButton extends StatelessWidget {
       child: Container(
         height: 46,
         decoration: BoxDecoration(
-          color: sunkenColor(context),
+          color: active
+              ? (isDark(context)
+                  ? UpinoTokens.darkActionTint
+                  : UpinoTokens.actionTint)
+              : sunkenColor(context),
           borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            UpinoIcon(icon, size: 18, color: UpinoTokens.textSecondary),
+            UpinoIcon(
+              icon,
+              size: 18,
+              color: active
+                  ? (isDark(context)
+                      ? UpinoTokens.darkActionPrimary
+                      : UpinoTokens.actionPrimary)
+                  : UpinoTokens.textSecondary,
+            ),
             const SizedBox(width: 8),
             Flexible(
               child: Text(

@@ -983,4 +983,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get voicePrivacy => '手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。';
+
+  @override
+  String get voiceButton => '说出来';
+
+  @override
+  String get voiceUnavailable => '此手机没有可用的语音识别，请手动输入金额。';
+
+  @override
+  String get voiceNoPermission => 'Upino 未获麦克风权限，可在手机设置中开启。';
+
+  @override
+  String get voiceNetwork => '此手机的语音识别需要联网，但无法连接。';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '听到“$text”，但没有金额。请重试或手动输入。';
+  }
 }

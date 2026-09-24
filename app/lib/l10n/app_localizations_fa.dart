@@ -1025,4 +1025,24 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'گوشی شما گفتار را به متن تبدیل می‌کند. در گوشی‌هایی که تشخیص آفلاین ندارند، این کار از سرویس گفتار گوشی انجام می‌شود.';
+
+  @override
+  String get voiceButton => 'بگویید';
+
+  @override
+  String get voiceUnavailable =>
+      'این گوشی سرویس تشخیص گفتاری ندارد که اپ بتواند از آن استفاده کند. مبلغ را تایپ کنید.';
+
+  @override
+  String get voiceNoPermission =>
+      'اجازهٔ استفاده از میکروفون داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String get voiceNetwork =>
+      'تشخیص گفتار در این گوشی به اینترنت نیاز دارد و به آن دسترسی نداشت.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '«$text» شنیده شد، ولی مبلغی در آن نبود. دوباره امتحان کنید یا تایپ کنید.';
+  }
 }

@@ -1014,4 +1014,24 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'يحوّل هاتفك الكلام إلى نص. في الهواتف دون تعرّف دون اتصال، يمر ذلك عبر خدمة الكلام في الهاتف.';
+
+  @override
+  String get voiceButton => 'قُلها';
+
+  @override
+  String get voiceUnavailable =>
+      'لا يوجد في هذا الهاتف تعرّف على الكلام يمكن للتطبيق استخدامه. اكتب المبلغ.';
+
+  @override
+  String get voiceNoPermission =>
+      'لم يُسمح لـ Upino باستخدام الميكروفون. يمكنك السماح بذلك من الإعدادات.';
+
+  @override
+  String get voiceNetwork =>
+      'يحتاج التعرّف على الكلام في هذا الهاتف إلى الإنترنت ولم يتمكن من الوصول إليه.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'سُمع «$text» لكن دون مبلغ. حاول مجددًا أو اكتبه.';
+  }
 }

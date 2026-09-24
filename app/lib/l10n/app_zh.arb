@@ -302,5 +302,10 @@
   "voiceListening": "正在聆听…请说出金额和用途。",
   "voiceHeard": "听到：“{text}”。请核对金额后保存。",
   "voiceNothing": "没有听到金额，请重试或手动输入。",
-  "voicePrivacy": "手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。"
+  "voicePrivacy": "手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。",
+  "voiceButton": "说出来",
+  "voiceUnavailable": "此手机没有可用的语音识别，请手动输入金额。",
+  "voiceNoPermission": "Upino 未获麦克风权限，可在手机设置中开启。",
+  "voiceNetwork": "此手机的语音识别需要联网，但无法连接。",
+  "voiceNoAmount": "听到“{text}”，但没有金额。请重试或手动输入。"
 }

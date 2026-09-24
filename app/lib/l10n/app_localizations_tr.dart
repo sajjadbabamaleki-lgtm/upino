@@ -1028,4 +1028,24 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'Telefonunuz konuşmayı metne çevirir. Çevrimdışı tanıma yoksa bu, telefonun konuşma hizmetinden geçer.';
+
+  @override
+  String get voiceButton => 'Söyle';
+
+  @override
+  String get voiceUnavailable =>
+      'Bu telefonda uygulamanın kullanabileceği konuşma tanıma yok. Tutarı yazın.';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino\'nun mikrofonu kullanmasına izin verilmedi. Ayarlardan izin verebilirsiniz.';
+
+  @override
+  String get voiceNetwork =>
+      'Bu telefondaki konuşma tanıma internete ihtiyaç duyuyor ve bağlanamadı.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '“$text” duyuldu ama tutar yok. Tekrar deneyin ya da yazın.';
+  }
 }

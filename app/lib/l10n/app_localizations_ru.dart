@@ -1033,4 +1033,24 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'Телефон превращает речь в текст. Без офлайн-распознавания это идёт через речевой сервис телефона.';
+
+  @override
+  String get voiceButton => 'Сказать';
+
+  @override
+  String get voiceUnavailable =>
+      'На этом телефоне нет доступного распознавания речи. Введите сумму.';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino не разрешено использовать микрофон. Разрешение можно дать в настройках.';
+
+  @override
+  String get voiceNetwork =>
+      'Распознаванию речи на этом телефоне нужен интернет, а подключиться не удалось.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'Услышано «$text», но суммы нет. Попробуйте ещё раз или введите.';
+  }
 }

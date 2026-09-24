@@ -1030,4 +1030,24 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'आपका फ़ोन बोली को टेक्स्ट में बदलता है। ऑफ़लाइन पहचान न हो तो यह फ़ोन की स्पीच सेवा से होता है।';
+
+  @override
+  String get voiceButton => 'बोलें';
+
+  @override
+  String get voiceUnavailable =>
+      'इस फ़ोन में ऐप के लिए कोई वाक् पहचान नहीं है। रकम टाइप करें।';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino को माइक्रोफ़ोन की अनुमति नहीं मिली। सेटिंग में अनुमति दे सकते हैं।';
+
+  @override
+  String get voiceNetwork =>
+      'इस फ़ोन की वाक् पहचान को इंटरनेट चाहिए और वह नहीं मिला।';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '“$text” सुना, पर उसमें रकम नहीं थी। फिर कोशिश करें या टाइप करें।';
+  }
 }

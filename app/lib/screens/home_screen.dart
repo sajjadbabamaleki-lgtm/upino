@@ -198,6 +198,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     if (justRecorded != null) ...[
                       const SizedBox(height: 12),
                       _ConfirmationBanner(
+                        // A new spend restarts the clock.
+                        key: ObjectKey(justRecorded),
                         amount: justRecorded,
                         onDismiss: state.clearExpenseConfirmation,
                       ),
@@ -289,45 +291,71 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 }
 
-class _ConfirmationBanner extends StatelessWidget {
-  const _ConfirmationBanner({required this.amount, required this.onDismiss});
+/// Says a spend was recorded, then goes by itself. It has no close button:
+/// a cross beside an amount reads as "delete this spend", and removing a
+/// spend belongs on Activity, where it is confirmed and stays on the record.
+class _ConfirmationBanner extends StatefulWidget {
+  const _ConfirmationBanner({
+    required this.amount,
+    required this.onDismiss,
+    super.key,
+  });
 
   final Money amount;
   final VoidCallback onDismiss;
 
+  /// Long enough to read, short enough not to become a fixture (§32.7).
+  static const showFor = Duration(seconds: 4);
+
   @override
-  Widget build(BuildContext context) => UpinoCard(
-        gradient: accentSurfaceGradient,
-        radius: UpinoTokens.radiusInner,
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-        child: Row(
-          children: [
-            const UpinoIcon(
-              'confirmed',
-              size: 19,
-              color: UpinoTokens.textPrimary,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                AppLocalizations.of(context).homeRecorded(amount.display()),
-                style: const TextStyle(
-                  color: UpinoTokens.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.5,
-                  fontFeatures: moneyFeatures,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: onDismiss,
-              child: const UpinoIcon(
-                'close',
-                size: 18,
+  State<_ConfirmationBanner> createState() => _ConfirmationBannerState();
+}
+
+class _ConfirmationBannerState extends State<_ConfirmationBanner> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer(_ConfirmationBanner.showFor, widget.onDismiss);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        // A tap puts it away early, for anyone who does not want to wait.
+        onTap: widget.onDismiss,
+        child: UpinoCard(
+          gradient: accentSurfaceGradient,
+          radius: UpinoTokens.radiusInner,
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          child: Row(
+            children: [
+              const UpinoIcon(
+                'confirmed',
+                size: 19,
                 color: UpinoTokens.textPrimary,
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)
+                      .homeRecorded(widget.amount.display()),
+                  style: const TextStyle(
+                    color: UpinoTokens.textPrimary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14.5,
+                    fontFeatures: moneyFeatures,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

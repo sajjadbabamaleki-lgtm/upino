@@ -1034,4 +1034,24 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get voicePrivacy =>
       'Tu teléfono convierte la voz en texto. Sin reconocimiento sin conexión, pasa por el servicio de voz del teléfono.';
+
+  @override
+  String get voiceButton => 'Dilo';
+
+  @override
+  String get voiceUnavailable =>
+      'Este teléfono no tiene reconocimiento de voz que la app pueda usar. Escribe el importe.';
+
+  @override
+  String get voiceNoPermission =>
+      'Upino no tiene permiso para usar el micrófono. Puedes darlo en los ajustes.';
+
+  @override
+  String get voiceNetwork =>
+      'El reconocimiento de voz de este teléfono necesita internet y no pudo conectarse.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return 'Se oyó «$text», pero sin importe. Inténtalo de nuevo o escríbelo.';
+  }
 }
