@@ -648,6 +648,21 @@
     });
   })();
 
+  /* ── Footer: the name set exactly as wide as the page ─────────────── */
+  (function footerWord() {
+    const box = $("#footerWord");
+    const word = box && box.firstElementChild;
+    if (!word) return;
+    const fit = () => {
+      box.style.fontSize = "100px";
+      const w = word.getBoundingClientRect().width;
+      if (w) box.style.fontSize = (100 * box.clientWidth / w).toFixed(2) + "px";
+    };
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    window.addEventListener("resize", fit, { passive: true });
+  })();
+
   const yr = $("#year");
   if (yr) yr.textContent = String(new Date().getFullYear());
 })();
