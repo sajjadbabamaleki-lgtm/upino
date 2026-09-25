@@ -221,8 +221,14 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 onPressed: () => _create(context),
                 icon: const Icon(Icons.add_rounded),
                 label: Text(l.goalsNew),
+                // Grey with a lime label, like Add money: one blue slab
+                // here was louder than the goals it sits among.
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(54),
+                  backgroundColor: sunkenColor(context),
+                  foregroundColor: isDark(context)
+                      ? UpinoTokens.lime
+                      : UpinoTokens.textPrimary,
                 ),
               ),
             ),
@@ -664,7 +670,7 @@ class _Summary extends StatelessWidget {
               ),
             ),
             child: UpinoIcon(
-              'trendingUp',
+              'arrowUp',
               size: 18,
               color: added ? green : UpinoTokens.textTertiary,
             ),
