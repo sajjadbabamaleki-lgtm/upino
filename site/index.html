@@ -598,64 +598,65 @@
       <h2 class="h2" id="teamTitle">The people behind Upino.</h2>
       <p class="lede">A small team building financial software that has to be right before it can be clever.</p>
     </div>
-    <div class="roster">
-      <div class="roster__frame" id="portraitPanel" role="tabpanel" aria-labelledby="person-0">
-        <div class="frame__layer is-on" data-index="0">
-          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="Name, role" width="1200" height="1500"> -->
-          <div class="portrait portrait--empty"><span>F</span><em class="placeholder">[Placeholder: portrait, 4:5]</em></div>
+    <ul class="strips" aria-label="Team">
+      <li class="strip is-open" data-index="0">
+        <button type="button" class="strip__hit" aria-expanded="true" aria-controls="strip-bio-0">
+          <span class="visually-hidden">Show details for team member 1, Founder, CEO</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">F</span>
         </div>
-        <div class="frame__layer" data-index="1">
-          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="Name, role" width="1200" height="1500"> -->
-          <div class="portrait portrait--empty"><span>P</span><em class="placeholder">[Placeholder: portrait, 4:5]</em></div>
+        <div class="strip__caption">
+          <p class="strip__role">Founder, CEO</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-0"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
         </div>
-        <div class="frame__layer" data-index="2">
-          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="Name, role" width="1200" height="1500"> -->
-          <div class="portrait portrait--empty"><span>E</span><em class="placeholder">[Placeholder: portrait, 4:5]</em></div>
+      </li>
+      <li class="strip" data-index="1">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-1">
+          <span class="visually-hidden">Show details for team member 2, Product and design</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">P</span>
         </div>
-        <div class="frame__layer" data-index="3">
-          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="Name, role" width="1200" height="1500"> -->
-          <div class="portrait portrait--empty"><span>I</span><em class="placeholder">[Placeholder: portrait, 4:5]</em></div>
+        <div class="strip__caption">
+          <p class="strip__role">Product and design</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-1"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
         </div>
-      </div>
-      <ul class="roster__list" role="tablist" aria-orientation="vertical" aria-label="Team">
-        <li class="roster__item">
-          <button type="button" class="person" role="tab" id="person-0" aria-selected="true" aria-controls="portraitPanel" tabindex="0" data-index="0">
-            <span class="person__rule" aria-hidden="true"></span>
-            <span class="person__thumb" aria-hidden="true"><span class="portrait portrait--empty"><span>F</span></span></span>
-            <span class="person__name"><span class="placeholder-name">[Full name]</span></span>
-            <span class="person__role">Founder, CEO</span>
-            <span class="person__bio"><span><span class="placeholder">[Placeholder: one line on what they own at Upino]</span></span></span>
-          </button>
-        </li>
-        <li class="roster__item">
-          <button type="button" class="person" role="tab" id="person-1" aria-selected="false" aria-controls="portraitPanel" tabindex="-1" data-index="1">
-            <span class="person__rule" aria-hidden="true"></span>
-            <span class="person__thumb" aria-hidden="true"><span class="portrait portrait--empty"><span>P</span></span></span>
-            <span class="person__name"><span class="placeholder-name">[Full name]</span></span>
-            <span class="person__role">Product and design</span>
-            <span class="person__bio"><span><span class="placeholder">[Placeholder: one line on what they own at Upino]</span></span></span>
-          </button>
-        </li>
-        <li class="roster__item">
-          <button type="button" class="person" role="tab" id="person-2" aria-selected="false" aria-controls="portraitPanel" tabindex="-1" data-index="2">
-            <span class="person__rule" aria-hidden="true"></span>
-            <span class="person__thumb" aria-hidden="true"><span class="portrait portrait--empty"><span>E</span></span></span>
-            <span class="person__name"><span class="placeholder-name">[Full name]</span></span>
-            <span class="person__role">Financial engine</span>
-            <span class="person__bio"><span><span class="placeholder">[Placeholder: one line on what they own at Upino]</span></span></span>
-          </button>
-        </li>
-        <li class="roster__item">
-          <button type="button" class="person" role="tab" id="person-3" aria-selected="false" aria-controls="portraitPanel" tabindex="-1" data-index="3">
-            <span class="person__rule" aria-hidden="true"></span>
-            <span class="person__thumb" aria-hidden="true"><span class="portrait portrait--empty"><span>I</span></span></span>
-            <span class="person__name"><span class="placeholder-name">[Full name]</span></span>
-            <span class="person__role">Intelligence</span>
-            <span class="person__bio"><span><span class="placeholder">[Placeholder: one line on what they own at Upino]</span></span></span>
-          </button>
-        </li>
-      </ul>
-    </div>
+      </li>
+      <li class="strip" data-index="2">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-2">
+          <span class="visually-hidden">Show details for team member 3, Financial engine</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">E</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Financial engine</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-2"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+      <li class="strip" data-index="3">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-3">
+          <span class="visually-hidden">Show details for team member 4, Intelligence</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">I</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Intelligence</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-3"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+    </ul>
+    <p class="strips__note placeholder">[Placeholder: names, portraits and one-line bios for all four]</p>
   </div>
 </section>
 

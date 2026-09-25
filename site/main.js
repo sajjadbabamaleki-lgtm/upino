@@ -531,43 +531,26 @@
     steps.forEach((s) => io.observe(s));
   })();
 
-  /* ── Team: one portrait frame, four people ──────────────────────── */
+  /* ── Team: the strip you point at opens ──────────────────────────── */
   (function team() {
-    const tabs = $$(".person");
-    const panel = $("#portraitPanel");
-    if (!tabs.length || !panel) return;
-    const layers = $$(".frame__layer", panel);
-    let current = 0;
-    function select(i, focus) {
-      if (i === current) { if (focus) tabs[i].focus(); return; }
-      tabs.forEach((t, n) => {
-        const on = n === i;
-        t.setAttribute("aria-selected", String(on));
-        t.tabIndex = on ? 0 : -1;
-      });
-      panel.setAttribute("aria-labelledby", tabs[i].id);
-      // the old portrait stays underneath while the new one wipes in over it
-      layers.forEach((l) => l.classList.remove("is-leaving"));
-      layers[current].classList.remove("is-on");
-      layers[current].classList.add("is-leaving");
-      layers[i].classList.add("is-on");
-      current = i;
-      if (focus) tabs[i].focus();
-    }
+    const strips = $$(".strip");
+    if (!strips.length) return;
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    tabs.forEach((t, i) => {
-      t.addEventListener("click", () => select(i));
-      t.addEventListener("pointerenter", () => { if (fine.matches) select(i); });
-      t.addEventListener("keydown", (e) => {
-        let n = null;
-        if (e.key === "ArrowDown" || e.key === "ArrowRight") n = (current + 1) % tabs.length;
-        else if (e.key === "ArrowUp" || e.key === "ArrowLeft") n = (current + tabs.length - 1) % tabs.length;
-        else if (e.key === "Home") n = 0;
-        else if (e.key === "End") n = tabs.length - 1;
-        if (n === null) return;
-        e.preventDefault();
-        select(n, true);
+    let current = 0;
+    function open(i) {
+      if (i === current) return;
+      strips.forEach((st, n) => {
+        const on = n === i;
+        st.classList.toggle("is-open", on);
+        $(".strip__hit", st).setAttribute("aria-expanded", String(on));
       });
+      current = i;
+    }
+    strips.forEach((st, i) => {
+      const hit = $(".strip__hit", st);
+      hit.addEventListener("click", () => open(i));
+      hit.addEventListener("focus", () => open(i));
+      st.addEventListener("pointerenter", () => { if (fine.matches) open(i); });
     });
   })();
 
