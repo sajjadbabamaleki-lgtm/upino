@@ -1214,7 +1214,7 @@ button { font: inherit; color: inherit; }
 
 /* ── section rules: light sections alternate 95% and 90% white, and each
    section opens with a thin rule carrying its number and name ── */
-:root { --paper-alt: #e6e6e6; }
+:root { --paper-alt: #ebedfa; } /* a very pale Upino blue */
 .tone-2 { background: var(--paper-alt); }
 .timeline, .month { background: var(--paper); }
 main > section:has(> .rule) { position: relative; border-top: 0; }
