@@ -607,6 +607,143 @@ button { font: inherit; color: inherit; }
 .loop__step.is-on .loop__word { color: var(--text); }
 .loop__step:last-child.is-on .loop__word { color: var(--accent); }
 
+/* ── pricing ────────────────────────────────────────── */
+.pricing { padding-block: var(--section); border-top: 1px solid var(--line); }
+.pricing__head .h2 { max-width: 16ch; }
+.plan {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
+  background: var(--card); border-radius: var(--r-lg);
+  box-shadow: 0 0 0 1px var(--line), 0 30px 60px -40px rgba(15,16,18,.3);
+}
+.plan__main { padding: clamp(20px, 3.6vw, 44px); display: grid; gap: 28px; align-content: start; }
+.plan__included { padding: clamp(20px, 3.6vw, 44px); border-left: 1px solid var(--line); }
+
+/* the period selector: one control, three answers */
+.period {
+  position: relative; display: grid; grid-template-columns: repeat(3, 1fr);
+  padding: 4px; background: var(--paper-2); border-radius: 16px;
+}
+.period__opt {
+  position: relative; z-index: 1; border: 0; background: transparent; cursor: pointer;
+  min-height: 56px; padding: 6px 8px; border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  color: var(--text-2); font-size: 15px; font-weight: 500;
+  transition: color 200ms ease, transform 160ms var(--ease-out);
+}
+.period__opt:active { transform: scale(0.97); }
+.period__opt[aria-checked="true"] { color: var(--text); }
+.period__opt[aria-checked="true"] .period__name::before {
+  content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); margin-right: 7px; vertical-align: 2px;
+}
+.period__short { display: none; }
+.period__save { font-size: 12px; font-weight: 500; color: var(--ok); }
+.period__thumb {
+  position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3);
+  background: var(--card); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15,16,18,.08), 0 6px 16px -6px rgba(15,16,18,.18);
+  transform: translateX(calc(var(--i, 2) * 100%));
+  transition: transform 280ms var(--ease-out), box-shadow 280ms ease;
+}
+.plan[data-period="annual"] .period__thumb { box-shadow: 0 0 0 1.5px var(--accent), 0 6px 18px -6px rgba(47,58,232,.35); }
+@media (hover: hover) and (pointer: fine) {
+  .period__opt:not([aria-checked="true"]):hover { color: var(--text); }
+}
+
+/* the quote: what you pay, then what it means */
+.quote { display: grid; gap: 10px; }
+.quote__tag { margin: 0; min-height: 26px; }
+.quote__tagtext {
+  display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .02em;
+  background: var(--accent-tint); color: #262a78;
+}
+.plan[data-promo="on"] .quote__tagtext { background: var(--ink); color: var(--on-ink); }
+.plan[data-promo="on"] .quote__tagtext::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-ink); margin-right: 8px;
+}
+.quote__tag.is-empty .quote__tagtext { visibility: hidden; }
+.quote__price { margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+.quote__amount {
+  font-size: clamp(56px, 7vw, 84px); line-height: 1; font-weight: 560; letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.quote__amount .cur { color: var(--text-3); font-weight: 500; margin-right: .02em; }
+.quote__per { font-size: 18px; color: var(--text-2); }
+.quote__context { margin: 0; font-size: 16px; line-height: 1.6; color: var(--text-2); }
+.quote__context b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+.quote__save { display: inline-flex; vertical-align: 1px; margin-left: 8px; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; background: var(--ok-tint); color: var(--ok); font-size: 12.5px; font-weight: 500; }
+.quote .swap { transition: filter 180ms ease, opacity 180ms ease; }
+.quote .swap.is-out { filter: blur(3px); opacity: 0; }
+
+/* billing, laid out as the dates it happens on */
+.billing { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); position: relative; }
+.billing::before { content: ""; position: absolute; left: 5px; right: 16%; top: 5px; border-top: 1px dashed var(--line-strong); }
+.billing__step { position: relative; display: grid; gap: 3px; padding-top: 22px; padding-right: 12px; }
+.billing__step::before { content: ""; position: absolute; top: 0; left: 0; width: 11px; height: 11px; border-radius: 50%; background: var(--card); box-shadow: inset 0 0 0 2px var(--text-3); }
+.billing__step:first-child::before { box-shadow: inset 0 0 0 2px var(--ok); background: var(--ok); }
+.billing__step:nth-child(2)::before { box-shadow: inset 0 0 0 2px var(--accent); }
+.billing__when { font-size: 13px; color: var(--text-3); }
+.billing__what { font-size: 15px; color: var(--text); font-weight: 500; }
+.billing__amt { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; color: var(--text-2); }
+
+.plan__cta { display: grid; gap: 10px; justify-items: start; }
+.plan__btn { min-width: min(100%, 300px); }
+.plan[data-period="annual"] .plan__btn { box-shadow: 0 10px 24px -12px rgba(47,58,232,.6); }
+.plan__then { margin: 4px 0 0; font-size: 16px; color: var(--text); font-weight: 500; }
+.plan__trust { margin: 0; font-size: 14.5px; color: var(--text-2); }
+
+.why { border-top: 1px solid var(--line); padding-top: 14px; }
+.why summary {
+  cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; font-size: 15px; font-weight: 500; color: var(--text);
+}
+.why summary::-webkit-details-marker { display: none; }
+.why summary::after {
+  content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg); transition: transform 200ms var(--ease-out);
+}
+.why[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.why__rows { margin: 6px 0 0; display: grid; max-width: 420px; }
+.why__rows > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.why__rows dt { color: var(--text-2); }
+.why__rows dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.why__keep { border-bottom: 0 !important; font-weight: 500; }
+.why__keep dd { color: var(--ok); }
+
+.included__title { margin: 0 0 18px; font-size: 17px; font-weight: 560; letter-spacing: -0.02em; }
+.included { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.included li {
+  display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; color: var(--text-2);
+}
+.included li:last-child { border-bottom: 0; }
+.included li::before {
+  content: ""; width: 10px; height: 6px; border-left: 1.75px solid var(--accent); border-bottom: 1.75px solid var(--accent);
+  transform: translateY(-3px) rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .plan { grid-template-columns: minmax(0, 1fr); }
+  .plan__included { border-left: 0; border-top: 1px solid var(--line); }
+  .included { grid-template-columns: 1fr 1fr; column-gap: 20px; }
+}
+@media (max-width: 640px) {
+  .period__long { display: none; }
+  .period__short { display: inline; }
+  .period__opt { font-size: 14.5px; min-height: 58px; }
+  .period__opt[aria-checked="true"] .period__name::before { margin-right: 5px; }
+  .plan__main { gap: 22px; }
+  .plan__btn { width: 100%; }
+  .billing { grid-template-columns: 1fr; gap: 0; }
+  .billing::before { right: auto; bottom: 14px; top: 6px; left: 5px; border-top: 0; border-left: 1px dashed var(--line-strong); }
+  .billing__step { padding: 0 0 14px 26px; grid-template-columns: 1fr auto; column-gap: 12px; }
+  .billing__step::before { top: 4px; }
+  .billing__when { grid-column: 1 / -1; }
+  .billing__amt { grid-row: 2; grid-column: 2; }
+  .included { grid-template-columns: 1fr; }
+}
+
 /* ── company ────────────────────────────────────────── */
 .company { padding-block: var(--section); }
 .company .h2 { max-width: 22ch; }

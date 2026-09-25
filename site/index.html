@@ -60,6 +60,7 @@
       <a href="#intelligence">Intelligence</a>
       <a href="#how">How it works</a>
       <a href="#security">Security</a>
+      <a href="#pricing">Pricing</a>
       <a href="#company">Company</a>
     </nav>
     <div class="nav__actions">
@@ -75,6 +76,7 @@
     <a href="#intelligence">Intelligence</a>
     <a href="#how">How it works</a>
     <a href="#security">Security</a>
+    <a href="#pricing">Pricing</a>
     <a href="#company">Company</a>
   </div>
 </header>
@@ -480,6 +482,96 @@
   </div>
 </section>
 
+<!-- ───────── PRICING ─────────
+     Every figure here is written by main.js from the PRICING config, so
+     prices can change per region, currency, platform or promotion without
+     touching this markup. The text below is the no-script fallback. -->
+<section class="pricing" id="pricing" aria-labelledby="pricingTitle" data-analytics-section="pricing">
+  <div class="wrap">
+    <div class="section-head pricing__head">
+      <h2 class="h2" id="pricingTitle">One Upino. <span class="muted">Choose how you pay.</span></h2>
+      <p class="lede">Every subscription is the complete financial decision system. The only choice is how often you are billed.</p>
+    </div>
+
+    <div class="plan" id="plan">
+      <div class="plan__main">
+        <div class="period" role="radiogroup" aria-label="Billing period" id="periodGroup">
+          <button type="button" role="radio" class="period__opt" data-period="monthly" aria-checked="false">
+            <span class="period__name">Monthly</span>
+          </button>
+          <button type="button" role="radio" class="period__opt" data-period="quarterly" aria-checked="false">
+            <span class="period__name"><span class="period__long">Quarterly</span><span class="period__short">3 months</span></span>
+            <span class="period__save" data-save="quarterly">Save 17%</span>
+          </button>
+          <button type="button" role="radio" class="period__opt" data-period="annual" aria-checked="true">
+            <span class="period__name">Annual</span>
+            <span class="period__save" data-save="annual">Save 44%</span>
+          </button>
+          <span class="period__thumb" aria-hidden="true"></span>
+        </div>
+
+        <div class="quote" id="quote" aria-live="polite" aria-atomic="true">
+          <p class="quote__tag" id="quoteTag"><span class="quote__tagtext">Best value</span></p>
+          <p class="quote__price">
+            <span class="quote__amount" id="quoteAmount">$79.99</span>
+            <span class="quote__per" id="quotePer">per year</span>
+          </p>
+          <p class="quote__context" id="quoteContext">$6.67 a month, billed once a year. <span class="quote__save">Save 44%</span></p>
+        </div>
+
+        <ol class="billing" id="billing" aria-label="What happens after you start">
+          <li class="billing__step">
+            <span class="billing__when">Today</span>
+            <span class="billing__what">Trial starts</span>
+            <span class="billing__amt">$0</span>
+          </li>
+          <li class="billing__step">
+            <span class="billing__when" id="billWhen2">Day 14</span>
+            <span class="billing__what" id="billWhat2">First payment</span>
+            <span class="billing__amt" id="billAmt2">$79.99</span>
+          </li>
+          <li class="billing__step">
+            <span class="billing__when" id="billWhen3">Every year</span>
+            <span class="billing__what" id="billWhat3">Renews</span>
+            <span class="billing__amt" id="billAmt3">$79.99</span>
+          </li>
+        </ol>
+
+        <div class="plan__cta">
+          <a class="btn btn--primary btn--lg plan__btn" id="trialBtn" href="#get" data-analytics="pricing_cta_clicked">Start 14-day free trial</a>
+          <p class="plan__then" id="planThen">Then $79.99/year. Cancel anytime.</p>
+          <p class="plan__trust">No feature restrictions during your trial.</p>
+        </div>
+
+        <details class="why" id="whyAnnual">
+          <summary>Why annual?</summary>
+          <dl class="why__rows">
+            <div><dt>Monthly for 12 months</dt><dd id="whyMonthly">$143.88</dd></div>
+            <div><dt id="whyAnnualLabel">Annual</dt><dd id="whyAnnualAmt">$79.99</dd></div>
+            <div class="why__keep"><dt>You keep</dt><dd id="whyKeep">$63.89</dd></div>
+          </dl>
+        </details>
+      </div>
+
+      <div class="plan__included">
+        <h3 class="included__title">Every plan includes everything</h3>
+        <ul class="included">
+          <li>Safe to Spend</li>
+          <li>Ask before you spend</li>
+          <li>Financial timeline</li>
+          <li>Goals and goal projections</li>
+          <li>Bills and annual expenses</li>
+          <li>Scenario simulation</li>
+          <li>AI financial intelligence</li>
+          <li>Personal financial insights</li>
+          <li>Month close</li>
+          <li>Opportunity and recovery insights, where available</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ───────── COMPANY ───────── -->
 <section class="company" id="company" aria-labelledby="companyTitle">
   <div class="wrap">
@@ -519,6 +611,7 @@
     </div>
     <nav class="footer__nav" aria-label="Footer">
       <a href="#product">Product</a>
+      <a href="#pricing">Pricing</a>
       <a href="#company">Company</a>
       <a href="#security">Security</a>
       <a href="#security">Privacy</a>
@@ -532,5 +625,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="main.js" defer></script>
+<script src="pricing.js" defer></script>
 </body>
 </html>
