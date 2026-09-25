@@ -90,9 +90,10 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
         fontFamily: fontFamily,
       ),
     ),
-    // Chips are soft pills: no outline, the card colour on the page.
+    // Chips are soft pills: no outline, the card colour on the page (in dark
+    // mode, sunken, since cards and sheets share one deep colour there).
     chipTheme: ChipThemeData(
-      backgroundColor: dark ? UpinoTokens.darkSurfaceCard : UpinoTokens.surfaceCard,
+      backgroundColor: dark ? UpinoTokens.darkSurfaceSunken : UpinoTokens.surfaceCard,
       selectedColor: dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint,
       side: BorderSide.none,
       shape: const StadiumBorder(),
@@ -111,8 +112,12 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
         backgroundColor: primary,
         foregroundColor: Colors.white,
         // Still reads as the button it will become, just not yet.
-        disabledBackgroundColor: primary.withValues(alpha: 0.32),
-        disabledForegroundColor: Colors.white,
+        // In dark mode a faded blue turns muddy; there it waits in grey.
+        disabledBackgroundColor: dark
+            ? UpinoTokens.darkSurfaceSunken
+            : primary.withValues(alpha: 0.32),
+        disabledForegroundColor:
+            dark ? UpinoTokens.darkTextTertiary : Colors.white,
         minimumSize: const Size.fromHeight(56),
         elevation: 0,
         shape: RoundedRectangleBorder(

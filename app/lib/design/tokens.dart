@@ -64,7 +64,7 @@ class UpinoTokens {
   static const darkSurfacePage = Color(0xFF0B0B0D);
   static const darkSurfaceCard = Color(0xFF141418);
   static const darkSurfaceSunken = Color(0xFF1E1E23);
-  static const darkSurfaceRaised = Color(0xFF212127);
+  static const darkSurfaceRaised = Color(0xFF141418); // sheets: as deep as the cards
   static const darkBorderSubtle = Color(0xFF28282F);
 
   /// The top bar and the tab bar: the card colour, no edge.
