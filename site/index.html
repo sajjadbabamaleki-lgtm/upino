@@ -380,15 +380,9 @@
         <h2 class="mc__title" id="monthTitle">Your September</h2>
         <p class="mc__pill">Month close</p>
       </header>
-      <figure class="wf" aria-label="September: €300 carried over, €5,400 income, €3,620 spent, €580 protected for future costs, €410 moved toward goals, €1,090 ending flexibility.">
-        <div class="wf__bars" id="wfBars">
-          <div class="wf__col" style="--from:0;--to:300"><span class="wf__bar wf__bar--in"></span><b class="num">€300</b><span>Carried over</span></div>
-          <div class="wf__col" style="--from:300;--to:5700"><span class="wf__bar wf__bar--in"></span><b class="num">+€5,400</b><span>Income</span></div>
-          <div class="wf__col" style="--from:2080;--to:5700"><span class="wf__bar wf__bar--out"></span><b class="num">−€3,620</b><span>Spent</span></div>
-          <div class="wf__col" style="--from:1500;--to:2080"><span class="wf__bar wf__bar--prot"></span><b class="num">−€580</b><span>Protected</span></div>
-          <div class="wf__col" style="--from:1090;--to:1500"><span class="wf__bar wf__bar--goal"></span><b class="num">−€410</b><span>To goals</span></div>
-          <div class="wf__col wf__col--end" style="--from:0;--to:1090"><span class="wf__bar wf__bar--end"></span><b class="num">€1,090</b><span>Ending flexibility</span></div>
-        </div>
+      <figure class="flowm" id="flowm" aria-label="Where September's money went: €5,700 in total, €5,400 income and €300 carried over. €3,620 spent, €580 protected for future costs, €410 moved toward goals, €1,090 ending flexibility.">
+        <svg class="flowm__svg" id="flowmSvg" aria-hidden="true"></svg>
+        <p class="flowm__detail" id="flowmDetail" aria-live="polite">Point at a stream to see what is in it.</p>
       </figure>
       <div class="mc__cols">
         <section aria-labelledby="changedTitle">

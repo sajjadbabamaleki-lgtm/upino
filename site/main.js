@@ -563,13 +563,132 @@
     });
   })();
 
-  /* ── the month, as a waterfall that builds on arrival ─────────────── */
-  (function waterfall() {
-    const wf = $(".wf");
-    if (!wf || reduce) return;
-    wf.classList.add("is-pre");
-    $$(".wf__bar", wf).forEach((b, i) => (b.style.transitionDelay = `${i * 120}ms`));
-    onEnter(wf, () => requestAnimationFrame(() => wf.classList.remove("is-pre")));
+  /* ── the month as a flow: where every euro of September went ───────
+     One column of money on the left splits into four streams. They draw
+     in on arrival; pointing at (or tapping) a stream lights it and says
+     what is in it. */
+  (function monthFlow() {
+    const svg = $("#flowmSvg");
+    const detail = $("#flowmDetail");
+    if (!svg) return;
+    const TOTAL = 5700;
+    const STREAMS = [
+      { k: "spent", name: "Spent", v: 3620, fill: "#cfcec9", node: "#b9b8b3",
+        text: "<b>€3,620 spent.</b> Dining ran €94 above usual; transport came in €71 under." },
+      { k: "prot", name: "Protected", v: 580, fill: "#9a9ba1", node: "#6b6c74",
+        text: "<b>€580 protected</b> for costs still to come, including December's car insurance, now fully set aside." },
+      { k: "goals", name: "To goals", v: 410, fill: "#b6baff", node: "#8a90ff",
+        text: "<b>€410 moved toward goals.</b> Travel is 9 days closer than a month ago." },
+      { k: "flex", name: "Ending flexibility", v: 1090, fill: "#6c75ff", node: "#2f3ae8",
+        text: "<b>€1,090 with no job yet.</b> It carries into October as room to decide." },
+    ];
+    let clipRect = null, built = false;
+    const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; };
+
+    function build() {
+      const W = Math.max(300, svg.parentElement.clientWidth);
+      const narrow = W < 620;
+      const top = narrow ? 70 : 76, H = narrow ? 400 : 400, nw = narrow ? 12 : 16;
+      const labW = narrow ? 118 : 210, gap = narrow ? 10 : 14;
+      const xR = W - labW - nw, xL = nw, xm = (xL + xR) / 2;
+      const k = (H - top - gap * (STREAMS.length - 1)) / TOTAL;
+      svg.setAttribute("viewBox", `0 0 ${W} ${H + 8}`);
+      svg.innerHTML = "";
+      const defs = el("defs", {});
+      const cp = el("clipPath", { id: "flowmClip" }, defs);
+      clipRect = el("rect", { x: 0, y: 0, width: built || reduce ? W : 0, height: H + 8 }, cp);
+
+      // the source: everything September had
+      el("text", { x: 0, y: 16, class: "src-name" }).textContent = "In September";
+      el("text", { x: 0, y: 44, class: "src-amt" }).textContent = "€5,700";
+      el("text", { x: 0, y: 62, class: "src-sub" }).textContent = narrow ? "€5,400 income + €300 carried" : "€5,400 income and €300 carried over";
+      el("rect", { x: 0, y: top, width: nw, height: TOTAL * k + gap * 0, rx: 4, fill: "#111214" });
+
+      const g = el("g", { "clip-path": "url(#flowmClip)" });
+      let yl = top, yr = top;
+      const labels = [];
+      STREAMS.forEach((s) => {
+        const h = s.v * k;
+        const d = `M${xL} ${yl} C${xm} ${yl} ${xm} ${yr} ${xR} ${yr} L${xR} ${yr + h} C${xm} ${yr + h} ${xm} ${yl + h} ${xL} ${yl + h} Z`;
+        const rib = el("path", { d, fill: s.fill, class: "rib", "data-k": s.k, opacity: s.k === "flex" ? 0.9 : 0.75 }, g);
+        el("rect", { x: xR, y: yr, width: nw, height: Math.max(h, 3), rx: 3, fill: s.node, class: "rib", "data-k": s.k }, g);
+        labels.push({ s, cy: yr + h / 2, nodeY: yr + h / 2 });
+        yl += h; yr += h + gap;
+        rib.addEventListener("pointerenter", () => focus(s.k));
+      });
+      // labels: centred on their stream, pushed apart so none collide
+      const minGap = narrow ? 46 : 50;
+      for (let i = 1; i < labels.length; i++) if (labels[i].cy - labels[i - 1].cy < minGap) labels[i].cy = labels[i - 1].cy + minGap;
+      const over = labels[labels.length - 1].cy + 22 - H;
+      if (over > 0) labels.forEach((l) => (l.cy -= over));
+      for (let i = labels.length - 2; i >= 0; i--) if (labels[i + 1].cy - labels[i].cy < minGap) labels[i].cy = labels[i + 1].cy - minGap;
+      labels.forEach(({ s, cy, nodeY }) => {
+        const lx = xR + nw + (narrow ? 10 : 16);
+        const grp = el("g", { class: `lab lab--${s.k}`, "data-k": s.k });
+        if (Math.abs(cy - nodeY) > 4) el("path", { d: `M${xR + nw + 2} ${nodeY} L${lx - 4} ${cy}`, class: "lead" }, grp);
+        el("text", { x: lx, y: cy - 6, class: "lab-name" }, grp).textContent = s.name;
+        const amt = el("text", { x: lx, y: cy + 16, class: "lab-amt", "data-v": s.v }, grp);
+        amt.textContent = "€" + s.v.toLocaleString("en-US");
+        if (!narrow) {
+          const pct = el("tspan", { class: "lab-pct", dx: 8 }, amt);
+          pct.textContent = Math.round((s.v / TOTAL) * 100) + "%";
+        }
+        grp.addEventListener("pointerenter", () => focus(s.k));
+        grp.addEventListener("click", () => focus(s.k));
+      });
+      svg.addEventListener("pointerleave", () => focus(null));
+      $$(".rib", svg).forEach((r) => r.addEventListener("click", () => focus(r.dataset.k)));
+    }
+
+    function focus(key) {
+      svg.classList.toggle("is-focus", !!key);
+      $$("[data-k]", svg).forEach((n) => n.classList.toggle("is-hot", n.dataset.k === key));
+      const s = STREAMS.find((x) => x.k === key);
+      detail.innerHTML = s ? s.text : "Point at a stream to see what is in it.";
+    }
+
+    build();
+    let t = 0;
+    window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => { built = true; build(); }, 150); }, { passive: true });
+
+    if (reduce) { built = true; return; }
+    onEnter(svg, () => {
+      const W = +svg.getAttribute("viewBox").split(" ")[2];
+      const t0 = performance.now(), dur = 1500;
+      const step = (now) => {
+        const p = Math.min(1, (now - t0) / dur);
+        if (clipRect) clipRect.setAttribute("width", (W * (1 - Math.pow(1 - p, 3))).toFixed(1));
+        if (p < 1) requestAnimationFrame(step); else built = true;
+      };
+      requestAnimationFrame(step);
+      $$(".lab-amt", svg).forEach((n, i) => {
+        const v = +n.dataset.v, pct = n.querySelector("tspan");
+        const o = { v: 0 };
+        if (G) G.to(o, { v, duration: 1.1, delay: 0.5 + i * 0.12, ease: "power3.out", onUpdate: () => { n.firstChild.textContent = "€" + Math.round(o.v).toLocaleString("en-US"); } });
+        void pct;
+      });
+    });
+  })();
+
+  /* ── motion for the product sections: each thing moves once, when it
+     arrives, and what moves is what the section is about ──────────── */
+  (function arrivals() {
+    // the eleven days of waiting
+    const wait = $(".op-wait");
+    if (wait && !wait.children.length) for (let i = 0; i < 11; i++) wait.appendChild(document.createElement("i"));
+    if (reduce) { $$(".op-wait i").forEach((d) => d.classList.add("on")); return; }
+    const seq = (root, sel, cls, gap, start = 0) => $$(sel, root).forEach((n, i) => setTimeout(() => n.classList.add(cls), start + i * gap));
+    const arrive = (sel, fn) => { const n = $(sel); if (n) { n.classList.add("is-pre"); onEnter(n, () => { n.classList.remove("is-pre"); fn && fn(n); }); } };
+    arrive(".vs");
+    const ops = $(".ops");
+    if (ops) ops.classList.add("is-seq");
+    arrive(".ops", (n) => {
+      seq(n, ".op-wait i", "on", 110, 500);
+      seq(n, ".op-track li", "on", 380, 600);
+    });
+    arrive(".lf2");
+    arrive(".cyc");
+    arrive(".mc__cols");
   })();
 
   /* ── Company: the thesis fills in, the layers pass the numbers up ── */
