@@ -531,6 +531,34 @@
     steps.forEach((s) => io.observe(s));
   })();
 
+  /* ── Company: the thesis fills in, the layers pass the numbers up ── */
+  (function company() {
+    const sec = $(".company");
+    if (!sec) return;
+    const line = $(".lf__line", sec);
+    const size = () => line && line.style.setProperty("--lf-w", line.clientWidth + "px");
+    size();
+    window.addEventListener("resize", size, { passive: true });
+    const layers = $$(".tstack li", sec);
+    const run = () => {
+      if (reduce) return;
+      layers.forEach((l, i) => {
+        setTimeout(() => {
+          layers.forEach((x) => x.classList.toggle("is-lit", x === l));
+          if (i === layers.length - 1) setTimeout(() => l.classList.remove("is-lit"), 900);
+        }, i * 360);
+      });
+    };
+    if (!reduce) sec.classList.add("is-waiting");
+    onEnter(sec, () => {
+      requestAnimationFrame(() => sec.classList.remove("is-waiting"));
+      sec.classList.add("is-live");
+      setTimeout(run, 500);
+    });
+    const tech = $(".tile--tech", sec);
+    if (tech) tech.addEventListener("pointerenter", run);
+  })();
+
   /* ── Team: the strip you point at opens ──────────────────────────── */
   (function team() {
     const strips = $$(".strip");

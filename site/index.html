@@ -575,14 +575,60 @@
 <!-- ───────── COMPANY ───────── -->
 <section class="company" id="company" aria-labelledby="companyTitle">
   <div class="wrap">
-    <div class="section-head">
-      <h2 class="h2" id="companyTitle">Maximum financial intelligence. Minimum financial administration.</h2>
+    <div class="thesis">
+      <h2 class="h2 thesis__title" id="companyTitle">Maximum financial intelligence. <span class="muted">Minimum financial administration.</span></h2>
+      <figure class="thesis__bars" aria-label="Upino's thesis: as much financial intelligence as possible, as little financial administration as possible.">
+        <div class="tbar">
+          <span class="tbar__label">Financial intelligence</span>
+          <span class="tbar__track"><span class="tbar__fill tbar__fill--max"></span></span>
+        </div>
+        <div class="tbar">
+          <span class="tbar__label">Financial administration</span>
+          <span class="tbar__track"><span class="tbar__fill tbar__fill--min"></span></span>
+        </div>
+      </figure>
     </div>
-    <dl class="company__grid">
-      <div><dt class="label">Mission</dt><dd>Help people understand what their money can safely do next, without having to become their own accountant.</dd></div>
-      <div><dt class="label">Product philosophy</dt><dd>Show the decision, not the data. Every screen should answer a question someone actually has.</dd></div>
-      <div><dt class="label">Technology</dt><dd>A deterministic financial engine, a scenario engine that runs it forward, an intelligence engine that reads the results, and a language layer that explains them.</dd></div>
-      <div><dt class="label">Privacy</dt><dd>Local-first. Only the context a feature needs leaves the device.</dd></div>
+
+    <div class="bento">
+      <article class="tile tile--mission">
+        <h3 class="label">Mission</h3>
+        <p class="tile__statement">Help people understand what their money can safely do next, without having to become their own accountant.</p>
+      </article>
+
+      <article class="tile tile--tech">
+        <h3 class="label">Technology</h3>
+        <ol class="tstack" aria-label="Four layers">
+          <li><span>Financial engine</span><i>calculates</i></li>
+          <li><span>Scenario engine</span><i>runs it forward</i></li>
+          <li><span>Intelligence engine</span><i>reads the results</i></li>
+          <li class="tstack__ai"><span>Language layer</span><i>explains them</i></li>
+        </ol>
+        <p class="tile__text">A deterministic financial engine, a scenario engine that runs it forward, an intelligence engine that reads the results, and a language layer that explains them.</p>
+      </article>
+
+      <article class="tile tile--philo">
+        <h3 class="label">Product philosophy</h3>
+        <div class="dvd" aria-hidden="true">
+          <div class="dvd__data mono">
+            <span>Oct 12  Grocery  −64.20</span><span>Oct 11  Train  −49.00</span><span>Oct 11  Dinner  −38.50</span><span>Oct 10  Stream  −12.99</span>
+          </div>
+          <div class="dvd__answer"><b class="mono">€1,284</b><span>safe to spend</span></div>
+        </div>
+        <p class="tile__text">Show the decision, not the data. Every screen should answer a question someone actually has.</p>
+      </article>
+
+      <article class="tile tile--privacy">
+        <h3 class="label">Privacy</h3>
+        <div class="lf" aria-hidden="true">
+          <span class="lf__node lf__node--device">Device</span>
+          <span class="lf__line"><span class="lf__pulse"></span></span>
+          <span class="lf__node lf__node--cloud">Cloud</span>
+        </div>
+        <p class="tile__text">Local-first. Only the context a feature needs leaves the device.</p>
+      </article>
+    </div>
+
+    <dl class="company__foot">
       <div><dt class="label">Press and contact</dt><dd><span class="placeholder">[Placeholder: press and contact address]</span></dd></div>
       <div><dt class="label">Not financial advice</dt><dd>Upino is a decision-support product. It does not give regulated financial, investment or tax advice.</dd></div>
     </dl>
