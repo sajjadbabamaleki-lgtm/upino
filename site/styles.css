@@ -744,6 +744,74 @@ button { font: inherit; color: inherit; }
   .included { grid-template-columns: 1fr; }
 }
 
+/* ── team ───────────────────────────────────────────── */
+.team { padding-block: var(--section); border-top: 1px solid var(--line); }
+.roster { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
+.roster__frame {
+  position: sticky; top: 110px;
+  aspect-ratio: 4 / 5; max-width: 100%;
+  border-radius: var(--r-lg); overflow: hidden;
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -40px rgba(15,16,18,.35);
+}
+.frame__layer {
+  position: absolute; inset: 0;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 560ms var(--ease-out);
+}
+.frame__layer.is-on { clip-path: inset(0 0 0 0); z-index: 1; }
+.frame__layer.is-leaving { clip-path: inset(0 0 0 0); z-index: 0; transition: none; }
+.frame__layer img { width: 100%; height: 100%; object-fit: cover; }
+.portrait {
+  width: 100%; height: 100%; display: grid; place-items: center; position: relative;
+  background: linear-gradient(160deg, #e3e2de 0%, #d6d5d1 100%);
+}
+.portrait > span {
+  font-size: clamp(96px, 14vw, 200px); font-weight: 560; letter-spacing: -0.04em; line-height: 1;
+  color: rgba(17, 18, 20, 0.12);
+}
+.portrait em { position: absolute; left: 20px; bottom: 18px; font-style: normal; }
+
+.roster__list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line-strong); }
+.person {
+  position: relative; width: 100%; border: 0; background: transparent; cursor: pointer; text-align: left;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 24px; align-items: baseline;
+  padding: 26px 0 24px; min-height: 44px;
+}
+.person__rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line-strong); }
+.person__rule::after {
+  content: ""; position: absolute; inset: 0; background: var(--text);
+  transform: scaleX(0); transform-origin: left; transition: transform 480ms var(--ease-out);
+}
+.person[aria-selected="true"] .person__rule::after { transform: scaleX(1); }
+.person__thumb { display: none; }
+.person__name {
+  font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 560;
+  color: var(--text-3); transition: color 240ms ease;
+}
+.person__role { font-size: 15px; color: var(--text-2); white-space: nowrap; }
+.person[aria-selected="true"] .person__name { color: var(--text); }
+.person__bio { grid-column: 1 / -1; display: grid; grid-template-rows: 0fr; transition: grid-template-rows 360ms var(--ease-out); }
+.person__bio > span { overflow: hidden; }
+.person__bio > span > span { display: block; padding-top: 12px; }
+.person[aria-selected="true"] .person__bio { grid-template-rows: 1fr; }
+.placeholder-name { color: inherit; }
+@media (hover: hover) and (pointer: fine) {
+  .person:hover .person__name { color: var(--text); }
+}
+
+@media (max-width: 900px) {
+  .roster { grid-template-columns: minmax(0, 1fr); }
+  .roster__frame { display: none; }
+  .person { grid-template-columns: 64px minmax(0, 1fr); column-gap: 16px; align-items: center; padding: 20px 0; cursor: default; }
+  .person__thumb { display: block; grid-row: span 2; width: 64px; height: 80px; border-radius: 12px; overflow: hidden; }
+  .person__thumb .portrait > span { font-size: 30px; }
+  .person__name { color: var(--text); font-size: 26px; }
+  .person__role { white-space: normal; }
+  .person__bio { grid-column: 2; grid-template-rows: 1fr; }
+  .person__rule::after { display: none; }
+}
+
 /* ── company ────────────────────────────────────────── */
 .company { padding-block: var(--section); }
 .company .h2 { max-width: 22ch; }
