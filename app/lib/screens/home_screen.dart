@@ -334,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           final r = await AmountSheet.show(
                             context,
                             currency: state.currency,
-                            title: 'Everyday essentials until payday',
+                            title: AppLocalizations.of(context).frEssentialsSheet,
                           );
                           if (r != null) state.setClaimAmount('essentials', r.amount);
                         },

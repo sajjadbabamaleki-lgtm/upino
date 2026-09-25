@@ -2200,4 +2200,501 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get payGaugeNextPay => 'Gaji berikutnya';
+
+  @override
+  String get frSelected => 'Dipilih';
+
+  @override
+  String get frFromPhone => 'Dari ponselmu';
+
+  @override
+  String get frSuggested => 'Disarankan';
+
+  @override
+  String get frLangOnPhone => 'Bahasa di ponselmu';
+
+  @override
+  String get frLangNotHere => 'Bahasamu belum ada';
+
+  @override
+  String get frLangTitle => 'Mari bicara\ndengan bahasamu.';
+
+  @override
+  String get frOrChoose => 'Atau pilih';
+
+  @override
+  String frContinueIn(String language) {
+    return 'Lanjut dalam $language';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return 'Pakai $currency';
+  }
+
+  @override
+  String get frContinue => 'Lanjut';
+
+  @override
+  String get frNothingBeforePayday => 'Tidak ada sebelum gajian';
+
+  @override
+  String get frSkipForNow => 'Lewati dulu';
+
+  @override
+  String get frLooksLike => 'Sepertinya';
+
+  @override
+  String get frCurrencyTitle => 'Kamu dibayar\ndalam mata uang apa?';
+
+  @override
+  String get frMore => 'Lainnya';
+
+  @override
+  String get frIntentTitle => 'Upino perlu membantumu dalam hal apa?';
+
+  @override
+  String get frIntentSub =>
+      'Pilih semua yang sesuai. Masing-masing cukup satu angka.';
+
+  @override
+  String get frIntentSafe => 'Tahu berapa yang aman kubelanjakan';
+
+  @override
+  String get frIntentShort => 'Berhenti kehabisan uang';
+
+  @override
+  String get frIntentSave => 'Menabung';
+
+  @override
+  String get frIntentDebt => 'Melunasi utang';
+
+  @override
+  String get frIntentIrregular => 'Bersiap untuk pengeluaran tak rutin';
+
+  @override
+  String get frIntentGoal => 'Mencapai tujuan';
+
+  @override
+  String get frIntentUnderstand => 'Lebih memahami uangku';
+
+  @override
+  String get frAskSafe => 'Berapa pengeluaranmu dalam sebulan biasa?';
+
+  @override
+  String get frAskSafeHint => 'Angka kira-kira sudah cukup.';
+
+  @override
+  String get frAskShort => 'Biasanya kurang berapa sebelum gajian?';
+
+  @override
+  String get frAskShortHint => 'Yang akhirnya kamu pinjam atau relakan.';
+
+  @override
+  String get frAskSave => 'Berapa yang ingin kamu tabung tiap bulan?';
+
+  @override
+  String get frAskSaveHint => 'Upino menyisihkannya sebelum kamu belanja.';
+
+  @override
+  String get frAskDebt => 'Berapa total utangmu?';
+
+  @override
+  String get frAskDebtHint =>
+      'Kartu, pinjaman, apa pun yang sedang kamu cicil.';
+
+  @override
+  String get frAskIrregular => 'Berapa totalnya dalam setahun?';
+
+  @override
+  String get frAskIrregularHint => 'Asuransi, perbaikan, hadiah, biaya.';
+
+  @override
+  String get frAskGoal => 'Berapa biaya tujuanmu?';
+
+  @override
+  String get frAskGoalHint => 'Nama dan tanggalnya bisa diatur nanti.';
+
+  @override
+  String get frAskUnderstand => 'Menurutmu, berapa pengeluaranmu sebulan?';
+
+  @override
+  String get frAskUnderstandHint =>
+      'Upino akan menunjukkan seberapa dekat tebakanmu.';
+
+  @override
+  String frPerMonth(String amount) {
+    return '$amount sebulan';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return 'kurang $amount sebulan';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return 'utang $amount';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return '$amount setahun';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return 'target $amount';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return '$amount sebulan, menurutmu';
+  }
+
+  @override
+  String get frAdd => 'Tambah';
+
+  @override
+  String get frRemove => 'Hapus';
+
+  @override
+  String get frIncomeTitle => 'Ceritakan bagaimana uang masuk.';
+
+  @override
+  String get frIncomeSub =>
+      'Kalau berubah-ubah, pakai yang bisa kamu andalkan.';
+
+  @override
+  String get frAddIncome => 'Tambah sumber pemasukan lain';
+
+  @override
+  String get frEvery2Weeks => 'Tiap 2 minggu';
+
+  @override
+  String get frTwiceMonth => 'Dua kali sebulan';
+
+  @override
+  String get frIrregular => 'Tidak tetap';
+
+  @override
+  String get frEachPay => 'Tiap pembayaran';
+
+  @override
+  String get frAnotherIncome => 'Pemasukan lain';
+
+  @override
+  String get frAvailTitle => 'Berapa uang yang tersedia sekarang?';
+
+  @override
+  String get frAvailSub =>
+      'Uang tunai dan rekening yang kamu pakai belanja, digabung. Jangan hitung tabungan — rekening bisa ditambah satu per satu nanti.';
+
+  @override
+  String get frAvailLabel => 'Uang tersedia hari ini';
+
+  @override
+  String get frAvailNote => 'Ini akan jadi saldo terkonfirmasi hari ini.';
+
+  @override
+  String get frObRent => 'Sewa / KPR';
+
+  @override
+  String get frObUtilities => 'Listrik & air';
+
+  @override
+  String get frObInsurance => 'Asuransi';
+
+  @override
+  String get frObSubscriptions => 'Langganan';
+
+  @override
+  String get frSomethingElse => 'Lainnya';
+
+  @override
+  String get frObTitle =>
+      'Apa yang harus dibayar sebelum pemasukan berikutnya?';
+
+  @override
+  String frObSub(String date) {
+    return 'Hanya yang jatuh tempo sampai $date. Ketuk masing-masing.';
+  }
+
+  @override
+  String get frAddAnother => 'Tambah lagi';
+
+  @override
+  String get frObNeedsName => 'Tambahkan nama dan jumlah';
+
+  @override
+  String get frTapToAdd => 'Ketuk untuk menambah';
+
+  @override
+  String get frAmount => 'Jumlah';
+
+  @override
+  String get frDue => 'Jatuh tempo';
+
+  @override
+  String get frEssTitle =>
+      'Kira-kira butuh berapa untuk kebutuhan sehari-hari sampai pemasukan berikutnya?';
+
+  @override
+  String frEssSub(String date) {
+    return 'Sampai $date. Angka kira-kira sudah cukup.';
+  }
+
+  @override
+  String get frEssGroceries => 'Belanja dapur';
+
+  @override
+  String get frEssGettingAround => 'Transportasi';
+
+  @override
+  String get frEssHousehold => 'Rumah tangga';
+
+  @override
+  String get frEssEveryday => 'Kebutuhan harian';
+
+  @override
+  String get frHelpEstimate => 'Bantu aku memperkirakan';
+
+  @override
+  String get frEstimateTitle => 'Perkiraan cepat';
+
+  @override
+  String get frEstimateSub => 'Dua ketukan. Angkanya bisa diubah nanti.';
+
+  @override
+  String get frPeopleYouCover => 'Orang yang kamu tanggung';
+
+  @override
+  String get frWalkBike => 'Jalan kaki atau sepeda';
+
+  @override
+  String get frPublicTransport => 'Transportasi umum';
+
+  @override
+  String get frCar => 'Mobil';
+
+  @override
+  String frUntil(String date) {
+    return 'sampai $date';
+  }
+
+  @override
+  String get frUseThis => 'Pakai ini';
+
+  @override
+  String get frProtEmergency => 'Dana darurat';
+
+  @override
+  String get frProtTrip => 'Liburan';
+
+  @override
+  String get frProtHome => 'Rumah';
+
+  @override
+  String get frProtYearly => 'Pengeluaran tahunan';
+
+  @override
+  String frMonths(int count) {
+    return '$count bulan';
+  }
+
+  @override
+  String get frProtTitle => 'Ada yang ingin kamu lindungi dengan uangmu?';
+
+  @override
+  String get frProtSub =>
+      'Opsional. Upino menyisihkan sedikit tiap pembayaran supaya siap tepat waktu.';
+
+  @override
+  String get frProtNameHint => 'mis. Asuransi mobil';
+
+  @override
+  String get frProtWhatFor => 'Untuk apa?';
+
+  @override
+  String get frProtYearlyAmount => 'Berapa, setahun sekali';
+
+  @override
+  String get frTarget => 'Target';
+
+  @override
+  String get frNextDueIn => 'Jatuh tempo berikutnya dalam';
+
+  @override
+  String get frAlreadySaved => 'Sudah terkumpul';
+
+  @override
+  String frDay(int n) {
+    return 'Hari $n';
+  }
+
+  @override
+  String get frMoment1Title => 'Hari gajian. Beres.';
+
+  @override
+  String get frMoment1Body =>
+      'Sewa dan belanja dapur disisihkan begitu uang masuk. Sisanya bebas kamu pakai.';
+
+  @override
+  String get frMoment2Title => 'Tiap pengeluaran, 3 detik.';
+
+  @override
+  String get frMoment2Body =>
+      'Catat, dan angkanya langsung diperbarui. Selalu sesuai hari ini.';
+
+  @override
+  String get frMoment3Title => 'Tanya sebelum membeli.';
+
+  @override
+  String get frMoment3Body =>
+      'Lihat dampak sebuah pembelian ke tagihan dan tujuanmu sebelum bayar.';
+
+  @override
+  String get frMoment4Title => 'Tujuan yang terisi sendiri.';
+
+  @override
+  String get frMoment4Body =>
+      'Sedikit disisihkan tiap pembayaran, dan bulan ditutup dengan ke mana semuanya pergi.';
+
+  @override
+  String get frGetStarted => 'Mulai';
+
+  @override
+  String frPayArrived(String amount) {
+    return 'Gaji masuk  $amount';
+  }
+
+  @override
+  String get frCoffee => 'Kopi';
+
+  @override
+  String get frRecordedNow => 'Baru dicatat';
+
+  @override
+  String frAskJacket(String amount) {
+    return 'Boleh beli jaket seharga $amount?';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return 'Boleh, dan sewa tetap aman. Kamu masih punya $amount sampai $date. Liburanmu mundur 4 hari.';
+  }
+
+  @override
+  String get frIfBuyNow => 'Kalau beli sekarang';
+
+  @override
+  String frLeft(String amount) {
+    return 'Sisa $amount';
+  }
+
+  @override
+  String get frMonthClosed => 'Bulan ditutup: makan di luar 8% lebih hemat.';
+
+  @override
+  String get frOfAllGoals => 'dari semua tujuanmu';
+
+  @override
+  String get frWelcome => 'Selamat datang di Upino';
+
+  @override
+  String get frWelcomeSub => 'Baru atau kembali, langkahnya sama.';
+
+  @override
+  String get frWithApple => 'Lanjut dengan Apple';
+
+  @override
+  String get frWithGoogle => 'Lanjut dengan Google';
+
+  @override
+  String get frWithEmail => 'Lanjut dengan email';
+
+  @override
+  String get frOnDevice => 'Rencanamu dihitung di ponselmu.';
+
+  @override
+  String get frTermsPrivacy => 'Ketentuan · Privasi';
+
+  @override
+  String get frCheckEmail => 'Cek email-mu';
+
+  @override
+  String frCodeSent(String email) {
+    return 'Kami mengirim kode 6 digit ke $email.';
+  }
+
+  @override
+  String get frCodeWhy =>
+      'Kami akan mengirim kode. Tak perlu mengingat kata sandi.';
+
+  @override
+  String get frSendCode => 'Kirim kode';
+
+  @override
+  String get frAvailableNow => 'Tersedia sekarang';
+
+  @override
+  String get frProtectedBills => 'Diamankan untuk tagihan & kebutuhan';
+
+  @override
+  String get frProtectedGoal => 'Diamankan untuk tujuanmu';
+
+  @override
+  String get frPlanReady => 'Rencana keuanganmu sudah siap';
+
+  @override
+  String frNotCovered(String amount) {
+    return '$amount dari yang harus dibayar belum tertutup.';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return 'Sampai pemasukan berikutnya yang diperkirakan pada $date';
+  }
+
+  @override
+  String get frTakenCare => 'Sudah diurus';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name, $amount jatuh tempo $date, sudah disisihkan sebelum ada yang bebas dibelanjakan.';
+  }
+
+  @override
+  String get frBuiltFromAll => 'Disusun dari semua yang kamu ceritakan.';
+
+  @override
+  String frGoodEstimate(int count) {
+    return 'Perkiraan awal yang bagus. Tambahkan $count detail lagi nanti agar lebih tepat.';
+  }
+
+  @override
+  String get frGoToPlan => 'Ke rencanaku';
+
+  @override
+  String get frSafeToSpend => 'Aman dibelanjakan';
+
+  @override
+  String get frGapsTitle => 'Buat angka aman dibelanjakan lebih akurat';
+
+  @override
+  String get frGapEssentials => 'Tambah kebutuhan sehari-hari';
+
+  @override
+  String get frGapYearly => 'Tambah biaya tahunan, seperti asuransi';
+
+  @override
+  String get frGapBill => 'Tambah tagihan yang jatuh tempo sebelum gajian';
+
+  @override
+  String frSeconds(int count) {
+    return '~$count dtk';
+  }
+
+  @override
+  String get frEssentialsSheet => 'Kebutuhan sehari-hari sampai gajian';
 }

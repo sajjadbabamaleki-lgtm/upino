@@ -17,6 +17,7 @@ import '../../engine/clock.dart';
 import '../../engine/currencies.dart';
 import '../../widgets/upino_sheet.dart';
 import '../../engine/money.dart';
+import '../../l10n/dates.dart';
 import '../../state/app_state.dart';
 import '../../state/setup_draft.dart';
 import '../currency_screen.dart';
@@ -61,6 +62,17 @@ class _SetupFlowState extends State<SetupFlow> {
   void _finish() {
     FocusScope.of(context).unfocus();
     if (_d.protect == null) _d.protectSkipped = true;
+    // Bills and goals keep the name they were picked by, in the app's
+    // language at the time.
+    for (final o in _d.obligations) {
+      if (o.kind != ObligationKind.other && (o.name?.trim().isEmpty ?? true)) {
+        o.name = _obLabel(context, o.kind);
+      }
+    }
+    final p = _d.protect;
+    if (p != null && p.kind != ProtectKind.custom && (p.name?.trim().isEmpty ?? true)) {
+      p.name = _protectLabel(context, p.kind);
+    }
     widget.state.completeSetup(_d);
   }
 
@@ -93,7 +105,7 @@ class _SetupFlowState extends State<SetupFlow> {
           };
     final (primary, primaryOn, secondary, secondaryOn) = step == 0
         ? (
-            'Use ${_CurrencyStep.info(_d.currency).name}',
+            context.l.frUseCurrency(_CurrencyStep.info(_d.currency).name),
             () {
               widget.state.changeCurrency(_d.currency);
               _d.currencyChosen = true;
@@ -104,13 +116,13 @@ class _SetupFlowState extends State<SetupFlow> {
           )
         : switch (step - 1) {
             0 => (
-                'Continue',
+                context.l.frContinue,
                 _d.intents.isNotEmpty ? () => _go(2) : null,
                 null,
                 null
               ),
             1 => (
-                'Continue',
+                context.l.frContinue,
                 _d.incomeComplete &&
                         _d.incomes
                             .skip(1)
@@ -125,15 +137,15 @@ class _SetupFlowState extends State<SetupFlow> {
                 null,
               ),
             2 => (
-                'Continue',
+                context.l.frContinue,
                 _d.available != null ? () => _go(4) : null,
                 null,
                 null
               ),
             3 => (
                 _d.obligations.any((o) => o.isComplete)
-                    ? 'Continue'
-                    : 'Nothing before payday',
+                    ? context.l.frContinue
+                    : context.l.frNothingBeforePayday,
                 () {
                   _d.obligations.removeWhere((o) => !o.isComplete);
                   _d.obligationsDone = true;
@@ -143,14 +155,14 @@ class _SetupFlowState extends State<SetupFlow> {
                 null,
               ),
             4 => (
-                'Continue',
+                context.l.frContinue,
                 (_d.essentials?.minor ?? 0) > 0
                     ? () {
                         _d.essentialsSkipped = false;
                         _go(6);
                       }
                     : null,
-                'Skip for now',
+                context.l.frSkipForNow,
                 () {
                   _d
                     ..essentials = null
@@ -159,9 +171,9 @@ class _SetupFlowState extends State<SetupFlow> {
                 },
               ),
             _ => (
-                'Build my plan',
+                context.l.onboardingFinish,
                 _d.protect == null || _d.protect!.isComplete ? _finish : null,
-                _d.protect == null ? null : 'Skip for now',
+                _d.protect == null ? null : context.l.frSkipForNow,
                 () {
                   _d
                     ..protect = null
@@ -407,12 +419,12 @@ class _CurrencyStepState extends State<_CurrencyStep> {
     final hero = widget.d.currency;
     final hi = _CurrencyStep.info(hero);
     final more = currencyCatalogue.length - _grid.length - 1;
-    final label = hero == _guess ? 'LOOKS LIKE' : 'SELECTED';
+    final label = (hero == _guess ? context.l.frLooksLike : context.l.frSelected).toUpperCase();
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 22, 24, 16),
       children: [
         Arrive(
-          child: Text('Which currency\nare you paid in?',
+          child: Text(context.l.frCurrencyTitle,
               maxLines: 2,
               style: TextStyle(fontSize: 30, height: 1.1, fontWeight: FontWeight.w600,
                   letterSpacing: -0.7, color: inkOf(context),),),
@@ -470,7 +482,7 @@ class _CurrencyStepState extends State<_CurrencyStep> {
           ),
         ),
         const SizedBox(height: 20),
-        Text('OR CHOOSE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600,
+        Text(context.l.frOrChoose.toUpperCase(), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600,
             letterSpacing: 1.3, color: tertOf(context),),),
         const SizedBox(height: 10),
         GridView.count(
@@ -522,7 +534,7 @@ class _CurrencyStepState extends State<_CurrencyStep> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text('+$more', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: mutedLime(context))),
-                      Text('MORE', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w600,
+                      Text(context.l.frMore.toUpperCase(), style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w600,
                           letterSpacing: 1.1, color: tertOf(context),),),
                     ],
                   ),
@@ -543,25 +555,25 @@ class _IntentStep extends StatelessWidget {
   final SetupDraft d;
   final VoidCallback onChanged;
 
-  static const _options = [
-    (SetupIntent.safeToSpend, 'su-shield', 'Know what I can safely spend'),
-    (SetupIntent.stopRunningOut, 'su-wave', 'Stop running out of money'),
-    (SetupIntent.buildSavings, 'su-piggy', 'Build savings'),
-    (SetupIntent.payOffDebt, 'su-card', 'Pay off debt'),
-    (SetupIntent.irregularCosts, 'su-calendar', 'Prepare for irregular expenses'),
-    (SetupIntent.reachGoal, 'su-target', 'Reach a goal'),
-    (SetupIntent.understand, 'su-eye', 'Understand my money better'),
-  ];
+  static List<(SetupIntent, String, String)> _options(BuildContext c) => [
+        (SetupIntent.safeToSpend, 'su-shield', c.l.frIntentSafe),
+        (SetupIntent.stopRunningOut, 'su-wave', c.l.frIntentShort),
+        (SetupIntent.buildSavings, 'su-piggy', c.l.frIntentSave),
+        (SetupIntent.payOffDebt, 'su-card', c.l.frIntentDebt),
+        (SetupIntent.irregularCosts, 'su-calendar', c.l.frIntentIrregular),
+        (SetupIntent.reachGoal, 'su-target', c.l.frIntentGoal),
+        (SetupIntent.understand, 'su-eye', c.l.frIntentUnderstand),
+      ];
 
   /// The one number each choice needs, and how it reads once given.
-  static (String, String, String) ask(SetupIntent i) => switch (i) {
-        SetupIntent.safeToSpend => ('How much do you spend in a normal month?', 'A rough number is fine.', 'a month'),
-        SetupIntent.stopRunningOut => ('How short do you usually fall before payday?', 'What you end up borrowing or going without.', 'short a month'),
-        SetupIntent.buildSavings => ('How much would you like to save each month?', 'Upino sets it aside before you spend.', 'a month'),
-        SetupIntent.payOffDebt => ('How much do you owe in total?', 'Cards, loans, anything you’re paying back.', 'owed'),
-        SetupIntent.irregularCosts => ('What do they add up to in a year?', 'Insurance, repairs, gifts, fees.', 'a year'),
-        SetupIntent.reachGoal => ('How much does your goal cost?', 'You can name it and set a date later.', 'to reach'),
-        SetupIntent.understand => ('What do you think you spend in a month?', 'Upino will show you how close you were.', 'a month, you think'),
+  static (String, String, String Function(String)) ask(BuildContext c, SetupIntent i) => switch (i) {
+        SetupIntent.safeToSpend => (c.l.frAskSafe, c.l.frAskSafeHint, c.l.frPerMonth),
+        SetupIntent.stopRunningOut => (c.l.frAskShort, c.l.frAskShortHint, c.l.frShortPerMonth),
+        SetupIntent.buildSavings => (c.l.frAskSave, c.l.frAskSaveHint, c.l.frPerMonth),
+        SetupIntent.payOffDebt => (c.l.frAskDebt, c.l.frAskDebtHint, c.l.frOwed),
+        SetupIntent.irregularCosts => (c.l.frAskIrregular, c.l.frAskIrregularHint, c.l.frPerYear),
+        SetupIntent.reachGoal => (c.l.frAskGoal, c.l.frAskGoalHint, c.l.frToReach),
+        SetupIntent.understand => (c.l.frAskUnderstand, c.l.frAskUnderstandHint, c.l.frPerMonthGuess),
       };
 
   Future<void> _open(BuildContext context, SetupIntent i, String icon, String label) async {
@@ -578,10 +590,10 @@ class _IntentStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Step(
-        title: 'What do you want Upino to help you with?',
-        sub: 'Pick all that fit. Each one takes a single number.',
+        title: context.l.frIntentTitle,
+        sub: context.l.frIntentSub,
         children: [
-          for (final (intent, icon, label) in _options)
+          for (final (intent, icon, label) in _options(context))
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: _ChoiceRow(
@@ -590,7 +602,7 @@ class _IntentStep extends StatelessWidget {
                 label: label,
                 detail: d.intents[intent] == null
                     ? null
-                    : '${d.intents[intent]!.display()} ${ask(intent).$3}',
+                    : ask(context, intent).$3(d.intents[intent]!.display()),
                 on: d.intents.containsKey(intent),
                 onTap: () => _open(context, intent, icon, label),
               ),
@@ -634,7 +646,7 @@ class _IntentSheetState extends State<_IntentSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final (q, hint, _) = _IntentStep.ask(widget.intent);
+    final (q, hint, _) = _IntentStep.ask(context, widget.intent);
     return _SheetShell(
       children: [
         Row(
@@ -663,14 +675,14 @@ class _IntentSheetState extends State<_IntentSheet> {
         const SizedBox(height: 18),
         FlowButton(
           buttonKey: const Key('intent-save'),
-          label: widget.amount == null ? 'Add' : 'Save',
+          label: widget.amount == null ? context.l.frAdd : context.l.save,
           onTap: (_m?.minor ?? 0) > 0 ? () => Navigator.of(context).pop((_Edit.save, _m)) : null,
         ),
         if (widget.amount != null)
           Center(
             child: TextButton(
               onPressed: () => Navigator.of(context).pop((_Edit.remove, null)),
-              child: Text('Remove', style: TextStyle(color: subOf(context))),
+              child: Text(context.l.frRemove, style: TextStyle(color: subOf(context))),
             ),
           ),
       ],
@@ -753,8 +765,8 @@ class _IncomeStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => _Step(
-        title: 'Tell us how money comes in.',
-        sub: 'If it varies, use what you can count on.',
+        title: context.l.frIncomeTitle,
+        sub: context.l.frIncomeSub,
         children: [
           for (var i = 0; i < d.incomes.length; i++) ...[
             _IncomeCard(
@@ -782,7 +794,7 @@ class _IncomeStep extends StatelessWidget {
                 onChanged();
               },
               icon: UpinoIcon('add', size: 18, color: blueOf(context)),
-              label: Text('Add another income source',
+              label: Text(context.l.frAddIncome,
                   style: TextStyle(
                       color: blueOf(context), fontWeight: FontWeight.w600,),),
             ),
@@ -817,13 +829,13 @@ class _IncomeCardState extends State<_IncomeCard> {
   late final _amount =
       TextEditingController(text: plainAmount(widget.income.amount));
 
-  static const _rhythms = [
-    (PayRhythm.weekly, 'Weekly'),
-    (PayRhythm.fortnightly, 'Every 2 weeks'),
-    (PayRhythm.twiceMonthly, 'Twice a month'),
-    (PayRhythm.monthly, 'Monthly'),
-    (PayRhythm.irregular, 'Irregular'),
-  ];
+  List<(PayRhythm, String)> _rhythms(BuildContext c) => [
+        (PayRhythm.weekly, c.l.billEveryWeek),
+        (PayRhythm.fortnightly, c.l.frEvery2Weeks),
+        (PayRhythm.twiceMonthly, c.l.frTwiceMonth),
+        (PayRhythm.monthly, c.l.billEveryMonth),
+        (PayRhythm.irregular, c.l.frIrregular),
+      ];
 
   @override
   void dispose() {
@@ -841,7 +853,7 @@ class _IncomeCardState extends State<_IncomeCard> {
           Row(
             children: [
               Expanded(
-                  child: _Label(widget.first ? 'Each pay' : 'Another income'),),
+                  child: _Label(widget.first ? context.l.frEachPay : context.l.frAnotherIncome),),
               if (widget.onRemove != null)
                 GestureDetector(
                   onTap: widget.onRemove,
@@ -864,7 +876,7 @@ class _IncomeCardState extends State<_IncomeCard> {
             spacing: 6,
             runSpacing: 6,
             children: [
-              for (final (r, label) in _rhythms)
+              for (final (r, label) in _rhythms(context))
                 Pick(
                   key: Key('rhythm-${r.name}'),
                   label: label,
@@ -877,7 +889,7 @@ class _IncomeCardState extends State<_IncomeCard> {
             ],
           ),
           const SizedBox(height: 16),
-          const _Label('Next pay'),
+          _Label(context.l.planNextPay),
           DayStrip(
             key: Key(widget.first ? 'income-days' : 'income-days-2'),
             from: widget.today,
@@ -916,16 +928,16 @@ class _AvailableStepState extends State<_AvailableStep> {
 
   @override
   Widget build(BuildContext context) => _Step(
-        title: 'How much money do you have available right now?',
+        title: context.l.frAvailTitle,
         sub:
-            'Cash and the accounts you spend from, together. Leave savings out — you can add accounts one by one later.',
+            context.l.frAvailSub,
         children: [
           _Panel(
             padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const _Label('Available money today'),
+                _Label(context.l.frAvailLabel),
                 BigAmountField(
                   fieldKey: const Key('available-amount'),
                   controller: _c,
@@ -946,7 +958,7 @@ class _AvailableStepState extends State<_AvailableStep> {
               UpinoIcon('su-shield', size: 16, color: tertOf(context)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text('This becomes today’s confirmed balance.',
+                child: Text(context.l.frAvailNote,
                     style: TextStyle(fontSize: 13, color: tertOf(context)),),
               ),
             ],
@@ -957,14 +969,14 @@ class _AvailableStepState extends State<_AvailableStep> {
 
 // ---------------------------------------------------------------- 4 obligations
 
-String _obLabel(ObligationKind k) => switch (k) {
-      ObligationKind.rent => 'Rent / Mortgage',
-      ObligationKind.utilities => 'Utilities',
-      ObligationKind.loan => 'Loan',
-      ObligationKind.creditCard => 'Credit card',
-      ObligationKind.insurance => 'Insurance',
-      ObligationKind.subscriptions => 'Subscriptions',
-      ObligationKind.other => 'Something else',
+String _obLabel(BuildContext c, ObligationKind k) => switch (k) {
+      ObligationKind.rent => c.l.frObRent,
+      ObligationKind.utilities => c.l.frObUtilities,
+      ObligationKind.loan => c.l.accountKindLoan,
+      ObligationKind.creditCard => c.l.accountKindCard,
+      ObligationKind.insurance => c.l.frObInsurance,
+      ObligationKind.subscriptions => c.l.frObSubscriptions,
+      ObligationKind.other => c.l.frSomethingElse,
     };
 
 String _obIcon(ObligationKind k) => switch (k) {
@@ -1008,8 +1020,8 @@ class _ObligationsStep extends StatelessWidget {
     final others =
         d.obligations.where((o) => o.kind == ObligationKind.other).toList();
     return _Step(
-      title: 'What must be paid before your next income?',
-      sub: 'Only what’s due by ${_fmt(horizon)}. Tap each one.',
+      title: context.l.frObTitle,
+      sub: context.l.frObSub(formatDate(context, horizon)),
       children: [
         GridView.count(
           crossAxisCount: 2,
@@ -1045,7 +1057,7 @@ class _ObligationsStep extends StatelessWidget {
               key: const Key('ob-add'),
               kind: ObligationKind.other,
               item: null,
-              addLabel: others.isEmpty ? 'Something else' : 'Add another',
+              addLabel: others.isEmpty ? context.l.frSomethingElse : context.l.frAddAnother,
               onTap: () {
                 final o = SetupObligation(kind: ObligationKind.other);
                 d.obligations.add(o);
@@ -1059,23 +1071,6 @@ class _ObligationsStep extends StatelessWidget {
   }
 }
 
-String _fmt(LocalDate d) {
-  const mo = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  return '${mo[d.month - 1]} ${d.day}';
-}
 
 class _ObTile extends StatelessWidget {
   const _ObTile(
@@ -1093,7 +1088,7 @@ class _ObTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final on = item?.isComplete ?? false;
     final label = addLabel ??
-        ((item?.name?.isNotEmpty ?? false) ? item!.name! : _obLabel(kind));
+        ((item?.name?.isNotEmpty ?? false) ? item!.name! : _obLabel(context, kind));
     return Pressable(
       scale: 0.96,
       onTap: () {
@@ -1138,10 +1133,10 @@ class _ObTile extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: Text(
                 on
-                    ? '${item!.amount!.display()} · ${_fmt(item!.due!)}'
+                    ? '${item!.amount!.display()} · ${formatDate(context, item!.due!)}'
                     : (addLabel != null
-                        ? 'Add a name and amount'
-                        : 'Tap to add'),
+                        ? context.l.frObNeedsName
+                        : context.l.frTapToAdd),
                 key: ValueKey(on),
                 style: TextStyle(
                   fontSize: 12.5,
@@ -1222,7 +1217,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                other ? 'Something else' : _obLabel(widget.o.kind),
+                other ? context.l.frSomethingElse : _obLabel(context, widget.o.kind),
                 style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -1240,7 +1235,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
             onChanged: (_) => setState(() {}),
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
-              hintText: 'What is it?',
+              hintText: context.l.billName,
               filled: true,
               fillColor: sunkenColor(context),
               border: OutlineInputBorder(
@@ -1250,7 +1245,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
           ),
           const SizedBox(height: 14),
         ],
-        const _Label('Amount'),
+        _Label(context.l.frAmount),
         BigAmountField(
           fieldKey: const Key('ob-amount'),
           controller: _amount,
@@ -1260,7 +1255,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
           onChanged: (t) => setState(() => _m = readMoney(t, widget.currency)),
         ),
         const SizedBox(height: 14),
-        const _Label('Due'),
+        _Label(context.l.frDue),
         DayStrip(
           key: const Key('ob-days'),
           from: widget.today,
@@ -1272,7 +1267,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
         const SizedBox(height: 18),
         FlowButton(
           buttonKey: const Key('ob-save'),
-          label: 'Add',
+          label: context.l.frAdd,
           onTap: _ok
               ? () {
                   widget.o
@@ -1287,7 +1282,7 @@ class _ObligationSheetState extends State<_ObligationSheet> {
           Center(
             child: TextButton(
               onPressed: () => Navigator.of(context).pop(_Edit.remove),
-              child: Text('Remove', style: TextStyle(color: subOf(context))),
+              child: Text(context.l.frRemove, style: TextStyle(color: subOf(context))),
             ),
           ),
       ],
@@ -1373,18 +1368,18 @@ class _EssentialsStepState extends State<_EssentialsStep> {
   @override
   Widget build(BuildContext context) => _Step(
         title:
-            'About how much will you need for everyday essentials until your next income?',
-        sub: 'Until ${_fmt(widget.horizon)}. A rough number is fine.',
+            context.l.frEssTitle,
+        sub: context.l.frEssSub(formatDate(context, widget.horizon)),
         children: [
           Wrap(
             spacing: 6,
             runSpacing: 6,
             children: [
-              for (final (icon, label) in const [
-                ('su-cart', 'Groceries'),
-                ('su-bus', 'Getting around'),
-                ('goal-home', 'Household'),
-                ('su-coins', 'Everyday needs'),
+              for (final (icon, label) in [
+                ('su-cart', context.l.frEssGroceries),
+                ('su-bus', context.l.frEssGettingAround),
+                ('goal-home', context.l.frEssHousehold),
+                ('su-coins', context.l.frEssEveryday),
               ])
                 Container(
                   padding:
@@ -1427,7 +1422,7 @@ class _EssentialsStepState extends State<_EssentialsStep> {
           if (widget.d.incomeComplete)
             FlowButton(
               buttonKey: const Key('essentials-estimate'),
-              label: 'Help me estimate',
+              label: context.l.frHelpEstimate,
               style: FlowButtonStyle.quiet,
               onTap: _estimate,
             ),
@@ -1478,17 +1473,17 @@ class _EstimateSheetState extends State<_EstimateSheet> {
   @override
   Widget build(BuildContext context) => _SheetShell(
         children: [
-          Text('A quick estimate',
+          Text(context.l.frEstimateTitle,
               style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.5,
                   color: inkOf(context),),),
           const SizedBox(height: 6),
-          Text('Two taps. You can change the number after.',
+          Text(context.l.frEstimateSub,
               style: TextStyle(fontSize: 14, color: subOf(context)),),
           const SizedBox(height: 18),
-          const _Label('People you cover'),
+          _Label(context.l.frPeopleYouCover),
           Row(
             children: [
               for (final n in [1, 2, 3, 4])
@@ -1502,15 +1497,15 @@ class _EstimateSheetState extends State<_EstimateSheet> {
             ],
           ),
           const SizedBox(height: 14),
-          const _Label('Getting around'),
+          _Label(context.l.frEssGettingAround),
           Wrap(
             spacing: 6,
             runSpacing: 6,
             children: [
-              for (final (i, label) in const [
-                (0, 'Walk or bike'),
-                (1, 'Public transport'),
-                (2, 'Car'),
+              for (final (i, label) in [
+                (0, context.l.frWalkBike),
+                (1, context.l.frPublicTransport),
+                (2, context.l.frCar),
               ])
                 Pick(
                     label: label,
@@ -1540,7 +1535,7 @@ class _EstimateSheetState extends State<_EstimateSheet> {
               const SizedBox(width: 8),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: Text('until ${_fmt(widget.horizon)}',
+                child: Text(context.l.frUntil(formatDate(context, widget.horizon)),
                     style: TextStyle(color: subOf(context)),),
               ),
             ],
@@ -1548,7 +1543,7 @@ class _EstimateSheetState extends State<_EstimateSheet> {
           const SizedBox(height: 16),
           FlowButton(
             buttonKey: const Key('estimate-use'),
-            label: 'Use this',
+            label: context.l.frUseThis,
             onTap: () => Navigator.of(context).pop(_value),
           ),
         ],
@@ -1557,14 +1552,14 @@ class _EstimateSheetState extends State<_EstimateSheet> {
 
 // ---------------------------------------------------------------- 6 protect
 
-String _protectLabel(ProtectKind k) => switch (k) {
-      ProtectKind.emergency => 'Emergency fund',
-      ProtectKind.trip => 'Trip',
-      ProtectKind.car => 'Car',
-      ProtectKind.home => 'Home',
-      ProtectKind.debt => 'Pay off debt',
-      ProtectKind.annual => 'Yearly expense',
-      ProtectKind.custom => 'Something else',
+String _protectLabel(BuildContext c, ProtectKind k) => switch (k) {
+      ProtectKind.emergency => c.l.frProtEmergency,
+      ProtectKind.trip => c.l.frProtTrip,
+      ProtectKind.car => c.l.frCar,
+      ProtectKind.home => c.l.frProtHome,
+      ProtectKind.debt => c.l.frIntentDebt,
+      ProtectKind.annual => c.l.frProtYearly,
+      ProtectKind.custom => c.l.frSomethingElse,
     };
 
 String _protectIcon(ProtectKind k) => switch (k) {
@@ -1626,12 +1621,12 @@ class _ProtectStepState extends State<_ProtectStep> {
     super.dispose();
   }
 
-  static const _horizons = [
-    (3, '3 months'),
-    (6, '6 months'),
-    (12, '1 year'),
-    (24, '2 years'),
-  ];
+  List<(int, String)> _horizons(BuildContext c) => [
+        (3, c.l.frMonths(3)),
+        (6, c.l.frMonths(6)),
+        (12, c.l.goalOneYear),
+        (24, c.l.goalTwoYears),
+      ];
 
   LocalDate _months(int m) => widget.today.addDays((m * 30.44).round());
 
@@ -1640,9 +1635,9 @@ class _ProtectStepState extends State<_ProtectStep> {
     final p = widget.d.protect;
     final cur = widget.d.currency;
     return _Step(
-      title: 'Anything you want your money to protect?',
+      title: context.l.frProtTitle,
       sub:
-          'Optional. Upino sets a little aside each pay so it’s there on time.',
+          context.l.frProtSub,
       children: [
         GridView.count(
           crossAxisCount: 3,
@@ -1700,7 +1695,7 @@ class _ProtectStepState extends State<_ProtectStep> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Text(
-                          _protectLabel(k),
+                          _protectLabel(context, k),
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           style: TextStyle(
@@ -1741,8 +1736,8 @@ class _ProtectStepState extends State<_ProtectStep> {
                             },
                             decoration: InputDecoration(
                               hintText: p.kind == ProtectKind.annual
-                                  ? 'e.g. Car insurance'
-                                  : 'What is it for?',
+                                  ? context.l.frProtNameHint
+                                  : context.l.frProtWhatFor,
                               filled: true,
                               fillColor: sunkenColor(context),
                               border: OutlineInputBorder(
@@ -1753,8 +1748,8 @@ class _ProtectStepState extends State<_ProtectStep> {
                           const SizedBox(height: 12),
                         ],
                         _Label(p.kind == ProtectKind.annual
-                            ? 'How much, once a year'
-                            : 'Target',),
+                            ? context.l.frProtYearlyAmount
+                            : context.l.frTarget,),
                         BigAmountField(
                           fieldKey: const Key('protect-target'),
                           controller: _target,
@@ -1770,13 +1765,13 @@ class _ProtectStepState extends State<_ProtectStep> {
                         ),
                         const SizedBox(height: 12),
                         _Label(p.kind == ProtectKind.annual
-                            ? 'Next due in'
-                            : 'By when',),
+                            ? context.l.frNextDueIn
+                            : context.l.goalByWhen,),
                         Wrap(
                           spacing: 6,
                           runSpacing: 6,
                           children: [
-                            for (final (m, label) in _horizons)
+                            for (final (m, label) in _horizons(context))
                               Pick(
                                 key: Key('protect-when-$m'),
                                 label: label,
@@ -1790,7 +1785,7 @@ class _ProtectStepState extends State<_ProtectStep> {
                         ),
                         if (p.kind != ProtectKind.annual) ...[
                           const SizedBox(height: 14),
-                          const _Label('Already saved'),
+                          _Label(context.l.frAlreadySaved),
                           BigAmountField(
                             fieldKey: const Key('protect-saved'),
                             controller: _saved,

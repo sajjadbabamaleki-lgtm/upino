@@ -13,6 +13,8 @@ import '../../design/theme.dart';
 import '../../design/tokens.dart';
 import '../../engine/clock.dart';
 import '../../engine/money.dart';
+import '../../l10n/app_localizations.dart';
+import '../../l10n/dates.dart';
 
 const lime = UpinoTokens.lime;
 const _ease = Cubic(0.23, 1, 0.32, 1);
@@ -340,22 +342,6 @@ class _DayStripState extends State<DayStrip> {
             54.0,
   );
 
-  static const _wd = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-  static const _mo = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
   @override
   void dispose() {
     _scroll.dispose();
@@ -373,8 +359,7 @@ class _DayStripState extends State<DayStrip> {
         itemBuilder: (context, i) {
           final d = widget.from.addDays(i);
           final on = d == widget.selected;
-          final wd = DateTime(d.year, d.month, d.day).weekday;
-          final showMonth = i == 0 || d.day == 1;
+          final showMonth = i == 0 || isMonthStart(context, d);
           return Padding(
             padding: const EdgeInsets.only(right: 6),
             child: Pressable(
@@ -395,7 +380,7 @@ class _DayStripState extends State<DayStrip> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      showMonth ? _mo[d.month - 1] : _wd[wd - 1],
+                      showMonth ? formatMonthShort(context, d) : formatWeekdayNarrow(context, d),
                       style: TextStyle(
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
@@ -404,7 +389,7 @@ class _DayStripState extends State<DayStrip> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${d.day}',
+                      formatDayNumber(context, d),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -760,4 +745,9 @@ class HeroGlyph extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The app's strings, from anywhere a context is at hand.
+extension FirstRunStrings on BuildContext {
+  AppLocalizations get l => AppLocalizations.of(this);
 }

@@ -54,3 +54,12 @@ String formatMonthShort(BuildContext context, LocalDate date) {
 String formatWeekdayNarrow(BuildContext context, LocalDate date) =>
     DateFormat.EEEEE(_tag(context))
         .format(DateTime(date.year, date.month, date.day));
+
+/// The day of the month, as the calendar in use counts it: `5`, or `۱۴`
+/// in Persian.
+String formatDayNumber(BuildContext context, LocalDate date) =>
+    _jalali(context) ? persianDigits('${_toJalali(date).day}') : '${date.day}';
+
+/// True on the first day of a month in the calendar in use.
+bool isMonthStart(BuildContext context, LocalDate date) =>
+    (_jalali(context) ? _toJalali(date).day : date.day) == 1;

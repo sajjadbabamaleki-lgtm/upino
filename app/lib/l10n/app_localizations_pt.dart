@@ -2165,4 +2165,513 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get payGaugeNextPay => 'Próximo salário';
+
+  @override
+  String get frSelected => 'Selecionado';
+
+  @override
+  String get frFromPhone => 'Do seu telefone';
+
+  @override
+  String get frSuggested => 'Sugerido';
+
+  @override
+  String get frLangOnPhone => 'O idioma do seu telefone';
+
+  @override
+  String get frLangNotHere => 'O seu ainda não está aqui';
+
+  @override
+  String get frLangTitle => 'Vamos falar\no seu idioma.';
+
+  @override
+  String get frOrChoose => 'Ou escolha';
+
+  @override
+  String frContinueIn(String language) {
+    return 'Continuar em $language';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return 'Usar $currency';
+  }
+
+  @override
+  String get frContinue => 'Continuar';
+
+  @override
+  String get frNothingBeforePayday => 'Nada antes do pagamento';
+
+  @override
+  String get frSkipForNow => 'Pular por agora';
+
+  @override
+  String get frLooksLike => 'Parece ser';
+
+  @override
+  String get frCurrencyTitle => 'Em que moeda\nvocê recebe?';
+
+  @override
+  String get frMore => 'Mais';
+
+  @override
+  String get frIntentTitle => 'Em que você quer que o Upino ajude?';
+
+  @override
+  String get frIntentSub =>
+      'Escolha tudo o que se aplica. Cada opção pede só um número.';
+
+  @override
+  String get frIntentSafe => 'Saber quanto posso gastar com segurança';
+
+  @override
+  String get frIntentShort => 'Parar de ficar sem dinheiro';
+
+  @override
+  String get frIntentSave => 'Juntar dinheiro';
+
+  @override
+  String get frIntentDebt => 'Quitar dívidas';
+
+  @override
+  String get frIntentIrregular => 'Me preparar para gastos irregulares';
+
+  @override
+  String get frIntentGoal => 'Alcançar uma meta';
+
+  @override
+  String get frIntentUnderstand => 'Entender melhor meu dinheiro';
+
+  @override
+  String get frAskSafe => 'Quanto você gasta num mês normal?';
+
+  @override
+  String get frAskSafeHint => 'Um número aproximado basta.';
+
+  @override
+  String get frAskShort => 'Quanto costuma faltar antes do pagamento?';
+
+  @override
+  String get frAskShortHint =>
+      'O que você acaba pegando emprestado ou deixando de fazer.';
+
+  @override
+  String get frAskSave => 'Quanto você gostaria de guardar por mês?';
+
+  @override
+  String get frAskSaveHint => 'O Upino separa antes de você gastar.';
+
+  @override
+  String get frAskDebt => 'Quanto você deve no total?';
+
+  @override
+  String get frAskDebtHint =>
+      'Cartões, empréstimos, tudo o que você está pagando.';
+
+  @override
+  String get frAskIrregular => 'Quanto eles somam em um ano?';
+
+  @override
+  String get frAskIrregularHint => 'Seguros, consertos, presentes, taxas.';
+
+  @override
+  String get frAskGoal => 'Quanto custa sua meta?';
+
+  @override
+  String get frAskGoalHint => 'Você pode dar um nome e uma data depois.';
+
+  @override
+  String get frAskUnderstand => 'Quanto você acha que gasta por mês?';
+
+  @override
+  String get frAskUnderstandHint =>
+      'O Upino vai mostrar o quanto você chegou perto.';
+
+  @override
+  String frPerMonth(String amount) {
+    return '$amount por mês';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return 'faltam $amount por mês';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return '$amount em dívida';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return '$amount por ano';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return '$amount para alcançar';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return '$amount por mês, no seu palpite';
+  }
+
+  @override
+  String get frAdd => 'Adicionar';
+
+  @override
+  String get frRemove => 'Remover';
+
+  @override
+  String get frIncomeTitle => 'Conte como o dinheiro entra.';
+
+  @override
+  String get frIncomeSub => 'Se varia, use o que você pode garantir.';
+
+  @override
+  String get frAddIncome => 'Adicionar outra fonte de renda';
+
+  @override
+  String get frEvery2Weeks => 'A cada 2 semanas';
+
+  @override
+  String get frTwiceMonth => 'Duas vezes por mês';
+
+  @override
+  String get frIrregular => 'Irregular';
+
+  @override
+  String get frEachPay => 'Cada pagamento';
+
+  @override
+  String get frAnotherIncome => 'Outra renda';
+
+  @override
+  String get frAvailTitle => 'Quanto dinheiro você tem disponível agora?';
+
+  @override
+  String get frAvailSub =>
+      'Dinheiro vivo e as contas de onde você gasta, juntos. Deixe a poupança de fora; você pode adicionar contas uma a uma depois.';
+
+  @override
+  String get frAvailLabel => 'Dinheiro disponível hoje';
+
+  @override
+  String get frAvailNote => 'Este será o saldo confirmado de hoje.';
+
+  @override
+  String get frObRent => 'Aluguel / Financiamento';
+
+  @override
+  String get frObUtilities => 'Contas da casa';
+
+  @override
+  String get frObInsurance => 'Seguro';
+
+  @override
+  String get frObSubscriptions => 'Assinaturas';
+
+  @override
+  String get frSomethingElse => 'Outra coisa';
+
+  @override
+  String get frObTitle => 'O que precisa ser pago antes da sua próxima renda?';
+
+  @override
+  String frObSub(String date) {
+    return 'Só o que vence até $date. Toque em cada um.';
+  }
+
+  @override
+  String get frAddAnother => 'Adicionar outro';
+
+  @override
+  String get frObNeedsName => 'Adicione um nome e um valor';
+
+  @override
+  String get frTapToAdd => 'Toque para adicionar';
+
+  @override
+  String get frAmount => 'Valor';
+
+  @override
+  String get frDue => 'Vencimento';
+
+  @override
+  String get frEssTitle =>
+      'Mais ou menos quanto você vai precisar para o essencial do dia a dia até a próxima renda?';
+
+  @override
+  String frEssSub(String date) {
+    return 'Até $date. Um número aproximado basta.';
+  }
+
+  @override
+  String get frEssGroceries => 'Mercado';
+
+  @override
+  String get frEssGettingAround => 'Transporte';
+
+  @override
+  String get frEssHousehold => 'Casa';
+
+  @override
+  String get frEssEveryday => 'Necessidades do dia a dia';
+
+  @override
+  String get frHelpEstimate => 'Me ajude a estimar';
+
+  @override
+  String get frEstimateTitle => 'Uma estimativa rápida';
+
+  @override
+  String get frEstimateSub => 'Dois toques. Você pode mudar o número depois.';
+
+  @override
+  String get frPeopleYouCover => 'Pessoas que você sustenta';
+
+  @override
+  String get frWalkBike => 'A pé ou de bicicleta';
+
+  @override
+  String get frPublicTransport => 'Transporte público';
+
+  @override
+  String get frCar => 'Carro';
+
+  @override
+  String frUntil(String date) {
+    return 'até $date';
+  }
+
+  @override
+  String get frUseThis => 'Usar este';
+
+  @override
+  String get frProtEmergency => 'Reserva de emergência';
+
+  @override
+  String get frProtTrip => 'Viagem';
+
+  @override
+  String get frProtHome => 'Casa';
+
+  @override
+  String get frProtYearly => 'Gasto anual';
+
+  @override
+  String frMonths(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count meses',
+      one: '1 mês',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frProtTitle => 'Tem algo que você quer que seu dinheiro proteja?';
+
+  @override
+  String get frProtSub =>
+      'Opcional. O Upino separa um pouco a cada pagamento para estar pronto na hora.';
+
+  @override
+  String get frProtNameHint => 'ex.: Seguro do carro';
+
+  @override
+  String get frProtWhatFor => 'É para quê?';
+
+  @override
+  String get frProtYearlyAmount => 'Quanto, uma vez por ano';
+
+  @override
+  String get frTarget => 'Meta';
+
+  @override
+  String get frNextDueIn => 'Próximo vencimento em';
+
+  @override
+  String get frAlreadySaved => 'Já guardado';
+
+  @override
+  String frDay(int n) {
+    return 'Dia $n';
+  }
+
+  @override
+  String get frMoment1Title => 'Dia de pagamento. Resolvido.';
+
+  @override
+  String get frMoment1Body =>
+      'Aluguel e mercado são separados assim que o dinheiro entra. O que sobra é seu para gastar.';
+
+  @override
+  String get frMoment2Title => 'Cada gasto, em 3 segundos.';
+
+  @override
+  String get frMoment2Body =>
+      'Registre e o número se atualiza na hora. Sempre a verdade de hoje.';
+
+  @override
+  String get frMoment3Title => 'Pergunte antes de comprar.';
+
+  @override
+  String get frMoment3Body =>
+      'Veja o que uma compra faz com suas contas e metas antes de pagar.';
+
+  @override
+  String get frMoment4Title => 'Metas que se pagam sozinhas.';
+
+  @override
+  String get frMoment4Body =>
+      'Um pouco é separado a cada pagamento, e o mês fecha mostrando para onde tudo foi.';
+
+  @override
+  String get frGetStarted => 'Começar';
+
+  @override
+  String frPayArrived(String amount) {
+    return 'Pagamento chegou  $amount';
+  }
+
+  @override
+  String get frCoffee => 'Café';
+
+  @override
+  String get frRecordedNow => 'Registrado agora';
+
+  @override
+  String frAskJacket(String amount) {
+    return 'Posso comprar uma jaqueta de $amount?';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return 'Sim, e o aluguel continua coberto. Você teria $amount até $date. Sua viagem atrasa 4 dias.';
+  }
+
+  @override
+  String get frIfBuyNow => 'Se comprar agora';
+
+  @override
+  String frLeft(String amount) {
+    return 'Sobram $amount';
+  }
+
+  @override
+  String get frMonthClosed => 'Mês fechado: 8% a menos em comer fora.';
+
+  @override
+  String get frOfAllGoals => 'de todas as suas metas';
+
+  @override
+  String get frWelcome => 'Bem-vindo ao Upino';
+
+  @override
+  String get frWelcomeSub => 'Novo por aqui ou voltando, é o mesmo passo.';
+
+  @override
+  String get frWithApple => 'Continuar com a Apple';
+
+  @override
+  String get frWithGoogle => 'Continuar com o Google';
+
+  @override
+  String get frWithEmail => 'Continuar com e-mail';
+
+  @override
+  String get frOnDevice => 'Seu plano é calculado no seu telefone.';
+
+  @override
+  String get frTermsPrivacy => 'Termos · Privacidade';
+
+  @override
+  String get frCheckEmail => 'Confira seu e-mail';
+
+  @override
+  String frCodeSent(String email) {
+    return 'Enviamos um código de 6 dígitos para $email.';
+  }
+
+  @override
+  String get frCodeWhy => 'Vamos enviar um código. Sem senha para lembrar.';
+
+  @override
+  String get frSendCode => 'Enviar código';
+
+  @override
+  String get frAvailableNow => 'Disponível agora';
+
+  @override
+  String get frProtectedBills => 'Protegido para contas e o essencial';
+
+  @override
+  String get frProtectedGoal => 'Protegido para sua meta';
+
+  @override
+  String get frPlanReady => 'Seu plano financeiro está pronto';
+
+  @override
+  String frNotCovered(String amount) {
+    return '$amount do que precisa ser pago ainda não está coberto.';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return 'Até sua próxima renda prevista em $date';
+  }
+
+  @override
+  String get frTakenCare => 'Já está garantido';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name, $amount com vencimento em $date, está separado antes de qualquer coisa ficar livre para gastar.';
+  }
+
+  @override
+  String get frBuiltFromAll => 'Montado com tudo o que você contou.';
+
+  @override
+  String frGoodEstimate(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Boa estimativa inicial. Adicione mais $count detalhes depois para refinar.',
+      one:
+          'Boa estimativa inicial. Adicione mais 1 detalhe depois para refinar.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frGoToPlan => 'Ir para meu plano';
+
+  @override
+  String get frSafeToSpend => 'Livre para gastar';
+
+  @override
+  String get frGapsTitle => 'Deixe seu valor livre para gastar mais preciso';
+
+  @override
+  String get frGapEssentials => 'Adicionar o essencial do dia a dia';
+
+  @override
+  String get frGapYearly => 'Adicionar um gasto anual, como seguro';
+
+  @override
+  String get frGapBill => 'Adicionar uma conta que vence antes do pagamento';
+
+  @override
+  String frSeconds(int count) {
+    return '~$count s';
+  }
+
+  @override
+  String get frEssentialsSheet => 'O essencial até o dia do pagamento';
 }

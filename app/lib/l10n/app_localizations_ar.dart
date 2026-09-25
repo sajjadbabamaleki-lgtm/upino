@@ -2059,4 +2059,508 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get payGaugeNextPay => 'الراتب القادم';
+
+  @override
+  String get frSelected => 'المختارة';
+
+  @override
+  String get frFromPhone => 'من هاتفك';
+
+  @override
+  String get frSuggested => 'مقترحة';
+
+  @override
+  String get frLangOnPhone => 'لغة هاتفك';
+
+  @override
+  String get frLangNotHere => 'لغتك ليست هنا بعد';
+
+  @override
+  String get frLangTitle => 'لنتحدث\nبلغتك.';
+
+  @override
+  String get frOrChoose => 'أو اختر';
+
+  @override
+  String frContinueIn(String language) {
+    return 'المتابعة بـ$language';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return 'استخدام $currency';
+  }
+
+  @override
+  String get frContinue => 'متابعة';
+
+  @override
+  String get frNothingBeforePayday => 'لا شيء قبل يوم الراتب';
+
+  @override
+  String get frSkipForNow => 'تخطَّ الآن';
+
+  @override
+  String get frLooksLike => 'يبدو أنها';
+
+  @override
+  String get frCurrencyTitle => 'بأي عملة\nتتقاضى دخلك؟';
+
+  @override
+  String get frMore => 'المزيد';
+
+  @override
+  String get frIntentTitle => 'في ماذا تريد أن يساعدك Upino؟';
+
+  @override
+  String get frIntentSub => 'اختر كل ما ينطبق. كل خيار يحتاج رقمًا واحدًا فقط.';
+
+  @override
+  String get frIntentSafe => 'أن أعرف كم يمكنني إنفاقه بأمان';
+
+  @override
+  String get frIntentShort => 'ألا ينفد مالي';
+
+  @override
+  String get frIntentSave => 'أن أدّخر';
+
+  @override
+  String get frIntentDebt => 'سداد الديون';
+
+  @override
+  String get frIntentIrregular => 'الاستعداد للمصاريف غير المنتظمة';
+
+  @override
+  String get frIntentGoal => 'الوصول إلى هدف';
+
+  @override
+  String get frIntentUnderstand => 'أن أفهم مالي أكثر';
+
+  @override
+  String get frAskSafe => 'كم تنفق في شهر عادي؟';
+
+  @override
+  String get frAskSafeHint => 'رقم تقريبي يكفي.';
+
+  @override
+  String get frAskShort => 'كم ينقصك عادةً قبل يوم الراتب؟';
+
+  @override
+  String get frAskShortHint => 'ما تقترضه أو تستغني عنه في النهاية.';
+
+  @override
+  String get frAskSave => 'كم تودّ أن تدّخر كل شهر؟';
+
+  @override
+  String get frAskSaveHint => 'يضعه Upino جانبًا قبل أن تنفق.';
+
+  @override
+  String get frAskDebt => 'كم عليك من دين إجمالًا؟';
+
+  @override
+  String get frAskDebtHint => 'البطاقات والقروض وكل ما تسدّده.';
+
+  @override
+  String get frAskIrregular => 'كم تبلغ في السنة إجمالًا؟';
+
+  @override
+  String get frAskIrregularHint => 'التأمين والإصلاحات والهدايا والرسوم.';
+
+  @override
+  String get frAskGoal => 'كم يكلّف هدفك؟';
+
+  @override
+  String get frAskGoalHint => 'يمكنك تسميته وتحديد موعده لاحقًا.';
+
+  @override
+  String get frAskUnderstand => 'كم تظن أنك تنفق في الشهر؟';
+
+  @override
+  String get frAskUnderstandHint => 'سيريك Upino مدى قرب تقديرك.';
+
+  @override
+  String frPerMonth(String amount) {
+    return '$amount شهريًا';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return 'نقص $amount شهريًا';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return '$amount دين';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return '$amount سنويًا';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return '$amount للوصول';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return '$amount شهريًا، حسب تقديرك';
+  }
+
+  @override
+  String get frAdd => 'إضافة';
+
+  @override
+  String get frRemove => 'إزالة';
+
+  @override
+  String get frIncomeTitle => 'أخبرنا كيف يصلك المال.';
+
+  @override
+  String get frIncomeSub => 'إذا كان يتغيّر، فاستخدم ما يمكنك الاعتماد عليه.';
+
+  @override
+  String get frAddIncome => 'إضافة مصدر دخل آخر';
+
+  @override
+  String get frEvery2Weeks => 'كل أسبوعين';
+
+  @override
+  String get frTwiceMonth => 'مرتين في الشهر';
+
+  @override
+  String get frIrregular => 'غير منتظم';
+
+  @override
+  String get frEachPay => 'كل دفعة';
+
+  @override
+  String get frAnotherIncome => 'دخل آخر';
+
+  @override
+  String get frAvailTitle => 'كم لديك من مال متاح الآن؟';
+
+  @override
+  String get frAvailSub =>
+      'النقد والحسابات التي تنفق منها معًا. اترك المدخرات جانبًا — يمكنك إضافة الحسابات واحدًا تلو الآخر لاحقًا.';
+
+  @override
+  String get frAvailLabel => 'المال المتاح اليوم';
+
+  @override
+  String get frAvailNote => 'سيصبح هذا رصيد اليوم المؤكَّد.';
+
+  @override
+  String get frObRent => 'الإيجار / الرهن';
+
+  @override
+  String get frObUtilities => 'الفواتير';
+
+  @override
+  String get frObInsurance => 'التأمين';
+
+  @override
+  String get frObSubscriptions => 'الاشتراكات';
+
+  @override
+  String get frSomethingElse => 'شيء آخر';
+
+  @override
+  String get frObTitle => 'ما الذي يجب دفعه قبل دخلك القادم؟';
+
+  @override
+  String frObSub(String date) {
+    return 'فقط ما يستحق قبل $date. اضغط على كل واحد.';
+  }
+
+  @override
+  String get frAddAnother => 'إضافة آخر';
+
+  @override
+  String get frObNeedsName => 'أضف اسمًا ومبلغًا';
+
+  @override
+  String get frTapToAdd => 'اضغط للإضافة';
+
+  @override
+  String get frAmount => 'المبلغ';
+
+  @override
+  String get frDue => 'الاستحقاق';
+
+  @override
+  String get frEssTitle =>
+      'كم ستحتاج تقريبًا للضروريات اليومية حتى دخلك القادم؟';
+
+  @override
+  String frEssSub(String date) {
+    return 'حتى $date. رقم تقريبي يكفي.';
+  }
+
+  @override
+  String get frEssGroceries => 'البقالة';
+
+  @override
+  String get frEssGettingAround => 'التنقّل';
+
+  @override
+  String get frEssHousehold => 'المنزل';
+
+  @override
+  String get frEssEveryday => 'الاحتياجات اليومية';
+
+  @override
+  String get frHelpEstimate => 'ساعدني في التقدير';
+
+  @override
+  String get frEstimateTitle => 'تقدير سريع';
+
+  @override
+  String get frEstimateSub => 'ضغطتان. يمكنك تغيير الرقم بعدها.';
+
+  @override
+  String get frPeopleYouCover => 'الأشخاص الذين تعيلهم';
+
+  @override
+  String get frWalkBike => 'مشيًا أو بالدراجة';
+
+  @override
+  String get frPublicTransport => 'المواصلات العامة';
+
+  @override
+  String get frCar => 'سيارة';
+
+  @override
+  String frUntil(String date) {
+    return 'حتى $date';
+  }
+
+  @override
+  String get frUseThis => 'استخدم هذا';
+
+  @override
+  String get frProtEmergency => 'صندوق الطوارئ';
+
+  @override
+  String get frProtTrip => 'رحلة';
+
+  @override
+  String get frProtHome => 'منزل';
+
+  @override
+  String get frProtYearly => 'مصروف سنوي';
+
+  @override
+  String frMonths(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count شهرًا',
+      few: '$count أشهر',
+      two: 'شهران',
+      one: 'شهر واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frProtTitle => 'هل هناك ما تريد أن يحميه مالك؟';
+
+  @override
+  String get frProtSub =>
+      'اختياري. يضع Upino القليل جانبًا من كل دفعة ليكون جاهزًا في وقته.';
+
+  @override
+  String get frProtNameHint => 'مثلًا: تأمين السيارة';
+
+  @override
+  String get frProtWhatFor => 'لأي شيء؟';
+
+  @override
+  String get frProtYearlyAmount => 'كم، مرة في السنة';
+
+  @override
+  String get frTarget => 'المبلغ المستهدف';
+
+  @override
+  String get frNextDueIn => 'الاستحقاق التالي خلال';
+
+  @override
+  String get frAlreadySaved => 'المدّخر حتى الآن';
+
+  @override
+  String frDay(int n) {
+    return 'اليوم $n';
+  }
+
+  @override
+  String get frMoment1Title => 'يوم الراتب. كل شيء مرتّب.';
+
+  @override
+  String get frMoment1Body =>
+      'يُوضع الإيجار والبقالة جانبًا لحظة وصول المال. وما يتبقى لك لتنفقه.';
+
+  @override
+  String get frMoment2Title => 'كل مصروف في 3 ثوانٍ.';
+
+  @override
+  String get frMoment2Body => 'سجّله ويتحدّث الرقم فورًا. دائمًا حقيقة اليوم.';
+
+  @override
+  String get frMoment3Title => 'اسأل قبل أن تشتري.';
+
+  @override
+  String get frMoment3Body =>
+      'اعرف ما تفعله عملية شراء بفواتيرك وأهدافك قبل أن تدفع.';
+
+  @override
+  String get frMoment4Title => 'أهداف تموّل نفسها.';
+
+  @override
+  String get frMoment4Body =>
+      'يُوضع القليل جانبًا من كل دفعة، ويُغلق الشهر ومعه أين ذهب كل شيء.';
+
+  @override
+  String get frGetStarted => 'لنبدأ';
+
+  @override
+  String frPayArrived(String amount) {
+    return 'وصل الراتب  $amount';
+  }
+
+  @override
+  String get frCoffee => 'قهوة';
+
+  @override
+  String get frRecordedNow => 'سُجّل الآن';
+
+  @override
+  String frAskJacket(String amount) {
+    return 'هل يمكنني شراء سترة بـ$amount؟';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return 'نعم، ويبقى الإيجار مغطّى. سيبقى لديك $amount حتى $date. تتأخر رحلتك 4 أيام.';
+  }
+
+  @override
+  String get frIfBuyNow => 'إذا اشتريت الآن';
+
+  @override
+  String frLeft(String amount) {
+    return 'يتبقى $amount';
+  }
+
+  @override
+  String get frMonthClosed => 'أُغلق الشهر: إنفاق أقل بـ8٪ على الأكل خارجًا.';
+
+  @override
+  String get frOfAllGoals => 'من كل أهدافك';
+
+  @override
+  String get frWelcome => 'مرحبًا بك في Upino';
+
+  @override
+  String get frWelcomeSub => 'جديد هنا أو عائد، إنها الخطوة نفسها.';
+
+  @override
+  String get frWithApple => 'المتابعة باستخدام Apple';
+
+  @override
+  String get frWithGoogle => 'المتابعة باستخدام Google';
+
+  @override
+  String get frWithEmail => 'المتابعة بالبريد الإلكتروني';
+
+  @override
+  String get frOnDevice => 'تُحسب خطتك على هاتفك.';
+
+  @override
+  String get frTermsPrivacy => 'الشروط · الخصوصية';
+
+  @override
+  String get frCheckEmail => 'تحقّق من بريدك';
+
+  @override
+  String frCodeSent(String email) {
+    return 'أرسلنا رمزًا من 6 أرقام إلى $email.';
+  }
+
+  @override
+  String get frCodeWhy => 'سنرسل لك رمزًا. لا كلمة مرور لتتذكرها.';
+
+  @override
+  String get frSendCode => 'إرسال الرمز';
+
+  @override
+  String get frAvailableNow => 'المتاح الآن';
+
+  @override
+  String get frProtectedBills => 'محجوز للفواتير والضروريات';
+
+  @override
+  String get frProtectedGoal => 'محجوز لهدفك';
+
+  @override
+  String get frPlanReady => 'خطتك المالية جاهزة';
+
+  @override
+  String frNotCovered(String amount) {
+    return '$amount مما يجب دفعه غير مغطّى بعد.';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return 'حتى دخلك المتوقَّع التالي في $date';
+  }
+
+  @override
+  String get frTakenCare => 'تم الاهتمام به مسبقًا';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name، $amount مستحق في $date، محجوز قبل أن يصبح أي شيء متاحًا للإنفاق.';
+  }
+
+  @override
+  String get frBuiltFromAll => 'مبنية على كل ما أخبرتنا به.';
+
+  @override
+  String frGoodEstimate(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تقدير أولي جيد. أضف $count تفاصيل لاحقًا لزيادة دقّته.',
+      one: 'تقدير أولي جيد. أضف تفصيلًا واحدًا لاحقًا لزيادة دقّته.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get frGoToPlan => 'إلى خطتي';
+
+  @override
+  String get frSafeToSpend => 'آمن للإنفاق';
+
+  @override
+  String get frGapsTitle => 'اجعل المبلغ الآمن للإنفاق أدق';
+
+  @override
+  String get frGapEssentials => 'أضف الضروريات اليومية';
+
+  @override
+  String get frGapYearly => 'أضف تكلفة سنوية، مثل التأمين';
+
+  @override
+  String get frGapBill => 'أضف فاتورة مستحقة قبل الراتب';
+
+  @override
+  String frSeconds(int count) {
+    return '~$count ث';
+  }
+
+  @override
+  String get frEssentialsSheet => 'الضروريات اليومية حتى الراتب';
 }

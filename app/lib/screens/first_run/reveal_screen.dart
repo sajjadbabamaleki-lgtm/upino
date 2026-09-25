@@ -61,9 +61,9 @@ class _RevealScreenState extends State<RevealScreen>
     final upcoming = state.upcomingBills(days: 31);
 
     final rows = <(String, Money, int)>[
-      ('Available now', s.trustedAllocatableLiquidity, 0),
-      if (bills.minor > 0) ('Protected for bills & essentials', bills, 1),
-      if (goals.minor > 0) ('Protected for your goal', goals, 2),
+      (context.l.frAvailableNow, s.trustedAllocatableLiquidity, 0),
+      if (bills.minor > 0) (context.l.frProtectedBills, bills, 1),
+      if (goals.minor > 0) (context.l.frProtectedGoal, goals, 2),
     ];
 
     return Scaffold(
@@ -77,7 +77,7 @@ class _RevealScreenState extends State<RevealScreen>
               Opacity(
                 opacity: _at(0, 0.15),
                 child: Text(
-                  'YOUR MONEY PLAN IS READY',
+                  context.l.frPlanReady.toUpperCase(),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -98,8 +98,7 @@ class _RevealScreenState extends State<RevealScreen>
               if (s.mandatoryFundingGap.minor > 0)
                 _Note(
                   v: _at(0.45, 0.6),
-                  text:
-                      '${s.mandatoryFundingGap.display()} of what must be paid isn’t covered yet.',
+                  text: context.l.frNotCovered(s.mandatoryFundingGap.display()),
                 ),
               const SizedBox(height: 6),
               _StsCard(
@@ -107,7 +106,7 @@ class _RevealScreenState extends State<RevealScreen>
                 v: _at(0.45, 0.8),
                 count: _at(0.5, 0.95),
                 until: pay != null && pay.isProjectable
-                    ? 'Until your next expected income on ${formatDate(context, pay.expectedDate)}'
+                    ? context.l.frUntilIncome(formatDate(context, pay.expectedDate))
                     : null,
               ),
               const SizedBox(height: 14),
@@ -122,10 +121,12 @@ class _RevealScreenState extends State<RevealScreen>
                         BestMoveCard(state: state, move: move)
                       else if (upcoming.isNotEmpty)
                         _Fact(
-                          title: 'ALREADY TAKEN CARE OF',
-                          text:
-                              '${upcoming.first.bill.name}, ${upcoming.first.bill.amount.display()} due '
-                              '${formatDate(context, upcoming.first.due)}, is set aside before anything is free to spend.',
+                          title: context.l.frTakenCare.toUpperCase(),
+                          text: context.l.frTakenCareBody(
+                            upcoming.first.bill.name,
+                            upcoming.first.bill.amount.display(),
+                            formatDate(context, upcoming.first.due),
+                          ),
                         ),
                       const SizedBox(height: 14),
                       Row(
@@ -136,9 +137,8 @@ class _RevealScreenState extends State<RevealScreen>
                           Expanded(
                             child: Text(
                               gaps.isEmpty
-                                  ? 'Built from everything you told us.'
-                                  : 'Good starting estimate. Add ${gaps.length} more '
-                                      '${gaps.length == 1 ? 'detail' : 'details'} later to sharpen it.',
+                                  ? context.l.frBuiltFromAll
+                                  : context.l.frGoodEstimate(gaps.length),
                               style: TextStyle(
                                   fontSize: 13, color: subOf(context),),
                             ),
@@ -148,7 +148,7 @@ class _RevealScreenState extends State<RevealScreen>
                       const SizedBox(height: 26),
                       FlowButton(
                         buttonKey: const Key('reveal-done'),
-                        label: 'Go to my plan',
+                        label: context.l.frGoToPlan,
                         style: FlowButtonStyle.light,
                         onTap: state.finishReveal,
                       ),
@@ -247,8 +247,8 @@ class _StsCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('SAFE TO SPEND',
-                  style: TextStyle(
+              Text(context.l.frSafeToSpend.toUpperCase(),
+                  style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.5,
@@ -354,7 +354,7 @@ class SetupGapsCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text('Make your Safe-to-Spend more accurate',
+                child: Text(context.l.frGapsTitle,
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -385,14 +385,14 @@ class SetupGapsCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         switch (g) {
-                          'essentials' => 'Add everyday essentials',
-                          'yearly' => 'Add a yearly cost, like insurance',
-                          _ => 'Add a bill due before payday',
+                          'essentials' => context.l.frGapEssentials,
+                          'yearly' => context.l.frGapYearly,
+                          _ => context.l.frGapBill,
                         },
                         style: TextStyle(fontSize: 14, color: inkOf(context)),
                       ),
                     ),
-                    Text(g == 'yearly' ? '~20 sec' : '~15 sec',
+                    Text(context.l.frSeconds(g == 'yearly' ? 20 : 15),
                         style:
                             TextStyle(fontSize: 12.5, color: tertOf(context)),),
                   ],

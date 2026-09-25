@@ -3629,6 +3629,882 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next pay'**
   String get payGaugeNextPay;
+
+  /// No description provided for @frSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get frSelected;
+
+  /// No description provided for @frFromPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'From your phone'**
+  String get frFromPhone;
+
+  /// No description provided for @frSuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get frSuggested;
+
+  /// No description provided for @frLangOnPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'The language on your phone'**
+  String get frLangOnPhone;
+
+  /// No description provided for @frLangNotHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours isn’t here yet'**
+  String get frLangNotHere;
+
+  /// No description provided for @frLangTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let’s speak\nyour language.'**
+  String get frLangTitle;
+
+  /// No description provided for @frOrChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Or choose'**
+  String get frOrChoose;
+
+  /// No description provided for @frContinueIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue in {language}'**
+  String frContinueIn(String language);
+
+  /// No description provided for @frUseCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {currency}'**
+  String frUseCurrency(String currency);
+
+  /// No description provided for @frContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get frContinue;
+
+  /// No description provided for @frNothingBeforePayday.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing before payday'**
+  String get frNothingBeforePayday;
+
+  /// No description provided for @frSkipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get frSkipForNow;
+
+  /// No description provided for @frLooksLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like'**
+  String get frLooksLike;
+
+  /// No description provided for @frCurrencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which currency\nare you paid in?'**
+  String get frCurrencyTitle;
+
+  /// No description provided for @frMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get frMore;
+
+  /// No description provided for @frIntentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want Upino to help you with?'**
+  String get frIntentTitle;
+
+  /// No description provided for @frIntentSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick all that fit. Each one takes a single number.'**
+  String get frIntentSub;
+
+  /// No description provided for @frIntentSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Know what I can safely spend'**
+  String get frIntentSafe;
+
+  /// No description provided for @frIntentShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop running out of money'**
+  String get frIntentShort;
+
+  /// No description provided for @frIntentSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Build savings'**
+  String get frIntentSave;
+
+  /// No description provided for @frIntentDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay off debt'**
+  String get frIntentDebt;
+
+  /// No description provided for @frIntentIrregular.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare for irregular expenses'**
+  String get frIntentIrregular;
+
+  /// No description provided for @frIntentGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach a goal'**
+  String get frIntentGoal;
+
+  /// No description provided for @frIntentUnderstand.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand my money better'**
+  String get frIntentUnderstand;
+
+  /// No description provided for @frAskSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'How much do you spend in a normal month?'**
+  String get frAskSafe;
+
+  /// No description provided for @frAskSafeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A rough number is fine.'**
+  String get frAskSafeHint;
+
+  /// No description provided for @frAskShort.
+  ///
+  /// In en, this message translates to:
+  /// **'How short do you usually fall before payday?'**
+  String get frAskShort;
+
+  /// No description provided for @frAskShortHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What you end up borrowing or going without.'**
+  String get frAskShortHint;
+
+  /// No description provided for @frAskSave.
+  ///
+  /// In en, this message translates to:
+  /// **'How much would you like to save each month?'**
+  String get frAskSave;
+
+  /// No description provided for @frAskSaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino sets it aside before you spend.'**
+  String get frAskSaveHint;
+
+  /// No description provided for @frAskDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'How much do you owe in total?'**
+  String get frAskDebt;
+
+  /// No description provided for @frAskDebtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards, loans, anything you’re paying back.'**
+  String get frAskDebtHint;
+
+  /// No description provided for @frAskIrregular.
+  ///
+  /// In en, this message translates to:
+  /// **'What do they add up to in a year?'**
+  String get frAskIrregular;
+
+  /// No description provided for @frAskIrregularHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance, repairs, gifts, fees.'**
+  String get frAskIrregularHint;
+
+  /// No description provided for @frAskGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'How much does your goal cost?'**
+  String get frAskGoal;
+
+  /// No description provided for @frAskGoalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can name it and set a date later.'**
+  String get frAskGoalHint;
+
+  /// No description provided for @frAskUnderstand.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you think you spend in a month?'**
+  String get frAskUnderstand;
+
+  /// No description provided for @frAskUnderstandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Upino will show you how close you were.'**
+  String get frAskUnderstandHint;
+
+  /// No description provided for @frPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} a month'**
+  String frPerMonth(String amount);
+
+  /// No description provided for @frShortPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} short a month'**
+  String frShortPerMonth(String amount);
+
+  /// No description provided for @frOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} owed'**
+  String frOwed(String amount);
+
+  /// No description provided for @frPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} a year'**
+  String frPerYear(String amount);
+
+  /// No description provided for @frToReach.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} to reach'**
+  String frToReach(String amount);
+
+  /// No description provided for @frPerMonthGuess.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} a month, you think'**
+  String frPerMonthGuess(String amount);
+
+  /// No description provided for @frAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get frAdd;
+
+  /// No description provided for @frRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get frRemove;
+
+  /// No description provided for @frIncomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us how money comes in.'**
+  String get frIncomeTitle;
+
+  /// No description provided for @frIncomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'If it varies, use what you can count on.'**
+  String get frIncomeSub;
+
+  /// No description provided for @frAddIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another income source'**
+  String get frAddIncome;
+
+  /// No description provided for @frEvery2Weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 2 weeks'**
+  String get frEvery2Weeks;
+
+  /// No description provided for @frTwiceMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Twice a month'**
+  String get frTwiceMonth;
+
+  /// No description provided for @frIrregular.
+  ///
+  /// In en, this message translates to:
+  /// **'Irregular'**
+  String get frIrregular;
+
+  /// No description provided for @frEachPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Each pay'**
+  String get frEachPay;
+
+  /// No description provided for @frAnotherIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Another income'**
+  String get frAnotherIncome;
+
+  /// No description provided for @frAvailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How much money do you have available right now?'**
+  String get frAvailTitle;
+
+  /// No description provided for @frAvailSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash and the accounts you spend from, together. Leave savings out — you can add accounts one by one later.'**
+  String get frAvailSub;
+
+  /// No description provided for @frAvailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Available money today'**
+  String get frAvailLabel;
+
+  /// No description provided for @frAvailNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This becomes today’s confirmed balance.'**
+  String get frAvailNote;
+
+  /// No description provided for @frObRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent / Mortgage'**
+  String get frObRent;
+
+  /// No description provided for @frObUtilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get frObUtilities;
+
+  /// No description provided for @frObInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get frObInsurance;
+
+  /// No description provided for @frObSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get frObSubscriptions;
+
+  /// No description provided for @frSomethingElse.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get frSomethingElse;
+
+  /// No description provided for @frObTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What must be paid before your next income?'**
+  String get frObTitle;
+
+  /// No description provided for @frObSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Only what’s due by {date}. Tap each one.'**
+  String frObSub(String date);
+
+  /// No description provided for @frAddAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another'**
+  String get frAddAnother;
+
+  /// No description provided for @frObNeedsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a name and amount'**
+  String get frObNeedsName;
+
+  /// No description provided for @frTapToAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add'**
+  String get frTapToAdd;
+
+  /// No description provided for @frAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get frAmount;
+
+  /// No description provided for @frDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get frDue;
+
+  /// No description provided for @frEssTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About how much will you need for everyday essentials until your next income?'**
+  String get frEssTitle;
+
+  /// No description provided for @frEssSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}. A rough number is fine.'**
+  String frEssSub(String date);
+
+  /// No description provided for @frEssGroceries.
+  ///
+  /// In en, this message translates to:
+  /// **'Groceries'**
+  String get frEssGroceries;
+
+  /// No description provided for @frEssGettingAround.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting around'**
+  String get frEssGettingAround;
+
+  /// No description provided for @frEssHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'Household'**
+  String get frEssHousehold;
+
+  /// No description provided for @frEssEveryday.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday needs'**
+  String get frEssEveryday;
+
+  /// No description provided for @frHelpEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Help me estimate'**
+  String get frHelpEstimate;
+
+  /// No description provided for @frEstimateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A quick estimate'**
+  String get frEstimateTitle;
+
+  /// No description provided for @frEstimateSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Two taps. You can change the number after.'**
+  String get frEstimateSub;
+
+  /// No description provided for @frPeopleYouCover.
+  ///
+  /// In en, this message translates to:
+  /// **'People you cover'**
+  String get frPeopleYouCover;
+
+  /// No description provided for @frWalkBike.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk or bike'**
+  String get frWalkBike;
+
+  /// No description provided for @frPublicTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Public transport'**
+  String get frPublicTransport;
+
+  /// No description provided for @frCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get frCar;
+
+  /// No description provided for @frUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'until {date}'**
+  String frUntil(String date);
+
+  /// No description provided for @frUseThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this'**
+  String get frUseThis;
+
+  /// No description provided for @frProtEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency fund'**
+  String get frProtEmergency;
+
+  /// No description provided for @frProtTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip'**
+  String get frProtTrip;
+
+  /// No description provided for @frProtHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get frProtHome;
+
+  /// No description provided for @frProtYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly expense'**
+  String get frProtYearly;
+
+  /// No description provided for @frMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 month} other{{count} months}}'**
+  String frMonths(int count);
+
+  /// No description provided for @frProtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything you want your money to protect?'**
+  String get frProtTitle;
+
+  /// No description provided for @frProtSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Upino sets a little aside each pay so it’s there on time.'**
+  String get frProtSub;
+
+  /// No description provided for @frProtNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Car insurance'**
+  String get frProtNameHint;
+
+  /// No description provided for @frProtWhatFor.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it for?'**
+  String get frProtWhatFor;
+
+  /// No description provided for @frProtYearlyAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'How much, once a year'**
+  String get frProtYearlyAmount;
+
+  /// No description provided for @frTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target'**
+  String get frTarget;
+
+  /// No description provided for @frNextDueIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due in'**
+  String get frNextDueIn;
+
+  /// No description provided for @frAlreadySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Already saved'**
+  String get frAlreadySaved;
+
+  /// No description provided for @frDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {n}'**
+  String frDay(int n);
+
+  /// No description provided for @frMoment1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Payday. Sorted.'**
+  String get frMoment1Title;
+
+  /// No description provided for @frMoment1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent and groceries are set aside the moment money lands. What’s left is yours to spend.'**
+  String get frMoment1Body;
+
+  /// No description provided for @frMoment2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Every spend, in 3 seconds.'**
+  String get frMoment2Title;
+
+  /// No description provided for @frMoment2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Record it and the number updates at once. Always today’s truth.'**
+  String get frMoment2Body;
+
+  /// No description provided for @frMoment3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before you buy.'**
+  String get frMoment3Title;
+
+  /// No description provided for @frMoment3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'See what a purchase does to your bills and goals, before you pay.'**
+  String get frMoment3Body;
+
+  /// No description provided for @frMoment4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals that fund themselves.'**
+  String get frMoment4Title;
+
+  /// No description provided for @frMoment4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A little goes aside each pay, and the month closes with where it all went.'**
+  String get frMoment4Body;
+
+  /// No description provided for @frGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get frGetStarted;
+
+  /// No description provided for @frPayArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay arrived  {amount}'**
+  String frPayArrived(String amount);
+
+  /// No description provided for @frCoffee.
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee'**
+  String get frCoffee;
+
+  /// No description provided for @frRecordedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded just now'**
+  String get frRecordedNow;
+
+  /// No description provided for @frAskJacket.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I buy a jacket for {amount}?'**
+  String frAskJacket(String amount);
+
+  /// No description provided for @frAskAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, and rent stays covered. You’d have {amount} until {date}. Your trip moves 4 days later.'**
+  String frAskAnswer(String amount, String date);
+
+  /// No description provided for @frIfBuyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'If you buy now'**
+  String get frIfBuyNow;
+
+  /// No description provided for @frLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} left'**
+  String frLeft(String amount);
+
+  /// No description provided for @frMonthClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Month closed: 8% less on eating out.'**
+  String get frMonthClosed;
+
+  /// No description provided for @frOfAllGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'of all your goals'**
+  String get frOfAllGoals;
+
+  /// No description provided for @frWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Upino'**
+  String get frWelcome;
+
+  /// No description provided for @frWelcomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'New here or coming back, it’s the same step.'**
+  String get frWelcomeSub;
+
+  /// No description provided for @frWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get frWithApple;
+
+  /// No description provided for @frWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get frWithGoogle;
+
+  /// No description provided for @frWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with email'**
+  String get frWithEmail;
+
+  /// No description provided for @frOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan is worked out on your phone.'**
+  String get frOnDevice;
+
+  /// No description provided for @frTermsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms · Privacy'**
+  String get frTermsPrivacy;
+
+  /// No description provided for @frCheckEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get frCheckEmail;
+
+  /// No description provided for @frCodeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {email}.'**
+  String frCodeSent(String email);
+
+  /// No description provided for @frCodeWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ll send you a code. No password to remember.'**
+  String get frCodeWhy;
+
+  /// No description provided for @frSendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get frSendCode;
+
+  /// No description provided for @frAvailableNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available now'**
+  String get frAvailableNow;
+
+  /// No description provided for @frProtectedBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected for bills & essentials'**
+  String get frProtectedBills;
+
+  /// No description provided for @frProtectedGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected for your goal'**
+  String get frProtectedGoal;
+
+  /// No description provided for @frPlanReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your money plan is ready'**
+  String get frPlanReady;
+
+  /// No description provided for @frNotCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} of what must be paid isn’t covered yet.'**
+  String frNotCovered(String amount);
+
+  /// No description provided for @frUntilIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Until your next expected income on {date}'**
+  String frUntilIncome(String date);
+
+  /// No description provided for @frTakenCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Already taken care of'**
+  String get frTakenCare;
+
+  /// No description provided for @frTakenCareBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {amount} due {date}, is set aside before anything is free to spend.'**
+  String frTakenCareBody(String name, String amount, String date);
+
+  /// No description provided for @frBuiltFromAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Built from everything you told us.'**
+  String get frBuiltFromAll;
+
+  /// No description provided for @frGoodEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Good starting estimate. Add 1 more detail later to sharpen it.} other{Good starting estimate. Add {count} more details later to sharpen it.}}'**
+  String frGoodEstimate(int count);
+
+  /// No description provided for @frGoToPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to my plan'**
+  String get frGoToPlan;
+
+  /// No description provided for @frSafeToSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to spend'**
+  String get frSafeToSpend;
+
+  /// No description provided for @frGapsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your Safe-to-Spend more accurate'**
+  String get frGapsTitle;
+
+  /// No description provided for @frGapEssentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Add everyday essentials'**
+  String get frGapEssentials;
+
+  /// No description provided for @frGapYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a yearly cost, like insurance'**
+  String get frGapYearly;
+
+  /// No description provided for @frGapBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a bill due before payday'**
+  String get frGapBill;
+
+  /// No description provided for @frSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'~{count} sec'**
+  String frSeconds(int count);
+
+  /// No description provided for @frEssentialsSheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday essentials until payday'**
+  String get frEssentialsSheet;
 }
 
 class _AppLocalizationsDelegate

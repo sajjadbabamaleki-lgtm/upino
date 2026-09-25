@@ -2113,4 +2113,488 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get payGaugeNextPay => '次の給料';
+
+  @override
+  String get frSelected => '選択中';
+
+  @override
+  String get frFromPhone => 'スマホの設定から';
+
+  @override
+  String get frSuggested => 'おすすめ';
+
+  @override
+  String get frLangOnPhone => 'スマホの言語';
+
+  @override
+  String get frLangNotHere => 'あなたの言語はまだありません';
+
+  @override
+  String get frLangTitle => 'あなたの言葉で\n話しましょう。';
+
+  @override
+  String get frOrChoose => 'または選択';
+
+  @override
+  String frContinueIn(String language) {
+    return '$languageで続ける';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return '$currencyを使う';
+  }
+
+  @override
+  String get frContinue => '続ける';
+
+  @override
+  String get frNothingBeforePayday => '給料日までに払うものはない';
+
+  @override
+  String get frSkipForNow => '今はスキップ';
+
+  @override
+  String get frLooksLike => 'おそらく';
+
+  @override
+  String get frCurrencyTitle => '収入の通貨は\nどれですか？';
+
+  @override
+  String get frMore => 'その他';
+
+  @override
+  String get frIntentTitle => 'Upino に何を手伝ってほしいですか？';
+
+  @override
+  String get frIntentSub => '当てはまるものをすべて選んでください。それぞれ数字を一つ入れるだけです。';
+
+  @override
+  String get frIntentSafe => '安心して使える額を知りたい';
+
+  @override
+  String get frIntentShort => 'お金が足りなくなるのを防ぎたい';
+
+  @override
+  String get frIntentSave => '貯金したい';
+
+  @override
+  String get frIntentDebt => '借金を返したい';
+
+  @override
+  String get frIntentIrregular => '不定期の出費に備えたい';
+
+  @override
+  String get frIntentGoal => '目標を達成したい';
+
+  @override
+  String get frIntentUnderstand => 'お金をもっと理解したい';
+
+  @override
+  String get frAskSafe => '普段の月はいくら使いますか？';
+
+  @override
+  String get frAskSafeHint => 'だいたいの数字で大丈夫です。';
+
+  @override
+  String get frAskShort => '給料日前にいつもいくら足りなくなりますか？';
+
+  @override
+  String get frAskShortHint => '結局借りたり、我慢したりする分です。';
+
+  @override
+  String get frAskSave => '毎月いくら貯めたいですか？';
+
+  @override
+  String get frAskSaveHint => '使う前に Upino が取り分けます。';
+
+  @override
+  String get frAskDebt => '借金は合計いくらですか？';
+
+  @override
+  String get frAskDebtHint => 'カード、ローンなど返済中のものすべて。';
+
+  @override
+  String get frAskIrregular => '1年で合計いくらになりますか？';
+
+  @override
+  String get frAskIrregularHint => '保険、修理、贈り物、手数料など。';
+
+  @override
+  String get frAskGoal => '目標にはいくらかかりますか？';
+
+  @override
+  String get frAskGoalHint => '名前と日付はあとで決められます。';
+
+  @override
+  String get frAskUnderstand => '月にいくら使っていると思いますか？';
+
+  @override
+  String get frAskUnderstandHint => 'どれだけ近かったか Upino がお見せします。';
+
+  @override
+  String frPerMonth(String amount) {
+    return '月 $amount';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return '月 $amount 不足';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return '借入 $amount';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return '年 $amount';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return '目標 $amount';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return '月 $amount（あなたの予想）';
+  }
+
+  @override
+  String get frAdd => '追加';
+
+  @override
+  String get frRemove => '削除';
+
+  @override
+  String get frIncomeTitle => 'お金の入り方を教えてください。';
+
+  @override
+  String get frIncomeSub => '変動する場合は、確実に見込める額を。';
+
+  @override
+  String get frAddIncome => '別の収入を追加';
+
+  @override
+  String get frEvery2Weeks => '2週間ごと';
+
+  @override
+  String get frTwiceMonth => '月2回';
+
+  @override
+  String get frIrregular => '不定期';
+
+  @override
+  String get frEachPay => '1回の収入';
+
+  @override
+  String get frAnotherIncome => '別の収入';
+
+  @override
+  String get frAvailTitle => '今、使えるお金はいくらありますか？';
+
+  @override
+  String get frAvailSub => '現金と普段使う口座の合計です。貯金は含めないでください。口座はあとで一つずつ追加できます。';
+
+  @override
+  String get frAvailLabel => '今日使えるお金';
+
+  @override
+  String get frAvailNote => 'これが今日の確定残高になります。';
+
+  @override
+  String get frObRent => '家賃 / 住宅ローン';
+
+  @override
+  String get frObUtilities => '光熱費';
+
+  @override
+  String get frObInsurance => '保険';
+
+  @override
+  String get frObSubscriptions => 'サブスク';
+
+  @override
+  String get frSomethingElse => 'その他';
+
+  @override
+  String get frObTitle => '次の収入までに払わなければならないものは？';
+
+  @override
+  String frObSub(String date) {
+    return '$dateまでに支払うものだけ。それぞれタップしてください。';
+  }
+
+  @override
+  String get frAddAnother => 'もう一つ追加';
+
+  @override
+  String get frObNeedsName => '名前と金額を入力';
+
+  @override
+  String get frTapToAdd => 'タップして追加';
+
+  @override
+  String get frAmount => '金額';
+
+  @override
+  String get frDue => '支払日';
+
+  @override
+  String get frEssTitle => '次の収入まで、日々の必需品にだいたいいくら必要ですか？';
+
+  @override
+  String frEssSub(String date) {
+    return '$dateまで。だいたいの数字で大丈夫です。';
+  }
+
+  @override
+  String get frEssGroceries => '食料品';
+
+  @override
+  String get frEssGettingAround => '交通';
+
+  @override
+  String get frEssHousehold => '日用品';
+
+  @override
+  String get frEssEveryday => '日々の必要';
+
+  @override
+  String get frHelpEstimate => '見積もりを手伝って';
+
+  @override
+  String get frEstimateTitle => 'かんたん見積もり';
+
+  @override
+  String get frEstimateSub => '2回タップするだけ。数字はあとで変えられます。';
+
+  @override
+  String get frPeopleYouCover => '養っている人数';
+
+  @override
+  String get frWalkBike => '徒歩か自転車';
+
+  @override
+  String get frPublicTransport => '公共交通機関';
+
+  @override
+  String get frCar => '車';
+
+  @override
+  String frUntil(String date) {
+    return '$dateまで';
+  }
+
+  @override
+  String get frUseThis => 'これを使う';
+
+  @override
+  String get frProtEmergency => '緊急資金';
+
+  @override
+  String get frProtTrip => '旅行';
+
+  @override
+  String get frProtHome => '住まい';
+
+  @override
+  String get frProtYearly => '年間の出費';
+
+  @override
+  String frMonths(int count) {
+    return '$countか月';
+  }
+
+  @override
+  String get frProtTitle => 'お金で守りたいものはありますか？';
+
+  @override
+  String get frProtSub => '任意です。Upino が収入のたびに少しずつ取り分け、期日に間に合わせます。';
+
+  @override
+  String get frProtNameHint => '例：自動車保険';
+
+  @override
+  String get frProtWhatFor => '何のためですか？';
+
+  @override
+  String get frProtYearlyAmount => '年1回、いくら';
+
+  @override
+  String get frTarget => '目標額';
+
+  @override
+  String get frNextDueIn => '次の支払いまで';
+
+  @override
+  String get frAlreadySaved => '貯まっている額';
+
+  @override
+  String frDay(int n) {
+    return '$n日目';
+  }
+
+  @override
+  String get frMoment1Title => '給料日。準備完了。';
+
+  @override
+  String get frMoment1Body => 'お金が入った瞬間に家賃と食費を取り分け。残りは自由に使えます。';
+
+  @override
+  String get frMoment2Title => '支出の記録は3秒。';
+
+  @override
+  String get frMoment2Body => '記録すれば数字がすぐ更新。いつも今日の本当の数字です。';
+
+  @override
+  String get frMoment3Title => '買う前に聞いてみる。';
+
+  @override
+  String get frMoment3Body => '支払う前に、その買い物が請求や目標にどう影響するか分かります。';
+
+  @override
+  String get frMoment4Title => '自然に貯まる目標。';
+
+  @override
+  String get frMoment4Body => '収入のたびに少しずつ取り分け、月末にはお金の行き先が分かります。';
+
+  @override
+  String get frGetStarted => 'はじめる';
+
+  @override
+  String frPayArrived(String amount) {
+    return '給料が入金  $amount';
+  }
+
+  @override
+  String get frCoffee => 'コーヒー';
+
+  @override
+  String get frRecordedNow => 'たった今記録';
+
+  @override
+  String frAskJacket(String amount) {
+    return '$amountのジャケットを買っても大丈夫？';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return 'はい、家賃もカバーされたままです。$dateまで$amount残ります。旅行は4日遅れます。';
+  }
+
+  @override
+  String get frIfBuyNow => '今買うと';
+
+  @override
+  String frLeft(String amount) {
+    return '残り $amount';
+  }
+
+  @override
+  String get frMonthClosed => '月を締めました：外食が8%減。';
+
+  @override
+  String get frOfAllGoals => '目標全体の';
+
+  @override
+  String get frWelcome => 'Upino へようこそ';
+
+  @override
+  String get frWelcomeSub => 'はじめての方も、おかえりの方も、同じステップです。';
+
+  @override
+  String get frWithApple => 'Apple で続ける';
+
+  @override
+  String get frWithGoogle => 'Google で続ける';
+
+  @override
+  String get frWithEmail => 'メールで続ける';
+
+  @override
+  String get frOnDevice => 'プランはあなたのスマホで計算されます。';
+
+  @override
+  String get frTermsPrivacy => '利用規約 · プライバシー';
+
+  @override
+  String get frCheckEmail => 'メールを確認してください';
+
+  @override
+  String frCodeSent(String email) {
+    return '$email に6桁のコードを送りました。';
+  }
+
+  @override
+  String get frCodeWhy => 'コードをお送りします。パスワードを覚える必要はありません。';
+
+  @override
+  String get frSendCode => 'コードを送信';
+
+  @override
+  String get frAvailableNow => '今使えるお金';
+
+  @override
+  String get frProtectedBills => '請求と必需品のために確保';
+
+  @override
+  String get frProtectedGoal => '目標のために確保';
+
+  @override
+  String get frPlanReady => 'お金のプランができました';
+
+  @override
+  String frNotCovered(String amount) {
+    return '支払うべき額のうち $amount がまだ足りていません。';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return '$dateの次の収入予定まで';
+  }
+
+  @override
+  String get frTakenCare => 'もう手配済み';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name（$amount、$date支払い）は、自由に使えるお金より先に確保されています。';
+  }
+
+  @override
+  String get frBuiltFromAll => '教えてくれたすべてから作りました。';
+
+  @override
+  String frGoodEstimate(int count) {
+    return '良いスタートの見積もりです。あとで$count件の情報を追加するとさらに正確になります。';
+  }
+
+  @override
+  String get frGoToPlan => 'プランを見る';
+
+  @override
+  String get frSafeToSpend => '安心して使える額';
+
+  @override
+  String get frGapsTitle => '安心して使える額をもっと正確に';
+
+  @override
+  String get frGapEssentials => '日々の必需品を追加';
+
+  @override
+  String get frGapYearly => '保険など年間の費用を追加';
+
+  @override
+  String get frGapBill => '給料日前の支払いを追加';
+
+  @override
+  String frSeconds(int count) {
+    return '約$count秒';
+  }
+
+  @override
+  String get frEssentialsSheet => '給料日までの日々の必需品';
 }

@@ -8,6 +8,7 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:flutter/material.dart';
 
 
+import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../language_screen.dart';
 import 'fr_parts.dart';
@@ -79,11 +80,12 @@ class _LanguageStartState extends State<LanguageStart> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final name = languageNames[_hero]!;
-    final label = _hero != _phone ? 'SELECTED' : _fromPhone ? 'FROM YOUR PHONE' : 'SUGGESTED';
+    final label = (_hero != _phone ? l.frSelected : _fromPhone ? l.frFromPhone : l.frSuggested).toUpperCase();
     final line = [
       if (name.english != name.native) name.english,
-      if (_hero == _phone) _fromPhone ? 'The language on your phone' : 'Yours isn’t here yet',
+      if (_hero == _phone) _fromPhone ? l.frLangOnPhone : l.frLangNotHere,
     ].join(' · ');
     return Scaffold(
       backgroundColor: pageOf(context),
@@ -95,7 +97,7 @@ class _LanguageStartState extends State<LanguageStart> {
             children: [
               Arrive(
                 child: Text(
-                  'Let’s speak\nyour language.',
+                  l.frLangTitle,
                   maxLines: 2,
                   style: TextStyle(fontSize: 30, height: 1.1, fontWeight: FontWeight.w600,
                       letterSpacing: -0.7, color: inkOf(context),),
@@ -150,7 +152,7 @@ class _LanguageStartState extends State<LanguageStart> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text('OR CHOOSE', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600,
+              Text(l.frOrChoose.toUpperCase(), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600,
                   letterSpacing: 1.3, color: tertOf(context),),),
               const SizedBox(height: 10),
               GridView.count(
@@ -181,7 +183,7 @@ class _LanguageStartState extends State<LanguageStart> {
               const Spacer(),
               FlowButton(
                 buttonKey: const Key('language-continue'),
-                label: 'Continue in ${name.native}',
+                label: l.frContinueIn(name.native),
                 style: FlowButtonStyle.light,
                 onTap: _go,
               ),

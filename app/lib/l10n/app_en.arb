@@ -1523,5 +1523,321 @@
   "payGaugeNextPay": "Next pay",
   "@payGaugeNextPay": {
     "description": "Pay card: what is free once the pay arrives."
-  }
+  },
+  "frSelected": "Selected",
+  "frFromPhone": "From your phone",
+  "frSuggested": "Suggested",
+  "frLangOnPhone": "The language on your phone",
+  "frLangNotHere": "Yours isn’t here yet",
+  "frLangTitle": "Let’s speak\nyour language.",
+  "frOrChoose": "Or choose",
+  "frContinueIn": "Continue in {language}",
+  "@frContinueIn": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "frUseCurrency": "Use {currency}",
+  "@frUseCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "frContinue": "Continue",
+  "frNothingBeforePayday": "Nothing before payday",
+  "frSkipForNow": "Skip for now",
+  "frLooksLike": "Looks like",
+  "frCurrencyTitle": "Which currency\nare you paid in?",
+  "frMore": "More",
+  "frIntentTitle": "What do you want Upino to help you with?",
+  "frIntentSub": "Pick all that fit. Each one takes a single number.",
+  "frIntentSafe": "Know what I can safely spend",
+  "frIntentShort": "Stop running out of money",
+  "frIntentSave": "Build savings",
+  "frIntentDebt": "Pay off debt",
+  "frIntentIrregular": "Prepare for irregular expenses",
+  "frIntentGoal": "Reach a goal",
+  "frIntentUnderstand": "Understand my money better",
+  "frAskSafe": "How much do you spend in a normal month?",
+  "frAskSafeHint": "A rough number is fine.",
+  "frAskShort": "How short do you usually fall before payday?",
+  "frAskShortHint": "What you end up borrowing or going without.",
+  "frAskSave": "How much would you like to save each month?",
+  "frAskSaveHint": "Upino sets it aside before you spend.",
+  "frAskDebt": "How much do you owe in total?",
+  "frAskDebtHint": "Cards, loans, anything you’re paying back.",
+  "frAskIrregular": "What do they add up to in a year?",
+  "frAskIrregularHint": "Insurance, repairs, gifts, fees.",
+  "frAskGoal": "How much does your goal cost?",
+  "frAskGoalHint": "You can name it and set a date later.",
+  "frAskUnderstand": "What do you think you spend in a month?",
+  "frAskUnderstandHint": "Upino will show you how close you were.",
+  "frPerMonth": "{amount} a month",
+  "@frPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frShortPerMonth": "{amount} short a month",
+  "@frShortPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frOwed": "{amount} owed",
+  "@frOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frPerYear": "{amount} a year",
+  "@frPerYear": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frToReach": "{amount} to reach",
+  "@frToReach": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frPerMonthGuess": "{amount} a month, you think",
+  "@frPerMonthGuess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frAdd": "Add",
+  "frRemove": "Remove",
+  "frIncomeTitle": "Tell us how money comes in.",
+  "frIncomeSub": "If it varies, use what you can count on.",
+  "frAddIncome": "Add another income source",
+  "frEvery2Weeks": "Every 2 weeks",
+  "frTwiceMonth": "Twice a month",
+  "frIrregular": "Irregular",
+  "frEachPay": "Each pay",
+  "frAnotherIncome": "Another income",
+  "frAvailTitle": "How much money do you have available right now?",
+  "frAvailSub": "Cash and the accounts you spend from, together. Leave savings out — you can add accounts one by one later.",
+  "frAvailLabel": "Available money today",
+  "frAvailNote": "This becomes today’s confirmed balance.",
+  "frObRent": "Rent / Mortgage",
+  "frObUtilities": "Utilities",
+  "frObInsurance": "Insurance",
+  "frObSubscriptions": "Subscriptions",
+  "frSomethingElse": "Something else",
+  "frObTitle": "What must be paid before your next income?",
+  "frObSub": "Only what’s due by {date}. Tap each one.",
+  "@frObSub": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frAddAnother": "Add another",
+  "frObNeedsName": "Add a name and amount",
+  "frTapToAdd": "Tap to add",
+  "frAmount": "Amount",
+  "frDue": "Due",
+  "frEssTitle": "About how much will you need for everyday essentials until your next income?",
+  "frEssSub": "Until {date}. A rough number is fine.",
+  "@frEssSub": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frEssGroceries": "Groceries",
+  "frEssGettingAround": "Getting around",
+  "frEssHousehold": "Household",
+  "frEssEveryday": "Everyday needs",
+  "frHelpEstimate": "Help me estimate",
+  "frEstimateTitle": "A quick estimate",
+  "frEstimateSub": "Two taps. You can change the number after.",
+  "frPeopleYouCover": "People you cover",
+  "frWalkBike": "Walk or bike",
+  "frPublicTransport": "Public transport",
+  "frCar": "Car",
+  "frUntil": "until {date}",
+  "@frUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frUseThis": "Use this",
+  "frProtEmergency": "Emergency fund",
+  "frProtTrip": "Trip",
+  "frProtHome": "Home",
+  "frProtYearly": "Yearly expense",
+  "frMonths": "{count, plural, =1{1 month} other{{count} months}}",
+  "@frMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frProtTitle": "Anything you want your money to protect?",
+  "frProtSub": "Optional. Upino sets a little aside each pay so it’s there on time.",
+  "frProtNameHint": "e.g. Car insurance",
+  "frProtWhatFor": "What is it for?",
+  "frProtYearlyAmount": "How much, once a year",
+  "frTarget": "Target",
+  "frNextDueIn": "Next due in",
+  "frAlreadySaved": "Already saved",
+  "frDay": "Day {n}",
+  "@frDay": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "frMoment1Title": "Payday. Sorted.",
+  "frMoment1Body": "Rent and groceries are set aside the moment money lands. What’s left is yours to spend.",
+  "frMoment2Title": "Every spend, in 3 seconds.",
+  "frMoment2Body": "Record it and the number updates at once. Always today’s truth.",
+  "frMoment3Title": "Ask before you buy.",
+  "frMoment3Body": "See what a purchase does to your bills and goals, before you pay.",
+  "frMoment4Title": "Goals that fund themselves.",
+  "frMoment4Body": "A little goes aside each pay, and the month closes with where it all went.",
+  "frGetStarted": "Get started",
+  "frPayArrived": "Pay arrived  {amount}",
+  "@frPayArrived": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frCoffee": "Coffee",
+  "frRecordedNow": "Recorded just now",
+  "frAskJacket": "Can I buy a jacket for {amount}?",
+  "@frAskJacket": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frAskAnswer": "Yes, and rent stays covered. You’d have {amount} until {date}. Your trip moves 4 days later.",
+  "@frAskAnswer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frIfBuyNow": "If you buy now",
+  "frLeft": "{amount} left",
+  "@frLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frMonthClosed": "Month closed: 8% less on eating out.",
+  "frOfAllGoals": "of all your goals",
+  "frWelcome": "Welcome to Upino",
+  "frWelcomeSub": "New here or coming back, it’s the same step.",
+  "frWithApple": "Continue with Apple",
+  "frWithGoogle": "Continue with Google",
+  "frWithEmail": "Continue with email",
+  "frOnDevice": "Your plan is worked out on your phone.",
+  "frTermsPrivacy": "Terms · Privacy",
+  "frCheckEmail": "Check your email",
+  "frCodeSent": "We sent a 6-digit code to {email}.",
+  "@frCodeSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "frCodeWhy": "We’ll send you a code. No password to remember.",
+  "frSendCode": "Send code",
+  "frAvailableNow": "Available now",
+  "frProtectedBills": "Protected for bills & essentials",
+  "frProtectedGoal": "Protected for your goal",
+  "frPlanReady": "Your money plan is ready",
+  "frNotCovered": "{amount} of what must be paid isn’t covered yet.",
+  "@frNotCovered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frUntilIncome": "Until your next expected income on {date}",
+  "@frUntilIncome": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frTakenCare": "Already taken care of",
+  "frTakenCareBody": "{name}, {amount} due {date}, is set aside before anything is free to spend.",
+  "@frTakenCareBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frBuiltFromAll": "Built from everything you told us.",
+  "frGoodEstimate": "{count, plural, =1{Good starting estimate. Add 1 more detail later to sharpen it.} other{Good starting estimate. Add {count} more details later to sharpen it.}}",
+  "@frGoodEstimate": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frGoToPlan": "Go to my plan",
+  "frSafeToSpend": "Safe to spend",
+  "frGapsTitle": "Make your Safe-to-Spend more accurate",
+  "frGapEssentials": "Add everyday essentials",
+  "frGapYearly": "Add a yearly cost, like insurance",
+  "frGapBill": "Add a bill due before payday",
+  "frSeconds": "~{count} sec",
+  "@frSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frEssentialsSheet": "Everyday essentials until payday"
 }

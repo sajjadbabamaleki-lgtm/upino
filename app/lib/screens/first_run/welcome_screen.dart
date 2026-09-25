@@ -13,11 +13,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../design/icon.dart';
 import '../../design/parts.dart';
 import '../../design/theme.dart';
+import '../../engine/clock.dart';
 import '../../engine/money.dart';
+import '../../l10n/dates.dart';
 import '../../state/app_state.dart';
 import 'fr_parts.dart';
 
 const _ease = Cubic(0.23, 1, 0.32, 1);
+
+/// The end of the demo month the welcome pages show.
+const _demoEnd = LocalDate(2026, 10, 30);
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({required this.state, super.key});
@@ -31,12 +36,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final _pages = PageController();
   int _page = 0;
 
-  static const _moments = [
-    ('Day 1', 'Payday. Sorted.', 'Rent and groceries are set aside the moment money lands. What\u2019s left is yours to spend.'),
-    ('Day 12', 'Every spend, in 3 seconds.', 'Record it and the number updates at once. Always today\u2019s truth.'),
-    ('Day 18', 'Ask before you buy.', 'See what a purchase does to your bills and goals, before you pay.'),
-    ('Day 30', 'Goals that fund themselves.', 'A little goes aside each pay, and the month closes with where it all went.'),
-  ];
+  static const _count = 4;
+
+  static List<(String, String, String)> _moments(BuildContext c) => [
+        (c.l.frDay(1), c.l.frMoment1Title, c.l.frMoment1Body),
+        (c.l.frDay(12), c.l.frMoment2Title, c.l.frMoment2Body),
+        (c.l.frDay(18), c.l.frMoment3Title, c.l.frMoment3Body),
+        (c.l.frDay(30), c.l.frMoment4Title, c.l.frMoment4Body),
+      ];
 
   @override
   void dispose() {
@@ -48,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final last = _page == _moments.length - 1;
+    final last = _page == _count - 1;
     return Scaffold(
       backgroundColor: pageOf(context),
       body: SafeArea(
@@ -59,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: AnimatedBuilder(
                 animation: _pages,
                 builder: (context, _) => _Timeline(
-                  labels: [for (final m in _moments) m.$1],
+                  labels: [for (final m in _moments(context)) m.$1],
                   at: _pages.hasClients && _pages.position.haveDimensions ? _pages.page ?? 0 : 0,
                 ),
               ),
@@ -67,7 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _pages,
-                itemCount: _moments.length,
+                itemCount: _count,
                 onPageChanged: (i) {
                   HapticFeedback.selectionClick();
                   setState(() => _page = i);
@@ -88,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         Expanded(child: Center(child: visual)),
                         const SizedBox(height: 18),
                         Text(
-                          _moments[i].$2,
+                          _moments(context)[i].$2,
                           style: TextStyle(
                             fontSize: 30,
                             height: 1.08,
@@ -98,7 +105,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text(_moments[i].$3,
+                        Text(_moments(context)[i].$3,
                             style: TextStyle(fontSize: 15, height: 1.45, color: subOf(context)),),
                       ],
                     ),
@@ -110,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               padding: const EdgeInsets.fromLTRB(24, 22, 24, 20),
               child: FlowButton(
                 buttonKey: const Key('welcome-next'),
-                label: last ? 'Get started' : 'Continue',
+                label: last ? context.l.frGetStarted : context.l.frContinue,
                 style: FlowButtonStyle.light,
                 onTap: () {
                   if (last) {
@@ -229,7 +236,7 @@ class _Hero extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Safe to spend now',
+                  Text(context.l.heroSafeToSpend,
                       style: TextStyle(color: Color(0xCCFFFFFF), fontSize: 13.5, fontWeight: FontWeight.w500),),
                   const SizedBox(height: 6),
                   Text(amount,
@@ -247,7 +254,7 @@ class _Hero extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
-                      child: const Text('Record a spend',
+                      child: Text(context.l.heroRecordSpend,
                           style: TextStyle(color: Color(0xFF2F3AE8), fontWeight: FontWeight.w600, fontSize: 13.5),),
                     ),
                   ],
@@ -291,12 +298,12 @@ class _Payday extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(color: lime, borderRadius: BorderRadius.circular(99)),
-              child: Text('Pay arrived  +${m(2000)}',
+              child: Text(context.l.frPayArrived('+${m(2000)}'),
                   style: const TextStyle(color: Color(0xFF0F1012), fontWeight: FontWeight.w700, fontSize: 13),),
             ),
           ),
           const SizedBox(height: 12),
-          Arrive(delay: const Duration(milliseconds: 180), child: _Hero(amount: m(644), until: 'Until Oct 30')),
+          Arrive(delay: const Duration(milliseconds: 180), child: _Hero(amount: m(644), until: context.l.heroUntil(formatDate(context, _demoEnd)))),
           const SizedBox(height: 10),
           Arrive(
             delay: const Duration(milliseconds: 360),
@@ -306,11 +313,11 @@ class _Payday extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('SET ASIDE FIRST',
+                  Text(context.l.homeSetAsideFirst.toUpperCase(),
                       style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, letterSpacing: 1, color: tertOf(context)),),
                   const SizedBox(height: 4),
-                  _Line('Rent', m(1200)),
-                  _Line('Groceries', m(400)),
+                  _Line(context.l.frObRent, m(1200)),
+                  _Line(context.l.frEssGroceries, m(400)),
                 ],
               ),
             ),
@@ -332,7 +339,7 @@ class _Spend extends StatelessWidget {
             tween: Tween(begin: 516.4, end: active ? 512.2 : 516.4),
             duration: const Duration(milliseconds: 900),
             curve: _ease,
-            builder: (context, v, _) => _Hero(amount: m(v), until: 'Until Oct 30', button: false),
+            builder: (context, v, _) => _Hero(amount: m(v), until: context.l.heroUntil(formatDate(context, _demoEnd)), button: false),
           ),
           const SizedBox(height: 12),
           Arrive(
@@ -348,8 +355,8 @@ class _Spend extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Coffee', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5, color: inkOf(context))),
-                        Text('Recorded just now', style: TextStyle(fontSize: 12.5, color: tertOf(context))),
+                        Text(context.l.frCoffee, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5, color: inkOf(context))),
+                        Text(context.l.frRecordedNow, style: TextStyle(fontSize: 12.5, color: tertOf(context))),
                       ],
                     ),
                   ),
@@ -392,14 +399,17 @@ class _Ask extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Arrive(child: bubble('Can I buy a jacket for ${m(120)}?', mine: true)),
+        Arrive(child: bubble(context.l.frAskJacket(m(120)), mine: true)),
         const SizedBox(height: 10),
         Arrive(
           delay: const Duration(milliseconds: 700),
           child: bubble('', mine: false, rich: TextSpan(children: [
-            const TextSpan(text: 'Yes, and rent stays covered. You\u2019d have '),
-            TextSpan(text: m(392), style: TextStyle(fontWeight: FontWeight.w700, color: isDark(context) ? lime : const Color(0xFF4F7A00))),
-            const TextSpan(text: ' until Oct 30. Your trip moves 4 days later.'),
+            // The amount is set in bold wherever the language puts it.
+            for (final (i, part) in context.l.frAskAnswer('\u0000', formatDate(context, _demoEnd)).split('\u0000').indexed) ...[
+              if (i > 0)
+                TextSpan(text: m(392), style: TextStyle(fontWeight: FontWeight.w700, color: isDark(context) ? lime : const Color(0xFF4F7A00))),
+              TextSpan(text: part),
+            ],
           ],),),
         ),
         const SizedBox(height: 12),
@@ -411,9 +421,9 @@ class _Ask extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('IF YOU BUY NOW', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, letterSpacing: 1, color: tertOf(context))),
+                Text(context.l.frIfBuyNow.toUpperCase(), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, letterSpacing: 1, color: tertOf(context))),
                 const SizedBox(height: 4),
-                Text('${m(392)} left', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: inkOf(context))),
+                Text(context.l.frLeft(m(392)), style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: inkOf(context))),
                 const SizedBox(height: 10),
                 TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: 0.62),
@@ -455,7 +465,7 @@ class _Close extends StatelessWidget {
                     tween: Tween(begin: 0, end: 1),
                     duration: const Duration(milliseconds: 1400),
                     curve: _ease,
-                    builder: (context, t, _) => CustomPaint(painter: _Rings(t: t, dark: isDark(context))),
+                    builder: (context, t, _) => CustomPaint(painter: _Rings(t: t, dark: isDark(context), sub: context.l.frOfAllGoals)),
                   ),
                 ),
                 for (var i = 0; i < 4; i++)
@@ -482,7 +492,7 @@ class _Close extends StatelessWidget {
                   UpinoIcon('trendingUp', size: 18, color: isDark(context) ? lime : const Color(0xFF4F7A00)),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Text('Month closed: 8% less on eating out.',
+                    child: Text(context.l.frMonthClosed,
                         style: TextStyle(fontSize: 13.5, color: inkOf(context)),),
                   ),
                 ],
@@ -494,7 +504,8 @@ class _Close extends StatelessWidget {
 }
 
 class _Rings extends CustomPainter {
-  _Rings({required this.t, required this.dark});
+  _Rings({required this.t, required this.dark, required this.sub});
+  final String sub;
   final double t;
   final bool dark;
 
@@ -528,11 +539,11 @@ class _Rings extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout();
     tp.paint(canvas, c - Offset(tp.width / 2, tp.height / 2 + 6));
-    final sub = TextPainter(
-      text: TextSpan(text: 'of all your goals', style: TextStyle(fontSize: 10.5, color: dark ? const Color(0xFF9A9AA3) : const Color(0xFF55555C), fontFamily: 'Geist')),
+    final label = TextPainter(
+      text: TextSpan(text: sub, style: TextStyle(fontSize: 10.5, color: dark ? const Color(0xFF9A9AA3) : const Color(0xFF55555C), fontFamily: 'Geist')),
       textDirection: TextDirection.ltr,
     )..layout();
-    sub.paint(canvas, c + Offset(-sub.width / 2, 12));
+    label.paint(canvas, c + Offset(-label.width / 2, 12));
   }
 
   @override
@@ -597,7 +608,7 @@ class SignInScreen extends StatelessWidget {
                   Arrive(
                     delay: const Duration(milliseconds: 60),
                     child: Text(
-                      'Welcome to Upino',
+                      context.l.frWelcome,
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w600,
@@ -610,7 +621,7 @@ class SignInScreen extends StatelessWidget {
                   Arrive(
                     delay: const Duration(milliseconds: 120),
                     child: Text(
-                      'New here or coming back, it’s the same step.',
+                      context.l.frWelcomeSub,
                       style: TextStyle(fontSize: 15, color: subOf(context)),
                     ),
                   ),
@@ -619,7 +630,7 @@ class SignInScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 180),
                     child: _Provider(
                       key: const Key('signin-apple'),
-                      label: 'Continue with Apple',
+                      label: context.l.frWithApple,
                       logo: _apple,
                       filled: true,
                       onTap: () => state.signIn('apple'),
@@ -630,7 +641,7 @@ class SignInScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 230),
                     child: _Provider(
                       key: const Key('signin-google'),
-                      label: 'Continue with Google',
+                      label: context.l.frWithGoogle,
                       logo: _google,
                       onTap: () => state.signIn('google'),
                     ),
@@ -640,7 +651,7 @@ class SignInScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 280),
                     child: _Provider(
                       key: const Key('signin-email'),
-                      label: 'Continue with email',
+                      label: context.l.frWithEmail,
                       icon: 'su-mail',
                       onTap: () => _EmailSheet.show(context, state),
                     ),
@@ -648,7 +659,7 @@ class SignInScreen extends StatelessWidget {
                   const SizedBox(height: 22),
                   Center(
                     child: Text(
-                      'Your plan is worked out on your phone.\nTerms · Privacy',
+                      '${context.l.frOnDevice}\n${context.l.frTermsPrivacy}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 12, height: 1.5, color: tertOf(context),),
@@ -790,7 +801,7 @@ class _EmailSheetState extends State<_EmailSheet> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  _sent ? 'Check your email' : 'Continue with email',
+                  _sent ? context.l.frCheckEmail : context.l.frWithEmail,
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
@@ -800,8 +811,8 @@ class _EmailSheetState extends State<_EmailSheet> {
                 const SizedBox(height: 6),
                 Text(
                   _sent
-                      ? 'We sent a 6-digit code to ${_email.text.trim()}.'
-                      : 'We’ll send you a code. No password to remember.',
+                      ? context.l.frCodeSent(_email.text.trim())
+                      : context.l.frCodeWhy,
                   style: TextStyle(fontSize: 14, color: subOf(context)),
                 ),
                 const SizedBox(height: 18),
@@ -831,7 +842,7 @@ class _EmailSheetState extends State<_EmailSheet> {
                   ),
                 const SizedBox(height: 16),
                 FlowButton(
-                  label: _sent ? 'Continue' : 'Send code',
+                  label: _sent ? context.l.frContinue : context.l.frSendCode,
                   onTap: !_sent
                       ? (_emailOk ? () => setState(() => _sent = true) : null)
                       : (_code.text.length == 6
@@ -880,7 +891,7 @@ class _ChartCycleState extends State<_ChartCycle> {
 
   CustomPainter _painter(int k, double t) => switch (k % 5) {
         0 => _Balance(t: t, dark: widget.dark),
-        1 => _Rings(t: t, dark: widget.dark),
+        1 => _Rings(t: t, dark: widget.dark, sub: context.l.frOfAllGoals),
         2 => _Bars(t: t, dark: widget.dark),
         3 => _Gauge(t: t, dark: widget.dark),
         _ => WaterfallPainter(
