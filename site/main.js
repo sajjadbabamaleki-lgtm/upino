@@ -563,29 +563,47 @@
 
   /* ── See, decide, act, learn: the loop goes round once on arrival ── */
   (function cycle() {
+    // See, Decide, Act, Learn follow the scroll: the rail fills as you read
+    // down, the step at the reading line is lit, the ones behind stay lit
     const box = $("#cycle");
     const steps = $$("#cycle .lp");
     if (!box || !steps.length) return;
     const n = $("#loopN");
-    let at = -1, timer = null, held = false, seen = false;
-    const show = (i) => {
-      at = i;
-      box.style.setProperty("--p", String((i + 1) / steps.length));
-      steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
-      if (i === steps.length - 1 && n) countTo(n, 1284, 1104, 0.9);
-      if (i === 0) { box.classList.remove("is-again"); void box.offsetWidth; box.classList.add("is-again"); }
-    };
-    const tick = () => { if (!held) show((at + 1) % steps.length); };
-    const start = () => { if (timer || !seen) return; box.classList.add("is-running"); if (at < 0) show(0); timer = setInterval(tick, 2200); };
-    const stop = () => { clearInterval(timer); timer = null; };
     if (reduce) return;
-    steps.forEach((s, i) => {
-      s.addEventListener("pointerenter", () => { held = true; show(i); });
-      s.addEventListener("pointerleave", () => { held = false; });
-    });
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver((es) => es.forEach((e) => { seen = e.isIntersecting; if (seen) setTimeout(start, 700); else stop(); }), { threshold: 0.35 }).observe(box);
-    }
+    box.classList.add("is-scroll");
+    let at = -2, queued = false, counted = false;
+    const mq = window.matchMedia("(max-width: 720px)");
+    const update = () => {
+      queued = false;
+      const vh = window.innerHeight;
+      const line = vh * (mq.matches ? 0.55 : 0.7);
+      let p, i;
+      if (mq.matches) {
+        // vertical: the rail runs beside the list
+        const r = box.getBoundingClientRect();
+        p = Math.min(1, Math.max(0, (line - r.top) / (r.height * 0.86)));
+        i = -1;
+        steps.forEach((st, k) => { if (st.getBoundingClientRect().top < line) i = k; });
+      } else {
+        // horizontal: one reading of the section moves the rail across
+        const r = box.getBoundingClientRect();
+        p = Math.min(1, Math.max(0, (line - r.top) / (vh * 0.5)));
+        i = Math.min(steps.length - 1, Math.floor(p * steps.length - 0.001));
+      }
+      box.style.setProperty("--p", p.toFixed(4));
+      if (i === at) return;
+      at = i;
+      steps.forEach((st, k) => {
+        st.classList.toggle("is-on", k === i);
+        st.classList.toggle("is-ahead", k > i);
+      });
+      if (i === steps.length - 1 && n && !counted) { counted = true; countTo(n, 1284, 1104, 0.9); }
+      if (i < steps.length - 1) counted = false;
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue, { passive: true });
+    update();
   })();
 
   /* ── motion for the product sections: each thing moves once, when it
