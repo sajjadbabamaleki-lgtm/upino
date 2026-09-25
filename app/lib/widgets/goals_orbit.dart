@@ -14,6 +14,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../design/icon.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../domain/goal.dart';
@@ -22,12 +23,12 @@ import '../l10n/app_localizations.dart';
 /// A colour for each goal, in the order they are shown, so a goal keeps its
 /// colour from the rings to its tile.
 const goalPalette = <Color>[
-  Color(0xFF1FB8E0), // cyan
-  Color(0xFF2FBF5B), // green
-  Color(0xFFD35BEF), // violet
-  Color(0xFFF2545B), // coral
-  Color(0xFFF5A524), // amber
-  Color(0xFF5B63F5), // indigo
+  Color(0xFF2F3AE8), // Upino blue
+  Color(0xFFEB6834), // orange
+  Color(0xFF1BAF7A), // aqua
+  Color(0xFFEDA100), // yellow
+  Color(0xFFE87BA4), // magenta
+  Color(0xFF008300), // green
 ];
 
 Color goalColor(int index) => goalPalette[index % goalPalette.length];
@@ -222,13 +223,12 @@ class _Ring extends StatelessWidget {
           fill: cardColor(context),
         ),
         child: Center(
-          child: Text(
-            '${(goalPercent(goal) * sweep).round()}',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  fontFeatures: moneyFeatures,
-                ),
+          child: FractionallySizedBox(
+            widthFactor: 0.4,
+            heightFactor: 0.4,
+            child: FittedBox(
+              child: UpinoIcon(goal.icon ?? 'goal-savings', size: 24, color: color),
+            ),
           ),
         ),
       );

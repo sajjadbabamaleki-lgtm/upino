@@ -52,17 +52,18 @@ AppState buildDemo({
     );
 
   final goals = [
-    (names.goals[0], 1500, 420, 150),
-    (names.goals[1], 1200, 380, 330),
-    (names.goals[2], 3000, 1900, 240),
-    (names.goals[3], 8000, 1500, 600),
+    (names.goals[0], 1500, 420, 150, 'goal-trip'),
+    (names.goals[1], 1200, 380, 330, 'goal-laptop'),
+    (names.goals[2], 3000, 1900, 240, 'goal-emergency'),
+    (names.goals[3], 8000, 1500, 600, 'goal-car'),
   ];
-  for (final (name, target, saved, dueIn) in goals) {
+  for (final (name, target, saved, dueIn, icon) in goals) {
     s
       ..addGoal(
         name: name,
         target: eur(target),
         targetDate: startDay.addDays(dueIn),
+        icon: icon,
       )
       ..contributeToGoal(s.goals.last.id, eur(saved));
   }

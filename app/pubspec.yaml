@@ -31,3 +31,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Geist
+      fonts:
+        - asset: fonts/Geist-400.ttf
+          weight: 400
+        - asset: fonts/Geist-500.ttf
+          weight: 500
+        - asset: fonts/Geist-600.ttf
+          weight: 600
+        - asset: fonts/Geist-700.ttf
+          weight: 700

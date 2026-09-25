@@ -132,7 +132,7 @@ void main() {
     await tester.tap(find.byKey(Key('goal-tile-${state.goals.single.id}')));
     await tester.pumpAndSettle();
     expect(
-      find.text('At 35% a year, this will cost about €1,350.00 by then.'),
+      find.text('At 35% a year, this will cost about €1,350 by then.'),
       findsOneWidget,
     );
   });

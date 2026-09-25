@@ -37,15 +37,24 @@ class QuickActions extends StatelessWidget {
   final List<QuickAction> actions;
 
   @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context) => UpinoCard(
         key: const Key('quick-actions'),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (var i = 0; i < actions.length; i++) ...[
-            Expanded(child: _Tile(action: actions[i])),
-            if (i != actions.length - 1) const SizedBox(width: 10),
-          ],
-        ],
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (var i = 0; i < actions.length; i++) ...[
+                Expanded(child: _Tile(action: actions[i])),
+                if (i != actions.length - 1)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: VerticalDivider(width: 1, thickness: 1, color: borderColor(context)),
+                  ),
+              ],
+            ],
+          ),
+        ),
       );
 }
 
@@ -57,20 +66,15 @@ class _Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final tint = dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint;
     final ink = dark ? UpinoTokens.darkTextPrimary : UpinoTokens.actionOnTint;
     final critical = dark ? UpinoTokens.darkCritical : UpinoTokens.critical;
 
-    final tile = Material(
-      color: cardColor(context),
-      borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
-      child: InkWell(
-        key: Key(action.keyName),
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusInner),
-        onTap: action.onTap,
-        // Square, whatever the phone's width.
-        child: AspectRatio(
-          aspectRatio: 1,
+    final tile = Pressable(
+      key: Key(action.keyName),
+      onTap: action.onTap,
+      scale: 0.94,
+        child: SizedBox(
+          height: 78,
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: Column(
@@ -79,15 +83,10 @@ class _Tile extends StatelessWidget {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: tint,
-                        shape: BoxShape.circle,
-                      ),
-                      child: UpinoIcon(action.icon, size: 20, color: ink),
+                    SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: Center(child: UpinoIcon(action.icon, size: 22, color: ink)),
                     ),
                     if (action.flagged)
                       PositionedDirectional(
@@ -129,7 +128,6 @@ class _Tile extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
     final hint = action.hint;
     return Semantics(

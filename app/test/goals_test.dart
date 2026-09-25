@@ -319,7 +319,7 @@ void main() {
       expect(state.goals.single.target, eur('1200.00'));
       // On its tile, and again in full further down.
       expect(find.text('Laptop'), findsWidgets);
-      expect(find.text('of €1,200.00'), findsWidgets);
+      expect(find.text('of €1,200'), findsWidgets);
     });
 
     testWidgets('money can be added to a goal from its card', (tester) async {
@@ -344,7 +344,7 @@ void main() {
 
       expect(state.goals.single.saved, eur('300.00'));
       // In the open goal, and on its tile as this month's addition.
-      expect(find.text('€300.00'), findsWidgets);
+      expect(find.text('€300'), findsWidgets);
     });
 
     testWidgets('a goal can be deleted from its editor', (tester) async {

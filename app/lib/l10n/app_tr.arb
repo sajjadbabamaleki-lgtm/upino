@@ -580,5 +580,9 @@
   "voiceTitleHeard": "Duyuldu",
   "voiceTitleFailed": "Anlaşılamadı",
   "voiceStop": "Durdur",
-  "voiceRetry": "Tekrar"
+  "voiceRetry": "Tekrar",
+  "heroUntil": "{date} tarihine kadar",
+  "goalIcon": "Simge",
+  "payGaugeToLast": "Yetmesi gereken",
+  "payGaugeNextPay": "Sonraki maaş"
 }

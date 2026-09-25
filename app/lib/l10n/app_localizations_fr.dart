@@ -2170,4 +2170,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get voiceRetry => 'Encore';
+
+  @override
+  String heroUntil(String date) {
+    return 'Jusqu’au $date';
+  }
+
+  @override
+  String get goalIcon => 'Icône';
+
+  @override
+  String get payGaugeToLast => 'Doit durer';
+
+  @override
+  String get payGaugeNextPay => 'Prochaine paie';
 }

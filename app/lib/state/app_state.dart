@@ -1119,6 +1119,7 @@ class AppState extends ChangeNotifier {
     required LocalDate targetDate,
     GoalKind kind = GoalKind.hard,
     Money? saved,
+    String? icon,
   }) {
     _goals.add(Goal(
       id: 'g${++_goalSeq}',
@@ -1127,6 +1128,7 @@ class AppState extends ChangeNotifier {
       targetDate: targetDate,
       saved: saved ?? Money.zero(_currency),
       kind: kind,
+      icon: icon,
     ),);
     _persist();
     notifyListeners();
@@ -1138,6 +1140,7 @@ class AppState extends ChangeNotifier {
     Money? target,
     LocalDate? targetDate,
     GoalKind? kind,
+    String? icon,
   }) {
     final index = _goals.indexWhere((g) => g.id == id);
     if (index < 0) return;
@@ -1146,6 +1149,7 @@ class AppState extends ChangeNotifier {
       target: target,
       targetDate: targetDate,
       kind: kind,
+      icon: icon,
     );
     _persist();
     notifyListeners();

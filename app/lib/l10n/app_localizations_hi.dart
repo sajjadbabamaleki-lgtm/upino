@@ -2070,4 +2070,18 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get voiceRetry => 'फिर से';
+
+  @override
+  String heroUntil(String date) {
+    return '$date तक';
+  }
+
+  @override
+  String get goalIcon => 'आइकन';
+
+  @override
+  String get payGaugeToLast => 'चलाना है';
+
+  @override
+  String get payGaugeNextPay => 'अगला वेतन';
 }

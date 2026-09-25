@@ -580,5 +580,9 @@
   "voiceTitleHeard": "تم السماع",
   "voiceTitleFailed": "لم أفهم ذلك",
   "voiceStop": "إيقاف",
-  "voiceRetry": "مجددًا"
+  "voiceRetry": "مجددًا",
+  "heroUntil": "حتى {date}",
+  "goalIcon": "أيقونة",
+  "payGaugeToLast": "يجب أن يكفي",
+  "payGaugeNextPay": "الراتب القادم"
 }

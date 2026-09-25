@@ -74,7 +74,7 @@ class UpinoApp extends StatelessWidget {
       );
 
   ThemeData _themed(Brightness brightness) =>
-      buildTheme(brightness: brightness, fontFamily: fontFamily);
+      buildTheme(brightness: brightness, fontFamily: fontFamily ?? 'Geist');
 
   /// Transparent bars, with the glyphs inside them set to whichever of black
   /// or white reads against the page underneath. Android and iOS name that

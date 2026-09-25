@@ -123,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: revealed([
+      children: revealed(groupRows([
         // The page's name is in the capsule above.
         SectionHeading(l.profileYourData),
         _CurrencyRow(state: state),
@@ -247,7 +247,7 @@ class ProfileScreen extends StatelessWidget {
               isDark(context) ? UpinoTokens.darkCritical : UpinoTokens.critical,
           onTap: () => _startOver(context),
         ),
-      ]),
+      ]),),
     );
   }
 }
@@ -258,7 +258,7 @@ class ProfileScreen extends StatelessWidget {
 ///
 /// The row opens the same picker onboarding opens, rather than a second
 /// layout that would have to be kept in step with it.
-class _LanguageRow extends StatelessWidget {
+class _LanguageRow extends StatelessWidget with GroupableRow {
   const _LanguageRow({required this.state});
 
   final AppState state;
@@ -298,7 +298,7 @@ class _LanguageRow extends StatelessWidget {
 ///
 /// A change is confirmed before it happens, because it changes what every
 /// figure in the plan means and there is no exchange rate behind it.
-class _CurrencyRow extends StatelessWidget {
+class _CurrencyRow extends StatelessWidget with GroupableRow {
   const _CurrencyRow({required this.state});
 
   final AppState state;

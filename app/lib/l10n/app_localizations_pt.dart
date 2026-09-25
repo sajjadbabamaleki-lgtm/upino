@@ -2151,4 +2151,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get voiceRetry => 'De novo';
+
+  @override
+  String heroUntil(String date) {
+    return 'Até $date';
+  }
+
+  @override
+  String get goalIcon => 'Ícone';
+
+  @override
+  String get payGaugeToLast => 'Tem de durar';
+
+  @override
+  String get payGaugeNextPay => 'Próximo salário';
 }

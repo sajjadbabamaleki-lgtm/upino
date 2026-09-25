@@ -3599,6 +3599,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Again'**
   String get voiceRetry;
+
+  /// No description provided for @heroUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}'**
+  String heroUntil(String date);
+
+  /// Label over the goal icon picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get goalIcon;
+
+  /// Pay card: the money that has to last until pay.
+  ///
+  /// In en, this message translates to:
+  /// **'To last'**
+  String get payGaugeToLast;
+
+  /// Pay card: what is free once the pay arrives.
+  ///
+  /// In en, this message translates to:
+  /// **'Next pay'**
+  String get payGaugeNextPay;
 }
 
 class _AppLocalizationsDelegate

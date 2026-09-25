@@ -2045,4 +2045,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get voiceRetry => 'مجددًا';
+
+  @override
+  String heroUntil(String date) {
+    return 'حتى $date';
+  }
+
+  @override
+  String get goalIcon => 'أيقونة';
+
+  @override
+  String get payGaugeToLast => 'يجب أن يكفي';
+
+  @override
+  String get payGaugeNextPay => 'الراتب القادم';
 }

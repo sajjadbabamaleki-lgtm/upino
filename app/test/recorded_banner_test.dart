@@ -34,10 +34,10 @@ Future<AppState> recorded(WidgetTester tester) async {
 void main() {
   testWidgets('goes by itself after a few seconds', (tester) async {
     await recorded(tester);
-    expect(find.text('€30.00 recorded'), findsOneWidget);
+    expect(find.text('€30 recorded'), findsOneWidget);
     await tester.pump(const Duration(seconds: 7));
     await tester.pumpAndSettle();
-    expect(find.text('€30.00 recorded'), findsNothing);
+    expect(find.text('€30 recorded'), findsNothing);
   });
 
   testWidgets('its cross asks first, and No keeps the spend', (tester) async {
@@ -46,7 +46,7 @@ void main() {
 
     await tester.tap(find.byKey(const Key('banner-remove')));
     await tester.pumpAndSettle();
-    expect(find.text('Remove €30.00?'), findsOneWidget);
+    expect(find.text('Remove €30?'), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('banner-remove-no')));
     await tester.pumpAndSettle();
@@ -66,7 +66,7 @@ void main() {
 
     expect(state.snapshot.safeToSpendNow, before + eur('30.00'));
     expect(state.activity.single.removed, isTrue);
-    expect(find.text('€30.00 recorded'), findsNothing);
+    expect(find.text('€30 recorded'), findsNothing);
   });
 
   testWidgets('the banner waits while the question is open', (tester) async {
@@ -77,6 +77,6 @@ void main() {
     await tester.pumpAndSettle();
     // Still answerable: the banner did not vanish behind the dialog.
     expect(find.byKey(const Key('banner-remove-yes')), findsOneWidget);
-    expect(find.text('€30.00 recorded'), findsOneWidget);
+    expect(find.text('€30 recorded'), findsOneWidget);
   });
 }

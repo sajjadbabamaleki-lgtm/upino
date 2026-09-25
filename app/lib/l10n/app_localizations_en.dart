@@ -2182,4 +2182,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceRetry => 'Again';
+
+  @override
+  String heroUntil(String date) {
+    return 'Until $date';
+  }
+
+  @override
+  String get goalIcon => 'Icon';
+
+  @override
+  String get payGaugeToLast => 'To last';
+
+  @override
+  String get payGaugeNextPay => 'Next pay';
 }

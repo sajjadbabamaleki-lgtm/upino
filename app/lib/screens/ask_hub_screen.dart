@@ -17,6 +17,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
+import '../state/insights.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
 import '../widgets/best_move_card.dart' show bestMoveLines;
 import '../widgets/month_review.dart';
@@ -51,15 +52,19 @@ class AskHubScreen extends StatelessWidget {
           const SizedBox(height: 20),
         ],
         SectionHeading(l.askHubCommon),
-        for (final (q, text) in common) ...[
-          _CommonQuestion(
-            key: Key('ask-common-${q.name}'),
-            question: text,
-            preview: answerPreview(context, answerSuggested(q, state)),
-            onTap: () => ChatPage.open(context, state, firstQuestion: text),
-          ),
-          const SizedBox(height: 10),
-        ],
+        // A question whose honest answer is "nothing to suggest" is left out.
+        // One card, the questions split by hairlines. A question whose honest
+        // answer is "nothing to suggest" is left out.
+        RowGroup(rows: [
+          for (final (q, text) in common)
+            if (!(q == SuggestedQuestion.bestMove && state.bestMove == null))
+              _CommonQuestion(
+                key: Key('ask-common-${q.name}'),
+                question: text,
+                preview: answerPreview(context, answerSuggested(q, state)),
+                onTap: () => ChatPage.open(context, state, firstQuestion: text),
+              ),
+        ],),
       ]),
     );
   }
@@ -201,8 +206,10 @@ class _CommonQuestion extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: UpinoCard(
-        child: Row(
+      child: (inRowGroup(context)
+          ? (Widget child) => Padding(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16), child: child)
+          : (Widget child) => UpinoCard(child: child))(
+        Row(
           children: [
             Expanded(
               child: Column(

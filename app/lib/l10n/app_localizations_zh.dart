@@ -1988,4 +1988,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get voiceRetry => '再说一次';
+
+  @override
+  String heroUntil(String date) {
+    return '到 $date';
+  }
+
+  @override
+  String get goalIcon => '图标';
+
+  @override
+  String get payGaugeToLast => '需撑到发薪';
+
+  @override
+  String get payGaugeNextPay => '下次发薪';
 }

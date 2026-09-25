@@ -2076,4 +2076,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get voiceRetry => 'Ещё раз';
+
+  @override
+  String heroUntil(String date) {
+    return 'До $date';
+  }
+
+  @override
+  String get goalIcon => 'Значок';
+
+  @override
+  String get payGaugeToLast => 'Должно хватить';
+
+  @override
+  String get payGaugeNextPay => 'Следующая зарплата';
 }

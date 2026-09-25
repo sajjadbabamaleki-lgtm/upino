@@ -1503,5 +1503,25 @@
   "voiceTitleHeard": "Heard you",
   "voiceTitleFailed": "Didn't catch that",
   "voiceStop": "Stop",
-  "voiceRetry": "Again"
+  "voiceRetry": "Again",
+  "heroUntil": "Until {date}",
+  "@heroUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalIcon": "Icon",
+  "@goalIcon": {
+    "description": "Label over the goal icon picker."
+  },
+  "payGaugeToLast": "To last",
+  "@payGaugeToLast": {
+    "description": "Pay card: the money that has to last until pay."
+  },
+  "payGaugeNextPay": "Next pay",
+  "@payGaugeNextPay": {
+    "description": "Pay card: what is free once the pay arrives."
+  }
 }

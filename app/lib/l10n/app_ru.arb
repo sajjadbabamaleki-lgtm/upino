@@ -580,5 +580,9 @@
   "voiceTitleHeard": "Услышано",
   "voiceTitleFailed": "Не расслышал",
   "voiceStop": "Стоп",
-  "voiceRetry": "Ещё раз"
+  "voiceRetry": "Ещё раз",
+  "heroUntil": "До {date}",
+  "goalIcon": "Значок",
+  "payGaugeToLast": "Должно хватить",
+  "payGaugeNextPay": "Следующая зарплата"
 }

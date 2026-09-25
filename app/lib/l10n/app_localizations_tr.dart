@@ -2072,4 +2072,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get voiceRetry => 'Tekrar';
+
+  @override
+  String heroUntil(String date) {
+    return '$date tarihine kadar';
+  }
+
+  @override
+  String get goalIcon => 'Simge';
+
+  @override
+  String get payGaugeToLast => 'Yetmesi gereken';
+
+  @override
+  String get payGaugeNextPay => 'Sonraki maaş';
 }

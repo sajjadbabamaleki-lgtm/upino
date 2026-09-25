@@ -12,6 +12,11 @@ import 'package:upino/engine/domain.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
+import 'package:upino/widgets/sts_hero.dart';
+
+/// The figure in the hero; the pay card repeats it lower down.
+Finder inHero(String text) =>
+    find.descendant(of: find.byType(StsHero), matching: find.text(text));
 
 final now = DateTime.utc(2026, 10, 1, 10);
 const cest = Duration(hours: 2);
@@ -171,7 +176,7 @@ void main() {
 
       await tester.tap(find.byKey(const Key('nav-0')));
       await tester.pumpAndSettle();
-      expect(find.text('€450.00'), findsOneWidget);
+      expect(inHero('€450'), findsOneWidget);
     });
 
     testWidgets('a commitment can be removed from the plan', (tester) async {

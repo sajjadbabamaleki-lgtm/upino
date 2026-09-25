@@ -580,5 +580,9 @@
   "voiceTitleHeard": "شنیده شد",
   "voiceTitleFailed": "متوجه نشدم",
   "voiceStop": "توقف",
-  "voiceRetry": "دوباره"
+  "voiceRetry": "دوباره",
+  "heroUntil": "تا {date}",
+  "goalIcon": "آیکون",
+  "payGaugeToLast": "باید کفاف بدهد",
+  "payGaugeNextPay": "حقوق بعدی"
 }

@@ -42,7 +42,7 @@ class UpinoTopBar extends StatelessWidget {
       height: height,
       padding: const EdgeInsets.all(inset),
       decoration: BoxDecoration(
-        color: dark ? UpinoTokens.darkSurfaceRaised : UpinoTokens.surfaceRaised,
+        color: dark ? UpinoTokens.darkChrome : UpinoTokens.surfaceRaised,
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
       ),
       child: Row(
@@ -85,27 +85,46 @@ class UpinoMark extends StatelessWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         key: const Key('upino-mark'),
         width: size,
         height: size,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isDark(context)
-              ? UpinoTokens.darkActionPrimary
-              : UpinoTokens.actionPrimary,
-        ),
-        child: Text(
-          'U',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: size * 0.48,
-            fontWeight: FontWeight.w800,
-            height: 1,
+        child: Center(
+          // The site's mark: a rounded square with the U drawn as one stroke.
+          child: CustomPaint(
+            size: Size.square(size * 0.76),
+            painter: _MarkPainter(isDark(context) ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary),
           ),
         ),
       );
+}
+
+class _MarkPainter extends CustomPainter {
+  const _MarkPainter(this.color);
+  final Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final k = size.width / 32;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(9 * k)),
+      Paint()..color = color,
+    );
+    final u = Path()
+      ..moveTo(10 * k, 9 * k)
+      ..lineTo(10 * k, 17.2 * k)
+      ..arcToPoint(Offset(22 * k, 17.2 * k), radius: Radius.circular(6 * k), clockwise: false)
+      ..lineTo(22 * k, 9 * k);
+    canvas.drawPath(
+      u,
+      Paint()
+        ..color = const Color(0xFFF2F2F2)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.2 * k
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+  @override
+  bool shouldRepaint(_MarkPainter oldDelegate) => oldDelegate.color != color;
 }
 
 class _RoundButton extends StatelessWidget {

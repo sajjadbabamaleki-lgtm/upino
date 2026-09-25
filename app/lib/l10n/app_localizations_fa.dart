@@ -2068,4 +2068,18 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get voiceRetry => 'دوباره';
+
+  @override
+  String heroUntil(String date) {
+    return 'تا $date';
+  }
+
+  @override
+  String get goalIcon => 'آیکون';
+
+  @override
+  String get payGaugeToLast => 'باید کفاف بدهد';
+
+  @override
+  String get payGaugeNextPay => 'حقوق بعدی';
 }

@@ -580,5 +580,9 @@
   "voiceTitleHeard": "Entendido",
   "voiceTitleFailed": "No lo entendí",
   "voiceStop": "Parar",
-  "voiceRetry": "Otra vez"
+  "voiceRetry": "Otra vez",
+  "heroUntil": "Hasta el {date}",
+  "goalIcon": "Icono",
+  "payGaugeToLast": "Debe durar",
+  "payGaugeNextPay": "Próximo pago"
 }

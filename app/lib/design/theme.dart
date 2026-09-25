@@ -90,13 +90,29 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
         fontFamily: fontFamily,
       ),
     ),
+    // Chips are soft pills: no outline, the card colour on the page.
+    chipTheme: ChipThemeData(
+      backgroundColor: dark ? UpinoTokens.darkSurfaceCard : UpinoTokens.surfaceCard,
+      selectedColor: dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint,
+      side: BorderSide.none,
+      shape: const StadiumBorder(),
+      elevation: 0,
+      pressElevation: 0,
+      labelStyle: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 13.5,
+        fontWeight: FontWeight.w500,
+        color: dark ? UpinoTokens.darkTextPrimary : UpinoTokens.textPrimary,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: primary,
         foregroundColor: Colors.white,
-        disabledBackgroundColor:
-            dark ? UpinoTokens.darkSurfaceSunken : UpinoTokens.surfaceSunken,
-        disabledForegroundColor: UpinoTokens.textTertiary,
+        // Still reads as the button it will become, just not yet.
+        disabledBackgroundColor: primary.withValues(alpha: 0.32),
+        disabledForegroundColor: Colors.white,
         minimumSize: const Size.fromHeight(56),
         elevation: 0,
         shape: RoundedRectangleBorder(

@@ -580,5 +580,9 @@
   "voiceTitleHeard": "听到了",
   "voiceTitleFailed": "没听清",
   "voiceStop": "停止",
-  "voiceRetry": "再说一次"
+  "voiceRetry": "再说一次",
+  "heroUntil": "到 {date}",
+  "goalIcon": "图标",
+  "payGaugeToLast": "需撑到发薪",
+  "payGaugeNextPay": "下次发薪"
 }

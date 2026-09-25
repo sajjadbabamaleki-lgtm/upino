@@ -21,6 +21,7 @@ class GoalDraft {
     required this.target,
     required this.targetDate,
     required this.kind,
+    this.icon,
     this.deleted = false,
   });
 
@@ -28,8 +29,16 @@ class GoalDraft {
   final Money target;
   final LocalDate targetDate;
   final GoalKind kind;
+  final String? icon;
   final bool deleted;
 }
+
+/// The icons a goal can wear, in the order the picker offers them.
+const goalIconNames = [
+  'goal-savings', 'goal-trip', 'goal-car', 'goal-home',
+  'goal-emergency', 'goal-laptop', 'goal-phone', 'goal-study',
+  'goal-gift', 'goal-furniture', 'goal-umbrella', 'goal-fitness',
+];
 
 class GoalEditorSheet extends StatefulWidget {
   const GoalEditorSheet({required this.state, this.goal, super.key});
@@ -58,6 +67,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
   late final TextEditingController _target;
   late GoalKind _kind;
   late int _months;
+  late String _icon = widget.goal?.icon ?? goalIconNames.first;
 
   /// Offered horizons, in months. A date picker is more precision than a
   /// savings target usually deserves, and it is one more thing to get wrong.
@@ -115,6 +125,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
       target: target,
       targetDate: widget.state.today.addDays(_months * 30),
       kind: _kind,
+      icon: _icon,
     ),);
   }
 
@@ -170,6 +181,13 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                     style: theme.textTheme.titleMedium?.copyWith(fontSize: 18),
                     decoration: _plain(theme, l.goalNameHint),
                   ),
+                ),
+
+                const SizedBox(height: 16),
+                _Label(l.goalIcon),
+                _IconPicker(
+                  selected: _icon,
+                  onPick: (name) => setState(() => _icon = name),
                 ),
 
                 const SizedBox(height: 16),
@@ -259,6 +277,7 @@ class _GoalEditorSheetState extends State<GoalEditorSheet> {
                           target: widget.goal!.target,
                           targetDate: widget.goal!.targetDate,
                           kind: widget.goal!.kind,
+                          icon: widget.goal!.icon,
                           deleted: true,
                         ),
                       ),
@@ -300,6 +319,57 @@ class _Label extends StatelessWidget {
         padding: const EdgeInsets.only(left: 4, bottom: 8),
         child: Text(text, style: Theme.of(context).textTheme.bodySmall),
       );
+}
+
+class _IconPicker extends StatelessWidget {
+  const _IconPicker({required this.selected, required this.onPick});
+
+  final String selected;
+  final ValueChanged<String> onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = isDark(context);
+    final active =
+        dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    final idle =
+        dark ? UpinoTokens.darkTextSecondary : UpinoTokens.textSecondary;
+    return LayoutBuilder(
+      builder: (context, box) {
+        const perRow = 6;
+        const gap = 8.0;
+        final size = (box.maxWidth - gap * (perRow - 1)) / perRow;
+        return Wrap(
+          spacing: gap,
+          runSpacing: gap,
+          children: [
+            for (final name in goalIconNames)
+              Pressable(
+                scale: 0.92,
+                onTap: () => onPick(name),
+                child: AnimatedContainer(
+                  key: Key('goal-icon-$name'),
+                  duration: const Duration(milliseconds: 180),
+                  width: size,
+                  height: size.clamp(0, 52).toDouble(),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: name == selected ? active : sunkenColor(context),
+                    borderRadius:
+                        BorderRadius.circular(UpinoTokens.radiusInner),
+                  ),
+                  child: UpinoIcon(
+                    name,
+                    size: 22,
+                    color: name == selected ? Colors.white : idle,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class _Sunken extends StatelessWidget {

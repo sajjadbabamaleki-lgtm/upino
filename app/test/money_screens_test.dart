@@ -178,14 +178,14 @@ void main() {
     state.clearExpenseConfirmation();
     await open(tester, state, tab: 3);
 
-    await tester.tap(find.text('−€80.00'));
+    await tester.tap(find.text('−€80'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('recover-expect')));
     await tester.pumpAndSettle();
     expect(state.recoveryFor(spend)!.state, RecoveryState.refundPending);
     expect(find.byKey(const Key('money-coming-back')), findsOneWidget);
 
-    await tester.tap(find.text('−€80.00'));
+    await tester.tap(find.text('−€80'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('recover-arrived')));
     await tester.pumpAndSettle();
@@ -209,7 +209,9 @@ void main() {
       tester.widget<Text>(find.byKey(const Key('pay-gauge-days'))).data,
       '27',
     );
-    expect(find.textContaining('After your pay on October 28'), findsOneWidget);
+    // What is free once the pay lands, beside what has to last until then.
+    expect(find.text('NEXT PAY'), findsOneWidget);
+    expect(find.text('TO LAST'), findsOneWidget);
   });
 
   testWidgets('a goal path opens, and a new pace moves its date only when chosen',

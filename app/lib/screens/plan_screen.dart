@@ -221,7 +221,7 @@ class PlanScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: revealed([
+      children: revealed(groupRows([
         // The page's name is in the capsule above.
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
@@ -461,7 +461,7 @@ class PlanScreen extends StatelessWidget {
           trailing: const RowAffordance(icon: 'add'),
           onTap: () => _editHolding(context, null),
         ),
-      ]),
+      ]),),
     );
   }
 

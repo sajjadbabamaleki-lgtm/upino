@@ -75,6 +75,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
       target: draft.target,
       targetDate: draft.targetDate,
       kind: draft.kind,
+      icon: draft.icon,
     );
   }
 
@@ -91,6 +92,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
       target: draft.target,
       targetDate: draft.targetDate,
       kind: draft.kind,
+      icon: draft.icon,
     );
   }
 
@@ -320,6 +322,27 @@ class _GoalCardState extends State<_GoalCard> {
         children: [
           Row(
             children: [
+              Builder(builder: (context) {
+                final tint = goal.isComplete
+                    ? (dark ? UpinoTokens.lime : const Color(0xFF4F7A00))
+                    : widget.color ??
+                        (dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary);
+                return Container(
+                width: 38,
+                height: 38,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11),
+                  color: tint.withValues(alpha: dark ? 0.16 : 0.1),
+                ),
+                child: UpinoIcon(
+                  goal.icon ?? 'goal-savings',
+                  size: 20,
+                  color: tint,
+                ),
+              );
+              },),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(goal.name, style: theme.textTheme.titleLarge),
               ),
@@ -330,9 +353,12 @@ class _GoalCardState extends State<_GoalCard> {
             ],
           ),
           const SizedBox(height: 2),
-          Text(
-            _GoalCard._status(AppLocalizations.of(context), goal, cycles),
-            style: theme.textTheme.bodySmall,
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 50),
+            child: Text(
+              _GoalCard._status(AppLocalizations.of(context), goal, cycles),
+              style: theme.textTheme.bodySmall,
+            ),
           ),
           const SizedBox(height: 14),
           // How far along, as a half ring of segments with the amount in the
@@ -343,7 +369,9 @@ class _GoalCardState extends State<_GoalCard> {
               key: Key('goal-gauge-${goal.id}'),
               value: goal.progress,
               size: 230,
-              color: goal.kind == GoalKind.paused
+              color: goal.isComplete
+                  ? UpinoTokens.lime
+                  : goal.kind == GoalKind.paused
                   ? (dark
                       ? UpinoTokens.darkTextTertiary
                       : UpinoTokens.textTertiary)
@@ -458,9 +486,8 @@ class _GoalCardState extends State<_GoalCard> {
               onPressed: onContribute,
               style: FilledButton.styleFrom(
                 backgroundColor: sunkenColor(context),
-                foregroundColor: dark
-                    ? UpinoTokens.darkTextPrimary
-                    : UpinoTokens.textPrimary,
+                foregroundColor:
+                    dark ? UpinoTokens.lime : UpinoTokens.textPrimary,
                 minimumSize: const Size.fromHeight(48),
               ),
               child: Text(AppLocalizations.of(context).goalsAddMoney),

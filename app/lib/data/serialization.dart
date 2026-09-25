@@ -318,6 +318,7 @@ Map<String, Object?> goalToJson(Goal g) => {
       'targetDate': localDateToJson(g.targetDate),
       'saved': moneyToJson(g.saved),
       'kind': g.kind.name,
+      if (g.icon != null) 'icon': g.icon,
     };
 
 Goal goalFromJson(Map<String, Object?> json) => Goal(
@@ -327,6 +328,7 @@ Goal goalFromJson(Map<String, Object?> json) => Goal(
       targetDate: localDateFromJson(json['targetDate']),
       saved: moneyFromJson(json['saved']),
       kind: enumByName(GoalKind.values, json['kind'], 'goal kind'),
+      icon: json['icon'] as String?,
     );
 
 // --- holdings --------------------------------------------------------------

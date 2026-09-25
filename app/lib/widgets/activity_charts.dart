@@ -78,7 +78,6 @@ class _WeekSpendCardState extends State<WeekSpendCard> {
               selected: _selected,
               onSelect: (i) => setState(() => _selected = i),
               color: primary,
-              restColor: primary.withValues(alpha: 0.3),
               labels: [
                 for (var k = 6; k >= 0; k--)
                   formatWeekdayNarrow(context, today.addDays(-k)),
@@ -140,10 +139,9 @@ class _FlowsCardState extends State<FlowsCard> {
             outs: [for (final w in flows) w.moneyOut.minor.toDouble()],
             selected: _selected,
             onSelect: (i) => setState(() => _selected = i),
-            inColor: dark
-                ? UpinoTokens.darkActionPrimary
-                : UpinoTokens.actionPrimary,
-            outColor: dark ? UpinoTokens.darkCritical : UpinoTokens.critical,
+            inColor: UpinoTokens.lime,
+            // spending is ordinary, not an alarm: ink, with income in blue
+            outColor: dark ? UpinoTokens.darkTextSecondary : UpinoTokens.textPrimary,
           ),
         ],
       ),

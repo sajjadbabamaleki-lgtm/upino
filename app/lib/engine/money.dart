@@ -140,7 +140,9 @@ class Money implements Comparable<Money> {
   /// `€1,800.00` — grouped for display, never abbreviated (§32.8).
   String display({bool withSymbol = true, bool grouped = true}) {
     final c = Currency.of(currency);
-    final text = _digits(grouped: grouped);
+    var text = _digits(grouped: grouped);
+    // whole amounts read as whole: €1,200, not €1,200.00
+    if (c.exponent > 0 && minor % _pow10(c.exponent) == 0) text = text.substring(0, text.length - c.exponent - 1);
     return withSymbol ? '${c.symbol}$text' : text;
   }
 

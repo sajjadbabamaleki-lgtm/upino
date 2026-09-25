@@ -580,5 +580,9 @@
   "voiceTitleHeard": "सुन लिया",
   "voiceTitleFailed": "समझ नहीं आया",
   "voiceStop": "रोकें",
-  "voiceRetry": "फिर से"
+  "voiceRetry": "फिर से",
+  "heroUntil": "{date} तक",
+  "goalIcon": "आइकन",
+  "payGaugeToLast": "चलाना है",
+  "payGaugeNextPay": "अगला वेतन"
 }
