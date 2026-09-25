@@ -129,7 +129,7 @@
       </div>
       <div class="bt bt--line">
         <span class="bt__k">Next 40 days</span>
-        <svg viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 L75 70 L78 8 L300 60" fill="none"/><line x1="0" x2="300" y1="88" y2="88"/></svg>
+        <div class="dbars" aria-hidden="true"><i class="now" style="--v:0.426"></i><i class="" style="--v:0.400"></i><i class="" style="--v:0.374"></i><i class="" style="--v:0.348"></i><i class="" style="--v:0.322"></i><i class="" style="--v:0.296"></i><i class="" style="--v:0.270"></i><i class="" style="--v:0.244"></i><i class="" style="--v:0.219"></i><i class="" style="--v:0.193"></i><i class="pay" style="--v:0.941"></i><i class="" style="--v:0.917"></i><i class="" style="--v:0.893"></i><i class="" style="--v:0.870"></i><i class="" style="--v:0.846"></i><i class="" style="--v:0.822"></i><i class="" style="--v:0.799"></i><i class="" style="--v:0.775"></i><i class="" style="--v:0.751"></i><i class="" style="--v:0.727"></i><i class="" style="--v:0.704"></i><i class="" style="--v:0.680"></i><i class="" style="--v:0.656"></i><i class="" style="--v:0.633"></i><i class="" style="--v:0.609"></i><i class="" style="--v:0.585"></i><i class="" style="--v:0.561"></i><i class="" style="--v:0.538"></i><i class="" style="--v:0.514"></i><i class="" style="--v:0.490"></i><i class="" style="--v:0.467"></i><i class="" style="--v:0.443"></i><i class="" style="--v:0.419"></i><i class="" style="--v:0.396"></i><i class="" style="--v:0.372"></i><i class="" style="--v:0.348"></i><i class="" style="--v:0.324"></i><i class="" style="--v:0.301"></i><i class="" style="--v:0.277"></i><i class="" style="--v:0.253"></i></div>
         <span class="bt__s">Income Oct 25</span>
       </div>
     </div>
@@ -235,8 +235,9 @@
       </dl>
 
       <figure class="mini-chart">
-        <svg id="askChart" viewBox="0 0 560 170" role="img" aria-label="Safe to Spend over the next 40 days for the chosen scenario"></svg>
-        <figcaption>Safe to Spend, next 40 days · example</figcaption>
+        <div class="abars" id="askChart" role="img" aria-label="Safe to Spend over the next 40 days for the chosen scenario. The hatched part is what the laptop takes."></div>
+        <div class="abars__axis" aria-hidden="true"><span>Today</span><span>Nov 4</span><span>Nov 24</span></div>
+        <figcaption>Safe to Spend, next 40 days. The hatched part is what the laptop takes.</figcaption>
       </figure>
     </div>
   </div>
@@ -788,7 +789,6 @@
 
 <!-- ───────── ARTICLES ───────── -->
 <section class="journal" id="articles" aria-labelledby="articlesTitle">
-  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">15</span><span class="rule__t">Articles</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
   <div class="wrap">
     <div class="journal__head">
       <h2 class="h2" id="articlesTitle">Articles. <span class="muted">On money, decisions and what comes next.</span></h2>
@@ -829,6 +829,7 @@
           <a class="store" href="#get" title="Placeholder: App Store link once listed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>App Store</a>
           <a class="store" href="#get" title="Placeholder: Google Play link once listed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3.3v17.4c0 .6.7 1 1.2.7l15-8.7c.5-.3.5-1.1 0-1.4l-15-8.7C4.7 2.3 4 2.7 4 3.3z"/></svg>Google Play</a>
         </div>
+        <div class="footer__social" aria-label="Upino elsewhere"><a href="#" title="Placeholder: Telegram link" aria-label="Upino on Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2l-11 6.9-4.7-1.5c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg></a><a href="#" title="Placeholder: Instagram link" aria-label="Upino on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></a><a href="#" title="Placeholder: X link" aria-label="Upino on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.8 3h6.4l4.4 5.9L17.8 3Zm-1.1 16.2h1.7L7.3 4.7H5.5l11.2 14.5Z"/></svg></a><a href="#" title="Placeholder: LinkedIn link" aria-label="Upino on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V21h-4V9.5Z"/></svg></a></div>
       </div>
       <nav class="footer__cols" aria-label="Footer">
         <div><h2>Product</h2><ul><li><a href="#product">Safe to Spend</a></li><li><a href="#how">How it works</a></li><li><a href="#intelligence">Intelligence</a></li><li><a href="#pricing">Pricing</a></li></ul></div>

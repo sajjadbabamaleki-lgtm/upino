@@ -259,9 +259,10 @@ button { font: inherit; color: inherit; }
 .bt__btn:active { transform: scale(.95); }
 .bt__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .bt--line { grid-area: line; }
-.bt--line svg { width: 100%; height: 80px; overflow: visible; }
-.bt--line path { stroke: var(--accent); stroke-width: 2.4; vector-effect: non-scaling-stroke; }
-.bt--line line { stroke: var(--line-strong); vector-effect: non-scaling-stroke; }
+.dbars { display: flex; align-items: flex-end; gap: 2px; height: 80px; }
+.dbars i { flex: 1; min-width: 0; height: calc(var(--v) * 100%); border-radius: 2px; background: #cdd1f8; }
+.dbars i.now { background: var(--accent); }
+.dbars i.pay { background: #8a90ff; }
 .bt.flash { animation: bt-flash 900ms ease; }
 @keyframes bt-flash { 30% { box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 30px 60px -34px rgba(8,10,60,.7); } }
 
@@ -393,7 +394,16 @@ button { font: inherit; color: inherit; }
 .outcome dd { margin: 8px 0 0; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.04em; font-weight: 500; min-height: 36px; display: flex; align-items: center; }
 .mini-chart { margin: 20px 0 0; }
 .mini-chart figcaption { margin-top: 8px; font-size: 13px; color: var(--text-3); }
-.mini-chart svg { width: 100%; height: auto; overflow: visible; }
+/* the next 40 days as daily bars; the hatched cap is what the laptop takes */
+.abars { display: flex; align-items: flex-end; gap: 3px; height: 130px; }
+.abars__col { position: relative; flex: 1; min-width: 0; height: 100%; }
+.abars__col i { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 3px; }
+.abars__ghost { height: calc(var(--g) * 100%); background: repeating-linear-gradient(135deg, rgba(47,58,232,.24) 0 4px, rgba(47,58,232,.06) 4px 8px); }
+.abars__bar { height: calc(var(--v) * 100%); background: #cdd1f8; transition: height 650ms var(--ease-out); }
+.abars__col.is-now .abars__bar { background: var(--accent); }
+.abars__pay { position: absolute; left: 50%; bottom: calc(var(--g) * 100% + 6px); transform: translateX(-50%); font-size: 11px; font-weight: 650; color: var(--accent); white-space: nowrap; }
+.abars.is-pre .abars__bar { height: 0; }
+.abars__axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-3); }
 
 /* chart primitives, shared */
 .ax { stroke: var(--line-strong); stroke-width: 1; }
@@ -1164,6 +1174,11 @@ button { font: inherit; color: inherit; }
 .store:hover { background: #fff; }
 .store:active { transform: scale(.97); }
 .store svg { width: 17px; height: 17px; }
+.footer__social { display: flex; gap: 10px; margin-top: 22px; }
+.footer__social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: var(--on-ink-2); box-shadow: inset 0 0 0 1px var(--line-ink); transition: color 160ms ease, background-color 160ms ease, transform 160ms var(--ease-out); }
+.footer__social a:hover { color: var(--ink); background: var(--on-ink); }
+.footer__social a:active { transform: scale(.94); }
+.footer__social svg { width: 19px; height: 19px; }
 .footer__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .footer__cols h2 { margin: 0 0 14px; font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--on-ink-3); }
 .footer__cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }

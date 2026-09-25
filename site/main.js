@@ -247,39 +247,23 @@
 
   /* ── Ask before you spend ───────────────────────────────────────── */
   (function ask() {
-    const svg = $("#askChart");
-    const W = 560, H = 170, L = 8, R = 552, T = 14, B = 136;
-    const x = (d) => L + (d / 40) * (R - L);
-    const y = (v) => B - (Math.max(v, 0) / 2800) * (B - T);
-    [0, 1000, 2000].forEach((v) => el("line", { x1: L, x2: R, y1: y(v), y2: y(v), class: v ? "grid-line" : "ax" }, svg));
-    el("line", { x1: x(10), x2: x(10), y1: T, y2: B, class: "today-line" }, svg);
-    const incLbl = el("text", { x: x(10) + 6, y: T + 10, class: "ax-label" }, svg);
-    incLbl.textContent = "Income, Oct 25";
-    const dayLbls = [[0, "Today"], [20, "Nov 4"], [40, "Nov 24"]];
-    dayLbls.forEach(([d, t], i) => {
-      const n = el("text", { x: x(d), y: H - 8, class: "ax-label", "text-anchor": i === 0 ? "start" : i === 2 ? "end" : "middle" }, svg);
-      n.textContent = t;
-    });
-    const area = el("path", { class: "area" }, svg);
-    const line = el("path", { class: "curve" }, svg);
-    const buyDot = el("circle", { r: 5, class: "scrub-dot" }, svg);
-    const buyLbl = el("text", { class: "ax-label" }, svg);
-
-    const now = (d) => buyNow(d);
-    const later = (d) => waitPay(d);
+    const box = $("#askChart");
+    const MAX = 2700;
+    // each day's bar is the chosen scenario; behind it, hatched, the day without the laptop
+    const cols = [];
+    for (let d = 0; d <= 40; d++) {
+      const c = document.createElement("span");
+      c.className = "abars__col" + (d === 0 ? " is-now" : "");
+      c.style.setProperty("--g", (baseline(d) / MAX).toFixed(4));
+      c.innerHTML = '<i class="abars__ghost"></i><i class="abars__bar"></i>' + (d === 10 ? '<span class="abars__pay">Pay</span>' : "");
+      box.appendChild(c);
+      cols.push(c);
+    }
     let mix = 0; // 0 = buy today, 1 = wait
     function render() {
-      const f = (d) => now(d) * (1 - mix) + later(d) * mix;
-      const p = pathFrom(f, 0, 40, x, y);
-      line.setAttribute("d", p);
-      area.setAttribute("d", p + `L${x(40)} ${B}L${x(0)} ${B}Z`);
-      const bd = mix < 0.5 ? 0 : 10;
-      buyDot.setAttribute("cx", x(bd)); buyDot.setAttribute("cy", y(f(bd)));
-      buyLbl.setAttribute("x", x(bd) + 9); buyLbl.setAttribute("y", y(f(bd)) - 9);
-      buyLbl.textContent = "Laptop −€700";
+      cols.forEach((c, d) => c.style.setProperty("--v", ((buyNow(d) * (1 - mix) + waitPay(d) * mix) / MAX).toFixed(4)));
     }
     render();
-
     const ctl = $(".seg-control");
     const sts = $("#askSts");
     const goal = $("#askGoal");
@@ -297,11 +281,7 @@
       goal.innerHTML = which === "wait"
         ? '<span class="pill pill--ok">On schedule</span>'
         : '<span class="pill pill--warn">+18 days</span>';
-      if (animate) {
-        const o = { m: mix };
-        G.to(o, { m: target, duration: 0.7, ease: "power3.inOut", overwrite: true,
-          onUpdate: () => { mix = o.m; render(); } });
-      } else { mix = target; render(); }
+      mix = target; render();
     }
     opts.forEach((o, i) => {
       o.tabIndex = i === 0 ? 0 : -1;
@@ -313,7 +293,7 @@
         }
       });
     });
-    onEnter(svg, () => drawOn(line, 1.1));
+    if (!reduce) { box.classList.add("is-pre"); onEnter(box, () => box.classList.remove("is-pre")); }
   })();
 
   /* ── Financial timeline, by the week ───────────────────────────────
