@@ -737,7 +737,7 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) { .yblk { transition: none; } }
 
 /* included, on ink */
-.plan__included { background: var(--ink); color: var(--on-ink); border-left: 0; margin: 12px; border-radius: calc(var(--r-lg) - 6px); box-shadow: 0 20px 40px -24px rgba(15,16,18,.6); }
+.plan__included { background: var(--ink); color: var(--on-ink); border-left: 0; margin: 24px; border-radius: calc(var(--r-lg) - 8px); box-shadow: 0 20px 40px -24px rgba(15,16,18,.6); }
 .plan__included .included__title { color: var(--on-ink); }
 .included--chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .included--chips li {
@@ -749,7 +749,7 @@ button { font: inherit; color: inherit; }
 .included--chips li::before { border-color: var(--accent-ink); transform: translateY(-2px) rotate(-45deg); flex: none; }
 .included__note { margin: 22px 0 0; font-size: 14px; color: var(--on-ink-2); max-width: 30ch; }
 @media (max-width: 900px) {
-  .plan__included { margin: 0 12px 12px; border-top: 0; }
+  .plan__included { margin: 0 24px 24px; border-top: 0; }
 }
 
 @media (max-width: 900px) {
