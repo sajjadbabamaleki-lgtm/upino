@@ -289,31 +289,6 @@ button { font: inherit; color: inherit; }
 /* ── problem: the past against what comes next ───────── */
 .problem { padding-block: var(--section); }
 .problem__title { max-width: 22ch; }
-.vs { margin-top: clamp(44px, 6vw, 72px); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; }
-.vs__card { border-radius: 26px; padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; gap: 10px; }
-.vs__card--past { background: var(--paper-2); color: var(--text-2); }
-.vs__card--next { background: var(--ink); color: var(--on-ink); box-shadow: 0 40px 80px -40px rgba(15,16,18,.55); }
-.vs__tag { margin: 0; font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
-.vs__tag--next { color: var(--accent-ink); }
-.vs__q { margin: 0; font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 540; }
-.vs__card--past .vs__q { color: var(--text-3); }
-.vs__rows { list-style: none; margin: 18px 0 0; padding: 0; font-size: 14px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent); mask-image: linear-gradient(to bottom, #000 45%, transparent); }
-.vs__rows li { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; padding: 11px 0; border-bottom: 1px dashed var(--line-strong); }
-.vs__rows .mono { font-size: 12.5px; color: var(--text-3); }
-.vs__foot { margin: auto 0 0; padding-top: 12px; font-size: 14px; color: var(--text-3); }
-.vs__turn { align-self: center; z-index: 1; margin: 0 -22px; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; box-shadow: 0 0 0 8px var(--paper), 0 14px 30px -10px rgba(47,58,232,.7); }
-.vs__turn svg { width: 24px; height: 24px; }
-.vs__big { margin: 14px 0 0; font-size: clamp(64px, 7.4vw, 104px); line-height: .95; font-weight: 580; letter-spacing: -0.04em; }
-.vs__sub { margin: 4px 0 0; font-size: 15px; color: var(--on-ink-2); }
-.vs__split { display: flex; gap: 3px; height: 12px; margin-top: 26px; }
-.vs__split i { flex: var(--w) 1 0; border-radius: 6px; background: #45464d; }
-.vs__split i.safe { background: #4d57ff; }
-.vs__legend { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14px; color: var(--on-ink-2); }
-.vs__legend li { display: flex; align-items: center; gap: 8px; }
-.vs__legend b { margin-left: auto; color: var(--on-ink); font-weight: 560; }
-.vs__legend i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
-.vs__legend .g { background: #6b6c74; } .vs__legend .b { background: #4d57ff; }
 
 /* ── ink sections ───────────────────────────────────── */
 .ink { background: var(--ink); color: var(--on-ink); }
@@ -566,23 +541,42 @@ button { font: inherit; color: inherit; }
 .mc__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 .mc__title { margin: 0; font-size: clamp(44px, 6vw, 84px); line-height: .95; letter-spacing: -0.04em; font-weight: 580; }
 .mc__pill { margin: 0; display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: var(--accent-tint); color: #262a78; font-size: 13.5px; font-weight: 600; }
-.flowm { margin: clamp(28px, 4vw, 44px) 0 0; }
-.flowm__svg { display: block; width: 100%; height: auto; overflow: visible; }
-.flowm__svg .rib { transition: opacity 300ms ease; cursor: pointer; }
-.flowm__svg .rib:focus { outline: none; }
-.flowm__svg.is-focus .rib:not(.is-hot) { opacity: .18; }
-.flowm__svg.is-focus .lab:not(.is-hot) { opacity: .35; }
-.flowm__svg .lab { transition: opacity 300ms ease; }
-.flowm__svg .lab-name { font: 500 13px var(--font); fill: var(--text-2); }
-.flowm__svg .lab-amt { font: 600 20px var(--font); fill: var(--text); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.flowm__svg .lab-pct { font: 500 12px var(--font); fill: var(--text-3); }
-.flowm__svg .lab--flex .lab-amt { fill: var(--accent); }
-.flowm__svg .src-name { font: 500 13px var(--font); fill: var(--text-2); }
-.flowm__svg .src-amt { font: 600 26px var(--font); fill: var(--text); letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
-.flowm__svg .src-sub { font: 500 12px var(--font); fill: var(--text-3); }
-.flowm__svg .lead { stroke: var(--line-strong); stroke-width: 1; fill: none; }
-.flowm__detail { margin: 18px 0 0; min-height: 1.5em; font-size: 15px; color: var(--text-2); }
-.flowm__detail b { color: var(--text); font-weight: 560; }
+.mb__sub { margin: 14px 0 0; font-size: clamp(17px, 1.6vw, 20px); color: var(--text-2); max-width: 46ch; text-wrap: pretty; }
+.mb__sub b { color: var(--accent); font-weight: 600; }
+.mb { margin: clamp(28px, 4vw, 44px) 0 0; }
+.mb__bar { display: flex; gap: 3px; height: clamp(48px, 6vw, 72px); border-radius: 16px; overflow: hidden; }
+.mb__bar i { flex: var(--v) 1 0; min-width: 0; }
+.mb__bar .s, .mb__legend .s { --c: #d9d8d4; }
+.mb__bar .p, .mb__legend .p { --c: #8e8f95; }
+.mb__bar .g, .mb__legend .g { --c: var(--ink); }
+.mb__bar .f, .mb__legend .f { --c: var(--accent); }
+.mb__bar i { background: var(--c); }
+.mb__legend { margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.mb__legend li { font-size: 14px; color: var(--text-3); }
+.mb__legend li::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; background: var(--c); }
+.mb__legend b { display: block; margin-top: 4px; font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.03em; color: var(--text); font-weight: 600; }
+.mb__legend .f b { color: var(--accent); }
+
+/* problem: one line, today in the middle */
+.pn { margin: clamp(40px, 6vw, 72px) 0 0; }
+.pn__bar { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; height: 64px; margin-top: 28px; }
+.pn__past { position: relative; height: 2px; background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 12px); }
+.pn__past i { position: absolute; left: var(--x); top: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: #a6a7ad; }
+.pn__next { height: 22px; border-radius: 0 11px 11px 0; background: var(--accent); transform-origin: left center; box-shadow: 0 14px 30px -14px rgba(47,58,232,.8); }
+.pn__today { position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px solid var(--ink); }
+.pn__today span { position: absolute; bottom: calc(100% + 8px); left: 0; transform: translateX(-50%); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.pn__lab { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+.pn__side { margin: 0; }
+.pn__side small { display: block; font-size: 14px; color: var(--text-3); margin-bottom: 8px; }
+.pn__side b { display: block; }
+.pn__side--past b { font-size: clamp(22px, 2.6vw, 34px); letter-spacing: -0.03em; font-weight: 560; color: #8f9096; }
+.pn__side--next { padding-left: 18px; }
+.pn__side--next b { font-size: clamp(40px, 6vw, 80px); letter-spacing: -0.045em; font-weight: 650; line-height: 1; color: var(--accent); }
+.pn__side--next span { display: block; margin-top: 8px; font-size: 16px; color: var(--text-2); }
+@media (max-width: 720px) {
+  .mb__legend { grid-template-columns: 1fr 1fr; }
+  .pn__side--next { padding-left: 12px; }
+}
 
 .mc__cols { margin-top: 64px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(32px, 5vw, 72px); }
 .chg { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -1046,8 +1040,6 @@ button { font: inherit; color: inherit; }
 @media (max-width: 1024px) {
 }
 @media (max-width: 900px) {
-  .vs { grid-template-columns: minmax(0, 1fr); }
-  .vs__turn { justify-self: center; margin: -22px 0; transform: rotate(90deg); }
   .ops, .cyc { grid-template-columns: 1fr 1fr; }
   .lf2 { grid-template-columns: minmax(0, 1fr); }
   .lf2__lane { height: 110px; }
@@ -1085,19 +1077,26 @@ button { font: inherit; color: inherit; }
    JS adds .is-pre only when motion is allowed, and takes it off on entry.
    Individual translate/scale are used so hover and lit states keep their
    own transform. */
-.vs__card, .vs__turn, .op, .lf2__node, .lf2__lane, .cs, .mc__cols > *,
+.pn__past i, .pn__next, .pn__today, .pn__side, .mb__bar i, .op, .lf2__node, .lf2__lane, .cs, .mc__cols > *,
 .op-goal__bar .plus, .op-budget__bar .more, .op-track li {
   transition-property: opacity, translate, scale, width, transform, box-shadow, background-color;
   transition-duration: 700ms, 700ms, 700ms, 900ms, 500ms, 400ms, 400ms;
   transition-timing-function: var(--ease-out);
 }
-.vs.is-pre .vs__card { opacity: 0; translate: 0 28px; }
-.vs.is-pre .vs__card--past { translate: -24px 0; }
-.vs.is-pre .vs__card--next { translate: 24px 0; }
-.vs.is-pre .vs__turn { opacity: 0; scale: .4; }
-.vs__card--next { transition-delay: 160ms; }
-.vs__turn { transition-delay: 420ms; }
 
+.pn.is-pre .pn__past i { opacity: 0; scale: 0; }
+.pn__past i:nth-child(2) { transition-delay: 60ms; } .pn__past i:nth-child(3) { transition-delay: 120ms; }
+.pn__past i:nth-child(4) { transition-delay: 180ms; } .pn__past i:nth-child(5) { transition-delay: 240ms; }
+.pn__past i:nth-child(6) { transition-delay: 300ms; }
+.pn.is-pre .pn__today { opacity: 0; scale: 1 0; }
+.pn__today { transition-delay: 380ms; }
+.pn.is-pre .pn__next { clip-path: inset(0 100% 0 0 round 0 11px 11px 0); }
+.pn__next { clip-path: inset(0 0 0 0 round 0 11px 11px 0); transition: clip-path 1100ms var(--ease-out) 620ms; }
+.pn.is-pre .pn__side { opacity: 0; translate: 0 16px; }
+.pn__side--next { transition-delay: 800ms; }
+.mb.is-pre .mb__bar i { flex-grow: 0; }
+.mb__bar i { transition-property: flex-grow; transition-duration: 900ms; }
+.mb__bar i:nth-child(2) { transition-delay: 150ms; } .mb__bar i:nth-child(3) { transition-delay: 300ms; } .mb__bar i:nth-child(4) { transition-delay: 450ms; }
 .ops.is-pre .op { opacity: 0; translate: 0 32px; }
 .op:nth-child(2) { transition-delay: 90ms; }
 .op:nth-child(3) { transition-delay: 180ms; }
@@ -1121,6 +1120,6 @@ button { font: inherit; color: inherit; }
 .mc__cols > *:nth-child(2) { transition-delay: 140ms; }
 
 @media (prefers-reduced-motion: reduce) {
-  .vs__card, .vs__turn, .op, .lf2__node, .lf2__lane, .cs, .mc__cols > *,
+  .pn__past i, .pn__next, .pn__today, .pn__side, .mb__bar i, .op, .lf2__node, .lf2__lane, .cs, .mc__cols > *,
   .op-goal__bar .plus, .op-budget__bar .more, .op-track li, .op-wait i { transition: none; }
 }

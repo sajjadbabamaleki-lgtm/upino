@@ -134,33 +134,17 @@
 <section class="problem" aria-labelledby="problemTitle">
   <div class="wrap">
     <h2 class="h2 problem__title" id="problemTitle">Most finance apps explain the past. <span class="muted">Upino helps you think about what comes&nbsp;next.</span></h2>
-    <div class="vs">
-      <article class="vs__card vs__card--past" aria-labelledby="vsPast">
-        <p class="vs__tag">Tracking</p>
-        <p class="vs__q" id="vsPast">Where did my money go?</p>
-        <ul class="vs__rows" aria-label="Past transactions">
-          <li><span class="mono">Oct 12</span><span>Grocery store</span><span class="num">−€64.20</span></li>
-          <li><span class="mono">Oct 11</span><span>Train pass</span><span class="num">−€49.00</span></li>
-          <li><span class="mono">Oct 11</span><span>Restaurant</span><span class="num">−€38.50</span></li>
-          <li><span class="mono">Oct 10</span><span>Streaming</span><span class="num">−€12.99</span></li>
-          <li><span class="mono">Oct 9</span><span>Pharmacy</span><span class="num">−€17.35</span></li>
-          <li><span class="mono">Oct 8</span><span>Coffee</span><span class="num">−€4.10</span></li>
-        </ul>
-        <p class="vs__foot">A record of what already happened.</p>
-      </article>
-      <span class="vs__turn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <article class="vs__card vs__card--next" aria-labelledby="vsNext">
-        <p class="vs__tag vs__tag--next">Decision intelligence</p>
-        <p class="vs__q" id="vsNext">What can my money safely do&nbsp;now?</p>
-        <p class="vs__big num">€1,284</p>
-        <p class="vs__sub">safe to spend for the next 12 days</p>
-        <div class="vs__split" aria-hidden="true"><i style="--w:3536"></i><i class="safe" style="--w:1284"></i></div>
-        <ul class="vs__legend">
-          <li><i class="g"></i>Rent, bills, yearly costs and goals, set aside <b class="num">€3,536</b></li>
-          <li><i class="b"></i>Yours to decide <b class="num">€1,284</b></li>
-        </ul>
-      </article>
-    </div>
+    <figure class="pn" id="pn" aria-label="Behind you: where did the money go. Ahead of you: €1,284 safe to spend for the next 12 days.">
+      <div class="pn__bar" aria-hidden="true">
+        <div class="pn__past"><i style="--x:12%"></i><i style="--x:30%"></i><i style="--x:44%"></i><i style="--x:61%"></i><i style="--x:78%"></i><i style="--x:91%"></i></div>
+        <div class="pn__next"></div>
+        <div class="pn__today"><span>Today</span></div>
+      </div>
+      <div class="pn__lab">
+        <p class="pn__side pn__side--past"><small>Behind you</small><b>Where did it go?</b></p>
+        <p class="pn__side pn__side--next"><small>Ahead of you</small><b class="num" id="pnAmt">€1,284</b><span>safe for the next 12 days</span></p>
+      </div>
+    </figure>
   </div>
 </section>
 
@@ -380,9 +364,15 @@
         <h2 class="mc__title" id="monthTitle">Your September</h2>
         <p class="mc__pill">Month close</p>
       </header>
-      <figure class="flowm" id="flowm" aria-label="Where September's money went: €5,700 in total, €5,400 income and €300 carried over. €3,620 spent, €580 protected for future costs, €410 moved toward goals, €1,090 ending flexibility.">
-        <svg class="flowm__svg" id="flowmSvg" aria-hidden="true"></svg>
-        <p class="flowm__detail" id="flowmDetail" aria-live="polite">Point at a stream to see what is in it.</p>
+      <p class="mb__sub">€5,700 came in. You ended with <b class="num">€1,090</b> free to use.</p>
+      <figure class="mb" id="mb" aria-label="September: €3,620 spent, €580 protected, €410 to goals, €1,090 flexible.">
+        <div class="mb__bar" aria-hidden="true"><i class="s" style="--v:3620"></i><i class="p" style="--v:580"></i><i class="g" style="--v:410"></i><i class="f" style="--v:1090"></i></div>
+        <ul class="mb__legend">
+          <li class="s">Spent<b class="num" data-v="3620">€3,620</b></li>
+          <li class="p">Protected<b class="num" data-v="580">€580</b></li>
+          <li class="g">To goals<b class="num" data-v="410">€410</b></li>
+          <li class="f">Flexible<b class="num" data-v="1090">€1,090</b></li>
+        </ul>
       </figure>
       <div class="mc__cols">
         <section aria-labelledby="changedTitle">
