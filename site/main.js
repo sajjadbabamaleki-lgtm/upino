@@ -316,118 +316,85 @@
     onEnter(svg, () => drawOn(line, 1.1));
   })();
 
-  /* ── Financial timeline ─────────────────────────────────────────── */
+  /* ── Financial timeline, by the week ───────────────────────────────
+     Thirteen weeks, Sep 15 to Dec 14. Each bar is the lowest Safe to Spend
+     of its week: grey behind today, blue for this week, pale ahead. Weeks
+     with income carry a Pay mark. With the laptop, the weeks it touches
+     shrink and the money it takes stays visible as a hatched cap. */
   (function timeline() {
-    const svg = $("#tlChart");
-    const wrap = $("#tlWrap");
+    const box = $("#tlBars");
+    if (!box) return;
+    const card = box.closest(".tl");
     const tip = $("#tlTip");
     const note = $("#tlNote");
-    const W = 1100, L = 56, R = 1080, T = 18, B = 262, LANE = 298;
-    const D0 = -30, D1 = 60;
-    const x = (d) => L + ((d - D0) / (D1 - D0)) * (R - L);
-    const y = (v) => B - (Math.max(v, 0) / 3000) * (B - T);
-
-    [0, 1000, 2000, 3000].forEach((v) => {
-      el("line", { x1: L, x2: R, y1: y(v), y2: y(v), class: v ? "grid-line" : "ax" }, svg);
-      const t = el("text", { x: L - 10, y: y(v) + 4, "text-anchor": "end", class: "ax-label" }, svg);
-      t.textContent = v ? "€" + v / 1000 + "k" : "€0";
-    });
-    [[-30, "Sep 15"], [-14, "Oct 1"], [17, "Nov 1"], [47, "Dec 1"], [60, "Dec 14"]].forEach(([d, t]) => {
-      const n = el("text", { x: x(d), y: 346, "text-anchor": d === 60 ? "end" : d === -30 ? "start" : "middle", class: "ax-label" }, svg);
-      n.textContent = t;
-    });
-    el("line", { x1: L, x2: R, y1: LANE, y2: LANE, class: "grid-line" }, svg);
-    const laneLbl = el("text", { x: L - 10, y: LANE + 4, "text-anchor": "end", class: "ax-label" }, svg);
-    laneLbl.textContent = "Plan";
-
-    el("line", { x1: x(0), x2: x(0), y1: T - 6, y2: LANE + 12, class: "today-line" }, svg);
-    const todayT = el("text", { x: x(0) + 7, y: T + 6, class: "today-label" }, svg);
-    todayT.textContent = "TODAY";
-
-    const area = el("path", { class: "area" }, svg);
-    const ghost = el("path", { class: "curve curve--ghost", opacity: 0 }, svg);
-    const past = el("path", { class: "curve curve--past", d: pathFrom(baseline, D0, 0, x, y) }, svg);
-    const future = el("path", { class: "curve" }, svg);
-    ghost.setAttribute("d", pathFrom(baseline, 0, D1, x, y));
-
-    // events sit on the plan lane: they are in the plan, not in the curve
-    const stacks = {};
-    EVENTS.forEach((e) => {
-      const k = e.d; stacks[k] = (stacks[k] || 0) + 1;
-      const cy = LANE - (stacks[k] - 1) * 14;
-      const cx = x(e.d);
-      if (e.kind === "income") el("circle", { cx, cy, r: 5, class: "ev-income" }, svg);
-      else if (e.kind === "goal") el("circle", { cx, cy, r: 4.5, class: "ev-goal" }, svg);
-      else if (e.kind === "annual") el("rect", { x: cx - 4.5, y: cy - 4.5, width: 9, height: 9, transform: `rotate(45 ${cx} ${cy})`, class: "ev-annual" }, svg);
-      else el("rect", { x: cx - 4, y: cy - 4, width: 8, height: 8, rx: 1.5, class: "ev-bill" }, svg);
-    });
-
-    const scrub = el("line", { y1: T, y2: LANE, class: "scrub-line", opacity: 0 }, svg);
-    const dot = el("circle", { r: 5.5, class: "scrub-dot", opacity: 0 }, svg);
-
-    let mix = 0;
-    const cur = (d) => (d < 0 ? baseline(d) : baseline(d) * (1 - mix) + buyNow(d) * mix);
-    function render() {
-      const p = pathFrom(cur, 0, D1, x, y);
-      future.setAttribute("d", p);
-      area.setAttribute("d", p + `L${x(D1)} ${B}L${x(0)} ${B}Z`);
-      ghost.setAttribute("opacity", String(mix * 0.9));
-    }
-    render();
-
     const buy = $("#tlBuy");
-    buy.addEventListener("change", () => {
-      const target = buy.checked ? 1 : 0;
-      note.innerHTML = buy.checked
-        ? 'Travel reaches its target on <b class="shift">June 30, 2027</b>, 18 days later. Obligations stay covered.'
-        : "Travel reaches its target on <b>June 12, 2027</b>.";
-      if (animate) {
-        const o = { m: mix };
-        G.to(o, { m: target, duration: 0.8, ease: "power3.inOut", overwrite: true,
-          onUpdate: () => { mix = o.m; render(); } });
-      } else { mix = target; render(); }
-      if (active !== null) place(active);
+    const MAX = 2700;
+    const weeks = [];
+    for (let w = 0; w < 13; w++) {
+      const from = -30 + w * 7, to = Math.min(60, from + 6);
+      const ds = []; for (let d = from; d <= to; d++) ds.push(d);
+      const lowOf = (fn) => ds.reduce((m, d) => (fn(d) < m.v ? { v: fn(d), d } : m), { v: Infinity, d: from });
+      weeks.push({ from, to, base: lowOf(baseline), buy: lowOf((d) => (d < 0 ? baseline(d) : buyNow(d))),
+        now: from <= 0 && 0 <= to, past: to < 0, pay: PAYS.some((p) => p >= from && p <= to),
+        events: EVENTS.filter((e) => e.d >= from && e.d <= to) });
+    }
+    const cols = weeks.map((w, i) => {
+      const c = document.createElement("div");
+      c.className = "tlb__col" + (w.past ? " is-past" : "") + (w.now ? " is-now" : "") + (w.buy.v < w.base.v - 1 ? " is-hit" : "");
+      c.tabIndex = 0;
+      c.innerHTML = `<div class="tlb__plot"><i class="tlb__ghost"></i><i class="tlb__bar"></i>${w.pay ? '<span class="tlb__pay">Pay</span>' : ""}</div>` +
+        `<span class="tlb__lab">${w.now ? "This week" : fmtDate(w.from)}</span>`;
+      c.style.setProperty("--g", (w.base.v / MAX).toFixed(4));
+      box.appendChild(c);
+      return c;
     });
-
-    // scrubbing: instant, it follows the hand
-    let active = null;
-    function place(d) {
-      active = d;
-      const v = cur(d);
-      scrub.setAttribute("x1", x(d)); scrub.setAttribute("x2", x(d)); scrub.setAttribute("opacity", 1);
-      dot.setAttribute("cx", x(d)); dot.setAttribute("cy", y(v)); dot.setAttribute("opacity", 1);
-      const evs = EVENTS.filter((e) => e.d === d).map((e) => `<span>${e.text}</span>`).join("");
-      const when = d === 0 ? "Today" : d < 0 ? fmtDate(d) : fmtDate(d) + " · projected";
-      tip.innerHTML = `<span class="tip-date">${when}</span><b>${eur(v)}</b><span>safe to spend</span>${evs}`;
+    let bought = false;
+    const low = (w) => (bought ? w.buy : w.base);
+    function paint() {
+      weeks.forEach((w, i) => cols[i].style.setProperty("--v", (low(w).v / MAX).toFixed(4)));
+      card.classList.toggle("is-buy", bought);
+      $("#tlToday").textContent = eur(bought ? buyNow(0) : baseline(0));
+      let m = { v: Infinity, d: 0 };
+      for (let d = 0; d < 10; d++) { const v = bought ? buyNow(d) : baseline(d); if (v < m.v) m = { v, d }; }
+      $("#tlLow").textContent = `${eur(m.v)}, ${fmtDate(m.d)}`;
+      if (shown !== null) show(shown);
+    }
+    let shown = null;
+    function show(i) {
+      shown = i;
+      const w = weeks[i], l = low(w);
+      const when = w.now ? "This week" : `${fmtDate(w.from)} to ${fmtDate(w.to)}`;
+      const evs = w.events.map((e) => `<span>${e.text}</span>`).join("");
+      tip.innerHTML = `<span class="tip-date">${when}</span><b>${eur(l.v)}</b><span>lowest, on ${fmtDate(l.d)}</span>${evs}`;
       tip.hidden = false;
-      const box = svg.getBoundingClientRect();
-      const px = (x(d) / W) * box.width;
-      const tw = tip.offsetWidth;
-      const left = Math.min(Math.max(px + 14, 0), box.width - tw);
-      tip.style.left = (px + 14 + tw > box.width ? px - tw - 14 : left) + "px";
+      const cb = cols[i].getBoundingClientRect(), pb = card.getBoundingClientRect();
+      const bar = cols[i].querySelector(".tlb__bar").getBoundingClientRect();
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      let left = cb.right - pb.left + 8;
+      if (left + tw > pb.width - 8) left = cb.left - pb.left - tw - 8;
+      tip.style.left = Math.max(8, left) + "px";
+      tip.style.top = Math.max(8, bar.top - pb.top - th / 2) + "px";
     }
-    function clear() {
-      active = null; tip.hidden = true;
-      scrub.setAttribute("opacity", 0); dot.setAttribute("opacity", 0);
+    const hide = () => { shown = null; tip.hidden = true; };
+    cols.forEach((c, i) => {
+      c.addEventListener("pointerenter", () => show(i));
+      c.addEventListener("focus", () => show(i));
+      c.addEventListener("pointerleave", hide);
+      c.addEventListener("blur", hide);
+    });
+    buy.addEventListener("change", () => {
+      bought = buy.checked;
+      note.innerHTML = bought
+        ? 'The laptop takes the hatched part of the next two weeks. Travel reaches its target on <b class="shift">June 30, 2027</b>, 18 days later. Obligations stay covered.'
+        : "Each bar is the lowest point of a week. Travel reaches its target on <b>June 12, 2027</b>.";
+      paint();
+    });
+    paint();
+    if (!reduce) {
+      box.classList.add("is-pre");
+      cols.forEach((c, i) => { c.querySelector(".tlb__bar").style.transitionDelay = `0ms, ${i * 45}ms, 0ms`; });
+      onEnter(box, () => box.classList.remove("is-pre"));
     }
-    svg.addEventListener("pointermove", (e) => {
-      const box = svg.getBoundingClientRect();
-      const vx = ((e.clientX - box.left) / box.width) * W;
-      const d = Math.round(D0 + ((vx - L) / (R - L)) * (D1 - D0));
-      place(Math.max(D0, Math.min(D1, d)));
-    });
-    svg.addEventListener("pointerleave", clear);
-    svg.addEventListener("focus", () => place(0));
-    svg.addEventListener("blur", clear);
-    svg.addEventListener("keydown", (e) => {
-      const step = e.shiftKey ? 7 : 1;
-      if (e.key === "ArrowRight") { e.preventDefault(); place(Math.min(D1, (active ?? 0) + step)); }
-      else if (e.key === "ArrowLeft") { e.preventDefault(); place(Math.max(D0, (active ?? 0) - step)); }
-      else if (e.key === "Home") { e.preventDefault(); place(0); }
-    });
-    svg.setAttribute("aria-description", "Use the left and right arrow keys to move through the days.");
-
-    onEnter(wrap, () => { drawOn(past, 0.9); setTimeout(() => drawOn(future, 1.1), animate ? 700 : 0); });
   })();
 
   /* ── Goal projection ────────────────────────────────────────────── */

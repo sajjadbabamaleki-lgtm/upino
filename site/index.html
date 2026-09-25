@@ -252,23 +252,24 @@
 
     <div class="tl">
       <div class="tl__controls">
+        <div class="tl__head">
+          <p class="tl__k">Safe to spend today</p>
+          <p class="tl__big"><b class="num" id="tlToday">€1,150</b><span id="tlUntil">for 10 days, until income on Oct 25</span></p>
+        </div>
         <label class="switch">
           <input type="checkbox" id="tlBuy">
           <span class="switch__track" aria-hidden="true"><span class="switch__knob"></span></span>
           <span>Add a <b class="num">€700</b> laptop today</span>
         </label>
-        <ul class="tl__legend" aria-label="Legend">
-          <li><span class="lg lg--income"></span>Income</li>
-          <li><span class="lg lg--bill"></span>Bill, already protected</li>
-          <li><span class="lg lg--annual"></span>Yearly cost</li>
-          <li><span class="lg lg--goal"></span>To Travel</li>
-        </ul>
       </div>
-      <div class="tl__chart" id="tlWrap">
-        <svg id="tlChart" viewBox="0 0 1100 360" role="img" aria-label="Safe to Spend from September 15 to December 14, with today on October 15." tabindex="0"></svg>
-        <div class="tl__tip" id="tlTip" hidden></div>
-      </div>
-      <p class="tl__note" id="tlNote">Travel reaches its target on <b>June 12, 2027</b>.</p>
+      <dl class="tl__stats">
+        <div><dt>Lowest ahead</dt><dd class="num" id="tlLow">€520, Oct 24</dd></div>
+        <div><dt>Next income</dt><dd>Oct 25</dd></div>
+        <div><dt>Bills already protected</dt><dd class="num">€2,590</dd></div>
+      </dl>
+      <div class="tlb" id="tlBars" role="img" aria-label="The lowest Safe to Spend of each week, from September 15 to December 14. This week, the week of October 13, it is €870."></div>
+      <div class="tl__tip" id="tlTip" hidden></div>
+      <p class="tl__note" id="tlNote">Each bar is the lowest point of a week. Travel reaches its target on <b>June 12, 2027</b>.</p>
     </div>
   </div>
 </section>
