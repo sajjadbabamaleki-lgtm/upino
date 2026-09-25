@@ -49,6 +49,16 @@ class UpinoApp extends StatelessWidget {
         scrollBehavior: const UpinoScrollBehavior(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        // A phone in a language the app does not speak gets English, not
+        // whichever language happens to sort first (Arabic, right to left).
+        localeResolutionCallback: (device, supported) {
+          if (device != null) {
+            for (final l in supported) {
+              if (l.languageCode == device.languageCode) return l;
+            }
+          }
+          return const Locale('en');
+        },
         // Null follows the phone; Flutter then resolves to the closest
         // supported language, falling back to English. Arabic and Persian
         // flip the whole layout, which Directionality handles from the

@@ -79,7 +79,7 @@ class UpinoTokens {
   /// in, a goal saved in full. Always as a fill, never as text on white.
   static const lime = Color(0xFFCDFE6C);
 
-  static const darkActionPrimary = Color(0xFF5B63F5); // white label 4.62:1
+  static const darkActionPrimary = Color(0xFF2F3AE8); // the site's blue; white label 7.5:1
   static const darkActionTint = Color(0xFF26294A);
   /// The same sweep held back about a tenth, so the hero does not glare
   /// against the dark page.

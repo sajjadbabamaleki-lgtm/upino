@@ -32,7 +32,7 @@ AppState funded({PlanStore? store}) => AppState(
           ..payCycleDays = 30,
       );
 
-const expected = ['ar', 'en', 'es', 'fa', 'fr', 'hi', 'pt', 'ru', 'tr', 'zh'];
+const expected = ['ar', 'de', 'en', 'es', 'fa', 'fr', 'hi', 'id', 'ja', 'pt', 'ru', 'tr', 'zh'];
 
 Future<void> pumpApp(WidgetTester tester, AppState state) async {
   tester.view
@@ -58,7 +58,7 @@ void main() {
           File('lib/l10n/app_$lang.arb').readAsStringSync(),
         ) as Map<String, Object?>;
 
-    test('all ten languages are shipped', () {
+    test('all thirteen languages are shipped', () {
       expect(files.length, expected.length);
       expect(
         AppLocalizations.supportedLocales.map((l) => l.languageCode).toList()

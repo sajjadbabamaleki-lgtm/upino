@@ -226,6 +226,9 @@ class _AmountSheetState extends State<AmountSheet> {
         'ru' => 'ru_RU',
         'tr' => 'tr_TR',
         'zh' => 'zh_CN',
+        'de' => 'de_DE',
+        'ja' => 'ja_JP',
+        'id' => 'id_ID',
         _ => language,
       },
       onPartial: (words) {
