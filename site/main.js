@@ -141,6 +141,7 @@
     btn.addEventListener("click", () => {
       moved = !moved;
       countTo(fig, moved ? 1284 : 1104, moved ? 1104 : 1284, 0.5);
+      const lf = $("#heroLineFig"); if (lf) countTo(lf, moved ? 1284 : 1104, moved ? 1104 : 1284, 0.5);
       $("#heroGoalPct").textContent = moved ? "75%" : "72%";
       $("#heroGoalBar").style.setProperty("--p", moved ? 0.75 : 0.72);
       $("#heroGoalText").textContent = moved ? "June 2027 · ahead of plan" : "June 2027 · on track";
@@ -248,20 +249,34 @@
   /* ── Ask before you spend ───────────────────────────────────────── */
   (function ask() {
     const box = $("#askChart");
-    const MAX = 2700;
-    // each day's bar is the chosen scenario; behind it, hatched, the day without the laptop
+    const MAX = 2000;
+    const WEEKS = 6;
+    const lowOf = (fn, w) => { let m = Infinity; for (let d = w * 7; d <= Math.min(40, w * 7 + 6); d++) m = Math.min(m, fn(d)); return m; };
     const cols = [];
-    for (let d = 0; d <= 40; d++) {
-      const c = document.createElement("span");
-      c.className = "abars__col" + (d === 0 ? " is-now" : "");
-      c.style.setProperty("--g", (baseline(d) / MAX).toFixed(4));
-      c.innerHTML = '<i class="abars__ghost"></i><i class="abars__bar"></i>' + (d === 10 ? '<span class="abars__pay">Pay</span>' : "");
+    for (let w = 0; w < WEEKS; w++) {
+      const c = document.createElement("div");
+      c.className = "wbars__col";
+      c.innerHTML = '<span class="wbars__pill"></span><i class="wbars__cap"></i><i class="wbars__bar"></i>';
       box.appendChild(c);
       cols.push(c);
     }
+    const lab = document.createElement("div");
+    lab.className = "wbars__lab"; lab.setAttribute("aria-hidden", "true");
+    lab.innerHTML = Array.from({ length: WEEKS }, (_, w) => `<span>${w ? fmtDate(w * 7) : '<span class="wbars__long">This week</span><span class="wbars__short">Now</span>'}</span>`).join("");
+    box.after(lab);
     let mix = 0; // 0 = buy today, 1 = wait
     function render() {
-      cols.forEach((c, d) => c.style.setProperty("--v", ((buyNow(d) * (1 - mix) + waitPay(d) * mix) / MAX).toFixed(4)));
+      const fn = mix ? waitPay : buyNow;
+      const lows = cols.map((_, w) => lowOf(fn, w));
+      const least = lows.indexOf(Math.min(...lows));
+      cols.forEach((c, w) => {
+        const v = lows[w], cap = Math.max(0, lowOf(baseline, w) - v);
+        c.style.setProperty("--v", (v / MAX).toFixed(4));
+        c.style.setProperty("--c", (cap / MAX).toFixed(4));
+        c.classList.toggle("no-cap", cap < 10);
+        c.classList.toggle("is-low", w === least);
+        if (w === least) c.firstChild.innerHTML = `${eur(v)}<small> lowest</small>`;
+      });
     }
     render();
     const ctl = $(".seg-control");

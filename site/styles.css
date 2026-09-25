@@ -259,10 +259,17 @@ button { font: inherit; color: inherit; }
 .bt__btn:active { transform: scale(.95); }
 .bt__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .bt--line { grid-area: line; }
-.dbars { display: flex; align-items: flex-end; gap: 2px; height: 80px; }
-.dbars i { flex: 1; min-width: 0; height: calc(var(--v) * 100%); border-radius: 2px; background: #cdd1f8; }
-.dbars i.now { background: var(--accent); }
-.dbars i.pay { background: #8a90ff; }
+.bt__fig { margin: 4px 0 0; display: flex; align-items: baseline; gap: 8px; }
+.bt__fig b { font-size: 28px; font-weight: 660; letter-spacing: -0.045em; line-height: 1; }
+.bt__fig span { font-size: 13px; color: var(--text-3); }
+/* grey days, today in ink, the income day in blue: one thing stands out */
+.dbars { display: flex; align-items: flex-end; gap: 2px; height: 64px; margin-top: 30px; }
+.dbars i { position: relative; flex: 1; min-width: 0; height: calc(var(--v) * 100%); border-radius: 2px; background: #e6e6ea; }
+.dbars i.now { background: var(--ink); }
+.dbars i.pay { background: var(--accent); }
+.dbars__pill { font-style: normal; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); padding: 3px 8px; border-radius: 7px; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 650; white-space: nowrap; }
+.dbars__pill--ink { background: var(--ink); left: 0; transform: none; }
+.dbars__axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11.5px; color: var(--text-3); }
 .bt.flash { animation: bt-flash 900ms ease; }
 @keyframes bt-flash { 30% { box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 30px 60px -34px rgba(8,10,60,.7); } }
 
@@ -278,7 +285,7 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 900px) {
   .hero__head { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .hbento { grid-template-columns: 1fr 1fr; grid-template-areas: "sts sts" "prot goal" "move line"; }
+  .hbento { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "sts sts" "prot goal" "move move" "line line"; }
   .bt--sts { min-height: 0; }
 }
 @media (max-width: 640px) {
@@ -394,16 +401,26 @@ button { font: inherit; color: inherit; }
 .outcome dd { margin: 8px 0 0; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.04em; font-weight: 500; min-height: 36px; display: flex; align-items: center; }
 .mini-chart { margin: 20px 0 0; }
 .mini-chart figcaption { margin-top: 8px; font-size: 13px; color: var(--text-3); }
-/* the next 40 days as daily bars; the hatched cap is what the laptop takes */
-.abars { display: flex; align-items: flex-end; gap: 3px; height: 130px; }
-.abars__col { position: relative; flex: 1; min-width: 0; height: 100%; }
-.abars__col i { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 3px; }
-.abars__ghost { height: calc(var(--g) * 100%); background: repeating-linear-gradient(135deg, rgba(47,58,232,.24) 0 4px, rgba(47,58,232,.06) 4px 8px); }
-.abars__bar { height: calc(var(--v) * 100%); background: #cdd1f8; transition: height 650ms var(--ease-out); }
-.abars__col.is-now .abars__bar { background: var(--accent); }
-.abars__pay { position: absolute; left: 50%; bottom: calc(var(--g) * 100% + 6px); transform: translateX(-50%); font-size: 11px; font-weight: 650; color: var(--accent); white-space: nowrap; }
-.abars.is-pre .abars__bar { height: 0; }
-.abars__axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-3); }
+/* the next six weeks: grey, the tightest one in blue with its number;
+   hatched caps are what the laptop takes */
+.wbars { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 14px); height: 150px; margin-top: 40px; }
+.wbars__col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
+.wbars__cap { height: calc(var(--c) * 100%); border-radius: 10px 10px 0 0; background: repeating-linear-gradient(135deg, rgba(47,58,232,.3) 0 5px, rgba(47,58,232,.08) 5px 10px); transition: height 650ms var(--ease-out); }
+.wbars__bar { height: calc(var(--v) * 100%); border-radius: 0 0 10px 10px; background: #ececf1; transition: height 650ms var(--ease-out), background-color 250ms ease; }
+.wbars__col.no-cap .wbars__bar { border-radius: 10px; }
+.wbars__col.is-low .wbars__bar { background: var(--accent); }
+.wbars__pill { position: absolute; left: 50%; bottom: calc((var(--v) + var(--c)) * 100% + 8px); transform: translateX(-50%); padding: 4px 9px; border-radius: 7px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 650; white-space: nowrap; opacity: 0; transition: opacity 200ms ease, bottom 650ms var(--ease-out); }
+.wbars__col.is-low .wbars__pill { opacity: 1; }
+.wbars__lab { white-space: nowrap; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 14px); margin-top: 8px; font-size: 12px; color: var(--text-3); text-align: center; }
+.wbars.is-pre .wbars__bar, .wbars.is-pre .wbars__cap { height: 0; }
+.wbars__col:first-child .wbars__pill { left: 0; transform: none; }
+.wbars__col:last-child .wbars__pill { left: auto; right: 0; transform: none; }
+.wbars__short { display: none; }
+@media (max-width: 640px) {
+  .wbars__pill small, .wbars__long { display: none; }
+  .wbars__short { display: inline; }
+  .wbars { margin-top: 32px; }
+}
 
 /* chart primitives, shared */
 .ax { stroke: var(--line-strong); stroke-width: 1; }
