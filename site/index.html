@@ -3,24 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Upino — Know what your money can safely do next</title>
+<title>Upino: Know what your money can safely do next</title>
 <meta name="description" content="Upino is a personal finance app that shows what you can safely spend, what is already committed, and what each purchase changes for your goals. Decision support, not bookkeeping.">
 <meta name="theme-color" content="#0F1012">
 <!-- PLACEHOLDER: replace https://upino.example with the real domain before launch. -->
 <link rel="canonical" href="https://upino.example/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Upino">
-<meta property="og:title" content="Upino — Know what your money can safely do next">
+<meta property="og:title" content="Upino: Know what your money can safely do next">
 <meta property="og:description" content="See what you can safely spend, what is already committed, and what each decision changes.">
 <meta property="og:url" content="https://upino.example/">
 <meta property="og:image" content="https://upino.example/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Upino — Know what your money can safely do next">
+<meta name="twitter:title" content="Upino: Know what your money can safely do next">
 <meta name="twitter:description" content="See what you can safely spend, what is already committed, and what each decision changes.">
 <meta name="twitter:image" content="https://upino.example/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:image:alt" content="Upino. Know what your money can safely do next. €1,284 safe to spend for the next 12 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap">
@@ -510,29 +515,32 @@
       <h2 class="h2" id="philoTitle">Money apps became complicated because they kept adding information.</h2>
       <p class="lede">Upino is built around a different question: what do you need to know to make the next decision?</p>
     </div>
-    <ol class="cyc" id="cycle">
-      <li class="cs">
-        <span class="cs__word">See</span>
-        <span class="cs__text">Understand what is happening.</span>
-        <div class="cs__vis" aria-hidden="true"><span class="cs__k">Safe to spend</span><b class="num cs__n">€1,284</b></div>
-      </li>
-      <li class="cs">
-        <span class="cs__word">Decide</span>
-        <span class="cs__text">Understand the trade-off.</span>
-        <div class="cs__vis cs__vis--choice" aria-hidden="true"><span>Buy today <b class="num">€450</b></span><span class="on">Wait <b class="num">€1,150</b></span></div>
-      </li>
-      <li class="cs">
-        <span class="cs__word">Act</span>
-        <span class="cs__text">Choose what your money should do.</span>
-        <div class="cs__vis cs__vis--act" aria-hidden="true"><span>Move <b class="num">€180</b> to Travel</span><i>Move</i></div>
-      </li>
-      <li class="cs cs--learn">
-        <span class="cs__word">Learn</span>
-        <span class="cs__text">Upino recalculates what comes next.</span>
-        <div class="cs__vis" aria-hidden="true"><span class="cs__k">Recalculated</span><b class="num cs__n">€1,104</b><span class="cs__k">Travel 75%</span></div>
-      </li>
-    </ol>
-    <p class="cyc__again" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>And again, with every decision.</p>
+    <div class="loopw" id="cycle">
+      <div class="loop__rail" aria-hidden="true"><i></i></div>
+      <ol class="loop">
+        <li class="lp">
+          <span class="lp__word">See</span>
+          <span class="lp__text">Understand what is happening.</span>
+          <span class="lp__val"><small>Safe to spend</small><b class="num">€1,284</b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Decide</span>
+          <span class="lp__text">Understand the trade-off.</span>
+          <span class="lp__val"><small>Buy today <span class="num">€450</span></small><b>Wait <span class="num">€1,150</span></b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Act</span>
+          <span class="lp__text">Choose what your money should do.</span>
+          <span class="lp__val"><small>One tap</small><b>Move <span class="num">€180</span> to Travel</b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Learn</span>
+          <span class="lp__text">Upino recalculates what comes next.</span>
+          <span class="lp__val"><small>Recalculated, Travel 75%</small><b class="num lp__n" id="loopN">€1,104</b></span>
+        </li>
+      </ol>
+      <p class="cyc__again" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>And again, with every decision.</p>
+    </div>
   </div>
 </section>
 

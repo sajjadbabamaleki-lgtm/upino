@@ -563,15 +563,29 @@
 
   /* ── See, decide, act, learn: the loop goes round once on arrival ── */
   (function cycle() {
-    const steps = $$("#cycle .cs");
-    if (!steps.length) return;
-    const lit = (i) => steps.forEach((s, n) => s.classList.toggle("is-lit", n === i));
-    steps.forEach((s, i) => { s.addEventListener("pointerenter", () => lit(i)); s.addEventListener("pointerleave", () => lit(-1)); });
+    const box = $("#cycle");
+    const steps = $$("#cycle .lp");
+    if (!box || !steps.length) return;
+    const n = $("#loopN");
+    let at = -1, timer = null, held = false, seen = false;
+    const show = (i) => {
+      at = i;
+      box.style.setProperty("--p", String((i + 1) / steps.length));
+      steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
+      if (i === steps.length - 1 && n) countTo(n, 1284, 1104, 0.9);
+      if (i === 0) { box.classList.remove("is-again"); void box.offsetWidth; box.classList.add("is-again"); }
+    };
+    const tick = () => { if (!held) show((at + 1) % steps.length); };
+    const start = () => { if (timer || !seen) return; box.classList.add("is-running"); if (at < 0) show(0); timer = setInterval(tick, 2200); };
+    const stop = () => { clearInterval(timer); timer = null; };
     if (reduce) return;
-    onEnter($("#cycle"), () => {
-      steps.forEach((_, i) => setTimeout(() => lit(i), 300 + i * 650));
-      setTimeout(() => lit(-1), 300 + steps.length * 650 + 400);
+    steps.forEach((s, i) => {
+      s.addEventListener("pointerenter", () => { held = true; show(i); });
+      s.addEventListener("pointerleave", () => { held = false; });
     });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((es) => es.forEach((e) => { seen = e.isIntersecting; if (seen) setTimeout(start, 700); else stop(); }), { threshold: 0.35 }).observe(box);
+    }
   })();
 
   /* ── motion for the product sections: each thing moves once, when it
@@ -593,7 +607,7 @@
       seq(n, ".op-track li", "on", 380, 600);
     });
     arrive(".lf2");
-    arrive(".cyc");
+    arrive(".loopw");
     arrive(".mc__cols");
   })();
 
