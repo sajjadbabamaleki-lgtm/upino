@@ -89,16 +89,15 @@
     <div class="hero__head">
       <h1 class="hero__title" id="heroTitle">Know what your money can safely do&nbsp;next.</h1>
       <div class="hero__side">
-        <p class="hero__lede">Obligations, goals and the next best move, worked out for you.</p>
+        <p class="hero__lede">Press Move and watch every number that depends on it change.</p>
         <div class="hero__ctas">
-          <a class="btn btn--primary btn--lg" href="#get">Get Upino</a>
-          <a class="btn btn--onink btn--lg" href="#product">Explore how it works <span aria-hidden="true">→</span></a>
+          <a class="btn btn--onblue btn--lg" href="#get">Get Upino</a>
         </div>
       </div>
     </div>
 
-    <!-- The product as tiles. Example figures; they agree with the rest of
-         the page (today is Oct 13, income lands Oct 25). -->
+    <!-- The product as tiles, on Upino blue. Example figures; they agree
+         with the rest of the page (today is Oct 13, income lands Oct 25). -->
     <div class="hbento" id="heroBento" aria-label="Upino, example figures">
       <div class="bt bt--sts">
         <span class="bt__k">Safe to spend</span>
@@ -117,16 +116,15 @@
         <div class="bt__track" aria-hidden="true"><i id="heroGoalBar" style="--p:.72"></i></div>
         <span class="bt__s" id="heroGoalText">June 2027 · on track</span>
       </div>
-      <div class="bt bt--cal">
-        <div class="cal__head">
-          <span class="bt__k">This pay period</span>
-          <span class="cal__move" aria-live="polite">
-            <span id="heroMoveText">Move <b class="num">€180</b> to Travel</span>
-            <button class="cal__btn" type="button" id="heroMove">Move</button>
-          </span>
-        </div>
-        <div class="cal-grid" id="heroCal" aria-hidden="true"></div>
-        <div class="cal__key"><span><i class="k-gone"></i>Spent</span><span><i class="k-bill"></i>Bill, already protected</span><span><i class="k-left"></i><span id="heroPerDay">€107 a day left</span></span></div>
+      <div class="bt bt--move">
+        <span class="bt__k" id="heroMoveK">Next best move</span>
+        <p class="bt__move" id="heroMoveText" aria-live="polite">Move <b class="num">€180</b> to Travel</p>
+        <button class="bt__btn" type="button" id="heroMove">Move</button>
+      </div>
+      <div class="bt bt--line">
+        <span class="bt__k">Next 40 days</span>
+        <svg viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 20 L75 70 L78 8 L300 60" fill="none"/><line x1="0" x2="300" y1="88" y2="88"/></svg>
+        <span class="bt__s">Income Oct 25</span>
       </div>
     </div>
   </div>
