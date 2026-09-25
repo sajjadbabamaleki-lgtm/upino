@@ -114,6 +114,56 @@
     shownAmount = to;
   }
 
+  /* ── the first 12 months, drawn ───────────────────────────────────
+     The track holds the 14 free days and then twelve months. Each block
+     is one payment, as wide as the time it covers. */
+  function drawYear(period, charged) {
+    const track = $id("yearTrack");
+    if (!track) return;
+    const p = PRICING.periods[period];
+    const promo = promoFor(period);
+    // drawn a little wider than to scale, so the free days stay readable
+    const trialMonths = Math.max(PRICING.trialDays / 30.4, 0.9);
+    const span = trialMonths + 12;
+    const pct = (m) => (m / span) * 100;
+    const gap = 0.35; // % between blocks
+    const blocks = [];
+    for (let m = 0; m < 12; m += p.months) {
+      const amount = promo && m === 0 ? promo.firstTermAmount : p.amount;
+      blocks.push({ start: trialMonths + m, len: Math.min(p.months, 12 - m), amount });
+    }
+    const total = blocks.reduce((a, b) => a + b.amount, 0);
+    track.innerHTML = "";
+    const trial = document.createElement("span");
+    trial.className = "ytrial";
+    trial.style.width = `calc(${pct(trialMonths)}% - 10px)`;
+    trial.textContent = "Free";
+    track.appendChild(trial);
+    blocks.forEach((b, i) => {
+      const n = document.createElement("span");
+      n.className = "yblk" + (period === "annual" ? (promo ? " yblk--promo" : " yblk--annual") : "");
+      n.style.left = `calc(${pct(b.start)}% + ${i === 0 ? 2 : gap * 4}px)`;
+      n.style.width = `calc(${pct(b.len)}% - ${i === 0 ? 10 : gap * 8}px)`;
+      if (b.len >= 3) n.textContent = fmt(b.amount);
+      if (!reduce) {
+        n.classList.add("is-entering");
+        n.style.transitionDelay = `${Math.min(i * 35, 400)}ms`;
+      }
+      track.appendChild(n);
+    });
+    if (!reduce) requestAnimationFrame(() => requestAnimationFrame(() =>
+      track.querySelectorAll(".is-entering").forEach((n) => n.classList.remove("is-entering"))));
+    $id("yearTotal").textContent = fmt(Math.round(total * 100) / 100);
+    const monthlyYear = PRICING.periods.monthly.amount * 12;
+    const kept = Math.round((monthlyYear - total) * 100) / 100;
+    $id("yearCompare").innerHTML = period === "monthly"
+      ? `${blocks.length} payments of ${fmt(p.amount)}, after ${PRICING.trialDays} free days.`
+      : `Monthly for the same year: ${fmt(monthlyYear)}. You keep <b>${fmt(kept)}</b>.`;
+    track.setAttribute("aria-label", period === "monthly"
+      ? `${PRICING.trialDays} free days, then ${blocks.length} monthly payments of ${fmt(p.amount)}, ${fmt(total)} in total.`
+      : `${PRICING.trialDays} free days, then ${blocks.length === 1 ? "one payment" : blocks.length + " payments"} totalling ${fmt(total)} for the year.`);
+  }
+
   function render(period, via) {
     const p = PRICING.periods[period];
     const promo = promoFor(period);
@@ -151,6 +201,8 @@
     }
     swap($id("quoteContext"), ctx);
 
+    drawYear(period, charged);
+
     // what happens, on which day
     swap($id("billWhen2"), `Day ${PRICING.trialDays}`);
     swap($id("billWhat2"), promo ? "First year" : "First payment");
@@ -163,17 +215,6 @@
     swap($id("planThen"), promo
       ? `Then ${fmt(charged)} for your first year. Renews at ${fmt(p.amount)}/year unless cancelled.`
       : w.then(fmt(p.amount)));
-
-    // why annual: only when there is an annual choice to explain
-    const why = $id("whyAnnual");
-    const annual = PRICING.periods.annual;
-    const annualPromo = promoFor("annual");
-    const annualFirst = annualPromo ? annualPromo.firstTermAmount : annual.amount;
-    $id("whyMonthly").textContent = fmt(monthlyBase * 12);
-    $id("whyAnnualLabel").textContent = annualPromo ? "Annual, first year" : "Annual";
-    $id("whyAnnualAmt").textContent = fmt(annualFirst);
-    $id("whyKeep").textContent = fmt(Math.round((monthlyBase * 12 - annualFirst) * 100) / 100);
-    why.hidden = period !== "annual";
 
     if (via) {
       track("billing_period_selected", { period, via });

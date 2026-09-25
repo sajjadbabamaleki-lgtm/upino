@@ -519,6 +519,16 @@
           <p class="quote__context" id="quoteContext">$6.67 a month, billed once a year. <span class="quote__save">Save 44%</span></p>
         </div>
 
+        <figure class="year" id="yearPlan" aria-labelledby="yearTitle">
+          <div class="year__head">
+            <span class="year__title" id="yearTitle">Your first 12 months</span>
+            <span class="year__total">Total <b id="yearTotal">$79.99</b></span>
+          </div>
+          <div class="year__track" id="yearTrack" role="img" aria-label="14 free days, then one payment of $79.99 covering the year."></div>
+          <div class="year__axis" aria-hidden="true"><span>Today</span><span>Month 3</span><span>Month 6</span><span>Month 9</span><span>Month 12</span></div>
+          <p class="year__compare" id="yearCompare">Monthly for the same year: $143.88</p>
+        </figure>
+
         <ol class="billing" id="billing" aria-label="What happens after you start">
           <li class="billing__step">
             <span class="billing__when">Today</span>
@@ -543,19 +553,11 @@
           <p class="plan__trust">No feature restrictions during your trial.</p>
         </div>
 
-        <details class="why" id="whyAnnual">
-          <summary>Why annual?</summary>
-          <dl class="why__rows">
-            <div><dt>Monthly for 12 months</dt><dd id="whyMonthly">$143.88</dd></div>
-            <div><dt id="whyAnnualLabel">Annual</dt><dd id="whyAnnualAmt">$79.99</dd></div>
-            <div class="why__keep"><dt>You keep</dt><dd id="whyKeep">$63.89</dd></div>
-          </dl>
-        </details>
       </div>
 
       <div class="plan__included">
         <h3 class="included__title">Every plan includes everything</h3>
-        <ul class="included">
+        <ul class="included included--chips">
           <li>Safe to Spend</li>
           <li>Ask before you spend</li>
           <li>Financial timeline</li>
@@ -567,6 +569,7 @@
           <li>Month close</li>
           <li>Opportunity and recovery insights, where available</li>
         </ul>
+        <p class="included__note">Monthly, quarterly or annual, it is the same Upino. Only the billing changes.</p>
       </div>
     </div>
   </div>
