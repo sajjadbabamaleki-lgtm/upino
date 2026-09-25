@@ -537,6 +537,7 @@ button { font: inherit; color: inherit; }
 
 /* ── month in decisions: the month as a waterfall ──────── */
 .month { padding-block: 0 var(--section); }
+.month > .wrap { max-width: calc(var(--wrap) + 160px); } /* the month card reaches a little past the page column */
 .mc { background: var(--card); border-radius: 28px; padding: clamp(24px, 4vw, 52px); box-shadow: 0 0 0 1px var(--line), 0 40px 80px -50px rgba(15,16,18,.35); }
 .mc__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 .mc__title { margin: 0; font-size: clamp(44px, 6vw, 84px); line-height: .95; letter-spacing: -0.04em; font-weight: 580; }
