@@ -164,67 +164,6 @@
       : `${PRICING.trialDays} free days, then ${blocks.length === 1 ? "one payment" : blocks.length + " payments"} totalling ${fmt(total)} for the year.`);
   }
 
-  /* ── the membership card ──────────────────────────────────────────
-     A picture of the chosen plan. It turns over when the plan changes
-     and leans toward the pointer; with reduced motion it just changes. */
-  const card = $id("mcard");
-  const CARD = {
-    monthly: { plan: "Monthly", cad: "month" },
-    quarterly: { plan: "Quarterly", cad: "3 months" },
-    annual: { plan: "Annual", cad: "year" },
-  };
-  function paintCard(period) {
-    const promo = promoFor(period);
-    const p = PRICING.periods[period];
-    card.dataset.tone = promo ? "founding" : period;
-    $id("mcardPlan").textContent = CARD[period].plan;
-    $id("mcardPrice").textContent = promo
-      ? `${fmt(promo.firstTermAmount)} first year`
-      : `${fmt(p.amount)} / ${CARD[period].cad}`;
-    $id("mcardMark").textContent = promo ? promo.label : "Complete";
-  }
-  let cardPeriod = null;
-  function turnCard(period) {
-    if (!card) return;
-    if (cardPeriod === null || reduce || !card.animate) { paintCard(period); cardPeriod = period; return; }
-    if (period === cardPeriod) return;
-    const dir = ORDER.indexOf(period) > ORDER.indexOf(cardPeriod) ? 1 : -1;
-    cardPeriod = period;
-    const out = card.animate(
-      [{ transform: "rotateY(0deg)" }, { transform: `rotateY(${-90 * dir}deg)` }],
-      { duration: 170, easing: "cubic-bezier(0.55, 0, 0.8, 0.4)", fill: "forwards" });
-    out.onfinish = () => {
-      paintCard(period);
-      card.animate(
-        [{ transform: `rotateY(${90 * dir}deg)` }, { transform: "rotateY(0deg)" }],
-        { duration: 340, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
-      out.cancel();
-    };
-  }
-  // lean toward the pointer, eased so it never snaps
-  if (card && !reduce && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    const stage = card.closest(".plan__card") || card.parentElement;
-    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0, mx = 50, my = 30;
-    const step = () => {
-      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
-      card.style.setProperty("--rx", `${cy.toFixed(2)}deg`);
-      card.style.setProperty("--ry", `${cx.toFixed(2)}deg`);
-      card.style.setProperty("--mx", `${mx}%`);
-      card.style.setProperty("--my", `${my}%`);
-      raf = Math.abs(tx - cx) > 0.01 || Math.abs(ty - cy) > 0.01 ? requestAnimationFrame(step) : 0;
-    };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(step); };
-    stage.addEventListener("pointermove", (e) => {
-      const r = card.getBoundingClientRect();
-      const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-      const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-      tx = (px - 0.5) * 14; ty = (0.5 - py) * 10;
-      mx = Math.round(px * 100); my = Math.round(py * 100);
-      kick();
-    });
-    stage.addEventListener("pointerleave", () => { tx = 0; ty = 0; mx = 50; my = 30; kick(); });
-  }
-
   function render(period, via) {
     const p = PRICING.periods[period];
     const promo = promoFor(period);
@@ -263,7 +202,6 @@
     swap($id("quoteContext"), ctx);
 
     drawYear(period, charged);
-    turnCard(period);
 
     // what happens, on which day
     swap($id("billWhen2"), `Day ${PRICING.trialDays}`);

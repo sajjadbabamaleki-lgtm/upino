@@ -734,56 +734,8 @@ button { font: inherit; color: inherit; }
 .year__compare b { color: var(--ok); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { .yblk { transition: none; } }
 
-/* the membership card: the chosen plan, as something you would carry */
-.plan { grid-template-areas: "main card" "main incl"; grid-template-rows: auto 1fr; }
-.plan__main { grid-area: main; }
-.plan__card { grid-area: card; background: var(--ink); border-radius: 0 var(--r-lg) 0 0; padding: clamp(24px, 3.6vw, 44px) clamp(20px, 3.6vw, 44px) 8px; }
-.plan__included { grid-area: incl; border-radius: 0 0 var(--r-lg) 0; }
-.mcard-stage { perspective: 1100px; }
-.mcard {
-  --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 30%;
-  position: relative; aspect-ratio: 1.586; width: 100%; max-width: 380px;
-  border-radius: 18px; overflow: hidden; transform-style: preserve-3d;
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
-  box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 24px 48px -20px rgba(0,0,0,.7), 0 6px 14px -6px rgba(0,0,0,.5);
-  color: var(--mc-text); background: var(--mc-bg);
-  transition: background 500ms ease, color 400ms ease;
-  will-change: transform;
-}
-.mcard::before { /* fine engraved lines */
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 1px, transparent 1px 7px);
-  mix-blend-mode: overlay;
-}
-.mcard[data-tone="monthly"] { --mc-bg: linear-gradient(140deg, #f6f5f2 0%, #dcdbd6 100%); --mc-text: #16171a; --mc-soft: #5a5b61; }
-.mcard[data-tone="quarterly"] { --mc-bg: linear-gradient(140deg, #46474f 0%, #1c1d22 100%); --mc-text: #f2f1ee; --mc-soft: #b3b4bb; }
-.mcard[data-tone="annual"] { --mc-bg: linear-gradient(140deg, #4d57ff 0%, #2f3ae8 45%, #1b22a8 100%); --mc-text: #ffffff; --mc-soft: rgba(255,255,255,.72); }
-.mcard[data-tone="founding"] { --mc-bg: linear-gradient(140deg, #26282f 0%, #0f1012 70%); --mc-text: #f2f1ee; --mc-soft: #a9aab1; box-shadow: 0 0 0 1px rgba(138,144,255,.55) inset, 0 24px 48px -20px rgba(0,0,0,.7), 0 6px 14px -6px rgba(0,0,0,.5); }
-.mcard__face { position: absolute; inset: 0; padding: 20px 22px; display: flex; flex-direction: column; justify-content: space-between; }
-.mcard__top, .mcard__bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
-.mcard__top { align-items: center; }
-.mcard__brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 17px; letter-spacing: -0.04em; }
-.mcard__brand svg { width: 24px; height: 24px; }
-.mcard__kind { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mc-soft); }
-.mcard__plan { display: block; font-size: clamp(22px, 2.4vw, 28px); font-weight: 560; letter-spacing: -0.04em; line-height: 1.05; }
-.mcard__price { display: block; margin-top: 4px; font-family: var(--mono); font-size: 13.5px; color: var(--mc-soft); }
-.mcard__mark { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mc-soft); text-align: right; }
-.mcard[data-tone="founding"] .mcard__mark { color: var(--accent-ink); }
-.mcard__sheen {
-  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.34), rgba(255,255,255,0) 42%);
-  mix-blend-mode: soft-light; opacity: .9;
-}
-.mcard[data-tone="monthly"] .mcard__sheen { mix-blend-mode: normal; background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.6), rgba(255,255,255,0) 45%); }
-@media (max-width: 900px) {
-  .plan { grid-template-areas: "card" "main" "incl"; grid-template-rows: none; }
-  .plan__card { border-radius: var(--r-lg) var(--r-lg) 0 0; padding: 28px 20px; }
-  .mcard-stage { width: 100%; max-width: 340px; margin-inline: auto; }
-  .mcard { max-width: none; }
-}
-
 /* included, on ink */
-.plan__included { background: var(--ink); color: var(--on-ink); border-left: 0; border-radius: 0 0 var(--r-lg) 0; padding-top: 28px; }
+.plan__included { background: var(--ink); color: var(--on-ink); border-left: 0; border-radius: 0 var(--r-lg) var(--r-lg) 0; }
 .plan__included .included__title { color: var(--on-ink); }
 .included--chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .included--chips li {
