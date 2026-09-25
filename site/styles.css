@@ -1209,15 +1209,21 @@ button { font: inherit; color: inherit; }
 .art__list .is-total b { color: var(--accent); }
 .journal--more { padding-top: clamp(56px, 7vw, 88px); }
 
-/* ── sections as stacked sheets: every section after the hero rises over
-   the one before it on large rounded corners, light, blue or ink alike.
-   Light sections alternate 95% and 90% white. ── */
-:root { --paper-alt: #e6e6e6; --sheet-r: clamp(28px, 4vw, 56px); }
-body:not(.sub) main > section:not(.hero):not(.timeline):not(.month), body:not(.sub) .footer {
-  position: relative; margin-top: calc(-1 * var(--sheet-r)); border-radius: var(--sheet-r) var(--sheet-r) 0 0;
-  background-color: var(--sheet-bg, var(--paper)); border-top: 0;
-  box-shadow: var(--sheet-shadow, 0 -1px 0 rgba(15,16,18,.05), 0 -30px 60px -40px rgba(15,16,18,.28));
-}
-.ink, .footer { --sheet-bg: var(--ink); --sheet-shadow: 0 -30px 60px -40px rgba(15,16,18,.5); }
-.tone-2 { --sheet-bg: var(--paper-alt); }
-.timeline, .month { position: relative; background-color: var(--paper); }
+/* ── section rules: light sections alternate 95% and 90% white, and each
+   section opens with a thin rule carrying its number and name ── */
+:root { --paper-alt: #e6e6e6; }
+.tone-2 { background: var(--paper-alt); }
+.timeline, .month { background: var(--paper); }
+main > section:has(> .rule) { position: relative; border-top: 0; }
+.rule { position: absolute; left: 0; right: 0; top: clamp(22px, 3vw, 32px); pointer-events: none; }
+.rule__in { display: flex; align-items: center; gap: 14px; font-size: 12.5px; color: var(--text); }
+.rule__n { font-weight: 600; font-variant-numeric: tabular-nums; }
+.rule__t { font-weight: 600; letter-spacing: .01em; }
+.rule__line { flex: 1; height: 1px; background: var(--line-strong); transform-origin: left center; transition: transform 1100ms var(--ease-out); }
+.rule__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); transition: scale 500ms var(--ease-out) 700ms; }
+.ink .rule__in { color: var(--on-ink); }
+.ink .rule__line { background: rgba(242,242,242,.18); }
+.rule__dot { flex: none; }
+.rule.is-pre .rule__line { transform: scaleX(0); }
+.rule.is-pre .rule__dot { scale: 0; }
+@media (prefers-reduced-motion: reduce) { .rule__line, .rule__dot { transition: none; } }

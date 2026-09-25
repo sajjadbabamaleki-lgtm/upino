@@ -662,6 +662,17 @@
     });
   })();
 
+  /* ── section rules: the line draws itself when its section arrives ── */
+  (function rules() {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      e.target.classList.remove("is-pre");
+    }), { rootMargin: "0px 0px -15% 0px" });
+    $$(".rule").forEach((r) => { r.classList.add("is-pre"); io.observe(r); });
+  })();
+
   /* ── Footer: the name set exactly as wide as the page ─────────────── */
   (function footerWord() {
     const box = $("#footerWord");
