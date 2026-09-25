@@ -550,14 +550,26 @@
     if (animate) onEnter(axis, () => G.from(ticks, { y: 10, opacity: 0, duration: 0.45, stagger: 0.06, ease: "power3.out" }));
   })();
 
-  /* ── See, decide, act, learn: the step in view is lit ───────────── */
-  (function loop() {
-    const steps = $$(".loop__step");
-    if (!("IntersectionObserver" in window)) { steps.forEach((s) => s.classList.add("is-on")); return; }
-    const io = new IntersectionObserver((es) => {
-      es.forEach((e) => e.target.classList.toggle("is-on", e.isIntersecting));
-    }, { rootMargin: "-45% 0px -45% 0px" });
-    steps.forEach((s) => io.observe(s));
+  /* ── See, decide, act, learn: the loop goes round once on arrival ── */
+  (function cycle() {
+    const steps = $$("#cycle .cs");
+    if (!steps.length) return;
+    const lit = (i) => steps.forEach((s, n) => s.classList.toggle("is-lit", n === i));
+    steps.forEach((s, i) => { s.addEventListener("pointerenter", () => lit(i)); s.addEventListener("pointerleave", () => lit(-1)); });
+    if (reduce) return;
+    onEnter($("#cycle"), () => {
+      steps.forEach((_, i) => setTimeout(() => lit(i), 300 + i * 650));
+      setTimeout(() => lit(-1), 300 + steps.length * 650 + 400);
+    });
+  })();
+
+  /* ── the month, as a waterfall that builds on arrival ─────────────── */
+  (function waterfall() {
+    const wf = $(".wf");
+    if (!wf || reduce) return;
+    wf.classList.add("is-pre");
+    $$(".wf__bar", wf).forEach((b, i) => (b.style.transitionDelay = `${i * 120}ms`));
+    onEnter(wf, () => requestAnimationFrame(() => wf.classList.remove("is-pre")));
   })();
 
   /* ── Company: the thesis fills in, the layers pass the numbers up ── */

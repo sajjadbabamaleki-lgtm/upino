@@ -134,25 +134,32 @@
 <section class="problem" aria-labelledby="problemTitle">
   <div class="wrap">
     <h2 class="h2 problem__title" id="problemTitle">Most finance apps explain the past. <span class="muted">Upino helps you think about what comes&nbsp;next.</span></h2>
-    <div class="contrast">
-      <div class="contrast__col contrast__col--past">
-        <p class="label">Tracking</p>
-        <p class="contrast__q">Where did my money go?</p>
-        <ul class="ledger-past mono" aria-label="A list of past transactions">
-          <li><span>Oct 12</span><span>Grocery store</span><span>−€64.20</span></li>
-          <li><span>Oct 11</span><span>Train pass</span><span>−€49.00</span></li>
-          <li><span>Oct 11</span><span>Restaurant</span><span>−€38.50</span></li>
-          <li><span>Oct 10</span><span>Streaming</span><span>−€12.99</span></li>
+    <div class="vs">
+      <article class="vs__card vs__card--past" aria-labelledby="vsPast">
+        <p class="vs__tag">Tracking</p>
+        <p class="vs__q" id="vsPast">Where did my money go?</p>
+        <ul class="vs__rows" aria-label="Past transactions">
+          <li><span class="mono">Oct 12</span><span>Grocery store</span><span class="num">−€64.20</span></li>
+          <li><span class="mono">Oct 11</span><span>Train pass</span><span class="num">−€49.00</span></li>
+          <li><span class="mono">Oct 11</span><span>Restaurant</span><span class="num">−€38.50</span></li>
+          <li><span class="mono">Oct 10</span><span>Streaming</span><span class="num">−€12.99</span></li>
+          <li><span class="mono">Oct 9</span><span>Pharmacy</span><span class="num">−€17.35</span></li>
+          <li><span class="mono">Oct 8</span><span>Coffee</span><span class="num">−€4.10</span></li>
         </ul>
-      </div>
-      <div class="contrast__col contrast__col--next">
-        <p class="label">Decision intelligence</p>
-        <p class="contrast__q">What can my money safely do&nbsp;now?</p>
-        <div class="answer">
-          <p class="answer__big mono">€1,284</p>
-          <p class="answer__note">safe to spend for the next 12 days, after rent, bills, yearly costs and goals are set aside.</p>
-        </div>
-      </div>
+        <p class="vs__foot">A record of what already happened.</p>
+      </article>
+      <span class="vs__turn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <article class="vs__card vs__card--next" aria-labelledby="vsNext">
+        <p class="vs__tag vs__tag--next">Decision intelligence</p>
+        <p class="vs__q" id="vsNext">What can my money safely do&nbsp;now?</p>
+        <p class="vs__big num">€1,284</p>
+        <p class="vs__sub">safe to spend for the next 12 days</p>
+        <div class="vs__split" aria-hidden="true"><i style="--w:3536"></i><i class="safe" style="--w:1284"></i></div>
+        <ul class="vs__legend">
+          <li><i class="g"></i>Rent, bills, yearly costs and goals, set aside <b class="num">€3,536</b></li>
+          <li><i class="b"></i>Yours to decide <b class="num">€1,284</b></li>
+        </ul>
+      </article>
     </div>
   </div>
 </section>
@@ -169,7 +176,7 @@
       <div class="sts__stage">
         <div class="sts__readout" aria-live="polite">
           <p class="sts__readlabel" id="stsLabel">Available money</p>
-          <p class="sts__figure mono" id="stsFigure">€4,820</p>
+          <p class="sts__figure num" id="stsFigure">€4,820</p>
         </div>
 
         <div class="sts__bar" id="stsBar" role="img" aria-label="€4,820 available: €1,640 obligations, €920 essentials, €410 annual costs, €380 hard goals, €186 other protected money, leaving €1,284 safe to spend.">
@@ -186,13 +193,13 @@
         </div>
 
         <ol class="sts__ledger" id="stsLedger">
-          <li class="lrow" data-key="available"><span class="lrow__name">Available money</span><span class="lrow__op mono"></span><span class="lrow__val mono">€4,820</span></li>
-          <li class="lrow" data-key="obligations"><span class="lrow__sw"></span><span class="lrow__name">Obligations <small>rent, bills, debt payments due before income</small></span><span class="lrow__val mono">−€1,640</span></li>
-          <li class="lrow" data-key="essentials"><span class="lrow__sw"></span><span class="lrow__name">Essentials <small>food and transport until income</small></span><span class="lrow__val mono">−€920</span></li>
-          <li class="lrow" data-key="annual"><span class="lrow__sw"></span><span class="lrow__name">Annual costs <small>this period's share of yearly bills</small></span><span class="lrow__val mono">−€410</span></li>
-          <li class="lrow" data-key="goals"><span class="lrow__sw"></span><span class="lrow__name">Hard goals <small>goals you marked as fixed</small></span><span class="lrow__val mono">−€380</span></li>
-          <li class="lrow" data-key="other"><span class="lrow__sw"></span><span class="lrow__name">Other protected money <small>a buffer you chose to keep</small></span><span class="lrow__val mono">−€186</span></li>
-          <li class="lrow lrow--total" data-key="safe"><span class="lrow__sw"></span><span class="lrow__name">Safe to spend</span><span class="lrow__val mono">€1,284</span></li>
+          <li class="lrow" data-key="available"><span class="lrow__name">Available money</span><span class="lrow__op mono"></span><span class="lrow__val num">€4,820</span></li>
+          <li class="lrow" data-key="obligations"><span class="lrow__sw"></span><span class="lrow__name">Obligations <small>rent, bills, debt payments due before income</small></span><span class="lrow__val num">−€1,640</span></li>
+          <li class="lrow" data-key="essentials"><span class="lrow__sw"></span><span class="lrow__name">Essentials <small>food and transport until income</small></span><span class="lrow__val num">−€920</span></li>
+          <li class="lrow" data-key="annual"><span class="lrow__sw"></span><span class="lrow__name">Annual costs <small>this period's share of yearly bills</small></span><span class="lrow__val num">−€410</span></li>
+          <li class="lrow" data-key="goals"><span class="lrow__sw"></span><span class="lrow__name">Hard goals <small>goals you marked as fixed</small></span><span class="lrow__val num">−€380</span></li>
+          <li class="lrow" data-key="other"><span class="lrow__sw"></span><span class="lrow__name">Other protected money <small>a buffer you chose to keep</small></span><span class="lrow__val num">−€186</span></li>
+          <li class="lrow lrow--total" data-key="safe"><span class="lrow__sw"></span><span class="lrow__name">Safe to spend</span><span class="lrow__val num">€1,284</span></li>
         </ol>
       </div>
     </div>
@@ -208,7 +215,7 @@
     </div>
 
     <div class="scenario" id="scenario">
-      <div class="bubble bubble--you">Can I spend <span class="mono">€700</span> on a laptop?</div>
+      <div class="bubble bubble--you">Can I spend <span class="num">€700</span> on a laptop?</div>
       <div class="bubble bubble--upino" id="askAnswer">
         <p class="bubble__lead">Yes, both ways keep your obligations covered. Waiting keeps Travel on schedule.</p>
       </div>
@@ -222,7 +229,7 @@
       <dl class="outcome">
         <div class="outcome__cell">
           <dt>Safe to spend</dt>
-          <dd class="mono" id="askSts">€450</dd>
+          <dd class="num" id="askSts">€450</dd>
         </div>
         <div class="outcome__cell">
           <dt>Travel goal</dt>
@@ -255,7 +262,7 @@
         <label class="switch">
           <input type="checkbox" id="tlBuy">
           <span class="switch__track" aria-hidden="true"><span class="switch__knob"></span></span>
-          <span>Add a <b class="mono">€700</b> laptop today</span>
+          <span>Add a <b class="num">€700</b> laptop today</span>
         </label>
         <ul class="tl__legend" aria-label="Legend">
           <li><span class="lg lg--income"></span>Income</li>
@@ -287,7 +294,7 @@
           <p class="label">Travel goal</p>
           <h3 class="goal__name" id="goalName">Japan</h3>
         </div>
-        <p class="goal__pct mono"><span id="goalPct">72</span>%</p>
+        <p class="goal__pct num"><span id="goalPct">72</span>%</p>
       </header>
       <p class="goal__money mono"><b>€4,320</b> <span>of €6,000</span></p>
 
@@ -309,7 +316,7 @@
 
       <div class="goal__choices" role="radiogroup" aria-label="Try a decision">
         <button role="radio" aria-checked="true" class="chip" data-goal="wait">Wait</button>
-        <button role="radio" aria-checked="false" class="chip" data-goal="buy">Buy <span class="mono">€900</span> today</button>
+        <button role="radio" aria-checked="false" class="chip" data-goal="buy">Buy <span class="num">€900</span> today</button>
       </div>
     </article>
   </div>
@@ -359,7 +366,7 @@
       <svg id="inflChart" viewBox="0 0 560 260" role="img" aria-label="Twelve months: personal grocery costs rose 8.4 percent, official food inflation 3.1 percent. Illustrative data."></svg>
       <figcaption class="infl__cap">
         <span class="infl__src">Illustrative data · Nov 2025 – Oct 2026</span>
-        <span>If the gap holds, groceries would take about <b class="mono">€31</b> more a month by spring. Safe to Spend would account for it before you feel it.</span>
+        <span>If the gap holds, groceries would take about <b class="num">€31</b> more a month by spring. Safe to Spend would account for it before you feel it.</span>
       </figcaption>
     </figure>
   </div>
@@ -368,32 +375,48 @@
 <!-- ───────── MONTH IN DECISIONS ───────── -->
 <section class="month" aria-labelledby="monthTitle">
   <div class="wrap">
-    <div class="month__sheet">
-      <header class="month__head">
-        <h2 class="month__title" id="monthTitle">Your September</h2>
+    <div class="mc">
+      <header class="mc__head">
+        <h2 class="mc__title" id="monthTitle">Your September</h2>
+        <p class="mc__pill">Month close</p>
       </header>
-      <dl class="month__figures">
-        <div><dt>Income</dt><dd class="mono">€5,400</dd></div>
-        <div><dt>Spent</dt><dd class="mono">€3,620</dd></div>
-        <div><dt>Protected for future costs</dt><dd class="mono">€580</dd></div>
-        <div><dt>Moved toward goals</dt><dd class="mono">€410</dd></div>
-        <div class="month__end"><dt>Ending flexibility</dt><dd class="mono">€1,090</dd></div>
-      </dl>
-      <div class="month__cols">
+      <figure class="wf" aria-label="September: €300 carried over, €5,400 income, €3,620 spent, €580 protected for future costs, €410 moved toward goals, €1,090 ending flexibility.">
+        <div class="wf__bars" id="wfBars">
+          <div class="wf__col" style="--from:0;--to:300"><span class="wf__bar wf__bar--in"></span><b class="num">€300</b><span>Carried over</span></div>
+          <div class="wf__col" style="--from:300;--to:5700"><span class="wf__bar wf__bar--in"></span><b class="num">+€5,400</b><span>Income</span></div>
+          <div class="wf__col" style="--from:2080;--to:5700"><span class="wf__bar wf__bar--out"></span><b class="num">−€3,620</b><span>Spent</span></div>
+          <div class="wf__col" style="--from:1500;--to:2080"><span class="wf__bar wf__bar--prot"></span><b class="num">−€580</b><span>Protected</span></div>
+          <div class="wf__col" style="--from:1090;--to:1500"><span class="wf__bar wf__bar--goal"></span><b class="num">−€410</b><span>To goals</span></div>
+          <div class="wf__col wf__col--end" style="--from:0;--to:1090"><span class="wf__bar wf__bar--end"></span><b class="num">€1,090</b><span>Ending flexibility</span></div>
+        </div>
+      </figure>
+      <div class="mc__cols">
         <section aria-labelledby="changedTitle">
           <h3 class="label" id="changedTitle">What changed</h3>
-          <ul class="changes">
-            <li><span>Dining</span><span class="mono up">↑ €94</span></li>
-            <li><span>Transportation</span><span class="mono down">↓ €71</span></li>
-            <li><span>Annual obligations</span><span>Fully protected</span></li>
-            <li><span>Travel goal</span><span>9 days closer</span></li>
+          <ul class="chg">
+            <li class="chg--up"><span class="chg__ic" aria-hidden="true">↑</span><span>Dining</span><b class="num">€94</b></li>
+            <li class="chg--down"><span class="chg__ic" aria-hidden="true">↓</span><span>Transportation</span><b class="num">€71</b></li>
+            <li class="chg--ok"><span class="chg__ic" aria-hidden="true">✓</span><span>Annual obligations</span><b>Fully protected</b></li>
+            <li class="chg--goal"><span class="chg__ic" aria-hidden="true">→</span><span>Travel goal</span><b>9 days closer</b></li>
           </ul>
         </section>
         <section aria-labelledby="knowTitle">
           <h3 class="label" id="knowTitle">3 things worth knowing for October</h3>
           <ol class="know">
-            <li><b class="mono">€1,673</b> is already spoken for in the next 30 days. None of it touches Safe to Spend.</li>
-            <li>Dining ran <b class="mono">€94</b> above your three-month usual. If October follows it, Travel moves about a week.</li>
+            <li><b class="num">€1,673</b> is already spoken for in the next 30 days. None of it touches Safe to Spend.</li>
+            <li>Dining ran <b class="num">€94</b> above your three-month usual. If October follows it, Travel moves about a week.</li>
+            <li>Your yearly car insurance in December is fully set aside. Nothing extra is needed this month.</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+        <section aria-labelledby="knowTitle">
+          <h3 class="label" id="knowTitle">3 things worth knowing for October</h3>
+          <ol class="know">
+            <li><b class="num">€1,673</b> is already spoken for in the next 30 days. None of it touches Safe to Spend.</li>
+            <li>Dining ran <b class="num">€94</b> above your three-month usual. If October follows it, Travel moves about a week.</li>
             <li>Your yearly car insurance in December is fully set aside. Nothing extra is needed this month.</li>
           </ol>
         </section>
@@ -406,7 +429,7 @@
 <section class="claims" aria-labelledby="claimsTitle">
   <div class="wrap claims__grid">
     <div>
-      <h2 class="h2" id="claimsTitle"><span class="mono claims__num">€1,673</span> already spoken for over the next 30&nbsp;days.</h2>
+      <h2 class="h2" id="claimsTitle"><span class="num claims__num">€1,673</span> already spoken for over the next 30&nbsp;days.</h2>
       <p class="lede">Money that already has a future job is counted as taken, so it can never look like room to spend.</p>
     </div>
     <div class="cl">
@@ -415,13 +438,13 @@
         <span class="cl__end">+30 days</span>
       </div>
       <ul class="cl__list" id="clList">
-        <li style="--d:2"  data-kind="sub"><span class="mono cl__date">Oct 15</span><span class="cl__name">Subscriptions</span><span class="mono">€13</span></li>
-        <li style="--d:8"  data-kind="sub"><span class="mono cl__date">Oct 21</span><span class="cl__name">Subscriptions</span><span class="mono">€18</span></li>
-        <li style="--d:12" data-kind="annual"><span class="mono cl__date">Oct 25</span><span class="cl__name">Annual expenses <small>car tax fund</small></span><span class="mono">€140</span></li>
-        <li style="--d:15" data-kind="bill"><span class="mono cl__date">Oct 28</span><span class="cl__name">Insurance</span><span class="mono">€184</span></li>
-        <li style="--d:19" data-kind="bill"><span class="mono cl__date">Nov 1</span><span class="cl__name">Rent</span><span class="mono">€1,100</span></li>
-        <li style="--d:21" data-kind="sub"><span class="mono cl__date">Nov 3</span><span class="cl__name">Subscriptions</span><span class="mono">€30</span></li>
-        <li style="--d:23" data-kind="debt"><span class="mono cl__date">Nov 5</span><span class="cl__name">Debt <small>card instalment</small></span><span class="mono">€188</span></li>
+        <li style="--d:2"  data-kind="sub"><span class="mono cl__date">Oct 15</span><span class="cl__name">Subscriptions</span><span class="num">€13</span></li>
+        <li style="--d:8"  data-kind="sub"><span class="mono cl__date">Oct 21</span><span class="cl__name">Subscriptions</span><span class="num">€18</span></li>
+        <li style="--d:12" data-kind="annual"><span class="mono cl__date">Oct 25</span><span class="cl__name">Annual expenses <small>car tax fund</small></span><span class="num">€140</span></li>
+        <li style="--d:15" data-kind="bill"><span class="mono cl__date">Oct 28</span><span class="cl__name">Insurance</span><span class="num">€184</span></li>
+        <li style="--d:19" data-kind="bill"><span class="mono cl__date">Nov 1</span><span class="cl__name">Rent</span><span class="num">€1,100</span></li>
+        <li style="--d:21" data-kind="sub"><span class="mono cl__date">Nov 3</span><span class="cl__name">Subscriptions</span><span class="num">€30</span></li>
+        <li style="--d:23" data-kind="debt"><span class="mono cl__date">Nov 5</span><span class="cl__name">Debt <small>card instalment</small></span><span class="num">€188</span></li>
       </ul>
     </div>
   </div>
@@ -434,56 +457,110 @@
       <h2 class="h2" id="oppsTitle">Upino optimizes trade-offs. <span class="muted">Not frugality.</span></h2>
       <p class="lede">Sometimes the right move is to save. Sometimes it is to wait a few days. Sometimes it is to spend more than you planned, because you can.</p>
     </div>
-    <ul class="opp-list">
-      <li class="opp"><p class="opp__kind">Save</p><p class="opp__text">Moving <b class="mono">€120</b> could bring your Travel goal forward.</p></li>
-      <li class="opp"><p class="opp__kind">Wait</p><p class="opp__text">Waiting <b class="mono">11 days</b> avoids affecting any current goal.</p></li>
-      <li class="opp"><p class="opp__kind">Recover</p><p class="opp__text"><b class="mono">€89</b> refund pending. Upino keeps track until it arrives.</p></li>
-      <li class="opp opp--spend"><p class="opp__kind">Spend</p><p class="opp__text">You have more flexibility than planned. Raising your Travel budget by <b class="mono">€120</b> would not touch hard obligations.</p></li>
-    </ul>
+    <div class="ops">
+      <article class="op op--save">
+        <p class="op__kind">Save</p>
+        <p class="op__text">Moving <b class="num">€120</b> could bring your Travel goal forward.</p>
+        <div class="op__vis op-goal" aria-hidden="true">
+          <div class="op-goal__bar"><i class="now"></i><i class="plus"></i></div>
+          <div class="op-goal__dates"><span>Now <b>June 12</b></span><span>With €120 <b>June 1</b></span></div>
+        </div>
+      </article>
+      <article class="op op--wait">
+        <p class="op__kind">Wait</p>
+        <p class="op__text">Waiting <b class="num">11 days</b> avoids affecting any current goal.</p>
+        <div class="op__vis op-wait" aria-hidden="true"></div>
+      </article>
+      <article class="op op--recover">
+        <p class="op__kind">Recover</p>
+        <p class="op__text"><b class="num">€89</b> refund pending. Upino keeps track until it arrives.</p>
+        <ol class="op__vis op-track" aria-label="Refund progress: requested, approved, arriving">
+          <li class="done"><i></i>Requested</li>
+          <li class="done"><i></i>Approved</li>
+          <li class="now"><i></i>Arriving</li>
+        </ol>
+      </article>
+      <article class="op op--spend">
+        <p class="op__kind">Spend</p>
+        <p class="op__text">You have more flexibility than planned. Raising your Travel budget by <b class="num">€120</b> would not touch hard obligations.</p>
+        <div class="op__vis op-budget" aria-hidden="true">
+          <div class="op-budget__bar"><i class="was"></i><i class="more"></i><i class="safe"></i></div>
+          <div class="op-budget__key"><span>€300 planned</span><span>+€120</span><span>still safe</span></div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
 <!-- ───────── PRIVACY + ARCHITECTURE ───────── -->
-<section class="privacy" id="security" aria-labelledby="privTitle">
-  <div class="wrap privacy__grid">
-    <div>
+<section class="privacy ink" id="security" aria-labelledby="privTitle">
+  <div class="wrap">
+    <div class="section-head section-head--ink">
       <h2 class="h2" id="privTitle">Local-first. <span class="muted">Cloud-enhanced.</span></h2>
-      <p class="lede">Your financial truth stays deterministic. AI helps interpret it.</p>
-      <ul class="principles">
-        <li><b>The core is authoritative.</b> The financial engine runs on your device, and its results are the numbers you see.</li>
-        <li><b>Cloud only where it adds something.</b> Selected features use cloud intelligence to explain and investigate.</li>
-        <li><b>Only the context a question needs.</b> When a derived summary is enough, raw transaction history is not sent.</li>
-      </ul>
+      <p class="lede lede--ink">Your financial truth stays deterministic. AI helps interpret it.</p>
     </div>
-    <figure class="flow" aria-label="Diagram: the device keeps full history and the engine; only derived context goes to cloud intelligence.">
-      <div class="flow__box flow__box--device">
-        <p class="label">On your device</p>
-        <p class="flow__title">Financial engine</p>
-        <ul><li>Full transaction history</li><li>Accounts and balances</li><li>Safe to Spend, claims, goals</li></ul>
+    <figure class="lf2" aria-label="Diagram: your full history and the engine stay on your device; only a derived summary travels to cloud intelligence.">
+      <div class="lf2__node lf2__node--device">
+        <p class="lf2__where">On your device</p>
+        <p class="lf2__name">Financial engine</p>
+        <ul class="lf2__raw">
+          <li><span class="mono">Oct 12</span><span>Grocery store</span><span class="num">−€64.20</span></li>
+          <li><span class="mono">Oct 11</span><span>Train pass</span><span class="num">−€49.00</span></li>
+          <li><span class="mono">Oct 10</span><span>Streaming</span><span class="num">−€12.99</span></li>
+          <li><span class="mono">…</span><span>and the rest of your history</span><span></span></li>
+        </ul>
+        <p class="lf2__stays"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Full history stays here</p>
       </div>
-      <div class="flow__pipe" aria-hidden="true"><span>derived context only</span></div>
-      <div class="flow__box flow__box--cloud">
-        <p class="label">Cloud, when needed</p>
-        <p class="flow__title">Intelligence</p>
-        <ul><li>“Essentials +6% over 3 months”</li><li>“Travel goal: 7 months to go”</li></ul>
+      <div class="lf2__lane" aria-hidden="true">
+        <span class="lf2__path"></span>
+        <span class="lf2__chip">Essentials +6% over 3 months</span>
+        <span class="lf2__label">derived context only</span>
+      </div>
+      <div class="lf2__node lf2__node--cloud">
+        <p class="lf2__where">Cloud, when needed</p>
+        <p class="lf2__name">Intelligence</p>
+        <p class="lf2__out">“Your essential costs increased over the last three months.”</p>
+        <p class="lf2__note">Explains the numbers. Never makes them.</p>
       </div>
     </figure>
+    <ul class="pr3">
+      <li><b>The core is authoritative.</b> The financial engine runs on your device, and its results are the numbers you see.</li>
+      <li><b>Cloud only where it adds something.</b> Selected features use cloud intelligence to explain and investigate.</li>
+      <li><b>Only the context a question needs.</b> When a derived summary is enough, raw transaction history is not sent.</li>
+    </ul>
   </div>
 </section>
 
 <!-- ───────── PHILOSOPHY ───────── -->
 <section class="philo" id="how" aria-labelledby="philoTitle">
-  <div class="wrap philo__grid">
-    <div class="philo__intro">
+  <div class="wrap">
+    <div class="section-head">
       <h2 class="h2" id="philoTitle">Money apps became complicated because they kept adding information.</h2>
       <p class="lede">Upino is built around a different question: what do you need to know to make the next decision?</p>
     </div>
-    <ol class="loop">
-      <li class="loop__step"><span class="loop__word">See</span><span class="loop__text">Understand what is happening.</span></li>
-      <li class="loop__step"><span class="loop__word">Decide</span><span class="loop__text">Understand the trade-off.</span></li>
-      <li class="loop__step"><span class="loop__word">Act</span><span class="loop__text">Choose what your money should do.</span></li>
-      <li class="loop__step"><span class="loop__word">Learn</span><span class="loop__text">Upino recalculates what comes next.</span></li>
+    <ol class="cyc" id="cycle">
+      <li class="cs">
+        <span class="cs__word">See</span>
+        <span class="cs__text">Understand what is happening.</span>
+        <div class="cs__vis" aria-hidden="true"><span class="cs__k">Safe to spend</span><b class="num cs__n">€1,284</b></div>
+      </li>
+      <li class="cs">
+        <span class="cs__word">Decide</span>
+        <span class="cs__text">Understand the trade-off.</span>
+        <div class="cs__vis cs__vis--choice" aria-hidden="true"><span>Buy today <b class="num">€450</b></span><span class="on">Wait <b class="num">€1,150</b></span></div>
+      </li>
+      <li class="cs">
+        <span class="cs__word">Act</span>
+        <span class="cs__text">Choose what your money should do.</span>
+        <div class="cs__vis cs__vis--act" aria-hidden="true"><span>Move <b class="num">€180</b> to Travel</span><i>Move</i></div>
+      </li>
+      <li class="cs cs--learn">
+        <span class="cs__word">Learn</span>
+        <span class="cs__text">Upino recalculates what comes next.</span>
+        <div class="cs__vis" aria-hidden="true"><span class="cs__k">Recalculated</span><b class="num cs__n">€1,104</b><span class="cs__k">Travel 75%</span></div>
+      </li>
     </ol>
+    <p class="cyc__again" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>And again, with every decision.</p>
   </div>
 </section>
 
@@ -620,7 +697,7 @@
           <div class="dvd__data mono">
             <span>Oct 12  Grocery  −64.20</span><span>Oct 11  Train  −49.00</span><span>Oct 11  Dinner  −38.50</span><span>Oct 10  Stream  −12.99</span>
           </div>
-          <div class="dvd__answer"><b class="mono">€1,284</b><span>safe to spend</span></div>
+          <div class="dvd__answer"><b class="num">€1,284</b><span>safe to spend</span></div>
         </div>
         <p class="tile__text">Show the decision, not the data. Every screen should answer a question someone actually has.</p>
       </article>
