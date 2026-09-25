@@ -84,44 +84,51 @@
 <main id="main">
 
 <!-- ───────── HERO ───────── -->
-<section class="hero" id="top">
-  <div class="wrap hero__grid">
-    <div class="hero__copy">
-      <h1 class="hero__title">Know what your money can safely do&nbsp;next.</h1>
-      <p class="hero__lede">Upino works out what is already committed to rent, bills, yearly costs and your goals, then shows what is left to spend and what each decision would change.</p>
-      <div class="hero__ctas">
-        <a class="btn btn--primary btn--lg" href="#get">Get Upino</a>
-        <a class="btn btn--quiet btn--lg" href="#product">Explore how it works <span aria-hidden="true">→</span></a>
+<section class="hero" id="top" aria-labelledby="heroTitle">
+  <div class="wrap">
+    <div class="hero__head">
+      <h1 class="hero__title" id="heroTitle">Know what your money can safely do&nbsp;next.</h1>
+      <div class="hero__side">
+        <p class="hero__lede">Obligations, goals and the next best move, worked out for you.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary btn--lg" href="#get">Get Upino</a>
+          <a class="btn btn--onink btn--lg" href="#product">Explore how it works <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </div>
 
-    <figure class="device" aria-label="Upino home screen, example figures">
-      <div class="device__screen">
-        <div class="device__top">
-          <span class="device__time">9:41</span>
-          <span class="device__label">Example</span>
-        </div>
-        <p class="device__kicker">Safe to spend</p>
-        <p class="device__figure mono" id="heroFigure" data-value="1284">€1,284</p>
-        <p class="device__sub">Until next income · <span class="mono">12 days</span></p>
-        <ul class="device__rows">
-          <li class="drow">
-            <span class="drow__dot drow__dot--protected"></span>
-            <span class="drow__text"><b class="mono">€1,640</b> protected for upcoming obligations</span>
-          </li>
-          <li class="drow">
-            <span class="drow__dot drow__dot--goal"></span>
-            <span class="drow__text">Travel goal</span>
-            <span class="pill pill--ok">On track</span>
-          </li>
-          <li class="drow drow--move">
-            <span class="drow__eyebrow">Next best move</span>
-            <span class="drow__text">Move <b class="mono">€180</b> to Travel</span>
-            <span class="drow__action" aria-hidden="true">Move</span>
-          </li>
-        </ul>
+    <!-- The product as tiles. Example figures; they agree with the rest of
+         the page (today is Oct 13, income lands Oct 25). -->
+    <div class="hbento" id="heroBento" aria-label="Upino, example figures">
+      <div class="bt bt--sts">
+        <span class="bt__k">Safe to spend</span>
+        <b class="bt__big num" id="heroFigure" data-value="1284">€1,284</b>
+        <span class="bt__s">Until next income · 12 days</span>
+        <div class="bt__days" aria-hidden="true"></div>
       </div>
-    </figure>
+      <div class="bt bt--prot">
+        <span class="bt__k">Protected</span>
+        <b class="bt__mid num">€3,536</b>
+        <ul class="bt__bars" aria-label="Obligations €1,640, essentials €920, annual costs €410, goals €380"><li style="--w:1640"><span>Obligations</span></li><li style="--w:920"><span>Essentials</span></li><li style="--w:410"></li><li style="--w:380"></li></ul>
+      </div>
+      <div class="bt bt--goal">
+        <span class="bt__k">Japan</span>
+        <b class="bt__mid num" id="heroGoalPct">72%</b>
+        <div class="bt__track" aria-hidden="true"><i id="heroGoalBar" style="--p:.72"></i></div>
+        <span class="bt__s" id="heroGoalText">June 2027 · on track</span>
+      </div>
+      <div class="bt bt--cal">
+        <div class="cal__head">
+          <span class="bt__k">This pay period</span>
+          <span class="cal__move" aria-live="polite">
+            <span id="heroMoveText">Move <b class="num">€180</b> to Travel</span>
+            <button class="cal__btn" type="button" id="heroMove">Move</button>
+          </span>
+        </div>
+        <div class="cal-grid" id="heroCal" aria-hidden="true"></div>
+        <div class="cal__key"><span><i class="k-gone"></i>Spent</span><span><i class="k-bill"></i>Bill, already protected</span><span><i class="k-left"></i><span id="heroPerDay">€107 a day left</span></span></div>
+      </div>
+    </div>
   </div>
 </section>
 

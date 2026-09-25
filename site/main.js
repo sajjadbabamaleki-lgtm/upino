@@ -108,16 +108,71 @@
   $$("#mobileMenu a").forEach((a) => a.addEventListener("click", closeMenu));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { closeMenu(); menuBtn.focus(); } });
 
-  /* ── hero: the number arrives, then what it depends on ───────────── */
-  if (animate) {
-    const fig = $("#heroFigure");
-    const tl = G.timeline({ defaults: { ease: "power3.out" } });
-    tl.from(".hero__title", { y: 18, opacity: 0, duration: 0.8 })
-      .from(".hero__lede, .hero__ctas", { y: 12, opacity: 0, duration: 0.6, stagger: 0.08 }, "-=0.5")
-      .from(".device", { y: 24, opacity: 0, duration: 0.8 }, "-=0.6")
-      .add(() => countTo(fig, 0, 1284, 1.1), "-=0.45")
-      .from(".drow", { y: 10, opacity: 0, duration: 0.45, stagger: 0.09 }, "-=0.55");
-  }
+  /* ── hero: the product as tiles ───────────────────────────────────
+     The 30 days of this pay period (18 gone, 12 left), the calendar that
+     spreads Safe to Spend over the days left, and a Move that changes
+     every number depending on it. */
+  (function hero() {
+    const sec = $(".hero");
+    const bento = $("#heroBento");
+    if (!sec || !bento) return;
+    const days = $(".bt__days", bento);
+    for (let i = 0; i < 30; i++) { const d = document.createElement("i"); if (i >= 18) d.className = "left"; days.appendChild(d); }
+
+    const cal = $("#heroCal");
+    const bills = { 7: true, 14: true, 17: true };
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(2026, 8, 25 + i);
+      const e = document.createElement("div");
+      e.className = "cday" + (i >= 18 ? " left" : "") + (i === 18 ? " today" : "") + (bills[i] ? " bill" : "");
+      const h = i < 18 ? 20 + Math.round(Math.abs(Math.sin(i * 1.9)) * 55) : 0;
+      e.innerHTML = (i < 18 ? `<i style="--h:${h}%"></i>` : "") + `<span>${date.getDate()}</span><span>${i >= 18 ? "€107" : ""}</span>`;
+      cal.appendChild(e);
+    }
+
+    // the nav reads light while it sits over this hero
+    const nav = $("#nav");
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => nav.classList.toggle("is-dark", e.isIntersecting), { rootMargin: "-40px 0px -95% 0px" }).observe(sec);
+    } else nav.classList.add("is-dark");
+
+    // a soft light along the tile edges
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      const tiles = $$(".bt", bento);
+      bento.addEventListener("pointermove", (e) => tiles.forEach((t) => {
+        const r = t.getBoundingClientRect();
+        t.style.setProperty("--x", `${e.clientX - r.left}px`);
+        t.style.setProperty("--y", `${e.clientY - r.top}px`);
+        t.style.setProperty("--o", 1);
+      }));
+      bento.addEventListener("pointerleave", () => tiles.forEach((t) => t.style.setProperty("--o", 0)));
+    }
+
+    // Move €180 to Travel: Safe to Spend, the goal and the days change together
+    const btn = $("#heroMove"), fig = $("#heroFigure"), pct = $("#heroGoalPct");
+    let moved = false;
+    btn.addEventListener("click", () => {
+      moved = !moved;
+      countTo(fig, moved ? 1284 : 1104, moved ? 1104 : 1284, 0.5);
+      pct.textContent = moved ? "75%" : "72%";
+      $("#heroGoalBar").style.setProperty("--p", moved ? 0.75 : 0.72);
+      $("#heroGoalText").textContent = moved ? "June 2027 · ahead of plan" : "June 2027 · on track";
+      $("#heroMoveText").innerHTML = moved ? 'Moved <b class="num">€180</b> to Travel' : 'Move <b class="num">€180</b> to Travel';
+      btn.textContent = moved ? "Undo" : "Move";
+      $$(".cday.left span:last-child", cal).forEach((n) => (n.textContent = moved ? "€92" : "€107"));
+      $("#heroPerDay").textContent = moved ? "€92 a day left" : "€107 a day left";
+      if (!reduce) $$(".bt--sts, .bt--goal, .bt--cal", bento).forEach((t) => { t.classList.remove("flash"); void t.offsetWidth; t.classList.add("flash"); });
+    });
+
+    if (animate) {
+      G.timeline({ defaults: { ease: "power3.out" } })
+        .from(".hero__title", { y: 18, opacity: 0, duration: 0.8 })
+        .from(".hero__side", { y: 12, opacity: 0, duration: 0.6 }, "-=0.5")
+        .from(".bt", { y: 18, opacity: 0, duration: 0.6, stagger: 0.07, clearProps: "transform,opacity" }, "-=0.4")
+        .add(() => countTo(fig, 0, 1284, 1.1), "<0.1")
+        .from(".cday", { opacity: 0, scale: 0.85, duration: 0.35, stagger: 0.015, clearProps: "transform,opacity" }, "<0.2");
+    }
+  })();
 
   /* ── Safe to Spend: money separates into its claims ──────────────── */
   (function sts() {
