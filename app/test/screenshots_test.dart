@@ -130,7 +130,7 @@ Future<void> shootApp(
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
-    RepaintBoundary(key: boundary, child: UpinoApp(state: state, fontFamily: 'UpinoSans')),
+    RepaintBoundary(key: boundary, child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans')),
   );
   await tester.pumpAndSettle();
   if (after != null) await after(tester);
@@ -242,7 +242,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
@@ -263,7 +263,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
@@ -307,7 +307,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
@@ -402,7 +402,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();

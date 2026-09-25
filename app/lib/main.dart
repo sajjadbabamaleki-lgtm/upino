@@ -11,6 +11,8 @@ import 'design/motion.dart';
 import 'design/theme.dart';
 import 'design/tokens.dart';
 import 'screens/home_screen.dart';
+import 'screens/first_run/first_run_flow.dart';
+import 'screens/first_run/reveal_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'state/app_state.dart';
 
@@ -30,9 +32,14 @@ Future<void> main() async {
 }
 
 class UpinoApp extends StatelessWidget {
-  const UpinoApp({required this.state, this.fontFamily, super.key});
+  const UpinoApp({required this.state, this.fontFamily, this.singleFormSetup = false, super.key});
 
   final AppState state;
+
+  /// The one-screen setup form instead of the guided first run. Kept for
+  /// the tests that drive the engine through setup; people never see it.
+  @visibleForTesting
+  final bool singleFormSetup;
 
   /// Set only by the screenshot harness, which loads its own face.
   final String? fontFamily;
@@ -79,8 +86,12 @@ class UpinoApp extends StatelessWidget {
         home: !state.isRestored
             ? const _RestoringScreen()
             : state.isOnboarded
-                ? HomeScreen(state: state)
-                : OnboardingScreen(state: state),
+                ? (state.revealPending
+                    ? RevealScreen(state: state)
+                    : HomeScreen(state: state))
+                : singleFormSetup
+                    ? OnboardingScreen(state: state)
+                    : FirstRunFlow(state: state),
       );
 
   ThemeData _themed(Brightness brightness) =>

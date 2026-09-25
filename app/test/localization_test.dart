@@ -39,7 +39,7 @@ Future<void> pumpApp(WidgetTester tester, AppState state) async {
     ..physicalSize = const Size(420, 1600)
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(UpinoApp(state: state));
+  await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
   await tester.pumpAndSettle();
 }
 

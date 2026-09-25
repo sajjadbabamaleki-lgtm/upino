@@ -23,6 +23,7 @@ import '../device/device_bridge.dart';
 import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
+import 'first_run/reveal_screen.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/best_move_card.dart';
 import '../widgets/bills_sheet.dart';
@@ -321,6 +322,23 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         subtitle: l.smsWaitingSub,
                         trailing: const RowAffordance(icon: 'receipt'),
                         onTap: () => BankSuggestionsSheet.show(context, state),
+                      ),
+                    ],
+
+                    // What setup left out that would change the figure.
+                    if (state.setupGaps.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      SetupGapsCard(
+                        state: state,
+                        onEssentials: () async {
+                          final r = await AmountSheet.show(
+                            context,
+                            currency: state.currency,
+                            title: 'Everyday essentials until payday',
+                          );
+                          if (r != null) state.setClaimAmount('essentials', r.amount);
+                        },
+                        onBill: () => addBillFlow(context, state),
                       ),
                     ],
 

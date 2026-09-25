@@ -13,6 +13,7 @@ import '../domain/bill.dart';
 import '../domain/category.dart';
 import '../domain/conversation.dart';
 import '../domain/goal.dart';
+import 'setup_draft.dart';
 import '../domain/holding.dart';
 import '../domain/inflation.dart';
 import '../domain/recovery.dart';
@@ -336,6 +337,7 @@ class AppState extends ChangeNotifier {
   final List<BankSuggestion> _suggestions = [];
   bool _reminderEnabled = false;
   DateTime? _startedAt;
+  Map<String, Object?> _firstRun = {};
   final List<Conversation> _conversations = [];
   int _conversationSeq = 0;
   int _goalSeq = 0;
@@ -427,6 +429,7 @@ class AppState extends ChangeNotifier {
       ..addAll(document.smsHandled);
     _reminderEnabled = document.reminderEnabled;
     _startedAt = document.startedAt;
+    _firstRun = Map.of(document.firstRun);
     _conversations
       ..clear()
       ..addAll(document.conversations);
@@ -530,6 +533,7 @@ class AppState extends ChangeNotifier {
         smsHandled: List.unmodifiable(_smsHandled),
         reminderEnabled: _reminderEnabled,
         startedAt: _startedAt,
+        firstRun: Map.of(_firstRun),
         conversations: List.unmodifiable(_conversations),
         bills: List.unmodifiable(_bills),
         accounts: List.unmodifiable(_accounts),
@@ -1243,6 +1247,205 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ---------------------------------------------------------------------
+  // First run: welcome, sign-in, setup, reveal. Onboarding state lives in
+  // [_firstRun]; the financial entities are created only by [completeSetup].
+
+  bool get welcomeSeen => _firstRun['welcomeSeen'] == true;
+  bool get languageChosen => _firstRun['language'] == true;
+
+  void markLanguageChosen() {
+    _firstRun['language'] = true;
+    _persist();
+    notifyListeners();
+  }
+  String? get signInProvider => _firstRun['signIn'] as String?;
+  bool get revealPending => _firstRun['reveal'] == true;
+  SetupIntent? get primaryIntent => _firstRun['intent'] == null
+      ? null
+      : SetupIntent.values.byName(_firstRun['intent']! as String);
+
+  void markWelcomeSeen() {
+    _firstRun['welcomeSeen'] = true;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Sign-in is not wired to an account service yet; this records which
+  /// way the person chose so the flow can move on and resume.
+  void signIn(String provider) {
+    _firstRun['signIn'] = provider;
+    _persist();
+    notifyListeners();
+  }
+
+  SetupDraft get setupDraft {
+    final j = _firstRun['setup'];
+    if (j is Map) {
+      final d = SetupDraft.fromJson(j.cast<String, Object?>());
+      if (d.currency == _currency) return d;
+    }
+    return SetupDraft(currency: _currency);
+  }
+
+  /// Saved after every step, so closing the app mid-way loses nothing.
+  void saveSetupDraft(SetupDraft draft) {
+    _firstRun['setup'] = draft.toJson();
+    if (draft.intent != null) _firstRun['intent'] = draft.intent!.name;
+    _persist();
+  }
+
+  /// Turns the setup answers into the plan's own income, bills, claims and
+  /// goals, then lets the engine compute the first PlanSnapshot. Everything
+  /// it creates is rebuilt from nothing each time, so finishing twice (or
+  /// going back and finishing again) never duplicates an entity.
+  void completeSetup(SetupDraft d) {
+    saveSetupDraft(d);
+    _currency = d.currency;
+    final incomes = [for (final i in d.incomes) if (i.isComplete) i]
+      ..sort((a, b) => a.next!.compareTo(b.next!));
+    _payCycleDays = incomes.isEmpty ? 30 : incomes.first.rhythm.days;
+    _openingBalance = d.available ?? Money.zero(_currency);
+    _lastBalanceConfirmation = _now;
+    _startedAt = _now;
+
+    _claims
+      ..clear()
+      ..addAll([
+        if (!d.essentialsSkipped && (d.essentials?.minor ?? 0) > 0)
+          Claim(
+            id: 'essentials',
+            priority: Priority.p4EssentialLiving,
+            label: 'Everyday essentials',
+            amount: d.essentials!,
+          ),
+      ]);
+
+    _bills.clear();
+    _billSeq = 0;
+    for (final o in d.obligations) {
+      if (!o.isComplete) continue;
+      _bills.add(Bill(
+        id: 'b${++_billSeq}',
+        name: o.name?.trim().isNotEmpty ?? false
+            ? o.name!.trim()
+            : _obligationName(o.kind),
+        amount: o.amount!,
+        // Setup asks for the next due date only; a monthly bill is the
+        // common case and Plan can change it.
+        every: BillEvery.month,
+        nextDue: o.due!,
+        kind: o.kind == ObligationKind.subscriptions
+            ? BillKind.subscription
+            : BillKind.bill,
+      ),);
+    }
+
+    _goals.clear();
+    _goalSeq = 0;
+    _contributions.clear();
+    final p = d.protectSkipped ? null : d.protect;
+    if (p != null && p.isComplete) {
+      if (p.kind == ProtectKind.annual) {
+        // A yearly cost is a sinking fund (§11 P5), not a goal: the engine
+        // builds it up over its period from the dates.
+        _bills.add(Bill(
+          id: 'b${++_billSeq}',
+          name: p.name?.trim().isNotEmpty ?? false ? p.name!.trim() : 'Yearly cost',
+          amount: p.target!,
+          every: BillEvery.year,
+          nextDue: p.date!,
+        ),);
+      } else {
+        _goals.add(Goal(
+          id: 'g${++_goalSeq}',
+          name: p.name?.trim().isNotEmpty ?? false
+              ? p.name!.trim()
+              : _protectName(p.kind),
+          target: p.target!,
+          targetDate: p.date!,
+          saved: Money.min(p.saved ?? Money.zero(_currency), p.target!),
+          kind: p.kind == ProtectKind.emergency ? GoalKind.hard : GoalKind.hard,
+          icon: _protectIcon(p.kind),
+        ),);
+      }
+    }
+
+    _incomeEvents
+      ..clear()
+      ..addAll([
+        for (var n = 0; n < incomes.length; n++)
+          IncomeEvent(
+            id: n == 0 ? 'income-next' : 'income-${n + 1}',
+            expectedAmount: incomes[n].amount!,
+            expectedDate: incomes[n].next!,
+            state: IncomeState.expected,
+          ),
+      ]);
+
+    _onboarded = true;
+    _firstRun['reveal'] = true;
+    _cachedSnapshot = null;
+    _persist();
+    notifyListeners();
+  }
+
+  void finishReveal() {
+    _firstRun.remove('reveal');
+    _persist();
+    notifyListeners();
+  }
+
+  /// What setup left out that would change the figure, for the one quiet
+  /// card on Home. Only gaps that move Safe-to-Spend are named.
+  List<String> get setupGaps {
+    if (!_onboarded || _firstRun['gapsDismissed'] == true) return const [];
+    final j = _firstRun['setup'];
+    if (j is! Map) return const [];
+    final d = SetupDraft.fromJson(j.cast<String, Object?>());
+    return [
+      if (d.essentialsSkipped || d.essentials == null) 'essentials',
+      if (_bills.every((b) => b.every != BillEvery.year)) 'yearly',
+      if (_bills.isEmpty) 'bill',
+    ].take(2).toList();
+  }
+
+  void dismissSetupGaps() {
+    _firstRun['gapsDismissed'] = true;
+    _persist();
+    notifyListeners();
+  }
+
+  static String _obligationName(ObligationKind k) => switch (k) {
+        ObligationKind.rent => 'Rent',
+        ObligationKind.utilities => 'Utilities',
+        ObligationKind.loan => 'Loan',
+        ObligationKind.creditCard => 'Credit card',
+        ObligationKind.insurance => 'Insurance',
+        ObligationKind.subscriptions => 'Subscriptions',
+        ObligationKind.other => 'Bill',
+      };
+
+  static String _protectName(ProtectKind k) => switch (k) {
+        ProtectKind.emergency => 'Emergency fund',
+        ProtectKind.trip => 'Trip',
+        ProtectKind.car => 'Car',
+        ProtectKind.home => 'Home',
+        ProtectKind.debt => 'Pay off debt',
+        ProtectKind.annual => 'Yearly cost',
+        ProtectKind.custom => 'Goal',
+      };
+
+  static String _protectIcon(ProtectKind k) => switch (k) {
+        ProtectKind.emergency => 'goal-emergency',
+        ProtectKind.trip => 'goal-trip',
+        ProtectKind.car => 'goal-car',
+        ProtectKind.home => 'goal-home',
+        ProtectKind.debt => 'su-card',
+        ProtectKind.annual => 'su-calendar',
+        ProtectKind.custom => 'goal-savings',
+      };
+
   /// RecordExpense (§22). The UI issues the command; the engine decides what
   /// it means for Safe-to-Spend.
   /// [receipt] is a filename inside the app's own directory, already copied
@@ -1638,6 +1841,7 @@ class AppState extends ChangeNotifier {
     _contributions.clear();
     _suggestions.clear();
     _startedAt = null;
+    _firstRun = {'welcomeSeen': true, 'language': true, if (_firstRun['signIn'] != null) 'signIn': _firstRun['signIn']};
     _conversations.clear();
     _conversationSeq = 0;
     _goalSeq = 0;

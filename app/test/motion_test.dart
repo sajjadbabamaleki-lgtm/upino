@@ -37,7 +37,7 @@ Future<void> pumpApp(WidgetTester tester, AppState state) async {
     ..physicalSize = const Size(400, 900)
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(UpinoApp(state: state));
+  await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
   await tester.pumpAndSettle();
 }
 
@@ -49,7 +49,7 @@ void main() {
         ..physicalSize = const Size(400, 900)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpWidget(UpinoApp(state: funded(), singleFormSetup: true));
 
       // One frame in: the animation has started and nothing has arrived.
       await tester.pump();
@@ -83,7 +83,7 @@ void main() {
         ..physicalSize = const Size(400, 900)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpWidget(UpinoApp(state: funded(), singleFormSetup: true));
       await tester.pump();
       await tester.pump(UpinoMotion.enter);
 
@@ -109,7 +109,7 @@ void main() {
       await tester.pumpWidget(
         MediaQuery(
           data: const MediaQueryData(disableAnimations: true),
-          child: UpinoApp(state: funded()),
+          child: UpinoApp(state: funded(), singleFormSetup: true),
         ),
       );
       await tester.pump();

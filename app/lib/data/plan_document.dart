@@ -45,6 +45,7 @@ class PlanDocument {
     this.smsHandled = const [],
     this.reminderEnabled = false,
     this.startedAt,
+    this.firstRun = const {},
     this.conversations = const [],
     this.bills = const [],
     this.accounts = const [],
@@ -112,6 +113,11 @@ class PlanDocument {
   /// When the plan was set up, so Ask can tell how well it knows the person.
   final DateTime? startedAt;
 
+  /// First-run progress: welcome seen, sign-in, the setup draft, the primary
+  /// intent and whether the first reveal is still to show. Onboarding state
+  /// only; the engine never reads it.
+  final Map<String, Object?> firstRun;
+
   /// What was asked of Ask, oldest first. Only questions are kept; answers
   /// are recomputed from the plan when a conversation is shown.
   final List<Conversation> conversations;
@@ -151,6 +157,7 @@ class PlanDocument {
         if (smsSince != null) 'smsSince': smsSince!.toUtc().toIso8601String(),
         if (smsHandled.isNotEmpty) 'smsHandled': smsHandled,
         if (reminderEnabled) 'reminderEnabled': true,
+        if (firstRun.isNotEmpty) 'firstRun': firstRun,
         if (startedAt != null)
           'startedAt': startedAt!.toUtc().toIso8601String(),
         if (conversations.isNotEmpty)
@@ -221,6 +228,9 @@ class PlanDocument {
         for (final id in (json['smsHandled'] as List?) ?? const []) id as String,
       ],
       reminderEnabled: json['reminderEnabled'] as bool? ?? false,
+      firstRun: json['firstRun'] == null
+          ? const {}
+          : (json['firstRun']! as Map).cast<String, Object?>(),
       startedAt: json['startedAt'] == null
           ? null
           : DateTime.parse(json['startedAt']! as String),

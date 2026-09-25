@@ -39,7 +39,7 @@ void main() {
       ..physicalSize = const Size(420, 1800)
       ..devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(UpinoApp(state: state));
+    await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
     await tester.pumpAndSettle();
     if (currency != null &&
         find.byKey(const Key('change-currency')).evaluate().isNotEmpty) {
@@ -204,7 +204,7 @@ void _reopenTests() {
         ..physicalSize = const Size(420, 1800)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       if (currency != null) await pickCurrency(tester, currency);
       return state;
@@ -266,7 +266,7 @@ void _setupIsObviousTests() {
         ..physicalSize = const Size(420, 1800)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(
+      await tester.pumpWidget(UpinoApp(singleFormSetup: true,
         state: AppState(
           now: DateTime.utc(2026, 10, 1, 10),
           utcOffset: const Duration(hours: 2),

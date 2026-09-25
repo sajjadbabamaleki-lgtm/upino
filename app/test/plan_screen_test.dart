@@ -154,7 +154,7 @@ void main() {
         ..physicalSize = const Size(420, 1400)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('nav-1')));
       await tester.pumpAndSettle();
@@ -231,7 +231,7 @@ void main() {
         ..physicalSize = const Size(420, 1200)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
