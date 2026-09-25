@@ -1019,11 +1019,6 @@ button { font: inherit; color: inherit; }
 .placeholder { font-family: var(--mono); font-size: 13px; color: var(--warn); }
 .placeholder--ink { color: #d7a45a; margin-top: 18px; }
 
-/* ── final ──────────────────────────────────────────── */
-.final { padding-block: clamp(120px, 16vw, 220px); text-align: left; }
-.final__inner { display: grid; justify-items: start; }
-.final__title { margin: 0; font-size: clamp(46px, 7.6vw, 96px); line-height: .96; letter-spacing: -0.04em; font-weight: 560; max-width: 13ch; text-wrap: balance; }
-.final__sub { margin: 28px 0 36px; font-size: clamp(18px, 1.6vw, 22px); color: var(--on-ink-2); line-height: 1.4; }
 
 /* ── footer ─────────────────────────────────────────── */
 
@@ -1120,7 +1115,7 @@ button { font: inherit; color: inherit; }
 .footer__top { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr); gap: 48px; }
 .footer .brand { color: var(--on-ink); }
 .footer .brand__mark { color: var(--accent); }
-.footer__lead p { margin: 16px 0 24px; font-size: clamp(20px, 2vw, 26px); line-height: 1.2; letter-spacing: -0.025em; color: var(--on-ink); max-width: 18ch; }
+.footer__lead p { margin: 20px 0 28px; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 560; color: var(--on-ink); max-width: 12ch; text-wrap: balance; }
 .footer__stores { display: flex; flex-wrap: wrap; gap: 8px; }
 .store { display: inline-flex; align-items: center; gap: 9px; height: 46px; padding: 0 18px; border-radius: 14px; background: var(--on-ink); color: var(--ink); font-size: 14.5px; font-weight: 580; text-decoration: none; transition: transform 160ms var(--ease-out), background-color 200ms ease; }
 .store:hover { background: #fff; }
