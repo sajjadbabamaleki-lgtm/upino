@@ -362,7 +362,7 @@ button { font: inherit; color: inherit; }
 .ask__copy { position: sticky; top: 120px; }
 .scenario {
   background: var(--card); border-radius: var(--r-lg); padding: clamp(18px, 3vw, 32px);
-  box-shadow: 0 0 0 1px var(--line), 0 30px 60px -40px rgba(15,16,18,.3);
+  box-shadow: 0 30px 60px -40px rgba(15,16,18,.3);
 }
 .bubble { max-width: 86%; padding: 13px 16px; border-radius: 18px; font-size: 15.5px; line-height: 1.45; }
 .bubble--you { margin-left: auto; background: var(--ink); color: var(--on-ink); border-bottom-right-radius: 6px; }
@@ -409,7 +409,7 @@ button { font: inherit; color: inherit; }
 
 /* ── timeline ───────────────────────────────────────── */
 .timeline { padding-block: 0 var(--section); }
-.tl { background: var(--card); border-radius: var(--r-lg); padding: clamp(16px, 3vw, 32px); box-shadow: 0 0 0 1px var(--line); }
+.tl { background: var(--card); border-radius: var(--r-lg); padding: clamp(16px, 3vw, 32px); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
 .tl__controls { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .tl__legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--text-3); }
 .tl__legend li { display: inline-flex; align-items: center; gap: 7px; }
@@ -538,7 +538,7 @@ button { font: inherit; color: inherit; }
 /* ── month in decisions: the month as a waterfall ──────── */
 .month { padding-block: 0 var(--section); }
 .month > .wrap { max-width: calc(var(--wrap) + 160px); } /* the month card reaches a little past the page column */
-.mc { background: var(--card); border-radius: 28px; padding: clamp(24px, 4vw, 52px); box-shadow: 0 0 0 1px var(--line), 0 40px 80px -50px rgba(15,16,18,.35); }
+.mc { background: var(--card); border-radius: 28px; padding: clamp(24px, 4vw, 52px); box-shadow: 0 40px 80px -50px rgba(15,16,18,.35); }
 .mc__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 .mc__title { margin: 0; font-size: clamp(44px, 6vw, 84px); line-height: .95; letter-spacing: -0.04em; font-weight: 580; }
 .mc__pill { margin: 0; display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: var(--accent-tint); color: #262a78; font-size: 13.5px; font-weight: 600; }
@@ -618,7 +618,7 @@ button { font: inherit; color: inherit; }
 /* ── opportunities: four trade-offs, each shown ────────── */
 .opps { padding-block: var(--section); }
 .ops { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.op { border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 320px; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.op { border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 320px; background: var(--card); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
 .op__kind { margin: 0; align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; background: var(--paper-2); color: var(--text-2); }
 .op__text { margin: 0; font-size: 18px; line-height: 1.4; letter-spacing: -0.015em; color: var(--text); }
 .op__text b { font-weight: 580; }
@@ -678,9 +678,14 @@ button { font: inherit; color: inherit; }
 .lf2__label { position: absolute; left: 0; right: 0; top: calc(50% + 26px); text-align: center; font-size: 12.5px; color: var(--accent-ink); }
 @media (prefers-reduced-motion: no-preference) {
   .lf2__chip { animation: lf2-travel 4.2s var(--ease-in-out) infinite; }
-  @media (max-width: 900px) { .lf2__chip { animation: none; } .lf2__path { animation: lf2-flow 900ms linear infinite; } }
+  @media (max-width: 900px) {
+    .lf2__chip { animation: lf2-fall 3.6s var(--ease-in-out) infinite; }
+    .lf2__label { animation: lf2-fall-label 3.6s var(--ease-in-out) infinite; }
+  }
 }
-@keyframes lf2-flow { to { background-position: 0 10px; } }
+/* on phones the chip travels down the lane and its label rides beneath it */
+@keyframes lf2-fall { 0% { top: 14px; opacity: 0; } 16% { opacity: 1; } 80% { opacity: 1; } 100% { top: 96px; opacity: 0; } }
+@keyframes lf2-fall-label { 0% { top: 40px; opacity: 0; } 16% { opacity: 1; } 80% { opacity: 1; } 100% { top: 122px; opacity: 0; } }
 @keyframes lf2-travel { 0% { left: 18%; opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { left: 82%; opacity: 0; } }
 .lf2__out { margin: 8px 0 0; padding: 14px 16px; border-radius: 16px; background: var(--paper-2); font-size: 15px; line-height: 1.45; }
 .lf2__note { margin: 4px 0 0; font-size: 13.5px; color: var(--text-3); }
@@ -724,7 +729,7 @@ button { font: inherit; color: inherit; }
 .plan {
   display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
   background: var(--card); border-radius: var(--r-lg);
-  box-shadow: 0 0 0 1px var(--line), 0 30px 60px -40px rgba(15,16,18,.3);
+  box-shadow: 0 30px 60px -40px rgba(15,16,18,.3);
 }
 .plan__main { padding: clamp(20px, 3.6vw, 44px); display: grid; gap: 28px; align-content: start; }
 .plan__included { padding: clamp(20px, 3.6vw, 44px); border-left: 1px solid var(--line); }
@@ -973,8 +978,8 @@ button { font: inherit; color: inherit; }
 .tile--mission { grid-area: mission; background: var(--ink); color: var(--on-ink); min-height: 300px; justify-content: space-between; }
 .tile--mission .label { color: var(--on-ink-3); }
 .tile__statement { margin: 0; font-size: clamp(26px, 3vw, 40px); line-height: 1.12; letter-spacing: -0.035em; font-weight: 520; max-width: 22ch; text-wrap: balance; }
-.tile--tech { grid-area: tech; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
-.tile--philo { grid-area: philo; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.tile--tech { grid-area: tech; background: var(--card); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
+.tile--philo { grid-area: philo; background: var(--card); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
 .tile--privacy { grid-area: privacy; background: var(--accent-tint); }
 .tile--privacy .tile__text { color: #33377d; }
 .tile--privacy .label { color: #3b3f95; }
@@ -1038,13 +1043,12 @@ button { font: inherit; color: inherit; }
 @media (max-width: 900px) {
   .ops { grid-template-columns: 1fr 1fr; }
   .lf2 { grid-template-columns: minmax(0, 1fr); }
-  /* on phones the lane runs down: the chip sits still, its label under it,
-     and the dashes flow toward the cloud */
-  .lf2__lane { height: 150px; }
+  /* on phones the lane runs down toward the cloud */
+  .lf2__lane { height: 170px; }
   .lf2__path { left: calc(50% - 0.75px); right: auto; top: 6px; bottom: 10px; width: 1.5px; border-top: 0;
     background: repeating-linear-gradient(to bottom, rgba(138,144,255,.6) 0 5px, transparent 5px 10px); }
   .lf2__path::after { right: auto; left: -3.5px; top: auto; bottom: -2px; transform: rotate(135deg); }
-  .lf2__chip { left: 50%; top: 38%; animation: none; }
+  .lf2__chip { left: 50%; top: 38%; }
   .lf2__label { left: 50%; right: auto; top: calc(38% + 26px); bottom: auto; transform: translateX(-50%); padding: 2px 10px; background: var(--ink); white-space: nowrap; text-align: center; }
   .pr3 { grid-template-columns: 1fr; gap: 20px; }
   .mc__cols { grid-template-columns: 1fr; }
