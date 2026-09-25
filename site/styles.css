@@ -621,33 +621,33 @@ button { font: inherit; color: inherit; }
 /* the period selector: one control, three answers */
 .period {
   position: relative; display: grid; grid-template-columns: repeat(3, 1fr);
-  padding: 4px; background: #151946; border-radius: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+  padding: 4px; background: #26272d; border-radius: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
 }
 .period__opt {
   position: relative; z-index: 1; border: 0; background: transparent; cursor: pointer;
   min-height: 56px; padding: 6px 8px; border-radius: 12px;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  color: #b3b6e4; font-size: 15px; font-weight: 500;
+  color: #b7b8be; font-size: 15px; font-weight: 500;
   transition: color 200ms ease, transform 160ms var(--ease-out);
 }
 .period__opt:active { transform: scale(0.97); }
-.period__opt[aria-checked="true"] { color: #fff; }
+.period__opt[aria-checked="true"] { color: var(--text); }
 .period__opt[aria-checked="true"] .period__name::before {
   content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-  background: #fff; margin-right: 7px; vertical-align: 2px;
+  background: var(--accent); margin-right: 7px; vertical-align: 2px;
 }
 .period__short { display: none; }
 .period__save { font-size: 12px; font-weight: 500; color: #8fdcb0; }
-.period__opt[aria-checked="true"] .period__save { color: #d4f3e1; }
+.period__opt[aria-checked="true"] .period__save { color: var(--ok); }
 .period__thumb {
   position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3);
-  background: var(--accent); border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 8px 18px -8px rgba(47,58,232,.9);
+  background: #f4f3f0; border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 18px -8px rgba(0,0,0,.6);
   transform: translateX(calc(var(--i, 2) * 100%));
   transition: transform 280ms var(--ease-out), box-shadow 280ms ease;
 }
-.plan[data-period="annual"] .period__thumb { box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.5), 0 8px 22px -8px rgba(47,58,232,1); }
+.plan[data-period="annual"] .period__thumb { box-shadow: inset 0 0 0 1.5px var(--accent), 0 8px 18px -8px rgba(0,0,0,.6); }
 @media (hover: hover) and (pointer: fine) {
   .period__opt:not([aria-checked="true"]):hover { color: #fff; }
 }
