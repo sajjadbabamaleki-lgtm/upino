@@ -123,27 +123,22 @@
     const p = PRICING.periods[period];
     const promo = promoFor(period);
     // drawn a little wider than to scale, so the free days stay readable
-    const trialMonths = Math.max(PRICING.trialDays / 30.4, 0.9);
-    const span = trialMonths + 12;
-    const pct = (m) => (m / span) * 100;
-    const gap = 0.35; // % between blocks
     const blocks = [];
     for (let m = 0; m < 12; m += p.months) {
       const amount = promo && m === 0 ? promo.firstTermAmount : p.amount;
-      blocks.push({ start: trialMonths + m, len: Math.min(p.months, 12 - m), amount });
+      blocks.push({ len: Math.min(p.months, 12 - m), amount });
     }
     const total = blocks.reduce((a, b) => a + b.amount, 0);
     track.innerHTML = "";
+    // the free days first, sized to their label; the paid months share the rest
     const trial = document.createElement("span");
     trial.className = "ytrial";
-    trial.style.width = `calc(${pct(trialMonths)}% - 10px)`;
     trial.textContent = "Free";
     track.appendChild(trial);
     blocks.forEach((b, i) => {
       const n = document.createElement("span");
       n.className = "yblk" + (period === "annual" ? (promo ? " yblk--promo" : " yblk--annual") : "");
-      n.style.left = `calc(${pct(b.start)}% + ${i === 0 ? 2 : gap * 4}px)`;
-      n.style.width = `calc(${pct(b.len)}% - ${i === 0 ? 10 : gap * 8}px)`;
+      n.style.setProperty("--len", b.len);
       if (b.len >= 3) n.textContent = fmt(b.amount);
       if (!reduce) {
         n.classList.add("is-entering");
