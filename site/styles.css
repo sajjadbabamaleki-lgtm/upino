@@ -636,7 +636,12 @@ button { font: inherit; color: inherit; }
 /* ── opportunities: four trade-offs, each shown ────────── */
 .opps { padding-block: var(--section); }
 .ops { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.op { border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 320px; background: var(--card); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
+.op { border-radius: 24px; padding: 22px 24px; display: flex; flex-direction: column; gap: 10px; aspect-ratio: 1 / 1; background: var(--card); box-shadow: 0 24px 48px -32px rgba(15,16,18,.22); }
+/* square on wide screens; below that two across, wider than tall */
+@media (max-width: 1199px) {
+  .ops { grid-template-columns: 1fr 1fr; }
+  .op { aspect-ratio: auto; min-height: 240px; }
+}
 .op__kind { margin: 0; align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; background: var(--paper-2); color: var(--text-2); }
 .op__text { margin: 0; font-size: 18px; line-height: 1.4; letter-spacing: -0.015em; color: var(--text); }
 .op__text b { font-weight: 580; }
@@ -658,7 +663,7 @@ button { font: inherit; color: inherit; }
 .op-wait i.on:last-child { background: var(--ink); box-shadow: none; scale: 1 1.12; }
 .op-wait::after { content: "Day 11: income arrives, nothing else moves"; grid-column: 1 / -1; margin-top: 6px; font-size: 12.5px; color: var(--text-3); }
 .op-track { list-style: none; margin-top: auto; padding: 0; display: grid; gap: 0; }
-.op-track li { position: relative; padding: 0 0 14px 26px; font-size: 14px; color: var(--text-2); }
+.op-track li { position: relative; padding: 0 0 10px 26px; font-size: 14px; color: var(--text-2); }
 .op-track li:last-child { padding-bottom: 0; }
 .op-track li::before { content: ""; position: absolute; left: 6px; top: 12px; bottom: -2px; border-left: 1.5px solid var(--line-strong); }
 .op-track li:last-child::before { display: none; }
@@ -1079,7 +1084,7 @@ button { font: inherit; color: inherit; }
 @media (max-width: 640px) {
   body { font-size: 16px; }
   .ops, .chg { grid-template-columns: 1fr; }
-  .op { min-height: 0; }
+  .op { min-height: 0; aspect-ratio: auto; }
   .outcome { grid-template-columns: 1fr; }
   .outcome__cell + .outcome__cell { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .outcome__cell { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
