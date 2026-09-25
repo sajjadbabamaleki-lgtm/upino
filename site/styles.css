@@ -860,6 +860,9 @@ button { font: inherit; color: inherit; }
 @media (max-width: 900px) {
   .plan__included { margin: 0 24px 24px; border-top: 0; }
 }
+@media (max-width: 640px) {
+  .plan__included { margin: 0 12px 12px; }
+}
 
 @media (max-width: 900px) {
   .plan { grid-template-columns: minmax(0, 1fr); }
