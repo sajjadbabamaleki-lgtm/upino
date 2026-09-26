@@ -316,12 +316,10 @@ class _HeroShell extends StatelessWidget {
   const _HeroShell({
     required this.decoration,
     required this.child,
-    this.decoration2,
   });
 
   final BoxDecoration decoration;
   final Widget child;
-  final Widget? decoration2;
 
   @override
   Widget build(BuildContext context) => ClipRRect(
@@ -331,7 +329,6 @@ class _HeroShell extends StatelessWidget {
           decoration: decoration,
           child: Stack(
             children: [
-              if (decoration2 != null) Positioned.fill(child: decoration2!),
               Padding(
                 // The bottom matches the sides, so the button at the foot of
                 // the card sits in an even frame rather than on its edge.
