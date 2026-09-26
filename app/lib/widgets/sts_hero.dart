@@ -165,8 +165,10 @@ class _Glow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        child: Opacity(
-          opacity: opacity,
+        // Faded with a colour filter rather than Opacity, which the app
+        // keeps for motion alone.
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(Color.fromRGBO(255, 255, 255, opacity), BlendMode.modulate),
           child: ImageFiltered(
             imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40, tileMode: TileMode.decal),
             child: Container(
