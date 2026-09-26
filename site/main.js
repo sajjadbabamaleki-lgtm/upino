@@ -105,6 +105,15 @@
   const setCompact = () => nav.classList.toggle("is-compact", window.scrollY > 40);
   setCompact();
   window.addEventListener("scroll", setCompact, { passive: true });
+  // the glass turns smoky while a dark section is behind it
+  if ("IntersectionObserver" in window) {
+    const under = new Set();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? under.add(e.target) : under.delete(e.target)));
+      nav.classList.toggle("is-over-ink", under.size > 0);
+    }, { rootMargin: "-40px 0px -95% 0px" });
+    $$("section.ink, .footer").forEach((el) => io.observe(el));
+  }
   const closeMenu = () => {
     menu.hidden = true; menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.setAttribute("aria-label", "Open menu"); nav.classList.remove("is-open");
