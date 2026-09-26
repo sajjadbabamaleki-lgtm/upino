@@ -29,6 +29,8 @@
   --warn: #9a5a08;
   --warn-tint: #f6e8d2;
   --brand-glyph: #f2f2f2;
+  --lime: #cdfe6c;         /* the app's second colour: only for good money news (pay in, a goal moving closer) */
+  --on-lime: #0f1012;
 
   /* claim shades, light to dark: kept neutral so the accent means "yours" */
   --c-obligations: #4a4b52;
@@ -266,9 +268,9 @@ button { font: inherit; color: inherit; }
 .dbars { display: flex; align-items: flex-end; gap: 2px; height: 64px; margin-top: 30px; }
 .dbars i { position: relative; flex: 1; min-width: 0; height: calc(var(--v) * 100%); border-radius: 2px; background: #e6e6ea; }
 .dbars i.now { background: var(--ink); }
-.dbars i.pay { background: var(--accent); }
-.dbars__pill { font-style: normal; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); padding: 3px 8px; border-radius: 7px; background: var(--accent); color: #fff; font-size: 11.5px; font-weight: 650; white-space: nowrap; }
-.dbars__pill--ink { background: var(--ink); left: 0; transform: none; }
+.dbars i.pay { background: var(--lime); }
+.dbars__pill { font-style: normal; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); padding: 3px 8px; border-radius: 7px; background: var(--lime); color: var(--on-lime); font-size: 11.5px; font-weight: 650; white-space: nowrap; }
+.dbars__pill--ink { background: var(--ink); color: #fff; left: 0; transform: none; }
 .dbars__axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11.5px; color: var(--text-3); }
 .bt.flash { animation: bt-flash 900ms ease; }
 @keyframes bt-flash { 30% { box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 30px 60px -34px rgba(8,10,60,.7); } }
@@ -632,7 +634,7 @@ button { font: inherit; color: inherit; }
 .chg--up .chg__ic { background: var(--warn-tint); color: var(--warn); }
 .chg--down .chg__ic { background: var(--ok-tint); color: var(--ok); }
 .chg--ok .chg__ic { background: var(--ok-tint); color: var(--ok); }
-.chg--goal .chg__ic { background: var(--accent-tint); color: var(--accent); }
+.chg--goal .chg__ic { background: var(--lime); color: var(--on-lime); }
 .know { margin: 16px 0 0; padding: 0; list-style: none; counter-reset: k; display: grid; gap: 10px; }
 .know li { counter-increment: k; position: relative; border-radius: 16px; background: var(--paper); padding: 16px 18px 16px 58px; font-size: 15.5px; color: var(--text-2); }
 .know li::before { content: counter(k); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--on-ink); font: 600 13px/1 var(--font); }
