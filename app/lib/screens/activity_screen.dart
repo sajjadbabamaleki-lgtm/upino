@@ -11,13 +11,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../data/receipt_store.dart';
+import '../domain/category.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
 import '../design/tokens.dart';
+import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import '../domain/account.dart';
+import '../domain/goal.dart';
+import '../domain/recovery.dart';
+import '../widgets/activity_charts.dart';
+import '../widgets/choice_sheet.dart';
+import '../widgets/month_review.dart';
+import '../widgets/amount_sheet.dart'
+    show AmountSheet, CategoryChips, categoryLabel;
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({required this.state, required this.padding, super.key});
@@ -29,12 +39,68 @@ class ActivityScreen extends StatelessWidget {
     BuildContext context,
     ActivityEntry entry,
   ) async {
-    final removed = await showModalBottomSheet<bool>(
+    final isSpend = entry.kind == ActivityKind.spend ||
+        entry.kind == ActivityKind.cardPurchase;
+    final action = await showModalBottomSheet<String>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _RemoveSheet(entry: entry),
+      builder: (_) => _RemoveSheet(
+        entry: entry,
+        recovery: isSpend ? state.recoveryFor(entry.eventId) : null,
+        canRecover: isSpend,
+        category: state.categoryFor(entry.eventId),
+        onCategory: entry.kind == ActivityKind.spend
+            ? (c) => state.setCategory(
+                  entry.eventId,
+                  c == state.categoryFor(entry.eventId) ? null : c,
+                )
+            : null,
+      ),
     );
-    if (removed ?? false) state.removeEvent(entry.eventId);
+    if (action == null || !context.mounted) return;
+    switch (action) {
+      case 'remove':
+        state.removeEvent(entry.eventId);
+      case 'returnable':
+        state.markReturnable(entry.eventId);
+      case 'expect':
+        state.expectRefund(entry.eventId);
+      case 'kept':
+        state.closeRecovery(entry.eventId);
+      case 'arrived':
+        await _refundArrived(context, entry);
+    }
+  }
+
+  /// The refund came: how much, and then where it goes, on purpose (§11.2).
+  Future<void> _refundArrived(BuildContext context, ActivityEntry entry) async {
+    final l = AppLocalizations.of(context);
+    final amount = await AmountSheet.show(
+      context,
+      currency: state.currency,
+      title: l.recoverArrived,
+      initial: state.recoveryFor(entry.eventId)?.expected ?? entry.amount,
+    );
+    if (amount == null || !context.mounted) return;
+    state.refundArrived(entry.eventId, amount.amount);
+    final goals =
+        state.goals.where((g) => g.kind != GoalKind.paused && !g.isComplete);
+    final where = await ChoiceSheet.show<String>(
+      context,
+      title: l.recoverWhere(amount.amount.display()),
+      choices: [
+        for (final g in goals) Choice('goal:${g.id}', l.recoverToGoal(g.name)),
+        Choice('buffer', l.recoverToBuffer),
+        Choice('leave', l.recoverLeave),
+      ],
+    );
+    if (where == null || where == 'leave') return;
+    state.putRecoveredToward(
+      goalId: where.startsWith('goal:') ? where.substring(5) : null,
+      buffer: where == 'buffer',
+      amount: amount.amount,
+    );
   }
 
   @override
@@ -42,24 +108,56 @@ class ActivityScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     final entries = state.activity;
+    final spending = state.spendingByCategory();
+    final review = state.monthReview;
 
     return ListView(
       padding: padding,
       children: revealed([
+        // The page's name is in the capsule above.
         Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l.activityTitle, style: theme.textTheme.headlineLarge),
-              const SizedBox(height: 2),
-              Text(
-                entries.isEmpty ? l.activityBlurbEmpty : l.activityBlurb,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+          child: Text(
+            entries.isEmpty ? l.activityBlurbEmpty : l.activityBlurb,
+            style: theme.textTheme.bodySmall,
           ),
         ),
+        // Only once something has been sorted: a card that says "Not sorted"
+        // and nothing else tells the person nothing they did not know.
+        // Once there is a month to look back on.
+        if (review.ready) ...[
+          MonthReviewCard(state: state),
+          const SizedBox(height: 10),
+        ],
+        // The week at a glance, and money in and out, once there is some.
+        if (entries.isNotEmpty) ...[
+          WeekSpendCard(state: state),
+          const SizedBox(height: 10),
+          FlowsCard(state: state),
+          const SizedBox(height: 10),
+        ],
+        // Money on its way back is shown apart: it is not money yet.
+        if (state.moneyComingBack.minor > 0) ...[
+          UpinoCard(
+            key: const Key('money-coming-back'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l.recoverTitle, style: theme.textTheme.titleMedium),
+                const SizedBox(height: 4),
+                Text(
+                  l.recoverTotal(state.moneyComingBack.display()),
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+        if (spending.any((r) => r.category != null)) ...[
+          _WhereItWent(spending: spending),
+          const SizedBox(height: 10),
+        ],
         if (entries.isEmpty)
           UpinoCard(
             child: Text(
@@ -76,6 +174,12 @@ class ActivityScreen extends StatelessWidget {
                   _ActivityRow(
                     entry: entries[i],
                     receipt: state.receiptFor(entries[i].eventId),
+                    category: state.categoryFor(entries[i].eventId),
+                    recovery: state.recoveryFor(entries[i].eventId),
+                    from: state.accountOf(entries[i].eventId) == Account.mainId
+                        ? null
+                        : state.account(state.accountOf(entries[i].eventId))
+                            ?.name,
                     onRemove: entries[i].removed
                         ? null
                         : () => _confirmRemoval(context, entries[i]),
@@ -109,9 +213,17 @@ class _ActivityRow extends StatelessWidget {
     required this.entry,
     required this.receipt,
     required this.onRemove,
+    this.category,
+    this.recovery,
+    this.from,
   });
 
   final ActivityEntry entry;
+  final SpendCategory? category;
+  final Recovery? recovery;
+
+  /// The account it was paid from, when not the main one.
+  final String? from;
 
   /// A photograph taken when the spend was recorded, if there was one.
   final String? receipt;
@@ -140,10 +252,28 @@ class _ActivityRow extends StatelessWidget {
                     const SizedBox(width: 10),
                   ],
                   Flexible(
-                    child: Text(
-                      labelFor(l, entry.kind),
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: dimmed ? muted : null),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          labelFor(l, entry.kind),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(color: dimmed ? muted : null),
+                        ),
+                        if (category != null ||
+                            from != null ||
+                            recovery != null)
+                          Text(
+                            [
+                              if (category != null) categoryLabel(l, category),
+                              if (from != null) from!,
+                              if (recovery != null)
+                                recoveryLabel(l, recovery!.state),
+                            ].join(UpinoTokens.separator),
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(fontSize: 12),
+                          ),
+                      ],
                     ),
                   ),
                   if (dimmed) ...[
@@ -176,10 +306,59 @@ class _ActivityRow extends StatelessWidget {
   }
 }
 
-class _RemoveSheet extends StatelessWidget {
-  const _RemoveSheet({required this.entry});
+String recoveryLabel(AppLocalizations l, RecoveryState s) => switch (s) {
+      RecoveryState.returnable => l.recoverReturnable,
+      RecoveryState.returned ||
+      RecoveryState.refundPending =>
+        l.recoverPending,
+      RecoveryState.refunded => l.recoverRefunded,
+      RecoveryState.closed => l.recoverKept,
+    };
+
+class _RemoveSheet extends StatefulWidget {
+  const _RemoveSheet({
+    required this.entry,
+    this.category,
+    this.onCategory,
+    this.recovery,
+    this.canRecover = false,
+  });
 
   final ActivityEntry entry;
+  final Recovery? recovery;
+  final bool canRecover;
+  final SpendCategory? category;
+
+  /// Null for anything that is not a spend, which has no category to give.
+  final ValueChanged<SpendCategory>? onCategory;
+
+  @override
+  State<_RemoveSheet> createState() => _RemoveSheetState();
+}
+
+class _RemoveSheetState extends State<_RemoveSheet> {
+  late SpendCategory? _category = widget.category;
+
+  ActivityEntry get entry => widget.entry;
+
+  /// What can happen next, given where the purchase is in getting its
+  /// money back.
+  List<(String, String)> _recoveryActions(AppLocalizations l) =>
+      switch (widget.recovery?.state) {
+        null || RecoveryState.closed => [
+            ('returnable', l.recoverReturnable),
+            ('expect', l.recoverExpect),
+          ],
+        RecoveryState.returnable => [
+            ('expect', l.recoverExpect),
+            ('kept', l.recoverKept),
+          ],
+        RecoveryState.returned || RecoveryState.refundPending => [
+            ('arrived', l.recoverArrived),
+            ('kept', l.recoverKept),
+          ],
+        RecoveryState.refunded => [],
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -221,15 +400,44 @@ class _RemoveSheet extends StatelessWidget {
               l.activityRemoveDetail,
               style: theme.textTheme.bodySmall,
             ),
+            if (widget.onCategory != null) ...[
+              const SizedBox(height: 18),
+              Text(l.categoryPrompt, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              CategoryChips(
+                selected: _category,
+                onSelect: (c) {
+                  widget.onCategory!(c);
+                  setState(() => _category = c == _category ? null : c);
+                },
+              ),
+            ],
+            if (widget.canRecover && !entry.removed) ...[
+              const SizedBox(height: 18),
+              Text(l.recoverPrompt, style: theme.textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final (action, label) in _recoveryActions(l))
+                    ActionChip(
+                      key: Key('recover-$action'),
+                      label: Text(label),
+                      onPressed: () => Navigator.of(context).pop(action),
+                    ),
+                ],
+              ),
+            ],
             const SizedBox(height: 20),
             FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
+              onPressed: () => Navigator.of(context).pop('remove'),
               child: Text(l.activityRemoveIt),
             ),
             const SizedBox(height: 8),
             Center(
               child: TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: () => Navigator.of(context).pop(),
                 child:
                     Text(l.activityKeepIt, style: theme.textTheme.titleMedium),
               ),
@@ -302,4 +510,63 @@ class _ReceiptView extends StatelessWidget {
           ),
         ),
       );
+}
+
+/// Where the money went, as bars rather than a pie: lengths compare at a
+/// glance and the amounts sit beside them, never abbreviated (§32.8).
+class _WhereItWent extends StatelessWidget {
+  const _WhereItWent({required this.spending});
+
+  final List<({SpendCategory? category, Money total})> spending;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final dark = isDark(context);
+    final largest = spending.first.total.minor;
+    final bar = dark ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary;
+    return UpinoCard(
+      key: const Key('where-it-went'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l.spendingTitle, style: theme.textTheme.titleMedium),
+          const SizedBox(height: 2),
+          Text(l.spendingWindow, style: theme.textTheme.bodySmall),
+          const SizedBox(height: 14),
+          for (final row in spending) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    categoryLabel(l, row.category),
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Text(
+                  row.total.display(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontFeatures: moneyFeatures),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              child: LinearProgressIndicator(
+                value: largest <= 0 ? 0 : row.total.minor / largest,
+                minHeight: 6,
+                backgroundColor: sunkenColor(context),
+                color: row.category == null
+                    ? UpinoTokens.textTertiary
+                    : bar,
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+        ],
+      ),
+    );
+  }
 }

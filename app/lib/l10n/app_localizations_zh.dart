@@ -534,6 +534,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get profileCurrency => '货币';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return '改用 $currency？';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return '计划中的每个金额保持原有数字，今后以 $currency 显示。不会按汇率换算，此功能用于更正货币，而非兑换资金。';
+  }
+
+  @override
+  String get currencyChangeConfirm => '更改';
+
+  @override
   String get profileYourData => '你的数据';
 
   @override
@@ -719,4 +732,1758 @@ class AppLocalizationsZh extends AppLocalizations {
   String incomeRangeNote(String low) {
     return '计划建立在 $low 之上。高出的部分，到账时就是你的。';
   }
+
+  @override
+  String get categoryFood => '餐饮';
+
+  @override
+  String get categoryTransport => '交通';
+
+  @override
+  String get categoryBills => '账单';
+
+  @override
+  String get categoryShopping => '购物';
+
+  @override
+  String get categoryHealth => '医疗';
+
+  @override
+  String get categoryFun => '娱乐';
+
+  @override
+  String get categoryOther => '其他';
+
+  @override
+  String get categoryUnsorted => '未分类';
+
+  @override
+  String get categoryPrompt => '用在了哪里？';
+
+  @override
+  String get spendingTitle => '钱花在哪了';
+
+  @override
+  String get spendingWindow => '最近 30 天记录的支出';
+
+  @override
+  String get backupSection => '备份';
+
+  @override
+  String get backupSave => '保存备份';
+
+  @override
+  String get backupSaveSub => '用密码加密。请发送到安全的地方，例如云盘。';
+
+  @override
+  String get backupRestore => '从备份恢复';
+
+  @override
+  String get backupRestoreSub => '将替换此手机上的计划';
+
+  @override
+  String get backupPassword => '密码';
+
+  @override
+  String get backupPasswordRepeat => '再次输入密码';
+
+  @override
+  String get backupPasswordSaveBlurb => '恢复时需要此密码，忘记后无法找回。备份不包含收据照片。';
+
+  @override
+  String get backupPasswordOpenBlurb => '保存此备份时使用的密码。';
+
+  @override
+  String get backupPasswordShort => '至少 6 个字符';
+
+  @override
+  String get backupPasswordMismatch => '两次输入不一致';
+
+  @override
+  String get backupOpen => '打开';
+
+  @override
+  String get backupReplaceTitle => '替换当前计划？';
+
+  @override
+  String get backupReplaceBlurb => '此手机上的所有内容将被备份替换，且无法撤销。';
+
+  @override
+  String get backupReplace => '替换';
+
+  @override
+  String get backupRestored => '备份已恢复';
+
+  @override
+  String get backupWrongPassword => '该密码无法打开此备份。';
+
+  @override
+  String get backupNotABackup => '该文件不是 Upino 备份。';
+
+  @override
+  String get backupUnreadable => '此备份由更新版本的 Upino 创建。请更新应用后重试。';
+
+  @override
+  String get inflationTitle => '通货膨胀';
+
+  @override
+  String get inflationNotSet => '未设置。填写当地的年通胀率，查看目标的真实花费。';
+
+  @override
+  String inflationRate(String rate) {
+    return '每年 $rate%';
+  }
+
+  @override
+  String get inflationDialogTitle => '年通胀率';
+
+  @override
+  String get inflationDialogBlurb => '物价上涨，按今天的钱设定的目标到期时会更贵。输入你预计的通胀率，留空则关闭。';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return '按每年 $rate% 计算，届时约需 $amount。';
+  }
+
+  @override
+  String get holdingsTitle => '其他资产';
+
+  @override
+  String get holdingsBlurb => '美元、黄金、金币。显示在计划旁，从不计入可花的钱。';
+
+  @override
+  String get holdingsAdd => '添加资产';
+
+  @override
+  String get holdingsAddSub => '不计入可花的钱';
+
+  @override
+  String get holdingsTotal => '合计';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · $date 价格';
+  }
+
+  @override
+  String get holdingEditNew => '新资产';
+
+  @override
+  String get holdingEditExisting => '修改资产';
+
+  @override
+  String get holdingName => '是什么？';
+
+  @override
+  String get holdingNameHint => '美元、黄金…';
+
+  @override
+  String get holdingUsd => '美元';
+
+  @override
+  String get holdingEur => '欧元';
+
+  @override
+  String get holdingGold => '黄金（克）';
+
+  @override
+  String get holdingCoin => '金币';
+
+  @override
+  String get holdingQuantity => '数量';
+
+  @override
+  String get holdingUnitPrice => '今天每单位价值';
+
+  @override
+  String holdingWorth(String amount) {
+    return '合计价值 $amount';
+  }
+
+  @override
+  String get holdingDelete => '移除此资产';
+
+  @override
+  String get fasterTitle => '更快记录';
+
+  @override
+  String get smsTitle => '读取银行短信';
+
+  @override
+  String get smsDetail => '银行短信通知的支出会被提议一键记录。短信只在本机读取，绝不外传。';
+
+  @override
+  String get smsDenied => 'Upino 未获读取短信的权限，可在手机设置中开启。';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count 条银行短信待确认',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => '一键记录或跳过';
+
+  @override
+  String get smsReviewTitle => '来自银行';
+
+  @override
+  String get smsReviewBlurb => '点“记录”前不会记录任何内容。请对照短信核对金额。';
+
+  @override
+  String get smsReviewDone => '已全部处理。';
+
+  @override
+  String get smsRecord => '记录';
+
+  @override
+  String get smsSkip => '跳过';
+
+  @override
+  String get reminderTitleSetting => '晚间提醒';
+
+  @override
+  String get reminderDetail => '晚上 9 点，仅在当天没有记录时提醒。';
+
+  @override
+  String get reminderDenied => 'Upino 未获通知权限，可在手机设置中开启。';
+
+  @override
+  String get reminderTitle => '今天有花钱吗？';
+
+  @override
+  String get reminderBody => '几秒钟记下来，明天的数字才准确。';
+
+  @override
+  String get reminderChannel => '晚间提醒';
+
+  @override
+  String get widgetSpend => '+ 支出';
+
+  @override
+  String get widgetAdd => '添加到主屏幕';
+
+  @override
+  String get widgetAddSub => '无需打开应用即可查看可花金额并记录支出';
+
+  @override
+  String get voiceListening => '正在聆听…请说出金额和用途。';
+
+  @override
+  String voiceHeard(String text) {
+    return '听到：“$text”。请核对金额后保存。';
+  }
+
+  @override
+  String get voiceNothing => '没有听到金额，请重试或手动输入。';
+
+  @override
+  String get voicePrivacy => '手机会把语音转成文字。若不支持离线识别，将通过手机的语音服务处理。';
+
+  @override
+  String get voiceButton => '说出来';
+
+  @override
+  String get voiceUnavailable => '此手机没有可用的语音识别，请手动输入金额。';
+
+  @override
+  String get voiceNoPermission => 'Upino 未获麦克风权限，可在手机设置中开启。';
+
+  @override
+  String get voiceNetwork => '此手机的语音识别需要联网，但无法连接。';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '听到“$text”，但没有金额。请重试或手动输入。';
+  }
+
+  @override
+  String get yes => '是';
+
+  @override
+  String get no => '否';
+
+  @override
+  String get navAsk => '提问';
+
+  @override
+  String get alertsTitle => '需要处理';
+
+  @override
+  String get alertsEmpty => '目前没有需要处理的事项，计划是最新的。';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label还差 $amount';
+  }
+
+  @override
+  String get alertUnfundedDetail => '一项必须支付的款项目前资金不足。';
+
+  @override
+  String alertIncomeLate(String date) {
+    return '工资原定于 $date 到账';
+  }
+
+  @override
+  String get alertIncomeLateDetail => '到账前不计入。若日期有变，请在计划中修改。';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name本期落后 $amount';
+  }
+
+  @override
+  String get alertGoalBehindDetail => '现有资金不足以完成本期份额。';
+
+  @override
+  String get chatHint => '随便问，或输入一个价格';
+
+  @override
+  String get chatSuggestSafe => '我还能花多少？';
+
+  @override
+  String get chatSuggestPay => '下次工资什么时候？';
+
+  @override
+  String get chatSuggestWhere => '钱花在哪了？';
+
+  @override
+  String get chatSuggestAside => '预留了什么？';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return '到 $date 前你可以花 $amount。';
+  }
+
+  @override
+  String get chatSafeStale => '提醒一下：你的余额需要确认，这个数字仅供参考。';
+
+  @override
+  String chatPay(String amount, String date) {
+    return '下次工资 $amount，预计 $date 到账。';
+  }
+
+  @override
+  String get chatPayNone => '我还不知道你下次工资，在计划里加上吧，我会帮你盯着。';
+
+  @override
+  String get chatWhere => '最近 30 天钱花在了这些地方：';
+
+  @override
+  String get chatWhereNone => '最近 30 天没有支出，要么这个月很省，要么还没记录。';
+
+  @override
+  String chatAside(String amount) {
+    return '在可花之前，先预留了 $amount：';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return '来看看 $amount 会有什么影响。';
+  }
+
+  @override
+  String get chatHelp =>
+      '嗯，这个我没太明白。我可以告诉你还能花多少、工资什么时候到、钱花在哪、预留了什么，或怎么少花点。也可以输入一个价格，我给你看买下会怎样。';
+
+  @override
+  String get chatHelloNew =>
+      '你好！我是 Upino。你刚来，所以我目前只知道基本情况：余额、工资和预留的钱。这已经足够告诉你还能花多少、买东西会有什么影响。继续记录支出，大约一个季度后，我就能足够了解你的习惯，当你的私人理财顾问。';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return '欢迎回来！我已经从 $days 天、$spends 笔支出中学习。再过大约 $remaining 天，我就有一整个季度的数据了。';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return '欢迎回来！我已经了解你 $days 天的财务情况，随便问吧，包括怎么少花点。';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return '对了，有 $count 件事需要你处理，在铃铛里。';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return '今天买的话，所有必须支付的都有保障，还剩 $left 可用。';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return '今天买会让某项必须支付的款项不够。等到 $date 再买，就都能覆盖。';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return '注意：即使 $date 发了工资，也会有必须支付的款项不够。';
+  }
+
+  @override
+  String get chatPurchaseShort => '今天买会让某项必须支付的款项不够。';
+
+  @override
+  String chatSafeNothing(String date) {
+    return '目前到 $date 前没有余钱：现有的钱都已留给必须支付的项目。';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return '也就是 $days 天后。';
+  }
+
+  @override
+  String get chatPayLate => '工资晚了，确认到账前不会计入。';
+
+  @override
+  String get chatPayRange => '计划按下限计算，所以收入好的月份是额外收获，而不是缺口。';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return '目前我只看了 $days 天，先大致看看：';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return '$category占比最大：$share%。';
+  }
+
+  @override
+  String get chatWhereTooSoon => '现在问还有点早：我几乎还没看到支出。记几笔，下周再问我吧。';
+
+  @override
+  String get chatAdviceTooSoon =>
+      '我很想帮忙，但说实话我还不够了解你的支出，没有这些的建议只是瞎猜。记录支出（分类很有帮助），过几周再问我吧。';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return '最近 30 天你最大的支出是$category，$amount。削减十分之一，每月大约能省出 $tenth。';
+  }
+
+  @override
+  String get chatAdviceSort => '我能看到你花了多少，但不知道花在哪。记录时加上分类，我就能告诉你该在哪里省。';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return '比上个月多花了 $amount。';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return '不错：比上个月少花了 $amount。';
+  }
+
+  @override
+  String get chatAdviceLearning => '我还在了解你的习惯，这只是初步提示，不是全貌。';
+
+  @override
+  String get chatSmallHello => '你好！想了解你的钱的哪些情况？';
+
+  @override
+  String get chatSmallThanks => '随时效劳！准备花钱时我都在。';
+
+  @override
+  String get chatSmallWho =>
+      '我是 Upino 的助手。我只了解你的计划，给出的每个数字都直接来自它，任何信息都不会离开这部手机。我不会替你说买或不买，但会告诉你每种选择会留下什么。';
+
+  @override
+  String get chatSuggestAdvice => '怎么少花点？';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => '新对话';
+
+  @override
+  String get chatResumed => '这里的回答按你今天的计划重新计算。';
+
+  @override
+  String get chatWhy => '这个数字是这样算出来的：';
+
+  @override
+  String get chatWhyHave => '你现有的钱';
+
+  @override
+  String get chatWhySetAside => '先预留的';
+
+  @override
+  String get chatWhyLeft => '可放心花';
+
+  @override
+  String get chatSmallHowAreYou => '我很好，谢谢关心！你的钱都还在原处。想了解什么？';
+
+  @override
+  String get chatSmallBye => '再见！下次大笔花钱前再来找我。';
+
+  @override
+  String get chatSmallOkay => '还有别的想看看吗？';
+
+  @override
+  String get askHubTitle => '和 Upino 聊聊';
+
+  @override
+  String get askHubNew => '问问还能花多少、买东西的影响或工资何时到。我还在了解你，记录越多，我越有用。';
+
+  @override
+  String askHubLearning(int days) {
+    return '我在学习你的习惯：再过大约 $days 天，就有一整个季度可以给建议了。';
+  }
+
+  @override
+  String get askHubFamiliar => '我现在很了解你的财务了，随便问吧，包括怎么少花点。';
+
+  @override
+  String get askHubStart => '开始对话';
+
+  @override
+  String get askHubCommon => '常见问题';
+
+  @override
+  String get askHubHistory => '你的对话';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count 个问题';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '为 $count 项承诺预留了 $amount';
+  }
+
+  @override
+  String get askHubDeleteTitle => '删除这段对话？';
+
+  @override
+  String get askHubDeleteBlurb => '只删除对话，你的计划不会改变。';
+
+  @override
+  String get chatSmallHi => '你好！';
+
+  @override
+  String get chatSmallHiFine => '你好！我很好，谢谢。';
+
+  @override
+  String chatSafeLasts(int days) {
+    return '这笔钱要撑 $days 天，直到发工资。';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return '到 $date 为止，你已有 $amount 的钱有了去处。';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · 大约推迟 $days 天';
+  }
+
+  @override
+  String get askGoalsTitle => '目标会推迟';
+
+  @override
+  String get askGoalsNote => '按每个目标当前的储蓄速度粗略估算。';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return '这会让$goal推迟大约 $days 天。';
+  }
+
+  @override
+  String get monthTitle => '你的这个月';
+
+  @override
+  String get monthWindow => '最近 30 天，对比之前的 30 天';
+
+  @override
+  String monthTooSoon(int days) {
+    return '月度回顾需要一个月的支出记录。你的将在 $days 天后准备好。';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return '最近 30 天共支出 $amount。';
+  }
+
+  @override
+  String get monthNothing => '最近 30 天没有任何记录。';
+
+  @override
+  String monthMore(String amount) {
+    return '比之前 30 天多了 $amount。';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return '比之前 30 天少了 $amount。';
+  }
+
+  @override
+  String get monthSame => '与之前 30 天大致相同。';
+
+  @override
+  String monthUp(String category, String amount) {
+    return '增长最多：$category，多了 $amount。';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return '减少最多：$category，少了 $amount。';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return '按计划进行的目标：$onTrack / $total。';
+  }
+
+  @override
+  String get chatSuggestMonth => '我这个月过得怎么样？';
+
+  @override
+  String get timelineTitle => '你接下来的钱';
+
+  @override
+  String get timelineToday => '今天';
+
+  @override
+  String get timelineNow => '现在';
+
+  @override
+  String get timelineProjected => '预测';
+
+  @override
+  String get timelineRecorded => '已记录';
+
+  @override
+  String get timelineFree => '可自由支配';
+
+  @override
+  String get timelineHad => '当时余额';
+
+  @override
+  String timelineBalance(String amount) {
+    return '余额 $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return '已预留 $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return '工资 $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return '必须支付的款项还差 $amount';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return '不买：$amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => '发工资后买';
+
+  @override
+  String get timelineBalanceLegend => '余额';
+
+  @override
+  String get timelineWithPurchase => '买了之后';
+
+  @override
+  String get timelinePay => '发薪日';
+
+  @override
+  String get timelineAssumptions =>
+      '未来部分是预测：工资按时到账、账单按期支付、生活预留平均花掉，此外不花别的。在图上滑动可查看任意一天。';
+
+  @override
+  String get timelineSemantics => '逐日显示余额和可支配金额的图表';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return '$goal达成目标的图表';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return '目标 $amount，截止 $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return '每个发薪周期存入：$amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return '进度正常：$date 前达成。';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return '按这个速度将在 $date 达成，比目标日期晚 $days 天。';
+  }
+
+  @override
+  String get goalNotMoving => '目前没有钱投入，所以没有进展。';
+
+  @override
+  String goalUsePace(String date) {
+    return '把目标日期改为 $date';
+  }
+
+  @override
+  String get goalPaceNote => '只是假设：在你确认之前什么都不会改变。';
+
+  @override
+  String get goalShowPath => '查看达成路径';
+
+  @override
+  String get goalHidePath => '收起';
+
+  @override
+  String get billsTitle => '账单和订阅';
+
+  @override
+  String get billAdd => '添加账单或订阅';
+
+  @override
+  String get billAddSub => '电话、网络、保险、流媒体……每项都会在到期前预留。';
+
+  @override
+  String get billEditNew => '新账单';
+
+  @override
+  String get billEditExisting => '修改账单';
+
+  @override
+  String get billName => '是什么？';
+
+  @override
+  String get billNameHint => '例如：网络';
+
+  @override
+  String get billAmount => '每次金额';
+
+  @override
+  String get billEvery => '多久一次';
+
+  @override
+  String get billEveryWeek => '每周';
+
+  @override
+  String get billEveryMonth => '每月';
+
+  @override
+  String get billEveryQuarter => '每季度';
+
+  @override
+  String get billEveryYear => '每年';
+
+  @override
+  String get billNext => '下次付款';
+
+  @override
+  String get billKind => '类型';
+
+  @override
+  String get billKindBill => '账单';
+
+  @override
+  String get billKindSubscription => '订阅';
+
+  @override
+  String get billRepays => '偿还';
+
+  @override
+  String get billRepaysNothing => '不偿还，是开支';
+
+  @override
+  String get billAddThis => '添加账单';
+
+  @override
+  String get billDelete => '删除账单';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · 下次 $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return '已于 $date 到期';
+  }
+
+  @override
+  String get billPay => '标记为已付';
+
+  @override
+  String get billEdit => '修改';
+
+  @override
+  String get dayToday => '今天';
+
+  @override
+  String dayIn(int days) {
+    return '$days 天后';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days 天前';
+  }
+
+  @override
+  String get homeComingUp => '即将到来';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '未来 30 天有 $amount 的账单到期。';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return '你的工资应于 $date 到账。到了吗？';
+  }
+
+  @override
+  String get payDueSub => '告诉我们到账多少，下次工资将在一个周期后预期到账。';
+
+  @override
+  String get payArrived => '已到账';
+
+  @override
+  String get payArrivedTitle => '到账多少？';
+
+  @override
+  String get planRecordPay => '工资已到账';
+
+  @override
+  String get planRecordPaySub => '记录后下次工资顺延一个周期';
+
+  @override
+  String get accountsTitle => '账户';
+
+  @override
+  String get accountMain => '主账户';
+
+  @override
+  String get accountKindBank => '银行账户';
+
+  @override
+  String get accountKindCash => '现金';
+
+  @override
+  String get accountKindSavings => '储蓄';
+
+  @override
+  String get accountKindCard => '信用卡';
+
+  @override
+  String get accountKindLoan => '贷款';
+
+  @override
+  String get accountAdd => '添加账户';
+
+  @override
+  String get accountAddSub => '现金、储蓄、信用卡或贷款，无需连接银行。';
+
+  @override
+  String get accountEditNew => '新账户';
+
+  @override
+  String get accountNameHint => '例如：钱包';
+
+  @override
+  String get accountHolds => '当前余额';
+
+  @override
+  String get accountOwes => '当前欠款';
+
+  @override
+  String get accountCounted => '计入计划';
+
+  @override
+  String get accountCountedSub => '这里的钱本月可以花。';
+
+  @override
+  String accountOwed(String amount) {
+    return '欠 $amount';
+  }
+
+  @override
+  String get accountNotCounted => '不计入计划';
+
+  @override
+  String get accountConfirm => '填写实际余额';
+
+  @override
+  String get accountMove => '转账';
+
+  @override
+  String accountMoveTo(String name) {
+    return '转到 $name';
+  }
+
+  @override
+  String get accountMoveBlurb => '在自己账户之间转账既不是支出也不是收入。';
+
+  @override
+  String get accountPayCard => '还一部分';
+
+  @override
+  String get accountPayBlurb => '从主账户支付。这是还款，不算第二次支出。';
+
+  @override
+  String get accountRemove => '删除此账户';
+
+  @override
+  String get accountInUse => '它有历史记录，所以保留。你可以改为不计入计划。';
+
+  @override
+  String get paidFrom => '支付方式';
+
+  @override
+  String get categorySuggested => '根据你过去的支出推荐。点其他类别可更改。';
+
+  @override
+  String get recoverTitle => '待退回的钱';
+
+  @override
+  String recoverTotal(String amount) {
+    return '可能退回 $amount，到账前不计入。';
+  }
+
+  @override
+  String get recoverReturnable => '可退货';
+
+  @override
+  String get recoverExpect => '已退货，等待退款';
+
+  @override
+  String get recoverArrived => '退款已到账';
+
+  @override
+  String get recoverKept => '留着了';
+
+  @override
+  String get recoverPending => '退款处理中';
+
+  @override
+  String get recoverRefunded => '已退款';
+
+  @override
+  String get recoverPrompt => '退款';
+
+  @override
+  String recoverWhere(String amount) {
+    return '退回了 $amount，放到哪里？';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return '用于$goal';
+  }
+
+  @override
+  String get recoverToBuffer => '放入应急备用金';
+
+  @override
+  String get recoverLeave => '留作可支配';
+
+  @override
+  String get accountStopCounting => '不再计入计划';
+
+  @override
+  String get moveTitle => '最佳一步';
+
+  @override
+  String get moveTagMove => '转移';
+
+  @override
+  String get moveTagWait => '等待';
+
+  @override
+  String get moveTagSave => '储蓄';
+
+  @override
+  String get moveTagSpend => '可花';
+
+  @override
+  String moveMove(String amount, String account) {
+    return '从 $account 转 $amount 来支付必须支付的款项。';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim资金不足，而这笔钱在计划之外闲置。';
+  }
+
+  @override
+  String get moveDoIt => '转移';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return '先别额外花钱：$date 时必须支付的款项会差 $amount。';
+  }
+
+  @override
+  String get moveWaitGapWhy => '预测计入了到那天为止的工资、账单和生活开支。';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return '还有 $days 天发工资。等到那时，可支配金额会从 $now 变成 $later。';
+  }
+
+  @override
+  String get moveWaitPayWhy => '前提是你想买的东西能等。无论如何都没有风险。';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '把 $amount 转到 $account，用于$goal。';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return '大约提前 $days 天达成，剩下的可支配金额仍是你平常一个月开支的两倍。';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return '到 $date 为止都有保障：$amount 可自由使用。';
+  }
+
+  @override
+  String get moveSpendWhy => '账单和目标都已预留，未来没有缺口，而且这远高于你平常的开支。';
+
+  @override
+  String get moveNotNow => '暂不';
+
+  @override
+  String get moveNone => '目前没有值得建议的操作，你的计划保持现状即可。';
+
+  @override
+  String monthIncome(String amount) {
+    return '到账工资：$amount。';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return '投入目标：$amount。';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return '目前：可支配 $free，已预留 $aside。';
+  }
+
+  @override
+  String get monthAheadTitle => '未来 30 天';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count 笔账单，共 $amount。';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return '下次工资预计 $date 到账。';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return '最紧的一天是 $date，可支配 $amount。';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return '$date 时必须支付的款项会差 $amount。';
+  }
+
+  @override
+  String get monthWorthKnowing => '值得了解';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category比上个月多了 $amount。';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return '如果持续下去，每个月大约相当于$goal的 $days 天进度。';
+  }
+
+  @override
+  String get chatSuggestMove => '我接下来该做什么？';
+
+  @override
+  String get chatSuggestComing => '接下来有哪些账单？';
+
+  @override
+  String get chatComingNone => '未来 30 天没有账单到期。在“计划”中添加你的账单，我会帮你跟踪。';
+
+  @override
+  String get quickAsk => '提问';
+
+  @override
+  String get quickPay => '工资到账';
+
+  @override
+  String get quickBills => '账单';
+
+  @override
+  String get quickMonth => '本月';
+
+  @override
+  String get quickPayDue => '工资到期了，告诉我们是否已到账。';
+
+  @override
+  String get chartAvg => '平均';
+
+  @override
+  String get flowsTitle => '资金进出';
+
+  @override
+  String get flowsBlurb => '按周显示：工资和退款在线上，支出和还款在线下。';
+
+  @override
+  String flowsWeek(String date) {
+    return '$date 这一周';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return '进 $moneyIn · 出 $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => '余额变化';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count个月';
+  }
+
+  @override
+  String get rangeYear => '1年';
+
+  @override
+  String get weekSpentTitle => '最近 7 天';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '支出 $amount';
+  }
+
+  @override
+  String get payGaugeTitle => '距离下次发工资';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return '天后';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return '$date 发薪后：可支配 $amount';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount 要撑到那天。';
+  }
+
+  @override
+  String get goalsOverall => '所有目标的进度';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '本月 +$amount';
+  }
+
+  @override
+  String get goalsNothingThisMonth => '本月尚未存入';
+
+  @override
+  String get goalsAllOnTrack => '全部按计划';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$total 个中 $onTrack 个按计划';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return '下一个：$goal，$date';
+  }
+
+  @override
+  String get goalsTips => '更快达成的方法';
+
+  @override
+  String get goalsTipsSub => '根据你的支出问问 Upino';
+
+  @override
+  String get goalsDetailTitle => '各个目标';
+
+  @override
+  String get demoTry => '用示例数据试试';
+
+  @override
+  String get demoTrySub => '四个目标、账单和三个月的记录，放在一个不属于你、也不会保存的副本里。';
+
+  @override
+  String get demoBanner => '示例数据：这里的内容都不属于你，也不会保存。';
+
+  @override
+  String get demoExit => '退出';
+
+  @override
+  String get demoGoalTrip => '旅行';
+
+  @override
+  String get demoGoalLaptop => '笔记本电脑';
+
+  @override
+  String get demoGoalEmergency => '应急';
+
+  @override
+  String get demoGoalCar => '汽车';
+
+  @override
+  String get demoBillPhone => '电话';
+
+  @override
+  String get demoBillInternet => '网络';
+
+  @override
+  String get demoBillGym => '健身房';
+
+  @override
+  String get voiceExample => '例如：“五十块，午饭”';
+
+  @override
+  String get voiceTitleListening => '正在听';
+
+  @override
+  String get voiceTitleHeard => '听到了';
+
+  @override
+  String get voiceTitleFailed => '没听清';
+
+  @override
+  String get voiceStop => '停止';
+
+  @override
+  String get voiceRetry => '再说一次';
+
+  @override
+  String heroUntil(String date) {
+    return '到 $date';
+  }
+
+  @override
+  String get goalIcon => '图标';
+
+  @override
+  String get payGaugeToLast => '需撑到发薪';
+
+  @override
+  String get payGaugeNextPay => '下次发薪';
+
+  @override
+  String get frSelected => '已选';
+
+  @override
+  String get frFromPhone => '来自你的手机';
+
+  @override
+  String get frSuggested => '推荐';
+
+  @override
+  String get frLangOnPhone => '你手机的语言';
+
+  @override
+  String get frLangNotHere => '暂时还没有你的语言';
+
+  @override
+  String get frLangTitle => '用你的语言\n来聊吧。';
+
+  @override
+  String get frOrChoose => '或选择';
+
+  @override
+  String frContinueIn(String language) {
+    return '以$language继续';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return '使用$currency';
+  }
+
+  @override
+  String get frContinue => '继续';
+
+  @override
+  String get frNothingBeforePayday => '发薪前没有要付的';
+
+  @override
+  String get frSkipForNow => '暂时跳过';
+
+  @override
+  String get frLooksLike => '看起来是';
+
+  @override
+  String get frCurrencyTitle => '你的收入\n是哪种货币？';
+
+  @override
+  String get frMore => '更多';
+
+  @override
+  String get frIntentTitle => '你希望 Upino 帮你做什么？';
+
+  @override
+  String get frIntentSub => '选出所有符合的。每一项只需要一个数字。';
+
+  @override
+  String get frIntentSafe => '知道我能放心花多少';
+
+  @override
+  String get frIntentShort => '不再月光';
+
+  @override
+  String get frIntentSave => '攒钱';
+
+  @override
+  String get frIntentDebt => '还清债务';
+
+  @override
+  String get frIntentIrregular => '为不定期开支做准备';
+
+  @override
+  String get frIntentGoal => '实现一个目标';
+
+  @override
+  String get frIntentUnderstand => '更了解我的钱';
+
+  @override
+  String get frAskSafe => '平常一个月你花多少？';
+
+  @override
+  String get frAskSafeHint => '大概的数字就行。';
+
+  @override
+  String get frAskShort => '发薪前你通常差多少？';
+
+  @override
+  String get frAskShortHint => '最后借来的钱，或只好省掉的部分。';
+
+  @override
+  String get frAskSave => '你每个月想存多少？';
+
+  @override
+  String get frAskSaveHint => 'Upino 会在你花钱之前先存起来。';
+
+  @override
+  String get frAskDebt => '你一共欠多少？';
+
+  @override
+  String get frAskDebtHint => '信用卡、贷款，所有在还的钱。';
+
+  @override
+  String get frAskIrregular => '一年加起来有多少？';
+
+  @override
+  String get frAskIrregularHint => '保险、维修、礼物、各种费用。';
+
+  @override
+  String get frAskGoal => '你的目标要花多少钱？';
+
+  @override
+  String get frAskGoalHint => '名称和日期可以之后再定。';
+
+  @override
+  String get frAskUnderstand => '你觉得自己一个月花多少？';
+
+  @override
+  String get frAskUnderstandHint => 'Upino 会告诉你猜得有多准。';
+
+  @override
+  String frPerMonth(String amount) {
+    return '每月 $amount';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return '每月差 $amount';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return '欠 $amount';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return '每年 $amount';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return '目标 $amount';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return '每月 $amount（你的估计）';
+  }
+
+  @override
+  String get frAdd => '添加';
+
+  @override
+  String get frRemove => '移除';
+
+  @override
+  String get frIncomeTitle => '告诉我们钱是怎么进来的。';
+
+  @override
+  String get frIncomeSub => '如果不固定，就填你能确定的数。';
+
+  @override
+  String get frAddIncome => '添加另一项收入';
+
+  @override
+  String get frEvery2Weeks => '每两周';
+
+  @override
+  String get frTwiceMonth => '每月两次';
+
+  @override
+  String get frIrregular => '不固定';
+
+  @override
+  String get frEachPay => '每次收入';
+
+  @override
+  String get frAnotherIncome => '其他收入';
+
+  @override
+  String get frAvailTitle => '你现在手头有多少可用的钱？';
+
+  @override
+  String get frAvailSub => '现金和日常花钱的账户加在一起。储蓄先不算——账户可以之后逐个添加。';
+
+  @override
+  String get frAvailLabel => '今天可用的钱';
+
+  @override
+  String get frAvailNote => '这将成为今天确认的余额。';
+
+  @override
+  String get frObRent => '房租 / 房贷';
+
+  @override
+  String get frObUtilities => '水电燃气';
+
+  @override
+  String get frObInsurance => '保险';
+
+  @override
+  String get frObSubscriptions => '订阅';
+
+  @override
+  String get frSomethingElse => '其他';
+
+  @override
+  String get frObTitle => '下次收入前必须付哪些钱？';
+
+  @override
+  String frObSub(String date) {
+    return '只算 $date 前到期的。逐个点一下。';
+  }
+
+  @override
+  String get frAddAnother => '再添加一个';
+
+  @override
+  String get frObNeedsName => '填写名称和金额';
+
+  @override
+  String get frTapToAdd => '点击添加';
+
+  @override
+  String get frAmount => '金额';
+
+  @override
+  String get frDue => '到期';
+
+  @override
+  String get frEssTitle => '到下次收入前，日常必需大概需要多少？';
+
+  @override
+  String frEssSub(String date) {
+    return '截至 $date。大概的数字就行。';
+  }
+
+  @override
+  String get frEssGroceries => '买菜';
+
+  @override
+  String get frEssGettingAround => '出行';
+
+  @override
+  String get frEssHousehold => '家用';
+
+  @override
+  String get frEssEveryday => '日常所需';
+
+  @override
+  String get frHelpEstimate => '帮我估算';
+
+  @override
+  String get frEstimateTitle => '快速估算';
+
+  @override
+  String get frEstimateSub => '点两下。之后还能改数字。';
+
+  @override
+  String get frPeopleYouCover => '你负担的人数';
+
+  @override
+  String get frWalkBike => '步行或骑车';
+
+  @override
+  String get frPublicTransport => '公共交通';
+
+  @override
+  String get frCar => '汽车';
+
+  @override
+  String frUntil(String date) {
+    return '截至 $date';
+  }
+
+  @override
+  String get frUseThis => '就用这个';
+
+  @override
+  String get frProtEmergency => '应急金';
+
+  @override
+  String get frProtTrip => '旅行';
+
+  @override
+  String get frProtHome => '住房';
+
+  @override
+  String get frProtYearly => '年度支出';
+
+  @override
+  String frMonths(int count) {
+    return '$count 个月';
+  }
+
+  @override
+  String get frProtTitle => '有什么想让你的钱守护的吗？';
+
+  @override
+  String get frProtSub => '可选。Upino 每次收入都存一点，到时就够了。';
+
+  @override
+  String get frProtNameHint => '例如：车险';
+
+  @override
+  String get frProtWhatFor => '用来做什么？';
+
+  @override
+  String get frProtYearlyAmount => '每年一次，多少钱';
+
+  @override
+  String get frTarget => '目标';
+
+  @override
+  String get frNextDueIn => '下次到期';
+
+  @override
+  String get frAlreadySaved => '已存';
+
+  @override
+  String frDay(int n) {
+    return '第 $n 天';
+  }
+
+  @override
+  String get frMoment1Title => '发薪日，安排好了。';
+
+  @override
+  String get frMoment1Body => '钱一到账，房租和买菜钱就先留好。剩下的就是你可以花的。';
+
+  @override
+  String get frMoment2Title => '每笔花费，3 秒记完。';
+
+  @override
+  String get frMoment2Body => '记一下，数字立刻更新。永远是今天的真实情况。';
+
+  @override
+  String get frMoment3Title => '买之前先问问。';
+
+  @override
+  String get frMoment3Body => '付款前就能看到这次购买对账单和目标的影响。';
+
+  @override
+  String get frMoment4Title => '自己攒满的目标。';
+
+  @override
+  String get frMoment4Body => '每次收入都存下一点，月底告诉你钱都去了哪里。';
+
+  @override
+  String get frGetStarted => '开始';
+
+  @override
+  String frPayArrived(String amount) {
+    return '工资到账  $amount';
+  }
+
+  @override
+  String get frCoffee => '咖啡';
+
+  @override
+  String get frRecordedNow => '刚刚记下';
+
+  @override
+  String frAskJacket(String amount) {
+    return '我能买一件 $amount 的外套吗？';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return '可以，房租也不受影响。到 $date 你还有 $amount。你的旅行会推迟 4 天。';
+  }
+
+  @override
+  String get frIfBuyNow => '如果现在买';
+
+  @override
+  String frLeft(String amount) {
+    return '剩 $amount';
+  }
+
+  @override
+  String get frMonthClosed => '本月已结：外出就餐少花了 8%。';
+
+  @override
+  String get frOfAllGoals => '全部目标';
+
+  @override
+  String get frWelcome => '欢迎来到 Upino';
+
+  @override
+  String get frWelcomeSub => '新用户或老用户，都是这一步。';
+
+  @override
+  String get frWithApple => '通过 Apple 继续';
+
+  @override
+  String get frWithGoogle => '通过 Google 继续';
+
+  @override
+  String get frWithEmail => '通过邮箱继续';
+
+  @override
+  String get frOnDevice => '你的计划在你的手机上计算。';
+
+  @override
+  String get frTermsPrivacy => '条款 · 隐私';
+
+  @override
+  String get frCheckEmail => '查看你的邮箱';
+
+  @override
+  String frCodeSent(String email) {
+    return '我们已向 $email 发送 6 位验证码。';
+  }
+
+  @override
+  String get frCodeWhy => '我们会发给你一个验证码。不用记密码。';
+
+  @override
+  String get frSendCode => '发送验证码';
+
+  @override
+  String get frAvailableNow => '现在可用';
+
+  @override
+  String get frProtectedBills => '为账单和必需留好';
+
+  @override
+  String get frProtectedGoal => '为你的目标留好';
+
+  @override
+  String get frPlanReady => '你的理财计划已就绪';
+
+  @override
+  String frNotCovered(String amount) {
+    return '必须支付的钱里还有 $amount 没有着落。';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return '直到 $date 预计的下次收入';
+  }
+
+  @override
+  String get frTakenCare => '已经安排好';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name，$amount，$date 到期，在任何钱可以自由花之前就已留好。';
+  }
+
+  @override
+  String get frBuiltFromAll => '根据你告诉我们的一切生成。';
+
+  @override
+  String frGoodEstimate(int count) {
+    return '不错的初步估算。之后再补充 $count 项信息会更准。';
+  }
+
+  @override
+  String get frGoToPlan => '查看我的计划';
+
+  @override
+  String get frSafeToSpend => '可放心花';
+
+  @override
+  String get frGapsTitle => '让“可放心花”更准确';
+
+  @override
+  String get frGapEssentials => '添加日常必需';
+
+  @override
+  String get frGapYearly => '添加年度费用，比如保险';
+
+  @override
+  String get frGapBill => '添加发薪前到期的账单';
+
+  @override
+  String frSeconds(int count) {
+    return '约 $count 秒';
+  }
+
+  @override
+  String get frEssentialsSheet => '发薪前的日常必需';
 }

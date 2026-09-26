@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Upino: Know what your money can safely do next</title>
+<meta name="description" content="Upino is a personal finance app that shows what you can safely spend, what is already committed, and what each purchase changes for your goals. Decision support, not bookkeeping.">
+<meta name="theme-color" content="#0F1012">
+<!-- PLACEHOLDER: replace https://upino.example with the real domain before launch. -->
+<link rel="canonical" href="https://upino.example/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Upino">
+<meta property="og:title" content="Upino: Know what your money can safely do next">
+<meta property="og:description" content="See what you can safely spend, what is already committed, and what each decision changes.">
+<meta property="og:url" content="https://upino.example/">
+<meta property="og:image" content="https://upino.example/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Upino: Know what your money can safely do next">
+<meta name="twitter:description" content="See what you can safely spend, what is already committed, and what each decision changes.">
+<meta name="twitter:image" content="https://upino.example/og.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:image:alt" content="Upino. Know what your money can safely do next. €1,284 safe to spend for the next 12 days.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Upino",
+      "url": "https://upino.example/",
+      "logo": "https://upino.example/favicon.svg"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Upino",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Android",
+      "description": "A personal finance decision-support app: Safe to Spend, protected obligations, purchase scenarios and goal projections."
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="Upino home">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="M10 9v8.2a6 6 0 0 0 12 0V9" fill="none" stroke="var(--brand-glyph)" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <span class="brand__word">upino</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#product">Product</a>
+      <a href="#intelligence">Intelligence</a>
+      <a href="#how">How it works</a>
+      <a href="#security">Security</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#company">Company</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--ghost nav__secondary" href="#product">See how it works</a>
+      <a class="btn btn--primary" href="#get">Get Upino</a>
+      <button class="nav__menu" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="#product">Product</a>
+    <a href="#intelligence">Intelligence</a>
+    <a href="#how">How it works</a>
+    <a href="#security">Security</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#company">Company</a>
+    <a href="#articles">Articles</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ───────── HERO ───────── -->
+<section class="hero" id="top" aria-labelledby="heroTitle">
+  <div class="wrap">
+    <div class="hero__head">
+      <h1 class="hero__title" id="heroTitle">Know what your money can safely do&nbsp;next.</h1>
+      <div class="hero__side">
+        <p class="hero__lede">Press Move and watch every number that depends on it change.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--onblue btn--lg" href="#get">Get Upino</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- The product as tiles, on Upino blue. Example figures; they agree
+         with the rest of the page (today is Oct 13, income lands Oct 25). -->
+    <div class="hbento" id="heroBento" aria-label="Upino, example figures">
+      <div class="bt bt--sts">
+        <span class="bt__k">Safe to spend</span>
+        <b class="bt__big num" id="heroFigure" data-value="1284">€1,284</b>
+        <span class="bt__s">Until next income · 12 days</span>
+        <div class="bt__days" aria-hidden="true"></div>
+      </div>
+      <div class="bt bt--prot">
+        <span class="bt__k">Protected</span>
+        <b class="bt__mid num">€3,536</b>
+        <ul class="bt__bars" aria-label="Obligations €1,640, essentials €920, annual costs €410, goals €380"><li style="--w:1640"><span>Obligations</span></li><li style="--w:920"><span>Essentials</span></li><li style="--w:410"></li><li style="--w:380"></li></ul>
+      </div>
+      <div class="bt bt--goal">
+        <span class="bt__k">Japan</span>
+        <b class="bt__mid num" id="heroGoalPct">72%</b>
+        <div class="bt__track" aria-hidden="true"><i id="heroGoalBar" style="--p:.72"></i></div>
+        <span class="bt__s" id="heroGoalText">June 2027 · on track</span>
+      </div>
+      <div class="bt bt--move">
+        <span class="bt__k" id="heroMoveK">Next best move</span>
+        <p class="bt__move" id="heroMoveText" aria-live="polite">Move <b class="num">€180</b> to Travel</p>
+        <button class="bt__btn" type="button" id="heroMove">Move</button>
+      </div>
+      <div class="bt bt--line">
+        <span class="bt__k">Next 40 days</span>
+        <p class="bt__fig"><b class="num" id="heroLineFig">€1,284</b><span>safe today</span></p>
+        <div class="dbars" aria-hidden="true"><i class="now" style="--v:0.426"><span class="dbars__pill dbars__pill--ink">Today</span></i><i style="--v:0.400"></i><i style="--v:0.374"></i><i style="--v:0.348"></i><i style="--v:0.322"></i><i style="--v:0.296"></i><i style="--v:0.270"></i><i style="--v:0.244"></i><i style="--v:0.219"></i><i style="--v:0.193"></i><i class="pay" style="--v:0.941"><span class="dbars__pill">Pay +€2,540</span></i><i style="--v:0.917"></i><i style="--v:0.893"></i><i style="--v:0.870"></i><i style="--v:0.846"></i><i style="--v:0.822"></i><i style="--v:0.799"></i><i style="--v:0.775"></i><i style="--v:0.751"></i><i style="--v:0.727"></i><i style="--v:0.704"></i><i style="--v:0.680"></i><i style="--v:0.656"></i><i style="--v:0.633"></i><i style="--v:0.609"></i><i style="--v:0.585"></i><i style="--v:0.561"></i><i style="--v:0.538"></i><i style="--v:0.514"></i><i style="--v:0.490"></i><i style="--v:0.467"></i><i style="--v:0.443"></i><i style="--v:0.419"></i><i style="--v:0.396"></i><i style="--v:0.372"></i><i style="--v:0.348"></i><i style="--v:0.324"></i><i style="--v:0.301"></i><i style="--v:0.277"></i><i style="--v:0.253"></i></div>
+        <div class="dbars__axis" aria-hidden="true"><span>Today</span><span>Nov 4</span><span>Nov 24</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── PROBLEM ───────── -->
+<section class="problem" aria-labelledby="problemTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">02</span><span class="rule__t">Why Upino</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <h2 class="h2 problem__title" id="problemTitle">Most finance apps explain the past. <span class="muted">Upino helps you think about what comes&nbsp;next.</span></h2>
+    <figure class="pn" id="pn" aria-label="Behind you: where did the money go. Ahead of you: €1,284 safe to spend for the next 12 days.">
+      <div class="pn__bar" aria-hidden="true">
+        <div class="pn__past"><i style="--x:12%"></i><i style="--x:30%"></i><i style="--x:44%"></i><i style="--x:61%"></i><i style="--x:78%"></i><i style="--x:91%"></i></div>
+        <div class="pn__next"></div>
+        <div class="pn__today"><span>Today</span></div>
+      </div>
+      <div class="pn__lab">
+        <p class="pn__side pn__side--past"><small>Behind you</small><b>Where did it go?</b></p>
+        <p class="pn__side pn__side--next"><small>Ahead of you</small><b class="num" id="pnAmt">€1,284</b><span>safe for the next 12 days</span></p>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────── SAFE TO SPEND (film) ───────── -->
+<section class="sts ink" id="product" aria-labelledby="stsTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">03</span><span class="rule__t">Safe to Spend</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="sts__pin">
+    <div class="wrap sts__inner">
+      <div class="sts__head">
+        <h2 class="h2" id="stsTitle">Your balance is not your spending money.</h2>
+        <p class="lede lede--ink">Some of it already belongs to rent, bills, yearly costs, essentials and the goals you said matter. Upino sets those aside first, then shows what is really yours to use.</p>
+      </div>
+
+      <div class="sts__stage">
+        <div class="sts__readout" aria-live="polite">
+          <p class="sts__readlabel" id="stsLabel">Available money</p>
+          <p class="sts__figure num" id="stsFigure">€4,820</p>
+        </div>
+
+        <div class="sts__bar" id="stsBar" role="img" aria-label="€4,820 available: €1,640 obligations, €920 essentials, €410 annual costs, €380 hard goals, €186 other protected money, leaving €1,284 safe to spend.">
+          <span class="seg" data-key="obligations" style="--w:1640"></span>
+          <span class="seg" data-key="essentials" style="--w:920"></span>
+          <span class="seg" data-key="annual" style="--w:410"></span>
+          <span class="seg" data-key="goals" style="--w:380"></span>
+          <span class="seg" data-key="other" style="--w:186"></span>
+          <span class="seg seg--safe" data-key="safe" style="--w:1284"></span>
+        </div>
+
+        <div class="sts__why">
+          <button class="why-btn" id="whyBtn" aria-expanded="true" aria-controls="stsLedger">Why this number?</button>
+        </div>
+
+        <ol class="sts__ledger" id="stsLedger">
+          <li class="lrow" data-key="available"><span class="lrow__name">Available money</span><span class="lrow__op mono"></span><span class="lrow__val num">€4,820</span></li>
+          <li class="lrow" data-key="obligations"><span class="lrow__sw"></span><span class="lrow__name">Obligations <small>rent, bills, debt payments due before income</small></span><span class="lrow__val num">−€1,640</span></li>
+          <li class="lrow" data-key="essentials"><span class="lrow__sw"></span><span class="lrow__name">Essentials <small>food and transport until income</small></span><span class="lrow__val num">−€920</span></li>
+          <li class="lrow" data-key="annual"><span class="lrow__sw"></span><span class="lrow__name">Annual costs <small>this period's share of yearly bills</small></span><span class="lrow__val num">−€410</span></li>
+          <li class="lrow" data-key="goals"><span class="lrow__sw"></span><span class="lrow__name">Hard goals <small>goals you marked as fixed</small></span><span class="lrow__val num">−€380</span></li>
+          <li class="lrow" data-key="other"><span class="lrow__sw"></span><span class="lrow__name">Other protected money <small>a buffer you chose to keep</small></span><span class="lrow__val num">−€186</span></li>
+          <li class="lrow lrow--total" data-key="safe"><span class="lrow__sw"></span><span class="lrow__name">Safe to spend</span><span class="lrow__val num">€1,284</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── ASK BEFORE YOU SPEND ───────── -->
+<section class="ask" aria-labelledby="askTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">04</span><span class="rule__t">Ask</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap ask__grid">
+    <div class="ask__copy">
+      <h2 class="h2" id="askTitle">Before you spend it, see what it&nbsp;changes.</h2>
+      <p class="lede">Ask in plain words. Upino runs the purchase through your plan and shows the two futures side by side, so the trade-off is visible before the money moves.</p>
+    </div>
+
+    <div class="scenario" id="scenario">
+      <div class="bubble bubble--you">Can I spend <span class="num">€700</span> on a laptop?</div>
+      <div class="bubble bubble--upino" id="askAnswer">
+        <p class="bubble__lead">Yes, both ways keep your obligations covered. Waiting keeps Travel on schedule.</p>
+      </div>
+
+      <div class="seg-control" role="radiogroup" aria-label="Scenario">
+        <button role="radio" aria-checked="true" class="seg-control__opt" data-scenario="now">Buy today</button>
+        <button role="radio" aria-checked="false" class="seg-control__opt" data-scenario="wait">Wait until next income</button>
+        <span class="seg-control__thumb" aria-hidden="true"></span>
+      </div>
+
+      <dl class="outcome">
+        <div class="outcome__cell">
+          <dt>Safe to spend</dt>
+          <dd class="num" id="askSts">€450</dd>
+        </div>
+        <div class="outcome__cell">
+          <dt>Travel goal</dt>
+          <dd id="askGoal"><span class="pill pill--warn">+18 days</span></dd>
+        </div>
+        <div class="outcome__cell">
+          <dt>Hard obligations</dt>
+          <dd><span class="pill pill--ok">Protected</span></dd>
+        </div>
+      </dl>
+
+      <figure class="mini-chart">
+        <div class="wbars" id="askChart" role="img" aria-label="The lowest Safe to Spend of each of the next six weeks for the chosen scenario. The hatched part is what the laptop takes."></div>
+        <figcaption>Lowest point of each week. Hatched: what the laptop takes.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FINANCIAL TIMELINE ───────── -->
+<section class="timeline" aria-labelledby="tlTitle">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="tlTitle">Past, today and the next eight weeks, on one line.</h2>
+      <p class="lede">Income, bills, yearly costs and goal transfers are already in the plan. Bills do not dent Safe to Spend, because their money was set aside long before they are due.</p>
+    </div>
+
+    <div class="tl">
+      <div class="tl__controls">
+        <div class="tl__head">
+          <p class="tl__k">Safe to spend today</p>
+          <p class="tl__big"><b class="num" id="tlToday">€1,150</b><span id="tlUntil">for 10 days, until income on Oct 25</span></p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="tlBuy">
+          <span class="switch__track" aria-hidden="true"><span class="switch__knob"></span></span>
+          <span>Add a <b class="num">€700</b> laptop today</span>
+        </label>
+      </div>
+      <dl class="tl__stats">
+        <div><dt>Lowest ahead</dt><dd class="num" id="tlLow">€520, Oct 24</dd></div>
+        <div><dt>Next income</dt><dd>Oct 25</dd></div>
+        <div><dt>Bills already protected</dt><dd class="num">€2,590</dd></div>
+      </dl>
+      <div class="tlb" id="tlBars" role="img" aria-label="The lowest Safe to Spend of each week, from September 15 to December 14. This week, the week of October 13, it is €870."></div>
+      <div class="tl__tip" id="tlTip" hidden></div>
+      <p class="tl__note" id="tlNote">Each bar is the lowest point of a week. Travel reaches its target on <b>June 12, 2027</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── GOALS ───────── -->
+<section class="goals tone-2" aria-labelledby="goalsTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">05</span><span class="rule__t">Goals</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap goals__grid">
+    <div class="goals__copy">
+      <h2 class="h2" id="goalsTitle">Your goals are connected to your&nbsp;decisions.</h2>
+      <p class="lede">A goal in Upino is not a jar you top up when you remember. It has a date, a pace, and a place in the plan, so every purchase shows up in how far away it is.</p>
+    </div>
+
+    <article class="goal" aria-labelledby="goalName">
+      <header class="goal__head">
+        <div>
+          <p class="label">Travel goal</p>
+          <h3 class="goal__name" id="goalName">Japan</h3>
+        </div>
+        <p class="goal__pct num"><span id="goalPct">72</span>%</p>
+      </header>
+      <p class="goal__money mono"><b>€4,320</b> <span>of €6,000</span></p>
+
+      <div class="goal__track" aria-hidden="true">
+        <div class="goal__fill" style="--p:.72"></div>
+        <div class="goal__ticks">
+          <span style="--x:.25"></span><span style="--x:.5"></span><span style="--x:.75"></span>
+        </div>
+      </div>
+
+      <div class="goal__projection">
+        <div class="proj" aria-hidden="true">
+          <span class="proj__line"></span>
+          <span class="proj__marker" id="projMarker" style="--x:.62"></span>
+          <span class="proj__months mono"><i>Oct</i><i>Jan</i><i>Apr</i><i>Jul</i><i>Oct</i></span>
+        </div>
+        <p class="goal__date">Projected completion <b id="goalDate">June 2027</b></p>
+      </div>
+
+      <div class="goal__choices" role="radiogroup" aria-label="Try a decision">
+        <button role="radio" aria-checked="true" class="chip" data-goal="wait">Wait</button>
+        <button role="radio" aria-checked="false" class="chip" data-goal="buy">Buy <span class="num">€900</span> today</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ───────── INTELLIGENCE ───────── -->
+<section class="intel ink" id="intelligence" aria-labelledby="intelTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">06</span><span class="rule__t">Intelligence</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head section-head--ink">
+      <h2 class="h2" id="intelTitle">Financial intelligence that understands context.</h2>
+      <p class="lede lede--ink">Four layers, each with one job. The numbers come from deterministic engines. The language model reads them, connects them and explains them. It never makes them up.</p>
+    </div>
+
+    <div class="layers">
+      <ol class="stack" aria-label="Upino's four layers">
+        <li class="layer" data-layer="0"><span class="layer__verb">Calculates</span><span class="layer__name">Financial Engine</span><span class="layer__desc">Balances, claims, Safe to Spend. The single source of financial truth.</span></li>
+        <li class="layer" data-layer="1"><span class="layer__verb">Simulates</span><span class="layer__name">Scenario Engine</span><span class="layer__desc">Runs the same engine forward for “buy now” or “wait”.</span></li>
+        <li class="layer" data-layer="2"><span class="layer__verb">Notices</span><span class="layer__name">Intelligence Engine</span><span class="layer__desc">Finds patterns, changes and opportunities in the results.</span></li>
+        <li class="layer layer--ai" data-layer="3"><span class="layer__verb">Explains</span><span class="layer__name">AI layer</span><span class="layer__desc">Investigates, connects and puts it in plain words.</span></li>
+      </ol>
+
+      <ul class="insights" aria-label="Example insights">
+        <li class="insight" data-src="2"><p>“Your essential costs increased over the last three months.”</p><span>Intelligence Engine → explained</span></li>
+        <li class="insight" data-src="0"><p>“Your December insurance payment is now fully protected.”</p><span>Financial Engine → explained</span></li>
+        <li class="insight" data-src="1"><p>“Your recent spending pattern may shift your Travel goal.”</p><span>Scenario Engine → explained</span></li>
+        <li class="insight" data-src="0"><p>“Your Safe to Spend rose less than your income because more is being set aside for a yearly bill.”</p><span>Financial Engine → explained</span></li>
+      </ul>
+    </div>
+
+    <p class="intel__rule">AI explains the financial world. <span>It does not invent the numbers.</span></p>
+  </div>
+</section>
+
+<!-- ───────── PERSONAL INFLATION ───────── -->
+<section class="inflation" aria-labelledby="inflTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">07</span><span class="rule__t">Inflation</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap inflation__grid">
+    <div>
+      <h2 class="h2" id="inflTitle">Inflation is personal.</h2>
+      <p class="lede">The official figure is an average of everyone. Upino puts your own grocery costs next to it, so you can see whether prices are moving faster for you, and what that does to the months ahead.</p>
+      <p class="fine">Upino shows the gap. It does not claim to know the cause.</p>
+    </div>
+    <figure class="infl">
+      <div class="infl__keys">
+        <span><i class="k k--you"></i>Your grocery costs <b id="inflYou">+8.4%</b></span>
+        <span><i class="k k--off"></i>Official food inflation <b>+3.1%</b></span>
+      </div>
+      <svg id="inflChart" viewBox="0 0 560 260" role="img" aria-label="Twelve months: personal grocery costs rose 8.4 percent, official food inflation 3.1 percent. Illustrative data."></svg>
+      <figcaption class="infl__cap">
+        <span class="infl__src">Illustrative data · Nov 2025 – Oct 2026</span>
+        <span>If the gap holds, groceries would take about <b class="num">€31</b> more a month by spring. Safe to Spend would account for it before you feel it.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────── MONTH IN DECISIONS ───────── -->
+<section class="month" aria-labelledby="monthTitle">
+  <div class="wrap">
+    <div class="mc">
+      <header class="mc__head">
+        <h2 class="mc__title" id="monthTitle">Your September</h2>
+        <p class="mc__pill">Month close</p>
+      </header>
+      <p class="mb__sub">€5,700 came in. You ended with <b class="num">€1,090</b> free to use.</p>
+      <figure class="mb" id="mb" aria-label="September: €3,620 spent, €580 protected, €410 to goals, €1,090 flexible.">
+        <div class="mb__bar" aria-hidden="true"><i class="s" style="--v:3620"></i><i class="p" style="--v:580"></i><i class="g" style="--v:410"></i><i class="f" style="--v:1090"></i></div>
+        <ul class="mb__legend">
+          <li class="s">Spent<b class="num" data-v="3620">€3,620</b></li>
+          <li class="p">Protected<b class="num" data-v="580">€580</b></li>
+          <li class="g">To goals<b class="num" data-v="410">€410</b></li>
+          <li class="f">Flexible<b class="num" data-v="1090">€1,090</b></li>
+        </ul>
+      </figure>
+      <div class="mc__cols">
+        <section aria-labelledby="changedTitle">
+          <h3 class="label" id="changedTitle">What changed</h3>
+          <ul class="chg">
+            <li class="chg--up"><span class="chg__ic" aria-hidden="true">↑</span><span>Dining</span><b class="num">€94</b></li>
+            <li class="chg--down"><span class="chg__ic" aria-hidden="true">↓</span><span>Transportation</span><b class="num">€71</b></li>
+            <li class="chg--ok"><span class="chg__ic" aria-hidden="true">✓</span><span>Annual obligations</span><b>Fully protected</b></li>
+            <li class="chg--goal"><span class="chg__ic" aria-hidden="true">→</span><span>Travel goal</span><b>9 days closer</b></li>
+          </ul>
+        </section>
+        <section aria-labelledby="knowTitle">
+          <h3 class="label" id="knowTitle">3 things worth knowing for October</h3>
+          <ol class="know">
+            <li><b class="num">€1,673</b> is already spoken for in the next 30 days. None of it touches Safe to Spend.</li>
+            <li>Dining ran <b class="num">€94</b> above your three-month usual. If October follows it, Travel moves about a week.</li>
+            <li>Your yearly car insurance in December is fully set aside. Nothing extra is needed this month.</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── UPCOMING CLAIMS ───────── -->
+<section class="claims tone-2" aria-labelledby="claimsTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">08</span><span class="rule__t">Upcoming claims</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap claims__grid">
+    <div>
+      <h2 class="h2" id="claimsTitle"><span class="num claims__num">€1,673</span> already spoken for over the next 30&nbsp;days.</h2>
+      <p class="lede">Money that already has a future job is counted as taken, so it can never look like room to spend.</p>
+    </div>
+    <div class="cl">
+      <div class="cl__axis" id="clAxis">
+        <span class="cl__today">Today</span>
+        <span class="cl__end">+30 days</span>
+      </div>
+      <ul class="cl__list" id="clList">
+        <li style="--d:2"  data-kind="sub"><span class="mono cl__date">Oct 15</span><span class="cl__name">Subscriptions</span><span class="num">€13</span></li>
+        <li style="--d:8"  data-kind="sub"><span class="mono cl__date">Oct 21</span><span class="cl__name">Subscriptions</span><span class="num">€18</span></li>
+        <li style="--d:12" data-kind="annual"><span class="mono cl__date">Oct 25</span><span class="cl__name">Annual expenses <small>car tax fund</small></span><span class="num">€140</span></li>
+        <li style="--d:15" data-kind="bill"><span class="mono cl__date">Oct 28</span><span class="cl__name">Insurance</span><span class="num">€184</span></li>
+        <li style="--d:19" data-kind="bill"><span class="mono cl__date">Nov 1</span><span class="cl__name">Rent</span><span class="num">€1,100</span></li>
+        <li style="--d:21" data-kind="sub"><span class="mono cl__date">Nov 3</span><span class="cl__name">Subscriptions</span><span class="num">€30</span></li>
+        <li style="--d:23" data-kind="debt"><span class="mono cl__date">Nov 5</span><span class="cl__name">Debt <small>card instalment</small></span><span class="num">€188</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── OPPORTUNITIES ───────── -->
+<section class="opps" aria-labelledby="oppsTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">09</span><span class="rule__t">Opportunities</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="oppsTitle">Upino optimizes trade-offs. <span class="muted">Not frugality.</span></h2>
+      <p class="lede">Sometimes the right move is to save. Sometimes it is to wait a few days. Sometimes it is to spend more than you planned, because you can.</p>
+    </div>
+    <div class="ops">
+      <article class="op op--save">
+        <p class="op__kind">Save</p>
+        <p class="op__text">Moving <b class="num">€120</b> could bring your Travel goal forward.</p>
+        <div class="op__vis op-goal" aria-hidden="true">
+          <div class="op-goal__bar"><i class="now"></i><i class="plus"></i></div>
+          <div class="op-goal__dates"><span>Now <b>June 12</b></span><span>With €120 <b>June 1</b></span></div>
+        </div>
+      </article>
+      <article class="op op--wait">
+        <p class="op__kind">Wait</p>
+        <p class="op__text">Waiting <b class="num">11 days</b> avoids affecting any current goal.</p>
+        <div class="op__vis op-wait" aria-hidden="true"></div>
+      </article>
+      <article class="op op--recover">
+        <p class="op__kind">Recover</p>
+        <p class="op__text"><b class="num">€89</b> refund pending. Upino keeps track until it arrives.</p>
+        <ol class="op__vis op-track" aria-label="Refund progress: requested, approved, arriving">
+          <li class="done"><i></i>Requested</li>
+          <li class="done"><i></i>Approved</li>
+          <li class="now"><i></i>Arriving</li>
+        </ol>
+      </article>
+      <article class="op op--spend">
+        <p class="op__kind">Spend</p>
+        <p class="op__text">You have more flexibility than planned. Raising your Travel budget by <b class="num">€120</b> would not touch hard obligations.</p>
+        <div class="op__vis op-budget" aria-hidden="true">
+          <div class="op-budget__bar"><i class="was"></i><i class="more"></i><i class="safe"></i></div>
+          <div class="op-budget__key"><span>€300 planned</span><span>+€120</span><span>still safe</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── PRIVACY + ARCHITECTURE ───────── -->
+<section class="privacy ink" id="security" aria-labelledby="privTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">10</span><span class="rule__t">Security</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head section-head--ink">
+      <h2 class="h2" id="privTitle">Local-first. <span class="muted">Cloud-enhanced.</span></h2>
+      <p class="lede lede--ink">Your financial truth stays deterministic. AI helps interpret it.</p>
+    </div>
+    <figure class="lf2" aria-label="Diagram: your full history and the engine stay on your device; only a derived summary travels to cloud intelligence.">
+      <div class="lf2__node lf2__node--device">
+        <p class="lf2__where">On your device</p>
+        <p class="lf2__name">Financial engine</p>
+        <ul class="lf2__raw">
+          <li><span class="mono">Oct 12</span><span>Grocery store</span><span class="num">−€64.20</span></li>
+          <li><span class="mono">Oct 11</span><span>Train pass</span><span class="num">−€49.00</span></li>
+          <li><span class="mono">Oct 10</span><span>Streaming</span><span class="num">−€12.99</span></li>
+          <li><span class="mono">…</span><span>and the rest of your history</span><span></span></li>
+        </ul>
+        <p class="lf2__stays"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Full history stays here</p>
+      </div>
+      <div class="lf2__lane" aria-hidden="true">
+        <span class="lf2__path"></span>
+        <span class="lf2__chip">Essentials +6% over 3 months</span>
+        <span class="lf2__label">derived context only</span>
+      </div>
+      <div class="lf2__node lf2__node--cloud">
+        <p class="lf2__where">Cloud, when needed</p>
+        <p class="lf2__name">Intelligence</p>
+        <p class="lf2__out">“Your essential costs increased over the last three months.”</p>
+        <p class="lf2__note">Explains the numbers. Never makes them.</p>
+      </div>
+    </figure>
+    <ul class="pr3">
+      <li><b>The core is authoritative.</b> The financial engine runs on your device, and its results are the numbers you see.</li>
+      <li><b>Cloud only where it adds something.</b> Selected features use cloud intelligence to explain and investigate.</li>
+      <li><b>Only the context a question needs.</b> When a derived summary is enough, raw transaction history is not sent.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────── PHILOSOPHY ───────── -->
+<section class="philo" id="how" aria-labelledby="philoTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">11</span><span class="rule__t">How it works</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="philoTitle">Money apps became complicated because they kept adding information.</h2>
+      <p class="lede">Upino is built around a different question: what do you need to know to make the next decision?</p>
+    </div>
+    <div class="loopw" id="cycle">
+      <div class="loop__rail" aria-hidden="true"><i></i></div>
+      <ol class="loop">
+        <li class="lp">
+          <span class="lp__word">See</span>
+          <span class="lp__text">Understand what is happening.</span>
+          <span class="lp__val"><small>Safe to spend</small><b class="num">€1,284</b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Decide</span>
+          <span class="lp__text">Understand the trade-off.</span>
+          <span class="lp__val"><small>Buy today <span class="num">€450</span></small><b>Wait <span class="num">€1,150</span></b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Act</span>
+          <span class="lp__text">Choose what your money should do.</span>
+          <span class="lp__val"><small>One tap</small><b>Move <span class="num">€180</span> to Travel</b></span>
+        </li>
+        <li class="lp">
+          <span class="lp__word">Learn</span>
+          <span class="lp__text">Upino recalculates what comes next.</span>
+          <span class="lp__val"><small>Recalculated, Travel 75%</small><b class="num lp__n" id="loopN">€1,104</b></span>
+        </li>
+      </ol>
+      <p class="cyc__again" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>And again, with every decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── PRICING ─────────
+     Every figure here is written by main.js from the PRICING config, so
+     prices can change per region, currency, platform or promotion without
+     touching this markup. The text below is the no-script fallback. -->
+<section class="pricing tone-2" id="pricing" aria-labelledby="pricingTitle" data-analytics-section="pricing">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">12</span><span class="rule__t">Pricing</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head pricing__head">
+      <h2 class="h2" id="pricingTitle">One Upino. <span class="muted">Choose how you pay.</span></h2>
+      <p class="lede">Every subscription is the complete financial decision system. The only choice is how often you are billed.</p>
+    </div>
+
+    <div class="plan" id="plan">
+      <div class="plan__main">
+        <div class="period" role="radiogroup" aria-label="Billing period" id="periodGroup">
+          <button type="button" role="radio" class="period__opt" data-period="monthly" aria-checked="false">
+            <span class="period__name">Monthly</span>
+          </button>
+          <button type="button" role="radio" class="period__opt" data-period="quarterly" aria-checked="false">
+            <span class="period__name"><span class="period__long">Quarterly</span><span class="period__short">3 months</span></span>
+            <span class="period__save" data-save="quarterly">Save 17%</span>
+          </button>
+          <button type="button" role="radio" class="period__opt" data-period="annual" aria-checked="true">
+            <span class="period__name">Annual</span>
+            <span class="period__save" data-save="annual">Save 44%</span>
+          </button>
+          <span class="period__thumb" aria-hidden="true"></span>
+        </div>
+
+        <div class="quote" id="quote" aria-live="polite" aria-atomic="true">
+          <p class="quote__tag" id="quoteTag"><span class="quote__tagtext">Best value</span></p>
+          <p class="quote__price">
+            <span class="quote__amount" id="quoteAmount">$79.99</span>
+            <span class="quote__per" id="quotePer">per year</span>
+          </p>
+          <p class="quote__context" id="quoteContext">$6.67 a month, billed once a year. <span class="quote__save">Save 44%</span></p>
+        </div>
+
+        <figure class="year" id="yearPlan" aria-labelledby="yearTitle">
+          <div class="year__head">
+            <span class="year__title" id="yearTitle">Your first 12 months</span>
+            <span class="year__total">Total <b id="yearTotal">$79.99</b></span>
+          </div>
+          <div class="year__track" id="yearTrack" role="img" aria-label="14 free days, then one payment of $79.99 covering the year."></div>
+          <div class="year__axis" aria-hidden="true"><span>Today</span><span>Month 3</span><span>Month 6</span><span>Month 9</span><span>Month 12</span></div>
+          <p class="year__compare" id="yearCompare">Monthly for the same year: $143.88</p>
+        </figure>
+
+        <ol class="billing" id="billing" aria-label="What happens after you start">
+          <li class="billing__step">
+            <span class="billing__when">Today</span>
+            <span class="billing__what">Trial starts</span>
+            <span class="billing__amt">$0</span>
+          </li>
+          <li class="billing__step">
+            <span class="billing__when" id="billWhen2">Day 14</span>
+            <span class="billing__what" id="billWhat2">First payment</span>
+            <span class="billing__amt" id="billAmt2">$79.99</span>
+          </li>
+          <li class="billing__step">
+            <span class="billing__when" id="billWhen3">Every year</span>
+            <span class="billing__what" id="billWhat3">Renews</span>
+            <span class="billing__amt" id="billAmt3">$79.99</span>
+          </li>
+        </ol>
+
+        <div class="plan__cta">
+          <a class="btn btn--primary btn--lg plan__btn" id="trialBtn" href="#get" data-analytics="pricing_cta_clicked">Start 14-day free trial</a>
+          <p class="plan__then" id="planThen">Then $79.99/year. Cancel anytime.</p>
+          <p class="plan__trust">No feature restrictions during your trial.</p>
+        </div>
+
+      </div>
+
+      <div class="plan__included">
+        <h3 class="included__title">Every plan includes everything</h3>
+        <ul class="included included--chips">
+          <li>Safe to Spend</li>
+          <li>Ask before you spend</li>
+          <li>Financial timeline</li>
+          <li>Goals and goal projections</li>
+          <li>Bills and annual expenses</li>
+          <li>Scenario simulation</li>
+          <li>AI financial intelligence</li>
+          <li>Personal financial insights</li>
+          <li>Month close</li>
+          <li>Opportunity and recovery insights, where available</li>
+        </ul>
+        <p class="included__note">Monthly, quarterly or annual, it is the same Upino. Only the billing changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── COMPANY ───────── -->
+<section class="company" id="company" aria-labelledby="companyTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">13</span><span class="rule__t">Company</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="thesis">
+      <h2 class="h2 thesis__title" id="companyTitle">Maximum financial intelligence. <span class="muted">Minimum financial administration.</span></h2>
+      <figure class="thesis__bars" aria-label="Upino's thesis: as much financial intelligence as possible, as little financial administration as possible.">
+        <div class="tbar">
+          <span class="tbar__label">Financial intelligence</span>
+          <span class="tbar__track"><span class="tbar__fill tbar__fill--max"></span></span>
+        </div>
+        <div class="tbar">
+          <span class="tbar__label">Financial administration</span>
+          <span class="tbar__track"><span class="tbar__fill tbar__fill--min"></span></span>
+        </div>
+      </figure>
+    </div>
+
+    <div class="bento">
+      <article class="tile tile--mission">
+        <h3 class="label">Mission</h3>
+        <p class="tile__statement">Help people understand what their money can safely do next, without having to become their own accountant.</p>
+      </article>
+
+      <article class="tile tile--tech">
+        <h3 class="label">Technology</h3>
+        <ol class="tstack" aria-label="Four layers">
+          <li><span>Financial engine</span><i>calculates</i></li>
+          <li><span>Scenario engine</span><i>runs it forward</i></li>
+          <li><span>Intelligence engine</span><i>reads the results</i></li>
+          <li class="tstack__ai"><span>Language layer</span><i>explains them</i></li>
+        </ol>
+        <p class="tile__text">A deterministic financial engine, a scenario engine that runs it forward, an intelligence engine that reads the results, and a language layer that explains them.</p>
+      </article>
+
+      <article class="tile tile--philo">
+        <h3 class="label">Product philosophy</h3>
+        <div class="dvd" aria-hidden="true">
+          <div class="dvd__data mono">
+            <span>Oct 12  Grocery  −64.20</span><span>Oct 11  Train  −49.00</span><span>Oct 11  Dinner  −38.50</span><span>Oct 10  Stream  −12.99</span>
+          </div>
+          <div class="dvd__answer"><b class="num">€1,284</b><span>safe to spend</span></div>
+        </div>
+        <p class="tile__text">Show the decision, not the data. Every screen should answer a question someone actually has.</p>
+      </article>
+
+      <article class="tile tile--privacy">
+        <h3 class="label">Privacy</h3>
+        <div class="lf" aria-hidden="true">
+          <span class="lf__node lf__node--device">Device</span>
+          <span class="lf__line"><span class="lf__pulse"></span></span>
+          <span class="lf__node lf__node--cloud">Cloud</span>
+        </div>
+        <p class="tile__text">Local-first. Only the context a feature needs leaves the device.</p>
+      </article>
+    </div>
+
+    <dl class="company__foot">
+      <div><dt class="label">Press and contact</dt><dd><span class="placeholder">[Placeholder: press and contact address]</span></dd></div>
+      <div><dt class="label">Not financial advice</dt><dd>Upino is a decision-support product. It does not give regulated financial, investment or tax advice.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ───────── TEAM ─────────
+     Four people. Names, portraits and bios are placeholders until real ones
+     are supplied; replace them here. The first row starts selected. -->
+<section class="team tone-2" id="team" aria-labelledby="teamTitle">
+  <div class="rule" aria-hidden="true"><div class="wrap rule__in"><span class="rule__n">14</span><span class="rule__t">Team</span><i class="rule__line"></i><i class="rule__dot"></i></div></div>
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="teamTitle">The people behind Upino.</h2>
+      <p class="lede">A small team building financial software that has to be right before it can be clever.</p>
+    </div>
+    <ul class="strips" aria-label="Team">
+      <li class="strip is-open" data-index="0">
+        <button type="button" class="strip__hit" aria-expanded="true" aria-controls="strip-bio-0">
+          <span class="visually-hidden">Show details for team member 1, Founder, CEO</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">F</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Founder, CEO</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-0"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+      <li class="strip" data-index="1">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-1">
+          <span class="visually-hidden">Show details for team member 2, Product and design</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">P</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Product and design</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-1"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+      <li class="strip" data-index="2">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-2">
+          <span class="visually-hidden">Show details for team member 3, Financial engine</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">E</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Financial engine</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-2"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+      <li class="strip" data-index="3">
+        <button type="button" class="strip__hit" aria-expanded="false" aria-controls="strip-bio-3">
+          <span class="visually-hidden">Show details for team member 4, Intelligence</span>
+        </button>
+        <div class="strip__media" aria-hidden="true">
+          <!-- PLACEHOLDER: replace with <img src="team/…jpg" alt="" width="900" height="1200"> -->
+          <span class="strip__mono">I</span>
+        </div>
+        <div class="strip__caption">
+          <p class="strip__role">Intelligence</p>
+          <p class="strip__name"><span class="placeholder-name">[Full name]</span></p>
+          <div class="strip__bio" id="strip-bio-3"><div><p>[Placeholder: one line on what they own at Upino]</p></div></div>
+        </div>
+      </li>
+    </ul>
+    <p class="strips__note placeholder">[Placeholder: names, portraits and one-line bios for all four]</p>
+  </div>
+</section>
+
+<!-- ───────── ARTICLES ───────── -->
+<section class="journal" id="articles" aria-labelledby="articlesTitle">
+  <div class="wrap">
+    <div class="journal__head">
+      <h2 class="h2" id="articlesTitle">Articles. <span class="muted">On money, decisions and what comes next.</span></h2>
+      <a class="journal__all" href="articles/index.html">All articles<svg class="jr__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <ol class="jlist">
+      <li><a class="jr" href="articles/balance-is-not-spending-money.html">
+        <span class="jr__vis"><svg viewBox="0 0 160 100" aria-hidden="true"><rect x="0" y="30" width="160" height="16" rx="8" class="v-g"/><rect x="0" y="58" width="43" height="16" rx="8" class="v-a"/><rect x="43" y="58" width="117" height="16" rx="8" class="v-l"/></svg></span>
+        <span class="jr__main"><span class="jr__t">Your balance is not your spending money.</span><span class="jr__s">Why the number in your bank app overstates what you can use, and what to look at instead.</span></span>
+        <span class="jr__meta">4 min read<svg class="jr__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a></li>
+      <li><a class="jr" href="articles/how-safe-to-spend-is-calculated.html">
+        <span class="jr__vis"><svg viewBox="0 0 160 100" aria-hidden="true"><g class="v-steps"><rect x="0" y="42" width="44" height="16" rx="4" class="v-d1"/><rect x="47" y="42" width="25" height="16" rx="4" class="v-d2"/><rect x="75" y="42" width="12" height="16" rx="4" class="v-d3"/><rect x="90" y="42" width="11" height="16" rx="4" class="v-d4"/><rect x="104" y="42" width="6" height="16" rx="3" class="v-d5"/><rect x="113" y="42" width="47" height="16" rx="8" class="v-a"/></g></svg></span>
+        <span class="jr__main"><span class="jr__t">How Safe to Spend is calculated.</span><span class="jr__s">Five things come out first. What is left is yours. Every step, in order.</span></span>
+        <span class="jr__meta">5 min read<svg class="jr__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a></li>
+      <li><a class="jr" href="articles/why-your-history-stays-on-your-phone.html">
+        <span class="jr__vis"><svg viewBox="0 0 160 100" aria-hidden="true"><rect x="10" y="14" width="44" height="72" rx="10" class="v-o"/><rect x="24" y="46" width="16" height="13" rx="3" class="v-a"/><path d="M27 46v-4a5 5 0 0 1 10 0v4" class="v-s"/><path d="M62 50h56" class="v-dash"/><circle cx="134" cy="50" r="16" class="v-o"/></svg></span>
+        <span class="jr__main"><span class="jr__t">Why your financial history stays on your phone.</span><span class="jr__s">The engine runs on your device. The cloud only sees what a question needs.</span></span>
+        <span class="jr__meta">3 min read<svg class="jr__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a></li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" id="get">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__lead">
+        <a class="brand" href="#top" aria-label="Upino home">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="M10 9v8.2a6 6 0 0 0 12 0V9" fill="none" stroke="var(--brand-glyph)" stroke-width="3.2" stroke-linecap="round"/></svg>
+          <span class="brand__word">upino</span>
+        </a>
+        <p>Know what your money can do&nbsp;next.</p>
+        <div class="footer__stores">
+          <a class="store" href="#get" title="Placeholder: App Store link once listed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>App Store</a>
+          <a class="store" href="#get" title="Placeholder: Google Play link once listed"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3.3v17.4c0 .6.7 1 1.2.7l15-8.7c.5-.3.5-1.1 0-1.4l-15-8.7C4.7 2.3 4 2.7 4 3.3z"/></svg>Google Play</a>
+        </div>
+        <div class="footer__social" aria-label="Upino elsewhere"><a href="#" title="Placeholder: Telegram link" aria-label="Upino on Telegram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2l-11 6.9-4.7-1.5c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg></a><a href="#" title="Placeholder: Instagram link" aria-label="Upino on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></a><a href="#" title="Placeholder: X link" aria-label="Upino on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.8 3h6.4l4.4 5.9L17.8 3Zm-1.1 16.2h1.7L7.3 4.7H5.5l11.2 14.5Z"/></svg></a><a href="#" title="Placeholder: LinkedIn link" aria-label="Upino on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V21h-4V9.5Z"/></svg></a></div>
+      </div>
+      <nav class="footer__cols" aria-label="Footer">
+        <div><h2>Product</h2><ul><li><a href="#product">Safe to Spend</a></li><li><a href="#how">How it works</a></li><li><a href="#intelligence">Intelligence</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+        <div><h2>Company</h2><ul><li><a href="#company">About</a></li><li><a href="#team">Team</a></li><li><a href="#articles">Articles</a></li><li><a href="#company" title="Placeholder: contact address">Contact</a></li></ul></div>
+        <div><h2>Trust</h2><ul><li><a href="#security">Security</a></li><li><a href="#security">Privacy</a></li><li><a href="#company" title="Placeholder: terms page">Terms</a></li></ul></div>
+      </nav>
+    </div>
+    <div class="footer__word" id="footerWord" aria-hidden="true"><span>upino</span></div>
+    <p class="footer__legal"><span>© <span id="year">2026</span> Upino</span><span>Decision support, not financial advice. Figures on this page are examples.</span></p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="main.js" defer></script>
+<script src="pricing.js" defer></script>
+</body>
+</html>

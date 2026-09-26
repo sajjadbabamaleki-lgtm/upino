@@ -555,6 +555,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get profileCurrency => 'واحد پول';
 
   @override
+  String currencyChangeTitle(String currency) {
+    return 'تغییر به $currency؟';
+  }
+
+  @override
+  String currencyChangeBlurb(String currency) {
+    return 'همهٔ مبلغ‌های برنامه همان عدد خود را نگه می‌دارند و از این پس به $currency نشان داده می‌شوند. هیچ تبدیلی با نرخ ارز انجام نمی‌شود؛ این برای اصلاح واحد پول است، نه تبدیل پول.';
+  }
+
+  @override
+  String get currencyChangeConfirm => 'تغییر';
+
+  @override
   String get profileYourData => 'داده‌های شما';
 
   @override
@@ -747,4 +760,1822 @@ class AppLocalizationsFa extends AppLocalizations {
   String incomeRangeNote(String low) {
     return 'برنامه روی $low ساخته شده. هرچه بیشتر بیاید، وقتی رسید مال خودتان است.';
   }
+
+  @override
+  String get categoryFood => 'خوراک';
+
+  @override
+  String get categoryTransport => 'رفت‌وآمد';
+
+  @override
+  String get categoryBills => 'قبض‌ها';
+
+  @override
+  String get categoryShopping => 'خرید';
+
+  @override
+  String get categoryHealth => 'سلامت';
+
+  @override
+  String get categoryFun => 'تفریح';
+
+  @override
+  String get categoryOther => 'سایر';
+
+  @override
+  String get categoryUnsorted => 'بدون دسته';
+
+  @override
+  String get categoryPrompt => 'برای چه بود؟';
+
+  @override
+  String get spendingTitle => 'پول کجا رفت';
+
+  @override
+  String get spendingWindow => 'خرج‌های ثبت‌شده در ۳۰ روز گذشته';
+
+  @override
+  String get backupSection => 'پشتیبان';
+
+  @override
+  String get backupSave => 'ذخیرهٔ نسخهٔ پشتیبان';
+
+  @override
+  String get backupSaveSub =>
+      'با رمز قفل می‌شود. آن را جای امنی مثل فضای ابری خود بفرستید.';
+
+  @override
+  String get backupRestore => 'بازگردانی از نسخهٔ پشتیبان';
+
+  @override
+  String get backupRestoreSub => 'برنامهٔ روی این گوشی جایگزین می‌شود';
+
+  @override
+  String get backupPassword => 'رمز';
+
+  @override
+  String get backupPasswordRepeat => 'تکرار رمز';
+
+  @override
+  String get backupPasswordSaveBlurb =>
+      'برای بازگردانی به این رمز نیاز دارید و اگر فراموشش کنید قابل بازیابی نیست. عکس رسیدها در پشتیبان نیستند.';
+
+  @override
+  String get backupPasswordOpenBlurb => 'رمزی که پشتیبان با آن ذخیره شده است.';
+
+  @override
+  String get backupPasswordShort => 'دست‌کم ۶ نویسه';
+
+  @override
+  String get backupPasswordMismatch => 'دو رمز یکسان نیستند';
+
+  @override
+  String get backupOpen => 'باز کردن';
+
+  @override
+  String get backupReplaceTitle => 'برنامهٔ فعلی جایگزین شود؟';
+
+  @override
+  String get backupReplaceBlurb =>
+      'همهٔ داده‌های این گوشی با محتوای پشتیبان جایگزین می‌شود. این کار برگشت‌پذیر نیست.';
+
+  @override
+  String get backupReplace => 'جایگزین کن';
+
+  @override
+  String get backupRestored => 'پشتیبان بازگردانی شد';
+
+  @override
+  String get backupWrongPassword => 'این رمز پشتیبان را باز نمی‌کند.';
+
+  @override
+  String get backupNotABackup => 'این فایل پشتیبان Upino نیست.';
+
+  @override
+  String get backupUnreadable =>
+      'این پشتیبان با نسخهٔ جدیدتری از Upino ساخته شده. اپ را به‌روز کنید و دوباره امتحان کنید.';
+
+  @override
+  String get inflationTitle => 'تورم';
+
+  @override
+  String get inflationNotSet =>
+      'تنظیم نشده. نرخ سالانهٔ تورم را وارد کنید تا هزینهٔ واقعی هدف‌ها را ببینید.';
+
+  @override
+  String inflationRate(String rate) {
+    return '$rate٪ در سال';
+  }
+
+  @override
+  String get inflationDialogTitle => 'تورم سالانه';
+
+  @override
+  String get inflationDialogBlurb =>
+      'قیمت‌ها بالا می‌روند، پس هدفی که با پول امروز تعیین شده در موعدش گران‌تر است. نرخی را که انتظار دارید وارد کنید. برای خاموش کردن خالی بگذارید.';
+
+  @override
+  String goalsInflated(String rate, String amount) {
+    return 'با تورم $rate٪ در سال، این هدف تا آن موقع حدود $amount هزینه خواهد داشت.';
+  }
+
+  @override
+  String get holdingsTitle => 'دارایی‌های دیگر';
+
+  @override
+  String get holdingsBlurb =>
+      'دلار، طلا، سکه. کنار برنامه نشان داده می‌شود و هرگز جزو پول قابل خرج حساب نمی‌شود.';
+
+  @override
+  String get holdingsAdd => 'افزودن دارایی';
+
+  @override
+  String get holdingsAddSub => 'جزو پول قابل خرج حساب نمی‌شود';
+
+  @override
+  String get holdingsTotal => 'جمع';
+
+  @override
+  String holdingSummary(String quantity, String price, String date) {
+    return '$quantity × $price · قیمت $date';
+  }
+
+  @override
+  String get holdingEditNew => 'دارایی جدید';
+
+  @override
+  String get holdingEditExisting => 'ویرایش دارایی';
+
+  @override
+  String get holdingName => 'چه چیزی است؟';
+
+  @override
+  String get holdingNameHint => 'دلار، طلا…';
+
+  @override
+  String get holdingUsd => 'دلار';
+
+  @override
+  String get holdingEur => 'یورو';
+
+  @override
+  String get holdingGold => 'طلا (گرم)';
+
+  @override
+  String get holdingCoin => 'سکه';
+
+  @override
+  String get holdingQuantity => 'چه مقدار';
+
+  @override
+  String get holdingUnitPrice => 'قیمت امروزِ هر واحد';
+
+  @override
+  String holdingWorth(String amount) {
+    return 'در مجموع $amount';
+  }
+
+  @override
+  String get holdingDelete => 'حذف این دارایی';
+
+  @override
+  String get fasterTitle => 'ثبت سریع‌تر';
+
+  @override
+  String get smsTitle => 'خواندن پیامک‌های بانک';
+
+  @override
+  String get smsDetail =>
+      'خرج‌هایی که بانک پیامکش را می‌فرستد با یک لمس برای ثبت پیشنهاد می‌شوند. پیامک‌ها فقط روی همین گوشی خوانده می‌شوند و به هیچ‌جا فرستاده نمی‌شوند.';
+
+  @override
+  String get smsDenied =>
+      'اجازهٔ خواندن پیامک داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String smsWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count پیامک بانک برای بررسی',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get smsWaitingSub => 'هرکدام را با یک لمس ثبت یا رد کنید';
+
+  @override
+  String get smsReviewTitle => 'از بانک شما';
+
+  @override
+  String get smsReviewBlurb =>
+      'تا «ثبت» را نزنید چیزی ثبت نمی‌شود. مبلغ را با متن پیامک مقایسه کنید.';
+
+  @override
+  String get smsReviewDone => 'همه بررسی شد.';
+
+  @override
+  String get smsRecord => 'ثبت';
+
+  @override
+  String get smsSkip => 'رد کردن';
+
+  @override
+  String get reminderTitleSetting => 'یادآوری شبانه';
+
+  @override
+  String get reminderDetail => 'ساعت ۹ شب، فقط روزهایی که چیزی ثبت نشده.';
+
+  @override
+  String get reminderDenied =>
+      'اجازهٔ نمایش اعلان داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String get reminderTitle => 'امروز خرجی داشتید؟';
+
+  @override
+  String get reminderBody => 'در چند ثانیه ثبتش کنید تا عدد فردا درست باشد.';
+
+  @override
+  String get reminderChannel => 'یادآوری شبانه';
+
+  @override
+  String get widgetSpend => '+ خرج';
+
+  @override
+  String get widgetAdd => 'افزودن به صفحهٔ اصلی گوشی';
+
+  @override
+  String get widgetAddSub => 'مبلغ قابل خرج و دکمهٔ ثبت خرج، بدون باز کردن اپ';
+
+  @override
+  String get voiceListening =>
+      'در حال شنیدن… مبلغ و اینکه برای چه بود را بگویید.';
+
+  @override
+  String voiceHeard(String text) {
+    return 'شنیده شد: «$text». مبلغ را بررسی و بعد ذخیره کنید.';
+  }
+
+  @override
+  String get voiceNothing =>
+      'مبلغی شنیده نشد. دوباره امتحان کنید یا تایپ کنید.';
+
+  @override
+  String get voicePrivacy =>
+      'گوشی شما گفتار را به متن تبدیل می‌کند. در گوشی‌هایی که تشخیص آفلاین ندارند، این کار از سرویس گفتار گوشی انجام می‌شود.';
+
+  @override
+  String get voiceButton => 'بگویید';
+
+  @override
+  String get voiceUnavailable =>
+      'این گوشی سرویس تشخیص گفتاری ندارد که اپ بتواند از آن استفاده کند. مبلغ را تایپ کنید.';
+
+  @override
+  String get voiceNoPermission =>
+      'اجازهٔ استفاده از میکروفون داده نشد. می‌توانید در تنظیمات گوشی اجازه دهید.';
+
+  @override
+  String get voiceNetwork =>
+      'تشخیص گفتار در این گوشی به اینترنت نیاز دارد و به آن دسترسی نداشت.';
+
+  @override
+  String voiceNoAmount(String text) {
+    return '«$text» شنیده شد، ولی مبلغی در آن نبود. دوباره امتحان کنید یا تایپ کنید.';
+  }
+
+  @override
+  String get yes => 'بله';
+
+  @override
+  String get no => 'خیر';
+
+  @override
+  String get navAsk => 'بپرس';
+
+  @override
+  String get alertsTitle => 'نیاز به توجه';
+
+  @override
+  String get alertsEmpty =>
+      'فعلاً چیزی به توجه شما نیاز ندارد. برنامه به‌روز است.';
+
+  @override
+  String alertUnfunded(String label, String amount) {
+    return '$label $amount کم دارد';
+  }
+
+  @override
+  String get alertUnfundedDetail =>
+      'چیزی که باید پرداخت شود با پول فعلی پوشش داده نمی‌شود.';
+
+  @override
+  String alertIncomeLate(String date) {
+    return 'حقوق شما برای $date انتظار می‌رفت';
+  }
+
+  @override
+  String get alertIncomeLateDetail =>
+      'تا نرسد حساب نمی‌شود. اگر تاریخش عوض شده، در «برنامه» اصلاحش کنید.';
+
+  @override
+  String alertGoalBehind(String name, String amount) {
+    return '$name در این دوره $amount عقب است';
+  }
+
+  @override
+  String get alertGoalBehindDetail =>
+      'پول فعلی به سهم این دوره از هدف نمی‌رسد.';
+
+  @override
+  String get chatHint => 'هرچی خواستی بپرس یا یه قیمت بنویس';
+
+  @override
+  String get chatSuggestSafe => 'چقدر می‌تونم خرج کنم؟';
+
+  @override
+  String get chatSuggestPay => 'حقوق بعدی کی میاد؟';
+
+  @override
+  String get chatSuggestWhere => 'پولم کجا رفت؟';
+
+  @override
+  String get chatSuggestAside => 'چه چیزی کنار گذاشته شده؟';
+
+  @override
+  String chatSafe(String amount, String date) {
+    return 'تا $date می‌تونی $amount خرج کنی.';
+  }
+
+  @override
+  String get chatSafeStale =>
+      'فقط یه چیزی: موجودیت باید تأیید بشه، پس این عدد رو تقریبی در نظر بگیر.';
+
+  @override
+  String chatPay(String amount, String date) {
+    return 'حقوق بعدیت $amount هست و $date می‌رسه.';
+  }
+
+  @override
+  String get chatPayNone =>
+      'هنوز حقوق بعدیت رو نمی‌دونم. توی «برنامه» اضافه‌اش کن تا حواسم بهش باشه.';
+
+  @override
+  String get chatWhere => 'این ۳۰ روز پولت این‌جاها رفت:';
+
+  @override
+  String get chatWhereNone =>
+      '۳۰ روز گذشته خرجی ثبت نشده. یا ماه آرومی بوده یا خرج‌ها ثبت نشدن.';
+
+  @override
+  String chatAside(String amount) {
+    return '$amount قبل از هر خرجی کنار گذاشته شده:';
+  }
+
+  @override
+  String chatPurchase(String amount) {
+    return 'ببینیم $amount چه اثری داره.';
+  }
+
+  @override
+  String get chatHelp =>
+      'اوم، اینو درست نفهمیدم. می‌تونم بگم چقدر می‌تونی خرج کنی، حقوقت کی میاد، پولت کجا رفت، چی کنار گذاشته شده یا چطور کمتر خرج کنی. یا یه قیمت بنویس، مثل «گوشی ۲۰ میلیونی»، تا نشونت بدم خریدنش چه اثری داره.';
+
+  @override
+  String get chatHelloNew =>
+      'سلام! من Upino هستم. تازه اومدی، پس فعلاً فقط چیزهای اصلی رو ازت می‌دونم: موجودیت، حقوقت و چیزهایی که کنار گذاشتی. همین‌قدر کافیه که بگم چقدر می‌تونی خرج کنی و یه خرید چه اثری داره. خرج‌هات رو ثبت کن؛ بعد از حدود یه فصل اون‌قدر عادت‌هات رو می‌شناسم که بتونم مشاور مالی شخصی خودت باشم.';
+
+  @override
+  String chatHelloLearning(int days, int spends, int remaining) {
+    return 'خوش برگشتی! تا حالا از $days روز و $spends خرج یاد گرفتم. حدود $remaining روز دیگه یه فصل کامل ازت می‌دونم.';
+  }
+
+  @override
+  String chatHelloFamiliar(int days) {
+    return 'خوش برگشتی! الان $days روز از پولت رو دیدم، پس هرچی خواستی بپرس، حتی اینکه چطور کمتر خرج کنی.';
+  }
+
+  @override
+  String chatHelloAlerts(int count) {
+    return 'راستی، $count مورد منتظر توئه؛ زیر زنگوله‌ست.';
+  }
+
+  @override
+  String chatPurchaseFits(String left) {
+    return 'اگه امروز بخری، همهٔ چیزهایی که باید بدی پوشش داده می‌شن و هنوز $left اضافه داری.';
+  }
+
+  @override
+  String chatPurchaseWait(String date) {
+    return 'اگه امروز بخری، یکی از پرداخت‌های لازم کم میاره. اگه تا $date صبر کنی، همه‌چیز پوشش داده می‌شه.';
+  }
+
+  @override
+  String chatPurchaseStillShort(String date) {
+    return 'حواست باشه: حتی بعد از حقوق $date هم یکی از پرداخت‌های لازم کم میاره.';
+  }
+
+  @override
+  String get chatPurchaseShort =>
+      'اگه امروز بخری، یکی از پرداخت‌های لازم کم میاره.';
+
+  @override
+  String chatSafeNothing(String date) {
+    return 'الان تا $date پول اضافه‌ای نداری؛ هرچی داری برای پرداخت‌های لازم کنار گذاشته شده.';
+  }
+
+  @override
+  String chatPayIn(int days) {
+    return 'یعنی $days روز دیگه.';
+  }
+
+  @override
+  String get chatPayLate => 'دیر کرده، پس تا تأیید نکنی که رسیده حساب نمی‌شه.';
+
+  @override
+  String get chatPayRange =>
+      'برنامه روی حداقلش حساب می‌کنه، پس ماه خوب یه جایزه‌ست، نه یه چاله.';
+
+  @override
+  String chatWhereSoFar(int days) {
+    return 'تا حالا فقط $days روز رو دیدم، پس این یه نگاه اولیه‌ست:';
+  }
+
+  @override
+  String chatWhereTop(String category, int share) {
+    return 'بیشترینش $category بوده: $share٪ کل خرج‌ها.';
+  }
+
+  @override
+  String get chatWhereTooSoon =>
+      'برای این یه کم زوده؛ هنوز تقریباً خرجی ازت ندیدم. چندتا ثبت کن و هفتهٔ بعد دوباره بپرس.';
+
+  @override
+  String get chatAdviceTooSoon =>
+      'دوست دارم کمک کنم، ولی راستش هنوز خرج‌هات رو اون‌قدر نمی‌شناسم، و توصیه بدون شناخت فقط یه حدسه. خرج‌هات رو ثبت کن (دسته‌بندی کردنشون خیلی کمک می‌کنه) و چند هفتهٔ دیگه دوباره بپرس.';
+
+  @override
+  String chatAdviceBiggest(String category, String amount, String tenth) {
+    return 'بزرگ‌ترین خرجت توی ۳۰ روز گذشته $category بوده، $amount. اگه فقط یه دهمش رو کم کنی، ماهی حدود $tenth آزاد می‌شه.';
+  }
+
+  @override
+  String get chatAdviceSort =>
+      'مقدار خرج‌هات رو می‌بینم، ولی نمی‌دونم برای چی بوده. موقع ثبت دسته‌بندی‌شون کن تا بتونم بگم کجا رو کم کنی.';
+
+  @override
+  String chatAdviceMore(String amount) {
+    return 'نسبت به ماه قبلش $amount بیشتر خرج کردی.';
+  }
+
+  @override
+  String chatAdviceLess(String amount) {
+    return 'آفرین: نسبت به ماه قبلش $amount کمتر خرج کردی.';
+  }
+
+  @override
+  String get chatAdviceLearning =>
+      'هنوز دارم عادت‌هات رو یاد می‌گیرم، پس این رو یه سرنخ اولیه بدون، نه تصویر کامل.';
+
+  @override
+  String get chatSmallHello => 'سلام! دربارهٔ پولت چی می‌خوای بدونی؟';
+
+  @override
+  String get chatSmallThanks =>
+      'خواهش می‌کنم! هر وقت خواستی خرج کنی، من این‌جام.';
+
+  @override
+  String get chatSmallWho =>
+      'من دستیار Upino هستم. فقط چیزی رو می‌دونم که توی برنامه‌ته، و هر عددی که می‌گم مستقیم از همون میاد؛ هیچ‌چیز از این گوشی بیرون نمی‌ره. بهت نمی‌گم بخر یا نخر، ولی نشونت می‌دم هر انتخاب چی برات باقی می‌ذاره.';
+
+  @override
+  String get chatSuggestAdvice => 'چطور کمتر خرج کنم؟';
+
+  @override
+  String get chatTitle => 'Upino';
+
+  @override
+  String get chatNew => 'گفتگوی تازه';
+
+  @override
+  String get chatResumed =>
+      'جواب‌های این گفتگو از روی برنامهٔ امروزت حساب شده‌اند.';
+
+  @override
+  String get chatWhy => 'این عدد این‌طوری به دست میاد:';
+
+  @override
+  String get chatWhyHave => 'پولی که داری';
+
+  @override
+  String get chatWhySetAside => 'اول کنار گذاشته شده';
+
+  @override
+  String get chatWhyLeft => 'قابل خرج';
+
+  @override
+  String get chatSmallHowAreYou =>
+      'خوبم، مرسی که پرسیدی! پولت همون‌جاییه که گذاشته بودیم. چی می‌خوای بدونی؟';
+
+  @override
+  String get chatSmallBye => 'خداحافظ! قبل از خرج بزرگ بعدیت سر بزن.';
+
+  @override
+  String get chatSmallOkay => 'چیز دیگه‌ای هست که بخوای ببینی؟';
+
+  @override
+  String get askHubTitle => 'با Upino حرف بزن';
+
+  @override
+  String get askHubNew =>
+      'بپرس چقدر می‌تونی خرج کنی، یه خرید چه اثری داره یا حقوقت کی میاد. هنوز دارم باهات آشنا می‌شم، پس هرچی بیشتر ثبت کنی، مفیدتر می‌شم.';
+
+  @override
+  String askHubLearning(int days) {
+    return 'دارم عادت‌هات رو یاد می‌گیرم: حدود $days روز دیگه یه فصل کامل برای مشاوره دادن دارم.';
+  }
+
+  @override
+  String get askHubFamiliar =>
+      'الان پولت رو خوب می‌شناسم. هرچی خواستی بپرس، حتی اینکه چطور کمتر خرج کنی.';
+
+  @override
+  String get askHubStart => 'شروع گفتگو';
+
+  @override
+  String get askHubCommon => 'سؤال‌های رایج';
+
+  @override
+  String get askHubHistory => 'گفتگوهای تو';
+
+  @override
+  String askHubTurns(int count) {
+    return '$count سؤال';
+  }
+
+  @override
+  String askHubAsidePreview(String amount, int count) {
+    return '$amount برای $count تعهد کنار گذاشته شده';
+  }
+
+  @override
+  String get askHubDeleteTitle => 'این گفتگو پاک شود؟';
+
+  @override
+  String get askHubDeleteBlurb =>
+      'فقط گفتگو پاک می‌شود. چیزی در برنامه‌ات عوض نمی‌شود.';
+
+  @override
+  String get chatSmallHi => 'سلام!';
+
+  @override
+  String get chatSmallHiFine => 'سلام! خوبم، مرسی.';
+
+  @override
+  String chatSafeLasts(int days) {
+    return 'این باید $days روز، تا حقوق بعدی، دووم بیاره.';
+  }
+
+  @override
+  String homeSpokenFor(String amount, String date) {
+    return 'تا $date، $amount از پول شما از پیش جای مشخصی دارد.';
+  }
+
+  @override
+  String askGoalLater(String goal, int days) {
+    return '$goal · حدود $days روز دیرتر';
+  }
+
+  @override
+  String get askGoalsTitle => 'هدف‌ها عقب می‌افتند';
+
+  @override
+  String get askGoalsNote =>
+      'تقریبی، با همان سرعتی که برای هر هدف پس‌انداز می‌شود.';
+
+  @override
+  String chatPurchaseGoal(String goal, int days) {
+    return '$goal رو حدود $days روز عقب می‌ندازه.';
+  }
+
+  @override
+  String get monthTitle => 'ماهی که گذشت';
+
+  @override
+  String get monthWindow => '۳۰ روز اخیر، در برابر ۳۰ روز قبل از آن';
+
+  @override
+  String monthTooSoon(int days) {
+    return 'مرور ماه به یک ماه خرج نیاز داره. مال تو $days روز دیگه آماده می‌شه.';
+  }
+
+  @override
+  String monthSpent(String amount) {
+    return 'در ۳۰ روز اخیر $amount خرج شد.';
+  }
+
+  @override
+  String get monthNothing => 'در ۳۰ روز اخیر خرجی ثبت نشده.';
+
+  @override
+  String monthMore(String amount) {
+    return 'یعنی $amount بیشتر از ۳۰ روز قبلش.';
+  }
+
+  @override
+  String monthLess(String amount) {
+    return 'یعنی $amount کمتر از ۳۰ روز قبلش.';
+  }
+
+  @override
+  String get monthSame => 'تقریباً همان اندازهٔ ۳۰ روز قبلش.';
+
+  @override
+  String monthUp(String category, String amount) {
+    return 'بیشترین افزایش: $category، $amount.';
+  }
+
+  @override
+  String monthDown(String category, String amount) {
+    return 'بیشترین کاهش: $category، $amount.';
+  }
+
+  @override
+  String monthGoals(int onTrack, int total) {
+    return 'هدف‌های در مسیر: $onTrack از $total.';
+  }
+
+  @override
+  String get chatSuggestMonth => 'ماهم چطور گذشت؟';
+
+  @override
+  String get timelineTitle => 'پول شما در روزهای پیش رو';
+
+  @override
+  String get timelineToday => 'امروز';
+
+  @override
+  String get timelineNow => 'اکنون';
+
+  @override
+  String get timelineProjected => 'پیش‌بینی';
+
+  @override
+  String get timelineRecorded => 'ثبت‌شده';
+
+  @override
+  String get timelineFree => 'قابل خرج';
+
+  @override
+  String get timelineHad => 'موجودی شما';
+
+  @override
+  String timelineBalance(String amount) {
+    return 'موجودی $amount';
+  }
+
+  @override
+  String timelineSetAside(String amount) {
+    return 'کنار گذاشته $amount';
+  }
+
+  @override
+  String timelinePayMark(String amount) {
+    return 'حقوق $amount';
+  }
+
+  @override
+  String timelineShort(String amount) {
+    return 'برای پرداختی ضروری $amount کم است';
+  }
+
+  @override
+  String timelineWithout(String amount) {
+    return 'بدون آن: $amount';
+  }
+
+  @override
+  String get timelineBuyAfterPay => 'خرید بعد از حقوق';
+
+  @override
+  String get timelineBalanceLegend => 'موجودی';
+
+  @override
+  String get timelineWithPurchase => 'با این خرید';
+
+  @override
+  String get timelinePay => 'روز حقوق';
+
+  @override
+  String get timelineAssumptions =>
+      'روزهای آینده پیش‌بینی است: حقوق در تاریخ خودش، قبض‌ها در تاریخ خودشان، مبلغ کنارگذاشته برای زندگی به‌طور یکنواخت خرج می‌شود و خرج دیگری نیست. انگشت را روی نمودار بکشید تا هر روز را ببینید.';
+
+  @override
+  String get timelineSemantics => 'نمودار موجودی و مبلغ قابل خرج، روز به روز';
+
+  @override
+  String goalChartSemantics(String goal) {
+    return 'نمودار رسیدن $goal به هدفش';
+  }
+
+  @override
+  String goalChartTarget(String amount, String date) {
+    return 'هدف $amount تا $date';
+  }
+
+  @override
+  String goalPaceLabel(String amount) {
+    return 'کنار گذاشتن در هر دوره: $amount';
+  }
+
+  @override
+  String goalOnTrack(String date) {
+    return 'در مسیر: تا $date به آن می‌رسید.';
+  }
+
+  @override
+  String goalLate(String date, int days) {
+    return 'با این سرعت در $date به آن می‌رسید، $days روز بعد از تاریخ هدف.';
+  }
+
+  @override
+  String get goalNotMoving => 'فعلاً پولی به آن نمی‌رسد، پس نزدیک‌تر نمی‌شود.';
+
+  @override
+  String goalUsePace(String date) {
+    return 'تاریخ هدف را $date کن';
+  }
+
+  @override
+  String get goalPaceNote =>
+      'فقط یک «اگر»: تا خودتان انتخاب نکنید چیزی تغییر نمی‌کند.';
+
+  @override
+  String get goalShowPath => 'ببینید چطور به آن می‌رسید';
+
+  @override
+  String get goalHidePath => 'بستن';
+
+  @override
+  String get billsTitle => 'قبض‌ها و اشتراک‌ها';
+
+  @override
+  String get billAdd => 'افزودن قبض یا اشتراک';
+
+  @override
+  String get billAddSub =>
+      'تلفن، اینترنت، بیمه، اشتراک‌ها… هر کدام پیش از موعدش کنار گذاشته می‌شود.';
+
+  @override
+  String get billEditNew => 'قبض جدید';
+
+  @override
+  String get billEditExisting => 'ویرایش قبض';
+
+  @override
+  String get billName => 'چه چیزی است؟';
+
+  @override
+  String get billNameHint => 'مثلاً اینترنت';
+
+  @override
+  String get billAmount => 'مبلغ هر بار';
+
+  @override
+  String get billEvery => 'هر چند وقت';
+
+  @override
+  String get billEveryWeek => 'هفتگی';
+
+  @override
+  String get billEveryMonth => 'ماهانه';
+
+  @override
+  String get billEveryQuarter => 'سه‌ماهه';
+
+  @override
+  String get billEveryYear => 'سالانه';
+
+  @override
+  String get billNext => 'پرداخت بعدی';
+
+  @override
+  String get billKind => 'نوع';
+
+  @override
+  String get billKindBill => 'قبض';
+
+  @override
+  String get billKindSubscription => 'اشتراک';
+
+  @override
+  String get billRepays => 'بازپرداخت';
+
+  @override
+  String get billRepaysNothing => 'هیچ، یک هزینه است';
+
+  @override
+  String get billAddThis => 'افزودن این قبض';
+
+  @override
+  String get billDelete => 'حذف این قبض';
+
+  @override
+  String billRow(String every, String date) {
+    return '$every · بعدی $date';
+  }
+
+  @override
+  String billOverdue(String date) {
+    return 'موعدش $date بود';
+  }
+
+  @override
+  String get billPay => 'پرداخت شد';
+
+  @override
+  String get billEdit => 'ویرایش';
+
+  @override
+  String get dayToday => 'امروز';
+
+  @override
+  String dayIn(int days) {
+    return '$days روز دیگر';
+  }
+
+  @override
+  String dayAgo(int days) {
+    return '$days روز پیش';
+  }
+
+  @override
+  String get homeComingUp => 'پرداخت‌های پیش رو';
+
+  @override
+  String homeComingUpTotal(String amount) {
+    return '$amount قبض در ۳۰ روز آینده سررسید می‌شود.';
+  }
+
+  @override
+  String payDueTitle(String date) {
+    return 'حقوق شما $date موعدش بود. رسیده است؟';
+  }
+
+  @override
+  String get payDueSub =>
+      'بگویید چقدر رسید؛ حقوق بعدی یک دوره بعد انتظار می‌رود.';
+
+  @override
+  String get payArrived => 'رسید';
+
+  @override
+  String get payArrivedTitle => 'چقدر رسید؟';
+
+  @override
+  String get planRecordPay => 'حقوق رسید';
+
+  @override
+  String get planRecordPaySub => 'ثبتش کنید تا حقوق بعدی یک دوره جلو برود';
+
+  @override
+  String get accountsTitle => 'حساب‌ها';
+
+  @override
+  String get accountMain => 'حساب اصلی';
+
+  @override
+  String get accountKindBank => 'حساب بانکی';
+
+  @override
+  String get accountKindCash => 'پول نقد';
+
+  @override
+  String get accountKindSavings => 'پس‌انداز';
+
+  @override
+  String get accountKindCard => 'کارت اعتباری';
+
+  @override
+  String get accountKindLoan => 'وام';
+
+  @override
+  String get accountAdd => 'افزودن حساب';
+
+  @override
+  String get accountAddSub =>
+      'نقد، پس‌انداز، کارت یا وام. بدون نیاز به اتصال بانک.';
+
+  @override
+  String get accountEditNew => 'حساب جدید';
+
+  @override
+  String get accountNameHint => 'مثلاً کیف پول';
+
+  @override
+  String get accountHolds => 'موجودی فعلی';
+
+  @override
+  String get accountOwes => 'بدهی فعلی';
+
+  @override
+  String get accountCounted => 'در برنامه حساب شود';
+
+  @override
+  String get accountCountedSub => 'پول این حساب را می‌شود این ماه خرج کرد.';
+
+  @override
+  String accountOwed(String amount) {
+    return 'بدهی $amount';
+  }
+
+  @override
+  String get accountNotCounted => 'در برنامه حساب نمی‌شود';
+
+  @override
+  String get accountConfirm => 'موجودی واقعی را بگویید';
+
+  @override
+  String get accountMove => 'جابه‌جایی پول';
+
+  @override
+  String accountMoveTo(String name) {
+    return 'انتقال به $name';
+  }
+
+  @override
+  String get accountMoveBlurb =>
+      'جابه‌جایی پول بین حساب‌های خودتان نه خرج است نه درآمد.';
+
+  @override
+  String get accountPayCard => 'پرداخت بخشی از بدهی';
+
+  @override
+  String get accountPayBlurb =>
+      'از حساب اصلی پرداخت می‌شود. بدهی را تسویه می‌کند و خرج دوباره نیست.';
+
+  @override
+  String get accountRemove => 'حذف این حساب';
+
+  @override
+  String get accountInUse =>
+      'سابقه دارد، پس می‌ماند. می‌توانید آن را از برنامه خارج کنید.';
+
+  @override
+  String get paidFrom => 'پرداخت از';
+
+  @override
+  String get categorySuggested =>
+      'از روی خرج‌های قبلی پیشنهاد شد. برای تغییر، دیگری را بزنید.';
+
+  @override
+  String get recoverTitle => 'پولی که برمی‌گردد';
+
+  @override
+  String recoverTotal(String amount) {
+    return '$amount ممکن است برگردد. تا نرسد حساب نمی‌شود.';
+  }
+
+  @override
+  String get recoverReturnable => 'قابل مرجوع';
+
+  @override
+  String get recoverExpect => 'مرجوع شد، منتظر بازپرداخت';
+
+  @override
+  String get recoverArrived => 'پول برگشت';
+
+  @override
+  String get recoverKept => 'نگهش داشتم';
+
+  @override
+  String get recoverPending => 'بازپرداخت در راه است';
+
+  @override
+  String get recoverRefunded => 'برگشت داده شد';
+
+  @override
+  String get recoverPrompt => 'برگشت پول';
+
+  @override
+  String recoverWhere(String amount) {
+    return '$amount برگشت. کجا برود؟';
+  }
+
+  @override
+  String recoverToGoal(String goal) {
+    return 'برای $goal';
+  }
+
+  @override
+  String get recoverToBuffer => 'به ذخیرهٔ اضطراری';
+
+  @override
+  String get recoverLeave => 'آزاد برای خرج بماند';
+
+  @override
+  String get accountStopCounting => 'دیگر در برنامه حساب نشود';
+
+  @override
+  String get moveTitle => 'بهترین حرکت';
+
+  @override
+  String get moveTagMove => 'جابه‌جایی';
+
+  @override
+  String get moveTagWait => 'صبر';
+
+  @override
+  String get moveTagSave => 'پس‌انداز';
+
+  @override
+  String get moveTagSpend => 'خرج';
+
+  @override
+  String moveMove(String amount, String account) {
+    return '$amount را از $account منتقل کنید تا پرداخت ضروری پوشش داده شود.';
+  }
+
+  @override
+  String moveMoveWhy(String claim) {
+    return '$claim کم دارد و این پول بیرون از برنامه مانده است.';
+  }
+
+  @override
+  String get moveDoIt => 'منتقل کن';
+
+  @override
+  String moveWaitGap(String date, String amount) {
+    return 'فعلاً خرج اضافه نکنید: در $date یک پرداخت ضروری $amount کم می‌آورد.';
+  }
+
+  @override
+  String get moveWaitGapWhy =>
+      'پیش‌بینی، حقوق و قبض‌ها و هزینهٔ زندگی را تا آن روز حساب می‌کند.';
+
+  @override
+  String moveWaitPay(int days, String now, String later) {
+    return 'حقوق شما $days روز دیگر می‌رسد. صبر کردن، $now فضای خرج را به $later می‌رساند.';
+  }
+
+  @override
+  String get moveWaitPayWhy =>
+      'فقط اگر کاری که در نظر دارید می‌تواند صبر کند. در هر حال چیزی به خطر نمی‌افتد.';
+
+  @override
+  String moveSave(String amount, String account, String goal) {
+    return '$amount را برای $goal به $account منتقل کنید.';
+  }
+
+  @override
+  String moveSaveWhy(int days) {
+    return 'حدود $days روز زودتر به هدف می‌رسید و آنچه آزاد می‌ماند هنوز دو برابر خرج معمول یک ماه شماست.';
+  }
+
+  @override
+  String moveSpend(String amount, String date) {
+    return 'تا $date پوشش دارید: $amount آزاد برای خرج است.';
+  }
+
+  @override
+  String get moveSpendWhy =>
+      'قبض‌ها و هدف‌ها از قبل کنار گذاشته شده، چیزی در پیش رو کم نمی‌آید و این مبلغ خیلی بیشتر از خرج معمول شماست.';
+
+  @override
+  String get moveNotNow => 'الان نه';
+
+  @override
+  String get moveNone =>
+      'فعلاً حرکتی که ارزش پیشنهاد داشته باشد نیست. برنامه‌ات همین‌طور که هست پابرجاست.';
+
+  @override
+  String monthIncome(String amount) {
+    return 'حقوق دریافتی: $amount.';
+  }
+
+  @override
+  String monthToGoals(String amount) {
+    return 'برای هدف‌ها کنار گذاشته شد: $amount.';
+  }
+
+  @override
+  String monthNow(String free, String aside) {
+    return 'اکنون: $free قابل خرج، $aside کنار گذاشته.';
+  }
+
+  @override
+  String get monthAheadTitle => '۳۰ روز آینده';
+
+  @override
+  String monthAheadBills(int count, String amount) {
+    return '$count قبض، جمعاً $amount.';
+  }
+
+  @override
+  String monthAheadPay(String date) {
+    return 'حقوق بعدی $date انتظار می‌رود.';
+  }
+
+  @override
+  String monthAheadTightest(String date, String amount) {
+    return 'تنگ‌ترین روز $date است، با $amount قابل خرج.';
+  }
+
+  @override
+  String monthAheadShort(String date, String amount) {
+    return 'در $date یک پرداخت ضروری $amount کم می‌آورد.';
+  }
+
+  @override
+  String get monthWorthKnowing => 'دانستنش مفید است';
+
+  @override
+  String insightUp(String category, String amount) {
+    return '$category نسبت به ماه قبل $amount بیشتر شده.';
+  }
+
+  @override
+  String insightGoal(int days, String goal) {
+    return 'اگر ادامه پیدا کند، هر ماه حدود $days روز از $goal است.';
+  }
+
+  @override
+  String get chatSuggestMove => 'الان بهترین کار چیه؟';
+
+  @override
+  String get chatSuggestComing => 'چه قبض‌هایی در راه است؟';
+
+  @override
+  String get chatComingNone =>
+      'در ۳۰ روز آینده قبضی سررسید نمی‌شود. قبض‌هایت را در «برنامه» اضافه کن تا حواسم بهشان باشد.';
+
+  @override
+  String get quickAsk => 'بپرس';
+
+  @override
+  String get quickPay => 'حقوق رسید';
+
+  @override
+  String get quickBills => 'قبض‌ها';
+
+  @override
+  String get quickMonth => 'مرور ماه';
+
+  @override
+  String get quickPayDue => 'موعد حقوق رسیده. بگویید رسید یا نه.';
+
+  @override
+  String get chartAvg => 'میانگین';
+
+  @override
+  String get flowsTitle => 'ورود و خروج پول';
+
+  @override
+  String get flowsBlurb =>
+      'هفته به هفته: حقوق و بازپرداخت بالای خط، خرج و قسط زیر خط.';
+
+  @override
+  String flowsWeek(String date) {
+    return 'هفتهٔ $date';
+  }
+
+  @override
+  String flowsInOut(String moneyIn, String moneyOut) {
+    return 'ورودی $moneyIn · خروجی $moneyOut';
+  }
+
+  @override
+  String get balanceHistoryTitle => 'موجودی شما در طول زمان';
+
+  @override
+  String rangeMonths(int count) {
+    return '$count ماه';
+  }
+
+  @override
+  String get rangeYear => '۱ سال';
+
+  @override
+  String get weekSpentTitle => '۷ روز اخیر';
+
+  @override
+  String weekSpentTotal(String amount) {
+    return '$amount خرج شد';
+  }
+
+  @override
+  String get payGaugeTitle => 'تا حقوق بعدی';
+
+  @override
+  String payGaugeDaysLabel(int days) {
+    return 'روز مانده';
+  }
+
+  @override
+  String payGaugeAfter(String date, String amount) {
+    return 'بعد از حقوق $date: $amount قابل خرج';
+  }
+
+  @override
+  String payGaugeLasts(String amount) {
+    return '$amount باید تا آن روز کفاف دهد.';
+  }
+
+  @override
+  String get goalsOverall => 'از کل هدف‌ها';
+
+  @override
+  String goalsThisMonth(String amount) {
+    return '$amount+ این ماه';
+  }
+
+  @override
+  String get goalsNothingThisMonth => 'این ماه چیزی اضافه نشده';
+
+  @override
+  String get goalsAllOnTrack => 'همه در مسیر';
+
+  @override
+  String goalsOnTrackCount(int onTrack, int total) {
+    return '$onTrack از $total در مسیر';
+  }
+
+  @override
+  String goalsNextUp(String goal, String date) {
+    return 'بعدی: $goal، $date';
+  }
+
+  @override
+  String get goalsTips => 'راه‌های رسیدن سریع‌تر';
+
+  @override
+  String get goalsTipsSub => 'از اوپینو بپرسید، بر اساس خرج‌های خودتان';
+
+  @override
+  String get goalsDetailTitle => 'جزئیات هر هدف';
+
+  @override
+  String get demoTry => 'امتحان با داده‌ی نمونه';
+
+  @override
+  String get demoTrySub =>
+      'چهار هدف، قبض‌ها و سه ماه سابقه، در یک نسخه‌ی جدا که مال شما نیست و ذخیره نمی‌شود.';
+
+  @override
+  String get demoBanner =>
+      'داده‌ی نمونه: هیچ‌چیز اینجا مال شما نیست و ذخیره نمی‌شود.';
+
+  @override
+  String get demoExit => 'خروج';
+
+  @override
+  String get demoGoalTrip => 'سفر';
+
+  @override
+  String get demoGoalLaptop => 'لپ‌تاپ';
+
+  @override
+  String get demoGoalEmergency => 'اضطراری';
+
+  @override
+  String get demoGoalCar => 'ماشین';
+
+  @override
+  String get demoBillPhone => 'تلفن';
+
+  @override
+  String get demoBillInternet => 'اینترنت';
+
+  @override
+  String get demoBillGym => 'باشگاه';
+
+  @override
+  String get voiceExample => 'مثلاً: «دویست و پنجاه هزار تومن ناهار»';
+
+  @override
+  String get voiceTitleListening => 'در حال شنیدن';
+
+  @override
+  String get voiceTitleHeard => 'شنیده شد';
+
+  @override
+  String get voiceTitleFailed => 'متوجه نشدم';
+
+  @override
+  String get voiceStop => 'توقف';
+
+  @override
+  String get voiceRetry => 'دوباره';
+
+  @override
+  String heroUntil(String date) {
+    return 'تا $date';
+  }
+
+  @override
+  String get goalIcon => 'آیکون';
+
+  @override
+  String get payGaugeToLast => 'باید کفاف بدهد';
+
+  @override
+  String get payGaugeNextPay => 'حقوق بعدی';
+
+  @override
+  String get frSelected => 'انتخاب‌شده';
+
+  @override
+  String get frFromPhone => 'از گوشی شما';
+
+  @override
+  String get frSuggested => 'پیشنهادی';
+
+  @override
+  String get frLangOnPhone => 'زبان گوشی شما';
+
+  @override
+  String get frLangNotHere => 'زبان شما هنوز اینجا نیست';
+
+  @override
+  String get frLangTitle => 'بیایید به زبان\nشما حرف بزنیم.';
+
+  @override
+  String get frOrChoose => 'یا انتخاب کنید';
+
+  @override
+  String frContinueIn(String language) {
+    return 'ادامه به $language';
+  }
+
+  @override
+  String frUseCurrency(String currency) {
+    return 'استفاده از $currency';
+  }
+
+  @override
+  String get frContinue => 'ادامه';
+
+  @override
+  String get frNothingBeforePayday => 'تا حقوق چیزی نیست';
+
+  @override
+  String get frSkipForNow => 'فعلاً رد شو';
+
+  @override
+  String get frLooksLike => 'به نظر می‌رسد';
+
+  @override
+  String get frCurrencyTitle => 'حقوقتان را\nبه چه پولی می‌گیرید؟';
+
+  @override
+  String get frMore => 'بیشتر';
+
+  @override
+  String get frIntentTitle => 'می‌خواهید آپینو در چه چیزی کمکتان کند؟';
+
+  @override
+  String get frIntentSub =>
+      'هر کدام که صدق می‌کند را انتخاب کنید. هر کدام فقط یک عدد می‌خواهد.';
+
+  @override
+  String get frIntentSafe => 'بدانم چقدر می‌توانم بی‌خیال خرج کنم';
+
+  @override
+  String get frIntentShort => 'دیگر پولم ته نکشد';
+
+  @override
+  String get frIntentSave => 'پس‌انداز کنم';
+
+  @override
+  String get frIntentDebt => 'بدهی‌ام را صاف کنم';
+
+  @override
+  String get frIntentIrregular => 'برای هزینه‌های نامنظم آماده باشم';
+
+  @override
+  String get frIntentGoal => 'به یک هدف برسم';
+
+  @override
+  String get frIntentUnderstand => 'پولم را بهتر بشناسم';
+
+  @override
+  String get frAskSafe => 'در یک ماه معمولی چقدر خرج می‌کنید؟';
+
+  @override
+  String get frAskSafeHint => 'یک عدد تقریبی کافی است.';
+
+  @override
+  String get frAskShort => 'معمولاً قبل از حقوق چقدر کم می‌آورید؟';
+
+  @override
+  String get frAskShortHint => 'همان چیزی که قرض می‌گیرید یا بی‌خیالش می‌شوید.';
+
+  @override
+  String get frAskSave => 'دوست دارید هر ماه چقدر پس‌انداز کنید؟';
+
+  @override
+  String get frAskSaveHint => 'آپینو قبل از خرج کردن کنارش می‌گذارد.';
+
+  @override
+  String get frAskDebt => 'روی هم چقدر بدهکارید؟';
+
+  @override
+  String get frAskDebtHint => 'کارت، وام، هر چیزی که دارید پس می‌دهید.';
+
+  @override
+  String get frAskIrregular => 'در یک سال روی هم چقدر می‌شوند؟';
+
+  @override
+  String get frAskIrregularHint => 'بیمه، تعمیرات، هدیه، هزینه‌های اداری.';
+
+  @override
+  String get frAskGoal => 'هدفتان چقدر خرج دارد؟';
+
+  @override
+  String get frAskGoalHint => 'اسم و تاریخش را بعداً هم می‌توانید بگذارید.';
+
+  @override
+  String get frAskUnderstand => 'فکر می‌کنید ماهی چقدر خرج می‌کنید؟';
+
+  @override
+  String get frAskUnderstandHint =>
+      'آپینو نشانتان می‌دهد چقدر درست حدس زده بودید.';
+
+  @override
+  String frPerMonth(String amount) {
+    return 'ماهی $amount';
+  }
+
+  @override
+  String frShortPerMonth(String amount) {
+    return 'ماهی $amount کسری';
+  }
+
+  @override
+  String frOwed(String amount) {
+    return '$amount بدهی';
+  }
+
+  @override
+  String frPerYear(String amount) {
+    return 'سالی $amount';
+  }
+
+  @override
+  String frToReach(String amount) {
+    return '$amount تا هدف';
+  }
+
+  @override
+  String frPerMonthGuess(String amount) {
+    return 'ماهی $amount، به حدس شما';
+  }
+
+  @override
+  String get frAdd => 'افزودن';
+
+  @override
+  String get frRemove => 'حذف';
+
+  @override
+  String get frIncomeTitle => 'بگویید پول از کجا می‌آید.';
+
+  @override
+  String get frIncomeSub =>
+      'اگر ثابت نیست، مقداری را بگویید که رویش حساب می‌کنید.';
+
+  @override
+  String get frAddIncome => 'افزودن یک درآمد دیگر';
+
+  @override
+  String get frEvery2Weeks => 'هر ۲ هفته';
+
+  @override
+  String get frTwiceMonth => 'ماهی دو بار';
+
+  @override
+  String get frIrregular => 'نامنظم';
+
+  @override
+  String get frEachPay => 'هر بار حقوق';
+
+  @override
+  String get frAnotherIncome => 'درآمد دیگر';
+
+  @override
+  String get frAvailTitle => 'همین حالا چقدر پول در دسترس دارید؟';
+
+  @override
+  String get frAvailSub =>
+      'نقد و حساب‌هایی که از آن‌ها خرج می‌کنید، روی هم. پس‌انداز را حساب نکنید؛ حساب‌ها را بعداً یکی‌یکی اضافه می‌کنید.';
+
+  @override
+  String get frAvailLabel => 'پول در دسترس امروز';
+
+  @override
+  String get frAvailNote => 'این می‌شود موجودی تأییدشده‌ی امروز.';
+
+  @override
+  String get frObRent => 'اجاره / قسط خانه';
+
+  @override
+  String get frObUtilities => 'قبض‌ها';
+
+  @override
+  String get frObInsurance => 'بیمه';
+
+  @override
+  String get frObSubscriptions => 'اشتراک‌ها';
+
+  @override
+  String get frSomethingElse => 'چیز دیگر';
+
+  @override
+  String get frObTitle => 'قبل از درآمد بعدی چه چیزهایی باید پرداخت شود؟';
+
+  @override
+  String frObSub(String date) {
+    return 'فقط چیزهایی که تا $date سررسید دارند. روی هر کدام بزنید.';
+  }
+
+  @override
+  String get frAddAnother => 'افزودن مورد دیگر';
+
+  @override
+  String get frObNeedsName => 'اسم و مبلغ را وارد کنید';
+
+  @override
+  String get frTapToAdd => 'برای افزودن بزنید';
+
+  @override
+  String get frAmount => 'مبلغ';
+
+  @override
+  String get frDue => 'سررسید';
+
+  @override
+  String get frEssTitle =>
+      'تا درآمد بعدی، برای نیازهای روزمره حدوداً چقدر لازم دارید؟';
+
+  @override
+  String frEssSub(String date) {
+    return 'تا $date. یک عدد تقریبی کافی است.';
+  }
+
+  @override
+  String get frEssGroceries => 'خوراکی';
+
+  @override
+  String get frEssGettingAround => 'رفت‌وآمد';
+
+  @override
+  String get frEssHousehold => 'خانه';
+
+  @override
+  String get frEssEveryday => 'نیازهای روزمره';
+
+  @override
+  String get frHelpEstimate => 'کمکم کن تخمین بزنم';
+
+  @override
+  String get frEstimateTitle => 'یک تخمین سریع';
+
+  @override
+  String get frEstimateSub => 'دو ضربه. عدد را بعداً می‌توانید عوض کنید.';
+
+  @override
+  String get frPeopleYouCover => 'چند نفر خرجشان با شماست';
+
+  @override
+  String get frWalkBike => 'پیاده یا دوچرخه';
+
+  @override
+  String get frPublicTransport => 'حمل‌ونقل عمومی';
+
+  @override
+  String get frCar => 'ماشین';
+
+  @override
+  String frUntil(String date) {
+    return 'تا $date';
+  }
+
+  @override
+  String get frUseThis => 'همین را بگذار';
+
+  @override
+  String get frProtEmergency => 'صندوق اضطراری';
+
+  @override
+  String get frProtTrip => 'سفر';
+
+  @override
+  String get frProtHome => 'خانه';
+
+  @override
+  String get frProtYearly => 'هزینه‌ی سالانه';
+
+  @override
+  String frMonths(int count) {
+    return '$count ماه';
+  }
+
+  @override
+  String get frProtTitle => 'چیزی هست که بخواهید پولتان از آن محافظت کند؟';
+
+  @override
+  String get frProtSub =>
+      'اختیاری. آپینو از هر حقوق کمی کنار می‌گذارد تا سر وقت آماده باشد.';
+
+  @override
+  String get frProtNameHint => 'مثلاً بیمه‌ی ماشین';
+
+  @override
+  String get frProtWhatFor => 'برای چیست؟';
+
+  @override
+  String get frProtYearlyAmount => 'چقدر، سالی یک بار';
+
+  @override
+  String get frTarget => 'مبلغ هدف';
+
+  @override
+  String get frNextDueIn => 'سررسید بعدی تا';
+
+  @override
+  String get frAlreadySaved => 'تا الان جمع شده';
+
+  @override
+  String frDay(int n) {
+    return 'روز $n';
+  }
+
+  @override
+  String get frMoment1Title => 'روز حقوق. همه‌چیز مرتب.';
+
+  @override
+  String get frMoment1Body =>
+      'اجاره و خوراکی همان لحظه‌ای که پول می‌رسد کنار گذاشته می‌شوند. هرچه ماند، مال خودتان است.';
+
+  @override
+  String get frMoment2Title => 'هر خرج، در ۳ ثانیه.';
+
+  @override
+  String get frMoment2Body =>
+      'ثبتش کنید و عدد همان لحظه به‌روز می‌شود. همیشه حقیقتِ امروز.';
+
+  @override
+  String get frMoment3Title => 'قبل از خرید بپرسید.';
+
+  @override
+  String get frMoment3Body =>
+      'قبل از پرداخت ببینید یک خرید با قبض‌ها و هدف‌هایتان چه می‌کند.';
+
+  @override
+  String get frMoment4Title => 'هدف‌هایی که خودشان پر می‌شوند.';
+
+  @override
+  String get frMoment4Body =>
+      'از هر حقوق کمی کنار می‌رود و ماه با اینکه همه‌چیز کجا رفت بسته می‌شود.';
+
+  @override
+  String get frGetStarted => 'شروع کنیم';
+
+  @override
+  String frPayArrived(String amount) {
+    return 'حقوق رسید  $amount';
+  }
+
+  @override
+  String get frCoffee => 'قهوه';
+
+  @override
+  String get frRecordedNow => 'همین الان ثبت شد';
+
+  @override
+  String frAskJacket(String amount) {
+    return 'می‌توانم یک کاپشن $amountی بخرم؟';
+  }
+
+  @override
+  String frAskAnswer(String amount, String date) {
+    return 'بله، و اجاره هم پوشش داده می‌شود. تا $date $amount برایتان می‌ماند. سفرتان ۴ روز عقب می‌افتد.';
+  }
+
+  @override
+  String get frIfBuyNow => 'اگر الان بخرید';
+
+  @override
+  String frLeft(String amount) {
+    return '$amount می‌ماند';
+  }
+
+  @override
+  String get frMonthClosed => 'ماه بسته شد: ۸٪ کمتر خرج بیرون غذا خوردن.';
+
+  @override
+  String get frOfAllGoals => 'از همه‌ی هدف‌ها';
+
+  @override
+  String get frWelcome => 'به آپینو خوش آمدید';
+
+  @override
+  String get frWelcomeSub =>
+      'تازه‌وارد باشید یا برگشته باشید، همین یک قدم است.';
+
+  @override
+  String get frWithApple => 'ادامه با Apple';
+
+  @override
+  String get frWithGoogle => 'ادامه با Google';
+
+  @override
+  String get frWithEmail => 'ادامه با ایمیل';
+
+  @override
+  String get frOnDevice => 'برنامه‌تان روی گوشی خودتان حساب می‌شود.';
+
+  @override
+  String get frTermsPrivacy => 'شرایط · حریم خصوصی';
+
+  @override
+  String get frCheckEmail => 'ایمیلتان را ببینید';
+
+  @override
+  String frCodeSent(String email) {
+    return 'یک کد ۶ رقمی به $email فرستادیم.';
+  }
+
+  @override
+  String get frCodeWhy =>
+      'یک کد برایتان می‌فرستیم. رمزی لازم نیست به خاطر بسپارید.';
+
+  @override
+  String get frSendCode => 'فرستادن کد';
+
+  @override
+  String get frAvailableNow => 'الان در دسترس';
+
+  @override
+  String get frProtectedBills => 'کنار گذاشته برای قبض‌ها و نیازها';
+
+  @override
+  String get frProtectedGoal => 'کنار گذاشته برای هدفتان';
+
+  @override
+  String get frPlanReady => 'برنامه‌ی پولتان آماده است';
+
+  @override
+  String frNotCovered(String amount) {
+    return '$amount از چیزهایی که باید پرداخت شود هنوز پوشش ندارد.';
+  }
+
+  @override
+  String frUntilIncome(String date) {
+    return 'تا درآمد بعدیِ پیش‌بینی‌شده در $date';
+  }
+
+  @override
+  String get frTakenCare => 'از قبل حساب شده';
+
+  @override
+  String frTakenCareBody(String name, String amount, String date) {
+    return '$name، $amount با سررسید $date، قبل از هر خرجی کنار گذاشته شده.';
+  }
+
+  @override
+  String get frBuiltFromAll => 'از همه‌ی چیزهایی که گفتید ساخته شده.';
+
+  @override
+  String frGoodEstimate(int count) {
+    return 'تخمین اولیه‌ی خوبی است. بعداً $count جزئیات دیگر اضافه کنید تا دقیق‌تر شود.';
+  }
+
+  @override
+  String get frGoToPlan => 'برو به برنامه‌ام';
+
+  @override
+  String get frSafeToSpend => 'قابل خرج';
+
+  @override
+  String get frGapsTitle => 'عدد قابل خرج را دقیق‌تر کنید';
+
+  @override
+  String get frGapEssentials => 'افزودن نیازهای روزمره';
+
+  @override
+  String get frGapYearly => 'افزودن یک هزینه‌ی سالانه، مثل بیمه';
+
+  @override
+  String get frGapBill => 'افزودن قبضی که قبل از حقوق سررسید دارد';
+
+  @override
+  String frSeconds(int count) {
+    return '~$count ثانیه';
+  }
+
+  @override
+  String get frEssentialsSheet => 'نیازهای روزمره تا روز حقوق';
 }

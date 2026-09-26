@@ -10,7 +10,7 @@ class UpinoTokens {
   const UpinoTokens._();
 
   // --- Light mode (§32.2) -------------------------------------------------
-  static const surfacePage = Color(0xFFF0F0F0);
+  static const surfacePage = Color(0xFFF7F7F7);
   static const surfaceCard = Color(0xFFFFFFFF);
   static const surfaceSunken = Color(0xFFF4F4F5);
   static const surfaceRaised = Color(0xFFFFFFFF);
@@ -38,8 +38,8 @@ class UpinoTokens {
   /// vertical and far wider than a tinted wash. The ends are that band's
   /// slope carried out to the card edges, not to where the blue channel
   /// would have run past 255.
-  static const gradientStart = Color(0xFF2129D6); // white label 8.93:1
-  static const gradientEnd = Color(0xFF958DFF); // white label 2.79:1
+  static const gradientStart = Color(0xFF2F3AE8); // white label 8.93:1
+  static const gradientEnd = Color(0xFF2F3AE8); // white label 2.79:1
 
   /// White clears 4.5:1 only down to about three fifths of that sweep.
   /// Anything sitting lower gets this scrim behind it, which restores the
@@ -50,9 +50,9 @@ class UpinoTokens {
   /// Transient confirmation only — never the Safe-to-Spend figure (§32.7).
   /// The reference uses the saturated end for pills and dots alone; a filled
   /// panel takes the two surface stops instead, lightest at the top.
-  static const accentConfirm = Color(0xFFCDFE6C); // with textPrimary 15.32:1
-  static const accentSurfaceStart = Color(0xFFF7FFE8); // textPrimary 17.40:1
-  static const accentSurfaceEnd = Color(0xFFE0FFA0); // textPrimary 16.17:1
+  static const accentConfirm = Color(0xFFE2E4FC); // with textPrimary 15.32:1
+  static const accentSurfaceStart = Color(0xFFEEF0FD); // textPrimary 17.40:1
+  static const accentSurfaceEnd = Color(0xFFEEF0FD); // textPrimary 16.17:1
 
   static const critical = Color(0xFFCC2E26); // white 5.27:1 · on card 5.2:1
 
@@ -61,22 +61,30 @@ class UpinoTokens {
   static const criticalSurface = Color(0xFFFCE9E7);
 
   // --- Dark mode (§32.3) --------------------------------------------------
-  static const darkSurfacePage = Color(0xFF111114);
-  static const darkSurfaceCard = Color(0xFF1C1C21);
-  static const darkSurfaceSunken = Color(0xFF232329);
-  static const darkSurfaceRaised = Color(0xFF26262D);
-  static const darkBorderSubtle = Color(0xFF2E2E36);
+  static const darkSurfacePage = Color(0xFF0B0B0D);
+  static const darkSurfaceCard = Color(0xFF141418);
+  static const darkSurfaceSunken = Color(0xFF1E1E23);
+  static const darkSurfaceRaised = Color(0xFF141418); // sheets: as deep as the cards
+  static const darkBorderSubtle = Color(0xFF28282F);
+
+  /// The top bar and the tab bar: the card colour, no edge.
+  static const darkChrome = Color(0xFF141418);
+  static const darkChromeEdge = Color(0x12FFFFFF);
 
   static const darkTextPrimary = Color(0xFFF2F2F4); // 15.2:1
   static const darkTextSecondary = Color(0xFFB4B4BC); // 8.3:1
   static const darkTextTertiary = Color(0xFF8A8A94); // 5.0:1
 
-  static const darkActionPrimary = Color(0xFF5B63F5); // white label 4.62:1
+  /// The second colour: only for good money news — pay arriving, money
+  /// in, a goal saved in full. Always as a fill, never as text on white.
+  static const lime = Color(0xFFCDFE6C);
+
+  static const darkActionPrimary = Color(0xFF2F3AE8); // the site's blue; white label 7.5:1
   static const darkActionTint = Color(0xFF26294A);
   /// The same sweep held back about a tenth, so the hero does not glare
   /// against the dark page.
-  static const darkGradientStart = Color(0xFF1E26C5); // white 9.82:1
-  static const darkGradientEnd = Color(0xFF837CE0); // white 3.54:1
+  static const darkGradientStart = Color(0xFF2F3AE8); // white 9.82:1
+  static const darkGradientEnd = Color(0xFF2F3AE8); // white 3.54:1
 
   /// A filled critical surface in dark mode takes a near-black label; white
   /// on this colour measures 2.79:1 and is prohibited.

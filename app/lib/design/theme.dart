@@ -58,7 +58,13 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
       headlineLarge: heading(30, spacing: -1),
       headlineMedium: heading(25),
       headlineSmall: heading(22, spacing: -0.5).copyWith(fontFeatures: moneyFeatures),
-      titleLarge: heading(19, spacing: -0.4),
+      // Section headings and goal names: a step quieter than the other
+      // headings (w700, 95% ink), so they order the page without competing
+      // with the figures under them.
+      titleLarge: heading(18, spacing: -0.4).copyWith(
+        fontWeight: FontWeight.w700,
+        color: textPrimary.withValues(alpha: 0.95),
+      ),
       titleMedium: TextStyle(
         fontSize: 15.5,
         fontWeight: FontWeight.w700,
@@ -84,13 +90,34 @@ ThemeData buildTheme({required Brightness brightness, String? fontFamily}) {
         fontFamily: fontFamily,
       ),
     ),
+    // Chips are soft pills: no outline, the card colour on the page (in dark
+    // mode, sunken, since cards and sheets share one deep colour there).
+    chipTheme: ChipThemeData(
+      backgroundColor: dark ? UpinoTokens.darkSurfaceSunken : UpinoTokens.surfaceCard,
+      selectedColor: dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint,
+      side: BorderSide.none,
+      shape: const StadiumBorder(),
+      elevation: 0,
+      pressElevation: 0,
+      labelStyle: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 13.5,
+        fontWeight: FontWeight.w500,
+        color: dark ? UpinoTokens.darkTextPrimary : UpinoTokens.textPrimary,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: primary,
         foregroundColor: Colors.white,
-        disabledBackgroundColor:
-            dark ? UpinoTokens.darkSurfaceSunken : UpinoTokens.surfaceSunken,
-        disabledForegroundColor: UpinoTokens.textTertiary,
+        // Still reads as the button it will become, just not yet.
+        // In dark mode a faded blue turns muddy; there it waits in grey.
+        disabledBackgroundColor: dark
+            ? UpinoTokens.darkSurfaceSunken
+            : primary.withValues(alpha: 0.32),
+        disabledForegroundColor:
+            dark ? UpinoTokens.darkTextTertiary : Colors.white,
         minimumSize: const Size.fromHeight(56),
         elevation: 0,
         shape: RoundedRectangleBorder(

@@ -95,7 +95,7 @@ void main() {
       expect(heroStateFor(s), HeroState.trusted);
 
       await pumpHero(t, s);
-      expect(find.text('€1,800.00'), findsOneWidget);
+      expect(find.text('€1,800'), findsOneWidget);
       expect(usesGradient(t), isTrue);
       expect(paintedColors(t), isNot(contains(UpinoTokens.accentConfirm)));
       expect(paintedColors(t), isNot(contains(UpinoTokens.critical)));
@@ -116,7 +116,7 @@ void main() {
       final degradedColors = paintedColors(t);
 
       // Same figure, same gradient, and not one critical token on screen.
-      expect(find.text('€3,000.00'), findsOneWidget);
+      expect(find.text('€3,000'), findsOneWidget);
       expect(usesGradient(t), isTrue);
       expect(degradedColors, isNot(contains(UpinoTokens.critical)));
       expect(degradedColors, isNot(contains(UpinoTokens.criticalOnInverse)));
@@ -168,14 +168,14 @@ void main() {
       expect(heroStateFor(s), HeroState.fundingGap);
 
       await pumpHero(t, s);
-      expect(find.text('€0.00'), findsOneWidget);
+      expect(find.text('€0'), findsOneWidget);
       expect(usesGradient(t), isFalse);
       expect(paintedColors(t), contains(UpinoTokens.surfaceInverse));
       expect(paintedColors(t), contains(UpinoTokens.criticalOnInverse));
       // The gap is stated once on the hero and again beside the claim that
       // caused it; both are the same authoritative figure.
-      expect(find.textContaining('€200.00'), findsNWidgets(2));
-      expect(find.text('€200.00 short'), findsOneWidget);
+      expect(find.textContaining('€200'), findsNWidgets(2));
+      expect(find.text('€200 short'), findsOneWidget);
     });
 
     testWidgets('D06 — review takes precedence over a funding gap', (t) async {
@@ -243,7 +243,7 @@ void main() {
 
       await pumpHero(t, s);
       expect(find.textContaining('Card balance already spent'), findsOneWidget);
-      expect(find.textContaining('€150.00'), findsWidgets);
+      expect(find.textContaining('€150'), findsWidgets);
     });
 
     testWidgets('D10 — the figure never abbreviates a large amount', (t) async {

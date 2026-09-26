@@ -12,6 +12,7 @@ import 'package:upino/design/motion.dart';
 import 'package:upino/design/parts.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
+import 'package:upino/widgets/sts_hero.dart';
 import 'package:upino/screens/language_screen.dart';
 import 'package:upino/state/app_state.dart';
 import 'package:upino/widgets/upino_sheet.dart';
@@ -36,7 +37,7 @@ Future<void> pumpApp(WidgetTester tester, AppState state) async {
     ..physicalSize = const Size(400, 900)
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(UpinoApp(state: state));
+  await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
   await tester.pumpAndSettle();
 }
 
@@ -48,11 +49,12 @@ void main() {
         ..physicalSize = const Size(400, 900)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpWidget(UpinoApp(state: funded(), singleFormSetup: true));
 
       // One frame in: the animation has started and nothing has arrived.
       await tester.pump();
-      final title = find.text('Your plan');
+      // The first card on Home, now that the page's name is in the capsule.
+      final title = find.byType(StsHero);
       final early = tester.getTopLeft(title).dy;
       expect(
         tester.widget<Opacity>(
@@ -81,7 +83,7 @@ void main() {
         ..physicalSize = const Size(400, 900)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: funded()));
+      await tester.pumpWidget(UpinoApp(state: funded(), singleFormSetup: true));
       await tester.pump();
       await tester.pump(UpinoMotion.enter);
 
@@ -91,11 +93,11 @@ void main() {
           )
           .opacity;
 
-      expect(opacityAbove(find.text('Your plan')), 1);
-      expect(opacityAbove(find.text('Set aside first')), lessThan(1));
+      expect(opacityAbove(find.byType(StsHero)), 1);
+      expect(opacityAbove(find.text('Bills')), lessThan(1));
 
       await tester.pumpAndSettle();
-      expect(opacityAbove(find.text('Set aside first')), 1);
+      expect(opacityAbove(find.text('Bills')), 1);
     });
 
     testWidgets('a phone asked to stop animating gets none of it',
@@ -107,19 +109,19 @@ void main() {
       await tester.pumpWidget(
         MediaQuery(
           data: const MediaQueryData(disableAnimations: true),
-          child: UpinoApp(state: funded()),
+          child: UpinoApp(state: funded(), singleFormSetup: true),
         ),
       );
       await tester.pump();
       expect(find.byType(Opacity), findsNothing);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(find.byType(StsHero), findsOneWidget);
     });
   });
 
   group('the picker sheets', () {
     testWidgets('bring their rows in one after another', (tester) async {
       await pumpApp(tester, funded());
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
       final row = find.byKey(const Key('profile-language'));
       await tester.scrollUntilVisible(row, 200);

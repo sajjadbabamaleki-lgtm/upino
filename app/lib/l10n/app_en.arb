@@ -285,6 +285,23 @@
   "profileLanguageBlurb": "Following your phone is the default, so nothing is imposed.",
   "languagePhone": "Phone",
   "profileCurrency": "Currency",
+  "currencyChangeTitle": "Switch to {currency}?",
+  "@currencyChangeTitle": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "currencyChangeBlurb": "Every amount in your plan keeps its number and is shown in {currency} from now on. Nothing is converted at an exchange rate, so use this to correct the currency, not to convert your money.",
+  "@currencyChangeBlurb": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "currencyChangeConfirm": "Switch",
   "profileYourData": "Your data",
   "profileDelete": "Delete my plan",
   "profileDeleteSub": "Clears everything and returns to setup",
@@ -390,5 +407,1437 @@
         "type": "String"
       }
     }
-  }
+  },
+  "categoryFood": "Food",
+  "categoryTransport": "Transport",
+  "categoryBills": "Bills",
+  "categoryShopping": "Shopping",
+  "categoryHealth": "Health",
+  "categoryFun": "Going out",
+  "categoryOther": "Other",
+  "categoryUnsorted": "Not sorted",
+  "categoryPrompt": "What was it for?",
+  "spendingTitle": "Where it went",
+  "spendingWindow": "Spends recorded in the last 30 days",
+  "backupSection": "Backup",
+  "backupSave": "Save a backup",
+  "backupSaveSub": "Locked with a password. Send it somewhere safe, like your cloud drive.",
+  "backupRestore": "Restore from a backup",
+  "backupRestoreSub": "Replaces the plan on this phone",
+  "backupPassword": "Password",
+  "backupPasswordRepeat": "Repeat the password",
+  "backupPasswordSaveBlurb": "You will need this password to restore the backup. It cannot be recovered if you forget it. Receipt photos are not included.",
+  "backupPasswordOpenBlurb": "The password this backup was saved with.",
+  "backupPasswordShort": "At least 6 characters",
+  "backupPasswordMismatch": "The two do not match",
+  "backupOpen": "Open",
+  "backupReplaceTitle": "Replace this plan?",
+  "backupReplaceBlurb": "Everything on this phone is replaced by what is in the backup. This cannot be undone.",
+  "backupReplace": "Replace",
+  "backupRestored": "Backup restored",
+  "backupWrongPassword": "That password does not open this backup.",
+  "backupNotABackup": "That file is not an Upino backup.",
+  "backupUnreadable": "This backup was made by a newer version of Upino. Update the app and try again.",
+  "inflationTitle": "Inflation",
+  "inflationNotSet": "Not set. Add the yearly rate where you live to see what goals will really cost.",
+  "inflationRate": "{rate}% a year",
+  "@inflationRate": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "inflationDialogTitle": "Yearly inflation",
+  "inflationDialogBlurb": "Prices rise, so a goal set in today's money costs more on its date. Enter the rate you expect. Leave it empty to turn this off.",
+  "goalsInflated": "At {rate}% a year, this will cost about {amount} by then.",
+  "@goalsInflated": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "holdingsTitle": "Other holdings",
+  "holdingsBlurb": "Dollars, gold, coins. Shown beside your plan and never counted in what you can spend.",
+  "holdingsAdd": "Add a holding",
+  "holdingsAddSub": "Not counted in what you can spend",
+  "holdingsTotal": "Together",
+  "holdingSummary": "{quantity} × {price} · priced {date}",
+  "@holdingSummary": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "holdingEditNew": "New holding",
+  "holdingEditExisting": "Change holding",
+  "holdingName": "What is it?",
+  "holdingNameHint": "US dollar, gold…",
+  "holdingUsd": "US dollar",
+  "holdingEur": "Euro",
+  "holdingGold": "Gold (gram)",
+  "holdingCoin": "Gold coin",
+  "holdingQuantity": "How many",
+  "holdingUnitPrice": "What one is worth today",
+  "holdingWorth": "Worth {amount} together",
+  "@holdingWorth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "holdingDelete": "Remove this holding",
+  "fasterTitle": "Faster entry",
+  "smsTitle": "Read bank messages",
+  "smsDetail": "Spends your bank texts you about are offered to record with one tap. Messages are read on this phone only and never sent anywhere.",
+  "smsDenied": "Upino was not allowed to read messages. You can allow it in the phone's settings.",
+  "smsWaiting": "{count, plural, =1{1 bank message to review} other{{count} bank messages to review}}",
+  "@smsWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "smsWaitingSub": "Record each with one tap, or skip it",
+  "smsReviewTitle": "From your bank",
+  "smsReviewBlurb": "Nothing is recorded until you tap Record. Check the amount against the message.",
+  "smsReviewDone": "All caught up.",
+  "smsRecord": "Record",
+  "smsSkip": "Skip",
+  "reminderTitleSetting": "Evening reminder",
+  "reminderDetail": "At 9 in the evening, only on days nothing was recorded.",
+  "reminderDenied": "Upino was not allowed to show notifications. You can allow it in the phone's settings.",
+  "reminderTitle": "Anything spent today?",
+  "reminderBody": "Record it in a few seconds, so tomorrow's figure is right.",
+  "reminderChannel": "Evening reminder",
+  "widgetSpend": "+ Spend",
+  "widgetAdd": "Add to home screen",
+  "widgetAddSub": "What you can spend, and a button to record a spend, without opening the app",
+  "voiceListening": "Listening… say the amount and what it was for.",
+  "voiceHeard": "Heard: “{text}”. Check the amount, then save.",
+  "@voiceHeard": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceNothing": "No amount heard. Try again, or type it.",
+  "voicePrivacy": "Your phone turns speech into text. On phones without offline speech, that goes through the phone's speech service.",
+  "voiceButton": "Say it",
+  "voiceUnavailable": "This phone has no speech recognition the app can use. Type the amount instead.",
+  "voiceNoPermission": "Upino was not allowed to use the microphone. You can allow it in the phone's settings.",
+  "voiceNetwork": "Speech recognition on this phone needs the internet and could not reach it.",
+  "voiceNoAmount": "Heard “{text}”, but no amount in it. Try again, or type it.",
+  "@voiceNoAmount": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "yes": "Yes",
+  "no": "No",
+  "navAsk": "Ask",
+  "alertsTitle": "Needs you",
+  "alertsEmpty": "Nothing needs you right now. The plan is up to date.",
+  "alertUnfunded": "{label} is {amount} short",
+  "@alertUnfunded": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "alertUnfundedDetail": "Something you must pay is not covered by what you have.",
+  "alertIncomeLate": "Your pay was expected on {date}",
+  "@alertIncomeLate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "alertIncomeLateDetail": "It is not counted until it arrives. Change the date on Plan if it moved.",
+  "alertGoalBehind": "{name} is {amount} behind this period",
+  "@alertGoalBehind": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "alertGoalBehindDetail": "What you have does not reach this period's share of the goal.",
+  "chatHint": "Ask me anything, or type a price",
+  "chatSuggestSafe": "How much can I spend?",
+  "chatSuggestPay": "When is my next pay?",
+  "chatSuggestWhere": "Where did my money go?",
+  "chatSuggestAside": "What is set aside?",
+  "chatSafe": "You can spend {amount} until {date}.",
+  "@chatSafe": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatSafeStale": "One thing: your balance needs confirming, so treat this as an estimate.",
+  "chatPay": "Your next pay is {amount}, expected on {date}.",
+  "@chatPay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPayNone": "I don't know your next pay yet. Add it on Plan and I'll keep an eye on it.",
+  "chatWhere": "Here's where it went in the last 30 days:",
+  "chatWhereNone": "No spends in the last 30 days. Either it's been a quiet month or they haven't been recorded.",
+  "chatAside": "{amount} is set aside before anything counts as spendable:",
+  "@chatAside": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPurchase": "Let's see what {amount} would do.",
+  "@chatPurchase": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatHelp": "Hmm, I didn't quite get that. I can tell you how much you can spend, when your pay comes, where your money went, what's set aside, or how to spend less. Or type a price, like “a phone for 20 million”, and I'll show you what buying it would do.",
+  "chatHelloNew": "Hi! I'm Upino. You're new here, so I only know the basics so far: your balance, your pay and what you set aside. That's already enough to tell you what you can spend and what a purchase would do. Keep recording your spends and after about a season I'll know your habits well enough to be your own money adviser.",
+  "chatHelloLearning": "Welcome back! I've been learning from {days, plural, =1{1 day} other{{days} days}} and {spends, plural, =1{1 spend} other{{spends} spends}} so far. About {remaining} more days and I'll have a full season to go on.",
+  "@chatHelloLearning": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "spends": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "chatHelloFamiliar": "Welcome back! I've seen {days} days of your money now, so ask me anything, including how to spend less.",
+  "@chatHelloFamiliar": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "chatHelloAlerts": "By the way, {count, plural, =1{one thing needs you} other{{count} things need you}}: it's under the bell.",
+  "@chatHelloAlerts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chatPurchaseFits": "Buying it today keeps everything you must pay covered, with {left} still spare.",
+  "@chatPurchaseFits": {
+    "placeholders": {
+      "left": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPurchaseWait": "Buying it today would leave something you must pay short. If you wait until {date}, everything is covered.",
+  "@chatPurchaseWait": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPurchaseStillShort": "Heads up: even after your pay on {date}, this would leave something you must pay short.",
+  "@chatPurchaseStillShort": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPurchaseShort": "Buying it today would leave something you must pay short.",
+  "chatSafeNothing": "Right now there's nothing spare until {date}: everything you have is already promised to something you must pay.",
+  "@chatSafeNothing": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chatPayIn": "That's {days, plural, =1{in a day} other{in {days} days}}.",
+  "@chatPayIn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "chatPayLate": "It's late, so it isn't counted until you confirm it has arrived.",
+  "chatPayRange": "Your plan counts on the lower end, so a good month is a bonus, not a hole.",
+  "chatWhereSoFar": "I've only seen {days, plural, =1{1 day} other{{days} days}} so far, so this is a first look:",
+  "@chatWhereSoFar": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "chatWhereTop": "{category} is the biggest: {share}% of it.",
+  "@chatWhereTop": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "share": {
+        "type": "int"
+      }
+    }
+  },
+  "chatWhereTooSoon": "It's a bit early for that: I've barely seen any spending yet. Record a few and ask me again next week.",
+  "chatAdviceTooSoon": "I'd love to help with that, but honestly I don't know your spending well enough yet, and advice without it would just be a guess. Record your spends (sorting them helps a lot) and ask me again in a few weeks.",
+  "chatAdviceBiggest": "Your biggest spend in the last 30 days was {category}, at {amount}. Trimming it by a tenth would free about {tenth} a month.",
+  "@chatAdviceBiggest": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "tenth": {
+        "type": "String"
+      }
+    }
+  },
+  "chatAdviceSort": "I can see what you spend but not what it's on. Give your spends a category when you record them and I can tell you where to trim.",
+  "chatAdviceMore": "You spent {amount} more than the month before.",
+  "@chatAdviceMore": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatAdviceLess": "Nice: that's {amount} less than the month before.",
+  "@chatAdviceLess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chatAdviceLearning": "I'm still learning your habits, so take this as a first hint rather than the full picture.",
+  "chatSmallHello": "Hi! What would you like to know about your money?",
+  "chatSmallThanks": "Any time! I'm here whenever you're about to spend.",
+  "chatSmallWho": "I'm Upino's assistant. I only know what's in your plan, and every number I give comes straight from it; nothing you tell me leaves this phone. I won't tell you yes or no, but I'll show you what each choice would leave you.",
+  "chatSuggestAdvice": "How can I spend less?",
+  "chatTitle": "Upino",
+  "chatNew": "New chat",
+  "chatResumed": "Answers here are worked out from your plan as it is today.",
+  "chatWhy": "Here's how the figure comes about:",
+  "chatWhyHave": "What you have",
+  "chatWhySetAside": "Set aside first",
+  "chatWhyLeft": "Safe to spend",
+  "chatSmallHowAreYou": "I'm good, thanks for asking! Your money's where I left it. What would you like to know?",
+  "chatSmallBye": "Bye! Come back before your next big spend.",
+  "chatSmallOkay": "Anything else you'd like to check?",
+  "askHubTitle": "Talk to Upino",
+  "askHubNew": "Ask what you can spend, what a purchase would do, or when your pay comes. I'm still getting to know you, so I'll get more useful as you record.",
+  "askHubLearning": "I'm learning your habits: about {days} more days and I'll have a full season to advise from.",
+  "@askHubLearning": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubFamiliar": "I know your money well now. Ask me anything, including how to spend less.",
+  "askHubStart": "Start a conversation",
+  "askHubCommon": "Common questions",
+  "askHubHistory": "Your conversations",
+  "askHubTurns": "{count, plural, =1{1 question} other{{count} questions}}",
+  "@askHubTurns": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubAsidePreview": "{amount} set aside across {count} commitments",
+  "@askHubAsidePreview": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "askHubDeleteTitle": "Delete this conversation?",
+  "askHubDeleteBlurb": "Only the conversation goes. Nothing in your plan changes.",
+  "chatSmallHi": "Hi!",
+  "chatSmallHiFine": "Hi! I'm good, thanks.",
+  "chatSafeLasts": "That has to last {days} days, until your pay.",
+  "@chatSafeLasts": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeSpokenFor": "{amount} of your money is already spoken for until {date}.",
+  "@homeSpokenFor": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "askGoalLater": "{goal} · about {days, plural, =1{a day} other{{days} days}} later",
+  "@askGoalLater": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "askGoalsTitle": "Goals move later",
+  "askGoalsNote": "Roughly, at the pace each goal is being saved for.",
+  "chatPurchaseGoal": "It would push {goal} back by about {days, plural, =1{a day} other{{days} days}}.",
+  "@chatPurchaseGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthTitle": "Your month",
+  "monthWindow": "The last 30 days, against the 30 before",
+  "monthTooSoon": "A month review needs a month of spending. Yours is ready in {days, plural, =1{a day} other{{days} days}}.",
+  "@monthTooSoon": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthSpent": "In the last 30 days, {amount} went out.",
+  "@monthSpent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthNothing": "Nothing was recorded in the last 30 days.",
+  "monthMore": "That is {amount} more than the 30 days before.",
+  "@monthMore": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthLess": "That is {amount} less than the 30 days before.",
+  "@monthLess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthSame": "About the same as the 30 days before.",
+  "monthUp": "Up the most: {category}, by {amount}.",
+  "@monthUp": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthDown": "Down the most: {category}, by {amount}.",
+  "@monthDown": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthGoals": "Goals on track: {onTrack} of {total}.",
+  "@monthGoals": {
+    "placeholders": {
+      "onTrack": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chatSuggestMonth": "How was my month?",
+  "timelineTitle": "Your money ahead",
+  "timelineToday": "Today",
+  "timelineNow": "Now",
+  "timelineProjected": "Projected",
+  "timelineRecorded": "Recorded",
+  "timelineFree": "Free to spend",
+  "timelineHad": "You had",
+  "timelineBalance": "Balance {amount}",
+  "@timelineBalance": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineSetAside": "Set aside {amount}",
+  "@timelineSetAside": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelinePayMark": "Pay {amount}",
+  "@timelinePayMark": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineShort": "{amount} short for something that must be paid",
+  "@timelineShort": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineWithout": "Without it: {amount}",
+  "@timelineWithout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineBuyAfterPay": "Buy after pay",
+  "timelineBalanceLegend": "Balance",
+  "timelineWithPurchase": "With the purchase",
+  "timelinePay": "Pay day",
+  "timelineAssumptions": "Ahead is a projection: your pay on its date, bills on theirs, what is set aside for living spent evenly, and nothing else. Drag across the chart to see any day.",
+  "timelineSemantics": "Chart of your balance and what is free to spend, day by day",
+  "goalChartSemantics": "Chart of how {goal} gets to its target",
+  "@goalChartSemantics": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "goalChartTarget": "Target {amount} by {date}",
+  "@goalChartTarget": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPaceLabel": "Put aside each pay period: {amount}",
+  "@goalPaceLabel": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalOnTrack": "On track: reached by {date}.",
+  "@goalOnTrack": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalLate": "At this pace it is reached on {date}, {days, plural, =1{a day} other{{days} days}} after its date.",
+  "@goalLate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "goalNotMoving": "Nothing is going to it right now, so it is not getting closer.",
+  "goalUsePace": "Move the target date to {date}",
+  "@goalUsePace": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalPaceNote": "Only a what-if: nothing changes until you choose.",
+  "goalShowPath": "See how it gets there",
+  "goalHidePath": "Hide",
+  "billsTitle": "Bills and subscriptions",
+  "billAdd": "Add a bill or subscription",
+  "billAddSub": "Phone, internet, insurance, streaming… each is set aside before its date.",
+  "billEditNew": "New bill",
+  "billEditExisting": "Change this bill",
+  "billName": "What is it?",
+  "billNameHint": "e.g. Internet",
+  "billAmount": "Each payment",
+  "billEvery": "How often",
+  "billEveryWeek": "Weekly",
+  "billEveryMonth": "Monthly",
+  "billEveryQuarter": "Quarterly",
+  "billEveryYear": "Yearly",
+  "billNext": "Next payment",
+  "billKind": "It is a",
+  "billKindBill": "Bill",
+  "billKindSubscription": "Subscription",
+  "billRepays": "Repays",
+  "billRepaysNothing": "Nothing, it is a cost",
+  "billAddThis": "Add this bill",
+  "billDelete": "Delete this bill",
+  "billRow": "{every} · next {date}",
+  "@billRow": {
+    "placeholders": {
+      "every": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billOverdue": "Was due {date}",
+  "@billOverdue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "billPay": "Mark as paid",
+  "billEdit": "Change it",
+  "dayToday": "Today",
+  "dayIn": "{days, plural, =1{In a day} other{In {days} days}}",
+  "@dayIn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dayAgo": "{days, plural, =1{A day ago} other{{days} days ago}}",
+  "@dayAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeComingUp": "Coming up",
+  "homeComingUpTotal": "{amount} in bills due in the next 30 days.",
+  "@homeComingUpTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payDueTitle": "Your pay was due {date}. Has it come?",
+  "@payDueTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "payDueSub": "Say what arrived, and the next pay is expected a period later.",
+  "payArrived": "It came",
+  "payArrivedTitle": "How much arrived?",
+  "planRecordPay": "Pay arrived",
+  "planRecordPaySub": "Record it, and the next one moves a period on",
+  "accountsTitle": "Accounts",
+  "accountMain": "Main account",
+  "accountKindBank": "Bank account",
+  "accountKindCash": "Cash",
+  "accountKindSavings": "Savings",
+  "accountKindCard": "Credit card",
+  "accountKindLoan": "Loan",
+  "accountAdd": "Add an account",
+  "accountAddSub": "Cash, savings, a card or a loan. No bank connection needed.",
+  "accountEditNew": "New account",
+  "accountNameHint": "e.g. Wallet",
+  "accountHolds": "What it holds now",
+  "accountOwes": "What is owed now",
+  "accountCounted": "Count it in the plan",
+  "accountCountedSub": "Money here can be spent this month.",
+  "accountOwed": "Owed {amount}",
+  "@accountOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNotCounted": "Not counted in the plan",
+  "accountConfirm": "Say what it really holds",
+  "accountMove": "Move money",
+  "accountMoveTo": "Move to {name}",
+  "@accountMoveTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountMoveBlurb": "Moving money between your own accounts is neither spending nor income.",
+  "accountPayCard": "Pay off some of it",
+  "accountPayBlurb": "Paid from the main account. It settles what is owed; it is not a second spend.",
+  "accountRemove": "Remove this account",
+  "accountInUse": "It has history, so it stays. You can stop counting it instead.",
+  "paidFrom": "Paid from",
+  "categorySuggested": "Suggested from your past spends. Tap another to change it.",
+  "recoverTitle": "Money coming back",
+  "recoverTotal": "{amount} may come back. It is not counted until it arrives.",
+  "@recoverTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverReturnable": "Can be returned",
+  "recoverExpect": "Returned, refund expected",
+  "recoverArrived": "Refund arrived",
+  "recoverKept": "Kept it",
+  "recoverPending": "Refund on its way",
+  "recoverRefunded": "Refunded",
+  "recoverPrompt": "Getting money back",
+  "recoverWhere": "{amount} came back. Where should it go?",
+  "@recoverWhere": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverToGoal": "Toward {goal}",
+  "@recoverToGoal": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "recoverToBuffer": "Into the emergency buffer",
+  "recoverLeave": "Leave it free to spend",
+  "accountStopCounting": "Stop counting it in the plan",
+  "moveTitle": "Best move",
+  "moveTagMove": "Move",
+  "moveTagWait": "Wait",
+  "moveTagSave": "Save",
+  "moveTagSpend": "Spend",
+  "moveMove": "Move {amount} from {account} to cover what must be paid.",
+  "@moveMove": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "moveMoveWhy": "{claim} is short, and this money is sitting outside the plan.",
+  "@moveMoveWhy": {
+    "placeholders": {
+      "claim": {
+        "type": "String"
+      }
+    }
+  },
+  "moveDoIt": "Move it",
+  "moveWaitGap": "Hold back on extras: on {date}, something that must be paid would be {amount} short.",
+  "@moveWaitGap": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "moveWaitGapWhy": "The projection counts your pay, bills and living costs up to that day.",
+  "moveWaitPay": "Your pay is {days, plural, =1{a day} other{{days} days}} away. Waiting for it turns {now} of room into {later}.",
+  "@moveWaitPay": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "now": {
+        "type": "String"
+      },
+      "later": {
+        "type": "String"
+      }
+    }
+  },
+  "moveWaitPayWhy": "Only if what you have in mind can wait. Nothing is at risk either way.",
+  "moveSave": "Move {amount} to {account} for {goal}.",
+  "@moveSave": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "account": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "moveSaveWhy": "It gets there about {days, plural, =1{a day} other{{days} days}} sooner, and what stays free is still twice your usual month.",
+  "@moveSaveWhy": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "moveSpend": "You're covered until {date}: {amount} is free to use.",
+  "@moveSpend": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "moveSpendWhy": "Bills and goals are already set aside, nothing ahead comes up short, and this is well above your usual spending.",
+  "moveNotNow": "Not now",
+  "moveNone": "There is no move worth suggesting right now. Your plan stands as it is.",
+  "monthIncome": "Pay that came in: {amount}.",
+  "@monthIncome": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthToGoals": "Put toward goals: {amount}.",
+  "@monthToGoals": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthNow": "Now: {free} free to spend, {aside} set aside.",
+  "@monthNow": {
+    "placeholders": {
+      "free": {
+        "type": "String"
+      },
+      "aside": {
+        "type": "String"
+      }
+    }
+  },
+  "monthAheadTitle": "The next 30 days",
+  "monthAheadBills": "{count, plural, =1{One bill comes to {amount}.} other{{count} bills come to {amount}.}}",
+  "@monthAheadBills": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthAheadPay": "Your next pay is expected {date}.",
+  "@monthAheadPay": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "monthAheadTightest": "The tightest day is {date}, with {amount} free.",
+  "@monthAheadTightest": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthAheadShort": "On {date}, something that must be paid would be {amount} short.",
+  "@monthAheadShort": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthWorthKnowing": "Worth knowing",
+  "insightUp": "{category} is up {amount} on the month before.",
+  "@insightUp": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightGoal": "Kept up, that is about {days, plural, =1{a day} other{{days} days}} of {goal} every month.",
+  "@insightGoal": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "chatSuggestMove": "What should I do next?",
+  "chatSuggestComing": "What bills are coming up?",
+  "chatComingNone": "No bills are due in the next 30 days. Add the ones you pay on Plan and I'll keep track of them.",
+  "quickAsk": "Ask",
+  "quickPay": "Pay came",
+  "quickBills": "Bills",
+  "quickMonth": "My month",
+  "quickPayDue": "Your pay is due. Say whether it came.",
+  "chartAvg": "Avg",
+  "flowsTitle": "Money in and out",
+  "flowsBlurb": "Week by week: pay and refunds above the line, spending and repayments below.",
+  "flowsWeek": "Week of {date}",
+  "@flowsWeek": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "flowsInOut": "In {moneyIn} · Out {moneyOut}",
+  "@flowsInOut": {
+    "placeholders": {
+      "moneyIn": {
+        "type": "String"
+      },
+      "moneyOut": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceHistoryTitle": "Your balance over time",
+  "rangeMonths": "{count}M",
+  "@rangeMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rangeYear": "1Y",
+  "weekSpentTitle": "Last 7 days",
+  "weekSpentTotal": "{amount} spent",
+  "@weekSpentTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payGaugeTitle": "Until your next pay",
+  "payGaugeDaysLabel": "{days, plural, =1{day to go} other{days to go}}",
+  "@payGaugeDaysLabel": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "payGaugeAfter": "After your pay on {date}: {amount} free",
+  "@payGaugeAfter": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payGaugeLasts": "{amount} has to last until then.",
+  "@payGaugeLasts": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsOverall": "of all your goals",
+  "goalsThisMonth": "+{amount} this month",
+  "@goalsThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsNothingThisMonth": "Nothing added this month",
+  "goalsAllOnTrack": "All on track",
+  "goalsOnTrackCount": "{onTrack} of {total} on track",
+  "@goalsOnTrackCount": {
+    "placeholders": {
+      "onTrack": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsNextUp": "Next: {goal}, {date}",
+  "@goalsNextUp": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsTips": "Ways to get there sooner",
+  "goalsTipsSub": "Ask Upino, from your own spending",
+  "goalsDetailTitle": "Each goal",
+  "demoTry": "Try it with sample data",
+  "demoTrySub": "Four goals, bills and three months of history, in a copy that is not yours and is not saved.",
+  "demoBanner": "Sample data: nothing here is yours or saved.",
+  "demoExit": "Exit",
+  "demoGoalTrip": "Trip",
+  "demoGoalLaptop": "Laptop",
+  "demoGoalEmergency": "Emergency",
+  "demoGoalCar": "Car",
+  "demoBillPhone": "Phone",
+  "demoBillInternet": "Internet",
+  "demoBillGym": "Gym",
+  "voiceExample": "For example: “twelve fifty, lunch”",
+  "voiceTitleListening": "Listening",
+  "voiceTitleHeard": "Heard you",
+  "voiceTitleFailed": "Didn't catch that",
+  "voiceStop": "Stop",
+  "voiceRetry": "Again",
+  "heroUntil": "Until {date}",
+  "@heroUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalIcon": "Icon",
+  "@goalIcon": {
+    "description": "Label over the goal icon picker."
+  },
+  "payGaugeToLast": "To last",
+  "@payGaugeToLast": {
+    "description": "Pay card: the money that has to last until pay."
+  },
+  "payGaugeNextPay": "Next pay",
+  "@payGaugeNextPay": {
+    "description": "Pay card: what is free once the pay arrives."
+  },
+  "frSelected": "Selected",
+  "frFromPhone": "From your phone",
+  "frSuggested": "Suggested",
+  "frLangOnPhone": "The language on your phone",
+  "frLangNotHere": "Yours isn’t here yet",
+  "frLangTitle": "Let’s speak\nyour language.",
+  "frOrChoose": "Or choose",
+  "frContinueIn": "Continue in {language}",
+  "@frContinueIn": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "frUseCurrency": "Use {currency}",
+  "@frUseCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "frContinue": "Continue",
+  "frNothingBeforePayday": "Nothing before payday",
+  "frSkipForNow": "Skip for now",
+  "frLooksLike": "Looks like",
+  "frCurrencyTitle": "Which currency\nare you paid in?",
+  "frMore": "More",
+  "frIntentTitle": "What do you want Upino to help you with?",
+  "frIntentSub": "Pick all that fit. Each one takes a single number.",
+  "frIntentSafe": "Know what I can safely spend",
+  "frIntentShort": "Stop running out of money",
+  "frIntentSave": "Build savings",
+  "frIntentDebt": "Pay off debt",
+  "frIntentIrregular": "Prepare for irregular expenses",
+  "frIntentGoal": "Reach a goal",
+  "frIntentUnderstand": "Understand my money better",
+  "frAskSafe": "How much do you spend in a normal month?",
+  "frAskSafeHint": "A rough number is fine.",
+  "frAskShort": "How short do you usually fall before payday?",
+  "frAskShortHint": "What you end up borrowing or going without.",
+  "frAskSave": "How much would you like to save each month?",
+  "frAskSaveHint": "Upino sets it aside before you spend.",
+  "frAskDebt": "How much do you owe in total?",
+  "frAskDebtHint": "Cards, loans, anything you’re paying back.",
+  "frAskIrregular": "What do they add up to in a year?",
+  "frAskIrregularHint": "Insurance, repairs, gifts, fees.",
+  "frAskGoal": "How much does your goal cost?",
+  "frAskGoalHint": "You can name it and set a date later.",
+  "frAskUnderstand": "What do you think you spend in a month?",
+  "frAskUnderstandHint": "Upino will show you how close you were.",
+  "frPerMonth": "{amount} a month",
+  "@frPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frShortPerMonth": "{amount} short a month",
+  "@frShortPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frOwed": "{amount} owed",
+  "@frOwed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frPerYear": "{amount} a year",
+  "@frPerYear": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frToReach": "{amount} to reach",
+  "@frToReach": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frPerMonthGuess": "{amount} a month, you think",
+  "@frPerMonthGuess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frAdd": "Add",
+  "frRemove": "Remove",
+  "frIncomeTitle": "Tell us how money comes in.",
+  "frIncomeSub": "If it varies, use what you can count on.",
+  "frAddIncome": "Add another income source",
+  "frEvery2Weeks": "Every 2 weeks",
+  "frTwiceMonth": "Twice a month",
+  "frIrregular": "Irregular",
+  "frEachPay": "Each pay",
+  "frAnotherIncome": "Another income",
+  "frAvailTitle": "How much money do you have available right now?",
+  "frAvailSub": "Cash and the accounts you spend from, together. Leave savings out — you can add accounts one by one later.",
+  "frAvailLabel": "Available money today",
+  "frAvailNote": "This becomes today’s confirmed balance.",
+  "frObRent": "Rent / Mortgage",
+  "frObUtilities": "Utilities",
+  "frObInsurance": "Insurance",
+  "frObSubscriptions": "Subscriptions",
+  "frSomethingElse": "Something else",
+  "frObTitle": "What must be paid before your next income?",
+  "frObSub": "Only what’s due by {date}. Tap each one.",
+  "@frObSub": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frAddAnother": "Add another",
+  "frObNeedsName": "Add a name and amount",
+  "frTapToAdd": "Tap to add",
+  "frAmount": "Amount",
+  "frDue": "Due",
+  "frEssTitle": "About how much will you need for everyday essentials until your next income?",
+  "frEssSub": "Until {date}. A rough number is fine.",
+  "@frEssSub": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frEssGroceries": "Groceries",
+  "frEssGettingAround": "Getting around",
+  "frEssHousehold": "Household",
+  "frEssEveryday": "Everyday needs",
+  "frHelpEstimate": "Help me estimate",
+  "frEstimateTitle": "A quick estimate",
+  "frEstimateSub": "Two taps. You can change the number after.",
+  "frPeopleYouCover": "People you cover",
+  "frWalkBike": "Walk or bike",
+  "frPublicTransport": "Public transport",
+  "frCar": "Car",
+  "frUntil": "until {date}",
+  "@frUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frUseThis": "Use this",
+  "frProtEmergency": "Emergency fund",
+  "frProtTrip": "Trip",
+  "frProtHome": "Home",
+  "frProtYearly": "Yearly expense",
+  "frMonths": "{count, plural, =1{1 month} other{{count} months}}",
+  "@frMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frProtTitle": "Anything you want your money to protect?",
+  "frProtSub": "Optional. Upino sets a little aside each pay so it’s there on time.",
+  "frProtNameHint": "e.g. Car insurance",
+  "frProtWhatFor": "What is it for?",
+  "frProtYearlyAmount": "How much, once a year",
+  "frTarget": "Target",
+  "frNextDueIn": "Next due in",
+  "frAlreadySaved": "Already saved",
+  "frDay": "Day {n}",
+  "@frDay": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "frMoment1Title": "Payday. Sorted.",
+  "frMoment1Body": "Rent and groceries are set aside the moment money lands. What’s left is yours to spend.",
+  "frMoment2Title": "Every spend, in 3 seconds.",
+  "frMoment2Body": "Record it and the number updates at once. Always today’s truth.",
+  "frMoment3Title": "Ask before you buy.",
+  "frMoment3Body": "See what a purchase does to your bills and goals, before you pay.",
+  "frMoment4Title": "Goals that fund themselves.",
+  "frMoment4Body": "A little goes aside each pay, and the month closes with where it all went.",
+  "frGetStarted": "Get started",
+  "frPayArrived": "Pay arrived  {amount}",
+  "@frPayArrived": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frCoffee": "Coffee",
+  "frRecordedNow": "Recorded just now",
+  "frAskJacket": "Can I buy a jacket for {amount}?",
+  "@frAskJacket": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frAskAnswer": "Yes, and rent stays covered. You’d have {amount} until {date}. Your trip moves 4 days later.",
+  "@frAskAnswer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frIfBuyNow": "If you buy now",
+  "frLeft": "{amount} left",
+  "@frLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frMonthClosed": "Month closed: 8% less on eating out.",
+  "frOfAllGoals": "of all your goals",
+  "frWelcome": "Welcome to Upino",
+  "frWelcomeSub": "New here or coming back, it’s the same step.",
+  "frWithApple": "Continue with Apple",
+  "frWithGoogle": "Continue with Google",
+  "frWithEmail": "Continue with email",
+  "frOnDevice": "Your plan is worked out on your phone.",
+  "frTermsPrivacy": "Terms · Privacy",
+  "frCheckEmail": "Check your email",
+  "frCodeSent": "We sent a 6-digit code to {email}.",
+  "@frCodeSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "frCodeWhy": "We’ll send you a code. No password to remember.",
+  "frSendCode": "Send code",
+  "frAvailableNow": "Available now",
+  "frProtectedBills": "Protected for bills & essentials",
+  "frProtectedGoal": "Protected for your goal",
+  "frPlanReady": "Your money plan is ready",
+  "frNotCovered": "{amount} of what must be paid isn’t covered yet.",
+  "@frNotCovered": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frUntilIncome": "Until your next expected income on {date}",
+  "@frUntilIncome": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frTakenCare": "Already taken care of",
+  "frTakenCareBody": "{name}, {amount} due {date}, is set aside before anything is free to spend.",
+  "@frTakenCareBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frBuiltFromAll": "Built from everything you told us.",
+  "frGoodEstimate": "{count, plural, =1{Good starting estimate. Add 1 more detail later to sharpen it.} other{Good starting estimate. Add {count} more details later to sharpen it.}}",
+  "@frGoodEstimate": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frGoToPlan": "Go to my plan",
+  "frSafeToSpend": "Safe to spend",
+  "frGapsTitle": "Make your Safe-to-Spend more accurate",
+  "frGapEssentials": "Add everyday essentials",
+  "frGapYearly": "Add a yearly cost, like insurance",
+  "frGapBill": "Add a bill due before payday",
+  "frSeconds": "~{count} sec",
+  "@frSeconds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "frEssentialsSheet": "Everyday essentials until payday"
 }

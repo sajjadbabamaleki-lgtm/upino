@@ -7,15 +7,21 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
+  cryptography: ^2.9.0
+  file_picker: ^13.1.0
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^22.3.1
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.3.0
+  home_widget: ^0.10.0
   image_picker: ^1.2.3
   intl: ^0.20.2
   path_provider: ^2.1.6
-
+  share_plus: ^13.3.0
+  speech_to_text: ^7.5.0
+  timezone: ^0.11.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -25,3 +31,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Geist
+      fonts:
+        - asset: fonts/Geist-400.ttf
+          weight: 400
+        - asset: fonts/Geist-500.ttf
+          weight: 500
+        - asset: fonts/Geist-600.ttf
+          weight: 600
+        - asset: fonts/Geist-700.ttf
+          weight: 700

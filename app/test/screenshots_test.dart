@@ -130,7 +130,7 @@ Future<void> shootApp(
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
-    RepaintBoundary(key: boundary, child: UpinoApp(state: state, fontFamily: 'UpinoSans')),
+    RepaintBoundary(key: boundary, child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans')),
   );
   await tester.pumpAndSettle();
   if (after != null) await after(tester);
@@ -242,7 +242,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
@@ -263,7 +263,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
@@ -282,7 +282,7 @@ void main() {
       fundedState(),
       size: const Size(400, 900),
       after: (tester) async {
-        await tester.tap(find.byKey(const Key('nav-4')));
+        await tester.tap(find.byKey(const Key('top-profile')));
         await tester.pumpAndSettle();
         final row = find.byKey(const Key('profile-language'));
         await tester.scrollUntilVisible(
@@ -307,11 +307,11 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('nav-4')));
+    await tester.tap(find.byKey(const Key('top-profile')));
     await tester.pumpAndSettle();
     await expectLater(
       find.byKey(boundary),
@@ -328,9 +328,53 @@ void main() {
       after: (tester) async {
         await tester.tap(find.byKey(const Key('home-ask')));
         await tester.pumpAndSettle();
-        await tester.enterText(find.byKey(const Key('ask-amount')), '1500');
+        await tester.tap(find.byKey(const Key('chat-suggest-safeToSpend')));
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(const Key('ask-run')));
+        await tester.enterText(
+          find.byKey(const Key('chat-input')),
+          'A phone for 1500?',
+        );
+        await tester.tap(find.byKey(const Key('chat-send')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
+  testWidgets('03h the Ask tab', (tester) async {
+    final state = fundedState();
+    for (final q in [
+      'When is my next pay?',
+      'Where did my money go this month, and what was the biggest thing?',
+      'Can I buy a phone for 1500?',
+    ]) {
+      state.ask(state.startConversation(), q);
+    }
+    await shootApp(
+      tester,
+      '03h-ask-hub',
+      state,
+      size: const Size(400, 1250),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('nav-4')));
+        await tester.pumpAndSettle();
+      },
+    );
+  });
+
+  testWidgets('03i a conversation in Persian', (tester) async {
+    await shootApp(
+      tester,
+      '03i-ask-fa',
+      fundedState(),
+      size: const Size(400, 1000),
+      after: (tester) async {
+        await tester.tap(find.byKey(const Key('home-ask')));
+        await tester.pumpAndSettle();
+        await tester.enterText(
+          find.byKey(const Key('chat-input')),
+          'سلام خوبی؟ چقدر می‌تونم خرج کنم؟',
+        );
+        await tester.tap(find.byKey(const Key('chat-send')));
         await tester.pumpAndSettle();
       },
     );
@@ -358,7 +402,7 @@ void main() {
     await tester.pumpWidget(
       RepaintBoundary(
         key: boundary,
-        child: UpinoApp(state: state, fontFamily: 'UpinoSans'),
+        child: UpinoApp(state: state, singleFormSetup: true, fontFamily: 'UpinoSans'),
       ),
     );
     await tester.pumpAndSettle();

@@ -8,12 +8,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:upino/design/icon.dart';
+import 'package:upino/design/parts.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/engine/clock.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/l10n/app_localizations.dart';
 import 'package:upino/main.dart';
+import 'package:upino/widgets/scrub_bars.dart';
 import 'package:upino/screens/language_screen.dart';
 import 'package:upino/state/app_state.dart';
 
@@ -31,16 +32,19 @@ AppState funded({PlanStore? store}) => AppState(
           ..payCycleDays = 30,
       );
 
-const expected = ['ar', 'en', 'es', 'fa', 'fr', 'hi', 'pt', 'ru', 'tr', 'zh'];
+const expected = ['ar', 'de', 'en', 'es', 'fa', 'fr', 'hi', 'id', 'ja', 'pt', 'ru', 'tr', 'zh'];
 
 Future<void> pumpApp(WidgetTester tester, AppState state) async {
   tester.view
     ..physicalSize = const Size(420, 1600)
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(UpinoApp(state: state));
+  await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
   await tester.pumpAndSettle();
 }
+
+String? topTitle(WidgetTester tester) =>
+    tester.widget<Text>(find.byKey(const Key('top-title'))).data;
 
 void main() {
   group('the catalogues', () {
@@ -54,7 +58,7 @@ void main() {
           File('lib/l10n/app_$lang.arb').readAsStringSync(),
         ) as Map<String, Object?>;
 
-    test('all ten languages are shipped', () {
+    test('all thirteen languages are shipped', () {
       expect(files.length, expected.length);
       expect(
         AppLocalizations.supportedLocales.map((l) => l.languageCode).toList()
@@ -95,25 +99,31 @@ void main() {
       final state = funded();
       expect(state.languageCode, isNull);
       await pumpApp(tester, state);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(topTitle(tester), 'Home');
     });
 
     testWidgets('changes the words on screen at once', (tester) async {
       final state = funded();
       await pumpApp(tester, state);
-      expect(find.text('Your plan'), findsOneWidget);
+      expect(topTitle(tester), 'Home');
 
       state.setLanguageCode('fa');
       await tester.pumpAndSettle();
 
-      expect(find.text('Your plan'), findsNothing);
-      expect(find.text('برنامهٔ شما'), findsOneWidget);
+      expect(find.text('Home'), findsNothing);
+      expect(topTitle(tester), 'خانه');
     });
 
     testWidgets('reaches the bottom bar too', (tester) async {
       final state = funded()..setLanguageCode('tr');
       await pumpApp(tester, state);
-      expect(find.text('Ana sayfa'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(UpinoNavBar),
+          matching: find.text('Ana sayfa'),
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('is stored with the plan and read back', (tester) async {
@@ -129,7 +139,7 @@ void main() {
       expect(second.languageCode, 'es');
 
       await pumpApp(tester, second);
-      expect(find.text('Tu plan'), findsOneWidget);
+      expect(topTitle(tester), 'Inicio');
     });
   });
 
@@ -159,10 +169,10 @@ void main() {
       // Mirroring is the whole point: nothing on a screen asks which way it
       // runs, so if Directionality did not reach the layout this would fail.
       await pumpApp(tester, funded()..setLanguageCode('en'));
-      final ltr = tester.getTopLeft(find.text('Your plan')).dx;
+      final ltr = tester.getTopLeft(find.byKey(const Key('top-title'))).dx;
 
       await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final rtl = tester.getTopRight(find.text('برنامهٔ شما')).dx;
+      final rtl = tester.getTopRight(find.byKey(const Key('top-title'))).dx;
 
       expect(ltr, lessThan(210));
       expect(rtl, greaterThan(210));
@@ -211,7 +221,7 @@ void main() {
 
     testWidgets('is reachable again from Profile', (tester) async {
       await pumpApp(tester, funded());
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
 
       final row = find.byKey(const Key('profile-language'));
@@ -261,18 +271,31 @@ void main() {
       expect(find.text('اجاره و قبض‌ها'), findsWidgets);
     });
 
-    testWidgets('the forecast arrow does not mirror into a falling one',
-        (tester) async {
-      // Everything else on the screen mirrors in Persian. This one glyph
-      // must not: a rising forecast drawn as a falling arrow is worse than
-      // an arrow pointing the unexpected way.
-      await pumpApp(tester, funded()..setLanguageCode('fa'));
-      final icon = find.byWidgetPredicate((w) => w is UpinoIcon && w.name == 'trendingUp');
-      expect(icon, findsOneWidget);
+    testWidgets('a chart does not mirror into a falling one', (tester) async {
+      // Everything else on the screen mirrors in Persian. A chart must
+      // not: a rising run drawn right to left reads as a falling one.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.rtl,
+            child: ScrubBars(
+              key: const Key('chart'),
+              values: const [1, 2, 3],
+              selected: 0,
+              onSelect: (_) {},
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      );
+      final paint = find.descendant(
+        of: find.byKey(const Key('chart')),
+        matching: find.byType(CustomPaint),
+      );
       expect(
-        Directionality.of(tester.element(icon)),
+        Directionality.of(tester.element(paint.first)),
         TextDirection.ltr,
-        reason: 'the arrow inherited the mirrored direction',
+        reason: 'the chart inherited the mirrored direction',
       );
     });
   });

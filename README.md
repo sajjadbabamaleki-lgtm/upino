@@ -1,13 +1,14 @@
 # Upino — Financial Engine
 
 Deterministic implementation of the financial engine specified in
-**Upino Product Foundation v3.5 (Frozen G0)**.
+**Upino Product Foundation v3.5 (Frozen G0)**, plus the §15.3 ledger-integrity
+addendum (engine spec v3.6, `docs/engine-v3.6-ledger-integrity.md`).
 
 The engine owns every monetary calculation. It is pure: given identical inputs
 and an identical engine version it returns identical allocations, Safe-to-Spend,
 funding gap, confidence state and reason codes (INV-07).
 
-## Status — gate G1
+## Status
 
 §30 defines G1 as *"T01–T12 executable and passing, including protection-horizon
 and timezone boundaries; deterministic snapshots and reason codes."*
@@ -16,13 +17,16 @@ and timezone boundaries; deterministic snapshots and reason codes."*
 |---|---|---|
 | G0 | Domain contracts internally consistent | Closed by the v3.4 specification |
 | **G1** | **T01–T12 executable and passing** | **Met — all 36 fixtures pass** |
-| G2 | Vertical slice end to end | Not started (needs a client) |
+| G2 | Vertical slice end to end | In progress — the Flutter client in `app/` |
 
 ```
 npm install
-npm test        # 53 tests: 36 acceptance fixtures, 15 invariants, 2 formula guards
+npm test        # 65 tests: 36 acceptance fixtures, 15 invariants, 12 ledger integrity, 2 formula guards
 npm run typecheck
 ```
+
+CI runs this suite on every push alongside `flutter test`, so the two engines
+are checked against the fixture table together.
 
 ## Layout
 
@@ -73,7 +77,7 @@ immediate recalculation (§18).
 ```
 cd app
 flutter pub get
-flutter test      # 52 tests
+flutter test      # 287 tests
 flutter analyze
 ```
 
@@ -137,6 +141,33 @@ coalesced because the app persists after every mutation: two rapid edits
 would otherwise race the same scratch path, and an older state must never land
 on disk after a newer one.
 
+### Changing the currency
+
+Onboarding asks the currency first, and Profile can change it afterwards
+through the same picker. A change relabels rather than converts: every amount
+keeps its number and takes the new currency, rescaled only where the two
+disagree about decimals (rounded half-even, §5.1). There are no exchange rates
+in the app, and a guessed one would put a made-up figure on Home, so the
+confirmation says plainly that this corrects the currency and does not convert
+money.
+
+### Beyond the plan
+
+These sit beside the engine and never change its arithmetic; the §24 fixture
+table is untouched by all of them.
+
+| Feature | Where | Notes |
+|---|---|---|
+| Jalali calendar | every date, in Persian | Local conversion, checked over fifteen years of days |
+| Spend categories | Quick Expense, Activity | Optional; "where it went" over the last 30 days |
+| Encrypted backup | Profile | AES-256-GCM, PBKDF2 key; shared through the phone's share sheet |
+| Inflation | Goals | The person's own yearly rate; shows what a goal will cost on its date |
+| Other holdings | Plan | Dollars, gold, coins at the person's own price; never in Safe-to-Spend |
+| Bank messages | Profile, Home (`play` flavor only) | Read on the phone, parsed into suggestions; nothing is recorded without a tap |
+| Evening reminder | Profile | 21:00, skipped on days that already have a spend |
+| Home-screen widget | Android launcher | Safe-to-Spend and a button that opens Quick Expense |
+| Voice entry | Quick Expense | Persian and English amounts and categories; on-device first; fills the sheet, never saves |
+
 ### Corrections
 
 Removing a recorded entry appends a `CorrectionEvent` beside it rather than
@@ -151,15 +182,102 @@ on, in the smallest and most damaging way available.
 
 ### Screens
 
-Four destinations, as §32.9 specifies.
+Five tabs in the bottom bar, and a capsule across the top that mirrors it:
+the mark and the page's name on the left, the bell and Profile on the right.
 
-| Screen | Holds |
-|---|---|
-| Home | The decision: Safe-to-Spend, what is short, why the figure moved |
-| Plan | Commitments, income and balance — listed in waterfall order |
-| Goals | Targets, progress and what each needs from this pay period |
-| Activity | What was recorded, and how to correct it |
-| Profile | Balance confirmation, confidence, theme, starting over |
+| Screen | Where | Holds |
+|---|---|---|
+| Home | tab | The decision: Safe-to-Spend; under it a four-way menu — Ask, pay came (with a dot when it is due), bills, and the month; then the best move if there is one, a gauge of the days to pay, bills coming up, what is set aside and why the figure moved |
+| Plan | tab | Accounts, income, bills and subscriptions, goals and commitments — in waterfall order |
+| Goals | tab | Up to four goals as coloured rings round how far along they are together, arriving with a short welcome; what went in this month and how many are on track; a tile per goal; a button for a new goal; then each goal in full further down, where the rings and tiles scroll to |
+| Activity | tab | What was recorded, how to correct it, money coming back, and the month close |
+| Ask | tab | A chat about the plan, answered by the plan (below) |
+| Alerts | bell | What needs the person, derived from the plan, never stored |
+| Profile | capsule | Balance confirmation, confidence, theme, backup, starting over |
+
+**Ask is a conversation with the engine, not with a language model.** The
+tab is a hub: a card that opens the chat on its own page, the common
+questions with part of their answer already showing, and past conversations.
+A question is matched against a few intents in Persian and English — how much
+can be spent, the next pay, where the money went, what is set aside, how the
+month went, why, how to spend less, and ordinary pleasantries — and a price
+anywhere in it makes it a purchase, answered with the same three full plans
+the scenario cards show, including how many days later each goal it touches
+would be reached. What can be spent is given with how long it has to last,
+never as a daily allowance. Replies come back in the language the question was written in. Every
+figure is read from the engine and nothing leaves the phone. Conversations
+keep only their questions; answers are recomputed from the plan whenever one
+is shown. It never says yes or no to a purchase, and advice waits until
+there is enough history for it to be more than a guess.
+
+**The pay gauge** on Home is a half ring with a segment for each day of the
+pay period, lit for the days already gone, so it fills toward the pay; the
+segments light one after another as it appears, and the days count down;
+in its opening, the days to pay, and under it what is free once the pay
+comes.
+
+**The timeline** (in the chat, for a purchase) is a column chart
+you run a finger along: one grey column a day for the next 45 days, the room
+to spend on that day, the one under the finger in colour with its figure in
+a pill above it. Every column is the engine run forward on stated
+assumptions — the pay on its date and every period after, bills on theirs,
+what is set aside for living spent evenly, and nothing else. For a purchase
+the columns are the room after it, bought today or after the pay, with the
+plan without it pale behind; a day short on something that must be paid is
+red. Charts run left to right in every language.
+
+**Other charts**, each answering one question: each goal is a half ring of
+segments filled to what is saved, with where it is heading in a pill under
+it; the month close shows each thirty days' spending as a column against a
+dotted average; Activity shows the last seven days a column a day, and
+money in above a line and out below it, week by week; bills coming up are
+lollipops at their dates, as tall as they cost; and Plan shows the balance
+over one, three or six months or a year as a smooth line.
+
+**Goals** show when each is reached at the pace the plan can actually hold
+for it, which is less than it asks for when money is short. The path chart
+(a column a week, the target as a line) has a pace slider; moving it only shows the new date, which is applied when
+the person chooses.
+
+**Bills and subscriptions** become claims: one due before the pay is held
+in full, a weekly one once per payment, and a quarterly or yearly one is
+built up over its period as a sinking fund, worked out from the dates with
+nothing stored. Paying one moves it to its next date. A bill can repay a
+loan or card instead of being a cost.
+
+**Accounts** need no bank connection: cash and bank accounts count, savings
+only when asked, a card's spending is set aside until the card is paid, and
+a loan goes down with its repayments. Moving money between accounts is
+neither spending nor income.
+
+**Money coming back** — a purchase that can be returned, or a refund on its
+way — is shown apart and counts only when it arrives. It is then put toward
+a goal, the buffer, or left free, on purpose.
+
+**Best move** is one suggestion on Home when one is worth making, with its
+reason: MOVE money sitting outside the plan to cover what is short, WAIT
+when something ahead would come up short or pay is days away, SAVE spare
+room into savings for the goal furthest behind, or SPEND, said plainly when
+everything is covered with room to spare. Each rule names its evidence;
+with thin evidence nothing is shown.
+
+**The month close** compares the last thirty days with the thirty before —
+what went out and came in, what went to goals, the category that rose and
+the one that fell most, how the goals stand — then the next thirty days:
+bills, the next pay, and the tightest day or a shortfall ahead. After two
+months of record it names a real rise in a category and what that much each
+month would mean for a goal, in days. It states facts; there is no score.
+
+Recording a spend suggests a category when similar past spends make one
+clear, and offers the other accounts it could be paid from.
+
+In the chat, a new answer comes after a short pause with typing dots, so it
+does not read as canned; the answer itself is worked out at once.
+
+**Try it with sample data** (Profile, and Goals while there are fewer than
+four) opens a copy of the app with four goals, bills and three months of
+history, replayed through the same engine. It is never saved and leaves the
+person's own plan untouched.
 
 Every amount in the app is entered through one `AmountSheet`, so the keypad
 path is identical whether it is a spend, a balance confirmation or an edit.
@@ -183,19 +301,35 @@ The release exists because a workflow artifact is only reachable from the
 desktop web UI and arrives wrapped in a zip — useless on the device the app is
 meant to run on. The artifact is still uploaded for CI debugging.
 
-The APK is debug-signed, which is what makes it installable without a release
-key. A store build needs its own signing config.
+The APK is a release build signed with a debug key committed to the repo
+(`android/app/upino-debug.keystore`). A fixed key is what lets each new build
+install over the last one; a store build needs its own signing config.
 
-The app declares no permissions and talks to no network: the plan lives in a
-file in the app's own storage.
+The app talks to no network: the plan lives in a file in the app's own
+storage. It asks for a permission only when the matching feature is switched
+on — reading SMS for bank messages, notifications for the evening reminder,
+the microphone on the first tap of the voice button — and never at install or
+first launch. `READ_SMS` is declared only
+in the `play` flavor (see below): sideloaded apps that request it are blocked
+by Play Protect, and on Play it needs Google's approval.
 
 Building locally instead, which needs no CI at all:
 
 ```
 cd app
 flutter pub get
-flutter run                  # on a connected device or emulator
-flutter build apk --debug    # build/app/outputs/flutter-apk/app-debug.apk
+flutter run --flavor direct                  # on a connected device or emulator
+flutter build apk --release --flavor direct  # build/app/outputs/flutter-apk/app-direct-release.apk
+```
+
+There are two Android flavors. `direct` is the APK installed from the link
+above and does not declare `READ_SMS`, because Google Play Protect blocks any
+sideloaded app that asks to read SMS. `play` adds that permission and the
+"Read bank messages" switch, for a Play Store release once Google approves the
+SMS permissions declaration. The inbox code is shared; only the permission
+and the switch differ.
+
+```
 ```
 
 ### Goals

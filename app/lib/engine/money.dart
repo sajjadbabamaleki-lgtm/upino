@@ -110,6 +110,20 @@ class Money implements Comparable<Money> {
   bool get isZero => minor == 0;
   bool get isNegative => minor < 0;
 
+  /// The same face value written in [code]: `12.50 EUR` becomes `12.50 USD`.
+  ///
+  /// This relabels, it does not convert — there is no exchange rate here. It
+  /// exists for correcting the currency a plan is kept in, and only rescales
+  /// the minor units where the two currencies disagree about how many there
+  /// are. Precision the target cannot hold is rounded half-even (§5.1), so
+  /// `12.50 EUR` in yen is `¥12`.
+  Money relabelled(String code) {
+    final from = Currency.of(currency).exponent;
+    final to = Currency.of(code).exponent;
+    if (to >= from) return Money(minor * _pow10(to - from), code);
+    return Money(divideRoundHalfEven(minor, _pow10(from - to)), code);
+  }
+
   /// Floors at zero — the published Safe-to-Spend is never negative (INV-05).
   Money get clampedAtZero => isNegative ? Money.zero(currency) : this;
 
@@ -126,7 +140,9 @@ class Money implements Comparable<Money> {
   /// `€1,800.00` — grouped for display, never abbreviated (§32.8).
   String display({bool withSymbol = true, bool grouped = true}) {
     final c = Currency.of(currency);
-    final text = _digits(grouped: grouped);
+    var text = _digits(grouped: grouped);
+    // whole amounts read as whole: €1,200, not €1,200.00
+    if (c.exponent > 0 && minor % _pow10(c.exponent) == 0) text = text.substring(0, text.length - c.exponent - 1);
     return withSymbol ? '${c.symbol}$text' : text;
   }
 

@@ -89,25 +89,27 @@ class _GradientHero extends StatelessWidget {
               : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
         ),
       ),
-      decoration2: const DotField(),
+      decoration2: const GridField(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UpinoBadge(
+          Text(
             l.heroSafeToSpend,
-            background: const Color(0x2EFFFFFF),
-            foreground: UpinoTokens.textOnInverse,
+            style: const TextStyle(color: Color(0xCCFFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
           ),
+          // Measured on screen so the badge, the figure and the line under
+          // it sit 22 apart, the same as the button's distance from the
+          // card's edge. Below the figure it is measured from the digits'
+          // baseline, not the comma that hangs under it.
           const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-          const SizedBox(height: 14),
+          const SizedBox(height: 11),
+          // The set-aside total lives in its own card below; here, the date.
           _HeroMeta(
-            l.heroUntilSetAside(
-              formatDate(context, snapshot.decisionHorizonEnd),
-              snapshot.protectedTotal.display(),
-            ),
+            l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
           ),
-          const SizedBox(height: 26),
+          // 22 to the button as well, as measured on screen.
+          const SizedBox(height: 17),
           if (degraded)
             _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
           else if (onQuickExpense != null)
@@ -138,10 +140,9 @@ class _GapHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UpinoBadge(
+          Text(
             l.heroSafeToSpend,
-            background: const Color(0x1FFFFFFF),
-            foreground: UpinoTokens.textOnInverse,
+            style: const TextStyle(color: Color(0xCCFFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
@@ -265,10 +266,11 @@ class _HeroShell extends StatelessWidget {
           decoration: decoration,
           child: Stack(
             children: [
-              if (decoration2 != null)
-                Positioned(top: -6, right: -6, child: decoration2!),
+              if (decoration2 != null) Positioned.fill(child: decoration2!),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 16, 22, 16),
+                // The bottom matches the sides, so the button at the foot of
+                // the card sits in an even frame rather than on its edge.
+                padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
                 child: child,
               ),
             ],
@@ -381,17 +383,34 @@ class _Figure extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => FittedBox(
-        fit: BoxFit.scaleDown,
-        alignment: Alignment.centerLeft,
-        child: Text(
-          amount.display(),
-          style: Theme.of(context)
-              .textTheme
-              .displayLarge
-              ?.copyWith(color: color, fontFeatures: moneyFeatures),
-        ),
-      );
+  Widget build(BuildContext context) {
+    // The whole euros large, the cents small beside them.
+    final text = amount.display();
+    final dot = text.lastIndexOf('.');
+    final base = Theme.of(context).textTheme.displayLarge?.copyWith(
+          color: color,
+          fontFeatures: moneyFeatures,
+          fontSize: 54,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -2.4,
+          height: 1.0,
+        );
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Text.rich(
+        TextSpan(children: [
+          TextSpan(text: dot < 0 ? text : text.substring(0, dot)),
+          if (dot >= 0)
+            TextSpan(
+              text: text.substring(dot),
+              style: TextStyle(fontSize: 26, letterSpacing: -0.6, color: color.withValues(alpha: 0.7)),
+            ),
+        ],),
+        style: base,
+      ),
+    );
+  }
 }
 
 

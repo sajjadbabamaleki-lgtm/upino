@@ -7,4 +7,4 @@
 export const ENGINE_VERSION = '0.1.0' as const;
 
 /** Specification this engine implements. */
-export const SPEC_VERSION = 'Upino Product Foundation v3.5 (Frozen G0)' as const;
+export const SPEC_VERSION = 'Upino Product Foundation v3.6 (G0 + §15.3)' as const;
