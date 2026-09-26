@@ -68,7 +68,7 @@ Set<Color> paintedColors(WidgetTester tester) {
       final color = decoration.color;
       if (color != null) colors.add(color);
       final gradient = decoration.gradient;
-      if (gradient is LinearGradient) colors.addAll(gradient.colors);
+      if (gradient != null) colors.addAll(gradient.colors);
     }
   }
   for (final element in find.byType(Text).evaluate()) {

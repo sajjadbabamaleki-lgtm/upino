@@ -4,8 +4,6 @@
 /// only. It is never modulated for celebration, engagement or retention.
 library;
 
-import 'dart:ui' show ImageFilter;
-
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
@@ -60,10 +58,12 @@ class StsHero extends StatelessWidget {
       };
 }
 
-/// States S1 and S2: frosted glass over two soft lights, blue and violet,
-/// that spill a little past the card. Age is de-emphasis, not alarm
-/// (§15.2), so both states share the same glass; only this hero uses it,
-/// so its presence alone says the number is current.
+/// States S1 and S2: frosted glass lit from behind by a strong blue light
+/// on the right and a violet one low on the left, with a little of the blue
+/// spilling above the card. The card carries its own dark ground, so it
+/// looks the same on a light or a dark page. Age is de-emphasis, not alarm
+/// (§15.2), so both states share it; the blue light is drawn from the hero's
+/// own gradient tokens, which appear nowhere else.
 class _GradientHero extends StatelessWidget {
   const _GradientHero({
     required this.snapshot,
@@ -81,107 +81,108 @@ class _GradientHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = isDark(context);
     final l = AppLocalizations.of(context);
+    final blue = dark ? UpinoTokens.darkGradientStart : UpinoTokens.gradientStart;
     final radius = BorderRadius.circular(UpinoTokens.radiusHero);
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        // The lights behind the glass.
-        // The brand light is drawn from the hero's own gradient tokens, which
-        // appear nowhere else, so the S1/S2 signature is unchanged.
+        // The light spilling above the card, onto the page behind it.
         Positioned(
-          top: -16,
-          right: -6,
-          child: _Glow(
-            size: 210,
-            colors: dark
-                ? const [UpinoTokens.darkGradientStart, UpinoTokens.darkGradientEnd]
-                : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
-            opacity: 0.9,
+          left: 60,
+          right: -20,
+          top: -70,
+          height: 180,
+          child: IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [blue.withValues(alpha: dark ? 0.38 : 0.22), blue.withValues(alpha: 0)],
+                ),
+              ),
+            ),
           ),
-        ),
-        const Positioned(
-          bottom: -10,
-          left: 10,
-          child: _Glow(size: 170, colors: [Color(0xFF5A3AE8), Color(0xFF5A3AE8)], opacity: 0.5),
         ),
         ClipRRect(
           borderRadius: radius,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(22, 18, 22, 22),
-              decoration: BoxDecoration(
-                borderRadius: radius,
-                // On a light page the glass is tinted deep blue so white
-                // text keeps its contrast; on dark it is barely there.
-                color: dark ? const Color(0x12FFFFFF) : const Color(0xE01E27C8),
-                border: Border.all(color: const Color(0x1FFFFFFF)),
-              ),
-              // The lit top edge of the glass, over its tint.
-              foregroundDecoration: BoxDecoration(
-                borderRadius: radius,
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x14FFFFFF), Color(0x00FFFFFF)],
-                  stops: [0, 0.4],
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: radius,
+              color: const Color(0xFF0E0F16),
+            ),
+            child: Stack(
+              children: [
+                // The blue light, strongest right of centre.
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: const Alignment(0.45, 0.05),
+                        radius: 0.95,
+                        colors: [blue, blue, blue.withValues(alpha: 0)],
+                        stops: const [0, 0.12, 1],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l.heroSafeToSpend,
-                    style: const TextStyle(color: Color(0xCCFFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
+                // The violet one, low on the left.
+                const Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: Alignment(-0.75, 1.05),
+                        radius: 0.7,
+                        colors: [Color(0x805A3AE8), Color(0x005A3AE8)],
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-                  const SizedBox(height: 11),
-                  _HeroMeta(
-                    l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
+                ),
+                // The frost: a faint white veil, lit along the top edge,
+                // inside a hairline.
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: radius,
+                      border: Border.all(color: const Color(0x24FFFFFF)),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0x26FFFFFF), Color(0x10FFFFFF), Color(0x0AFFFFFF)],
+                        stops: [0, 0.25, 1],
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 17),
-                  if (degraded)
-                    _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
-                  else if (onQuickExpense != null)
-                    _HeroButton(label: l.heroRecordSpend, onPressed: onQuickExpense!, ink: true),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 20, 22, 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.heroSafeToSpend,
+                        style: const TextStyle(color: Color(0xD9FFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 16),
+                      _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
+                      const SizedBox(height: 11),
+                      _HeroMeta(
+                        l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
+                      ),
+                      const SizedBox(height: 20),
+                      if (degraded)
+                        _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
+                      else if (onQuickExpense != null)
+                        _HeroButton(label: l.heroRecordSpend, onPressed: onQuickExpense!, ink: true),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ],
     );
   }
-}
-
-/// A soft round light, blurred well past its edge.
-class _Glow extends StatelessWidget {
-  const _Glow({required this.size, required this.colors, required this.opacity});
-  final double size;
-  final List<Color> colors;
-  final double opacity;
-
-  @override
-  Widget build(BuildContext context) => IgnorePointer(
-        // Faded with a colour filter rather than Opacity, which the app
-        // keeps for motion alone.
-        child: ColorFiltered(
-          colorFilter: ColorFilter.mode(Color.fromRGBO(255, 255, 255, opacity), BlendMode.modulate),
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40, tileMode: TileMode.decal),
-            child: Container(
-              width: size,
-              height: size * 0.8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(colors: colors),
-              ),
-            ),
-          ),
-        ),
-      );
 }
 
 /// State S3. Not the celebratory gradient: the figure is zero and the gap is
