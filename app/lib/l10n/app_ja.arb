@@ -730,5 +730,11 @@
   "frGapYearly": "保険など年間の費用を追加",
   "frGapBill": "給料日前の支払いを追加",
   "frSeconds": "約{count}秒",
-  "frEssentialsSheet": "給料日までの日々の必需品"
+  "frEssentialsSheet": "給料日までの日々の必需品",
+  "frDidWith": "Upino があなたの {amount} をこう振り分けました。",
+  "frBillCovered": "{name}は確保済み",
+  "frKeptFor": "{date}のために{amount}を確保",
+  "frAmountUntil": "{date}まで{amount}",
+  "frGoalStarted": "{name}をスタート",
+  "frGoalBy": "{date}までに{target}"
 }

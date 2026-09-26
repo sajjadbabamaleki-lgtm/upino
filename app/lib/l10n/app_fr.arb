@@ -730,5 +730,11 @@
   "frGapYearly": "Ajouter une dépense annuelle, comme une assurance",
   "frGapBill": "Ajouter une facture due avant la paie",
   "frSeconds": "~{count} s",
-  "frEssentialsSheet": "L’essentiel du quotidien jusqu’à la paie"
+  "frEssentialsSheet": "L’essentiel du quotidien jusqu’à la paie",
+  "frDidWith": "Voici ce qu’Upino a fait de vos {amount}.",
+  "frBillCovered": "{name} est couvert",
+  "frKeptFor": "{amount} réservés pour le {date}",
+  "frAmountUntil": "{amount} jusqu’au {date}",
+  "frGoalStarted": "{name} lancé",
+  "frGoalBy": "{target} d’ici le {date}"
 }

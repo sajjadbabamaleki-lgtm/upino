@@ -730,5 +730,11 @@
   "frGapYearly": "افزودن یک هزینه‌ی سالانه، مثل بیمه",
   "frGapBill": "افزودن قبضی که قبل از حقوق سررسید دارد",
   "frSeconds": "~{count} ثانیه",
-  "frEssentialsSheet": "نیازهای روزمره تا روز حقوق"
+  "frEssentialsSheet": "نیازهای روزمره تا روز حقوق",
+  "frDidWith": "ببین آپینو با {amount} تو چه کرد.",
+  "frBillCovered": "{name} پوشش داده شد",
+  "frKeptFor": "{amount} برای {date} کنار گذاشته شد",
+  "frAmountUntil": "{amount} تا {date}",
+  "frGoalStarted": "{name} شروع شد",
+  "frGoalBy": "{target} تا {date}"
 }

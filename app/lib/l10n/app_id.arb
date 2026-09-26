@@ -730,5 +730,11 @@
   "frGapYearly": "Tambah biaya tahunan, seperti asuransi",
   "frGapBill": "Tambah tagihan yang jatuh tempo sebelum gajian",
   "frSeconds": "~{count} dtk",
-  "frEssentialsSheet": "Kebutuhan sehari-hari sampai gajian"
+  "frEssentialsSheet": "Kebutuhan sehari-hari sampai gajian",
+  "frDidWith": "Ini yang Upino lakukan dengan {amount} milikmu.",
+  "frBillCovered": "{name} sudah aman",
+  "frKeptFor": "{amount} disisihkan untuk {date}",
+  "frAmountUntil": "{amount} sampai {date}",
+  "frGoalStarted": "{name} dimulai",
+  "frGoalBy": "{target} paling lambat {date}"
 }

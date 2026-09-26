@@ -2700,4 +2700,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'L’essentiel du quotidien jusqu’à la paie';
+
+  @override
+  String frDidWith(String amount) {
+    return 'Voici ce qu’Upino a fait de vos $amount.';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name est couvert';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$amount réservés pour le $date';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$amount jusqu’au $date';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name lancé';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$target d’ici le $date';
+  }
 }

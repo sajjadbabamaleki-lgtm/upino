@@ -9,12 +9,11 @@ import 'package:flutter/services.dart';
 import '../../design/icon.dart';
 import '../../design/parts.dart';
 import '../../design/theme.dart';
-import '../../engine/domain.dart';
+import '../../engine/clock.dart';
 import '../../engine/money.dart';
 import '../../l10n/dates.dart';
 import '../../state/app_state.dart';
-import '../../state/insights.dart';
-import '../../widgets/best_move_card.dart';
+import '../../widgets/glass_hero.dart';
 import 'fr_parts.dart';
 
 class RevealScreen extends StatefulWidget {
@@ -44,26 +43,42 @@ class _RevealScreenState extends State<RevealScreen>
   Widget build(BuildContext context) {
     final state = widget.state;
     final s = state.snapshot;
-    final cur = s.currency;
-    Money sum(bool Function(Priority) where) => Money.sum(
-          [
-            for (final a in s.allocations)
-              if (where(a.priority)) a.allocated,
-          ],
-          cur,
-        );
-    final goals =
-        sum((p) => p == Priority.p7HardGoal || p == Priority.p8Flexible);
-    final bills = sum((p) => p.index <= Priority.p6Buffer.index);
     final pay = state.nextIncome;
-    final gaps = state.setupGaps;
-    final move = state.bestMove;
-    final upcoming = state.upcomingBills(days: 31);
+    final horizon = s.decisionHorizonEnd;
+    final bills = [
+      for (final b in state.upcomingBills(days: 62))
+        if (b.due.compareTo(horizon) <= 0) b,
+    ];
+    final essentials = state.allocationFor('essentials');
+    final goalRows = [
+      for (final g in state.goals)
+        if (state.allocationFor('goal:${g.id}') case final a?
+            when a.allocated.minor > 0)
+          (goal: g, amount: a.allocated),
+    ];
 
-    final rows = <(String, Money, int)>[
-      (context.l.frAvailableNow, s.trustedAllocatableLiquidity, 0),
-      if (bills.minor > 0) (context.l.frProtectedBills, bills, 1),
-      if (goals.minor > 0) (context.l.frProtectedGoal, goals, 2),
+    final did = <_Did>[
+      for (final b in bills)
+        _Did(
+          icon: 'goal-home',
+          title: context.l.frBillCovered(b.bill.name),
+          sub: context.l.frKeptFor(b.bill.amount.display(), formatDate(context, b.due)),
+          amount: b.bill.amount,
+        ),
+      if (essentials != null && essentials.allocated.minor > 0)
+        _Did(
+          icon: 'su-cart',
+          title: context.l.claimEssentials,
+          sub: context.l.frAmountUntil(essentials.allocated.display(), formatDate(context, horizon)),
+          amount: essentials.allocated,
+        ),
+      for (final r in goalRows)
+        _Did(
+          icon: r.goal.icon ?? 'goal-savings',
+          title: context.l.frGoalStarted(r.goal.name),
+          sub: context.l.frGoalBy(r.goal.target.display(), formatDate(context, r.goal.targetDate)),
+          amount: r.amount,
+        ),
     ];
 
     return Scaffold(
@@ -72,10 +87,10 @@ class _RevealScreenState extends State<RevealScreen>
         child: AnimatedBuilder(
           animation: _c,
           builder: (context, _) => ListView(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
             children: [
-              Opacity(
-                opacity: _at(0, 0.15),
+              _In(
+                v: _at(0, 0.2),
                 child: Text(
                   context.l.frPlanReady.toUpperCase(),
                   style: TextStyle(
@@ -86,195 +101,83 @@ class _RevealScreenState extends State<RevealScreen>
                   ),
                 ),
               ),
-              const SizedBox(height: 18),
-              for (var i = 0; i < rows.length; i++)
-                _Row(
-                  label: rows[i].$1,
-                  amount: rows[i].$2,
-                  depth: rows[i].$3,
-                  minus: i > 0,
-                  v: _at(0.08 + i * 0.12, 0.4 + i * 0.12),
+              const SizedBox(height: 10),
+              _In(
+                v: _at(0.04, 0.26),
+                child: Text(
+                  context.l.frDidWith(s.trustedAllocatableLiquidity.display()),
+                  style: TextStyle(
+                    fontSize: 26,
+                    height: 1.15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.8,
+                    color: inkOf(context),
+                  ),
                 ),
-              if (s.mandatoryFundingGap.minor > 0)
-                _Note(
-                  v: _at(0.45, 0.6),
-                  text: context.l.frNotCovered(s.mandatoryFundingGap.display()),
-                ),
-              const SizedBox(height: 6),
-              _StsCard(
-                amount: s.safeToSpendNow,
-                v: _at(0.45, 0.8),
-                count: _at(0.5, 0.95),
-                until: pay != null && pay.isProjectable
-                    ? context.l.frUntilIncome(formatDate(context, pay.expectedDate))
-                    : null,
               ),
-              const SizedBox(height: 14),
-              Opacity(
-                opacity: _at(0.8, 1),
-                child: Transform.translate(
-                  offset: Offset(0, 12 * (1 - _at(0.8, 1))),
+              const SizedBox(height: 18),
+              _In(
+                v: _at(0.14, 0.45),
+                child: GlassHero(
+                  key: const Key('reveal-sts'),
+                  minHeight: 0,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (move != null)
-                        BestMoveCard(state: state, move: move)
-                      else if (upcoming.isNotEmpty)
-                        _Fact(
-                          title: context.l.frTakenCare.toUpperCase(),
-                          text: context.l.frTakenCareBody(
-                            upcoming.first.bill.name,
-                            upcoming.first.bill.amount.display(),
-                            formatDate(context, upcoming.first.due),
-                          ),
-                        ),
+                      Text(
+                        context.l.heroSafeToSpend,
+                        style: const TextStyle(color: Color(0xD9FFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
                       const SizedBox(height: 14),
-                      Row(
-                        children: [
-                          UpinoIcon('su-shield',
-                              size: 16, color: tertOf(context),),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              gaps.isEmpty
-                                  ? context.l.frBuiltFromAll
-                                  : context.l.frGoodEstimate(gaps.length),
-                              style: TextStyle(
-                                  fontSize: 13, color: subOf(context),),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 26),
-                      FlowButton(
-                        buttonKey: const Key('reveal-done'),
-                        label: context.l.frGoToPlan,
-                        style: FlowButtonStyle.light,
-                        onTap: state.finishReveal,
-                      ),
+                      _CountUp(amount: s.safeToSpendNow, t: _at(0.2, 0.7)),
+                      if (pay != null && pay.isProjectable) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          context.l.frUntilIncome(formatDate(context, pay.expectedDate)),
+                          style: const TextStyle(color: Color(0xBFFFFFFF), fontSize: 13),
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Row extends StatelessWidget {
-  const _Row(
-      {required this.label,
-      required this.amount,
-      required this.depth,
-      required this.minus,
-      required this.v,});
-  final String label;
-  final Money amount;
-  final int depth;
-  final bool minus;
-  final double v;
-
-  @override
-  Widget build(BuildContext context) {
-    final blue = blueOf(context);
-    return Opacity(
-      opacity: v,
-      child: Transform.translate(
-        offset: Offset(0, -18 * (1 - v)),
-        child: Padding(
-          padding: EdgeInsets.only(left: 14.0 * depth, bottom: 8),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-            decoration: BoxDecoration(
-              color: depth == 0
-                  ? cardColor(context)
-                  : blue.withValues(alpha: isDark(context) ? 0.16 : 0.08),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: depth == 0 ? subOf(context) : inkOf(context),
-                    ),
-                  ),
-                ),
-                Text(
-                  '${minus ? '−' : ''}${amount.display()}',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: inkOf(context),
-                      fontFeatures: moneyFeatures,),
+              if (s.mandatoryFundingGap.minor > 0) ...[
+                const SizedBox(height: 12),
+                _Note(
+                  v: _at(0.45, 0.6),
+                  text: context.l.frNotCovered(s.mandatoryFundingGap.display()),
                 ),
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StsCard extends StatelessWidget {
-  const _StsCard(
-      {required this.amount, required this.v, required this.count, this.until,});
-  final Money amount;
-  final double v;
-  final double count;
-  final String? until;
-
-  @override
-  Widget build(BuildContext context) {
-    const ink = Color(0xFF0F1012);
-    final shown = Money((amount.minor * count).round(), amount.currency);
-    return Opacity(
-      opacity: v,
-      child: Transform.scale(
-        scale: 0.94 + 0.06 * v,
-        child: Container(
-          key: const Key('reveal-sts'),
-          padding: const EdgeInsets.fromLTRB(22, 20, 22, 22),
-          decoration: BoxDecoration(
-              color: lime, borderRadius: BorderRadius.circular(28),),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(context.l.frSafeToSpend.toUpperCase(),
-                  style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.5,
-                      color: ink,),),
-              const SizedBox(height: 6),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  shown.display(),
-                  style: const TextStyle(
-                    fontSize: 58,
-                    height: 1.05,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -2.6,
-                    color: ink,
-                    fontFeatures: moneyFeatures,
-                  ),
+              const SizedBox(height: 16),
+              _In(
+                v: _at(0.4, 0.7),
+                child: _DayStrip(
+                  from: state.today,
+                  to: horizon,
+                  pay: pay?.isProjectable ?? false ? pay!.expectedDate : null,
+                  bills: {for (final b in bills) b.due: b.bill.name.split(' / ').first},
                 ),
               ),
-              if (until != null) ...[
-                const SizedBox(height: 4),
-                Text(until!,
-                    style: TextStyle(
-                        fontSize: 13.5, color: ink.withValues(alpha: 0.7),),),
-              ],
+              const SizedBox(height: 18),
+              for (var i = 0; i < did.length; i++)
+                _In(
+                  v: _at(0.55 + i * 0.08, 0.8 + i * 0.06),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: did[i],
+                  ),
+                ),
+              const SizedBox(height: 14),
+              _In(
+                v: _at(0.8, 1),
+                child: FlowButton(
+                  buttonKey: const Key('reveal-done'),
+                  label: context.l.frGoToPlan,
+                  style: FlowButtonStyle.light,
+                  onTap: state.finishReveal,
+                ),
+              ),
             ],
           ),
         ),
@@ -283,31 +186,158 @@ class _StsCard extends StatelessWidget {
   }
 }
 
-class _Fact extends StatelessWidget {
-  const _Fact({required this.title, required this.text});
-  final String title;
-  final String text;
+/// Fades and lifts a part in as the reveal plays.
+class _In extends StatelessWidget {
+  const _In({required this.v, required this.child});
+  final double v;
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-            color: cardColor(context), borderRadius: BorderRadius.circular(20),),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => Opacity(
+        opacity: v,
+        child: Transform.translate(offset: Offset(0, 12 * (1 - v)), child: child),
+      );
+}
+
+/// The Safe-to-Spend figure counting up to the engine's number.
+class _CountUp extends StatelessWidget {
+  const _CountUp({required this.amount, required this.t});
+  final Money amount;
+  final double t;
+
+  @override
+  Widget build(BuildContext context) {
+    final shown = Money((amount.minor * t).round(), amount.currency).display();
+    final dot = shown.lastIndexOf('.');
+    const big = TextStyle(
+      color: Colors.white,
+      fontSize: 54,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -2.4,
+      height: 1,
+      fontFeatures: moneyFeatures,
+    );
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: AlignmentDirectional.centerStart,
+      child: Text.rich(
+        TextSpan(
           children: [
-            Text(title,
-                style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1,
-                    color: tertOf(context),),),
-            const SizedBox(height: 6),
-            Text(text,
-                style: TextStyle(
-                    fontSize: 14.5, height: 1.4, color: inkOf(context),),),
+            TextSpan(text: dot < 0 ? shown : shown.substring(0, dot), style: big),
+            if (dot >= 0)
+              TextSpan(
+                text: shown.substring(dot),
+                style: big.copyWith(fontSize: 24, letterSpacing: -0.5, color: const Color(0x99FFFFFF)),
+              ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Today to the next pay, one tile a day: today in white, a bill's day
+/// named in blue, payday in lime.
+class _DayStrip extends StatelessWidget {
+  const _DayStrip({required this.from, required this.to, required this.pay, required this.bills});
+  final LocalDate from;
+  final LocalDate to;
+  final LocalDate? pay;
+  final Map<LocalDate, String> bills;
+
+  @override
+  Widget build(BuildContext context) {
+    final n = (to.differenceInDays(from) + 1).clamp(1, 45);
+    final dark = isDark(context);
+    Widget tile(int i) {
+      final d = from.addDays(i);
+      final today = i == 0;
+      final payday = d == pay;
+      final bill = bills[d];
+      final bg = payday
+          ? lime
+          : today
+              ? (dark ? const Color(0xFFF2F2F5) : const Color(0xFF0F1012))
+              : sunkenColor(context);
+      final fg = payday
+          ? const Color(0xFF0F1012)
+          : today
+              ? (dark ? const Color(0xFF0F1012) : Colors.white)
+              : inkOf(context);
+      final label = payday
+          ? context.l.activityIncome
+          : today
+              ? context.l.dayToday
+              : bill ?? '';
+      return Container(
+        width: 52,
+        padding: const EdgeInsets.fromLTRB(4, 9, 4, 8),
+        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(14)),
+        child: Column(
+          children: [
+            Text(formatWeekdayShort(context, d),
+                style: TextStyle(fontSize: 10.5, color: fg.withValues(alpha: 0.6)),),
+            const SizedBox(height: 2),
+            Text(formatDayNumber(context, d),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: fg, fontFeatures: moneyFeatures),),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 9.5,
+                fontWeight: FontWeight.w600,
+                color: bill != null && !payday && !today ? const Color(0xFF8E94FF) : fg,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 70,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: n,
+        separatorBuilder: (_, __) => const SizedBox(width: 6),
+        itemBuilder: (_, i) => tile(i),
+      ),
+    );
+  }
+}
+
+/// One thing the plan did with the money: what, why, how much.
+class _Did extends StatelessWidget {
+  const _Did({required this.icon, required this.title, required this.sub, required this.amount});
+  final String icon;
+  final String title;
+  final String sub;
+  final Money amount;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: [
+          IconTile(icon, size: 40),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600, color: inkOf(context)),),
+                const SizedBox(height: 2),
+                Text(sub, style: TextStyle(fontSize: 12.5, color: tertOf(context))),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            amount.display(),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: inkOf(context), fontFeatures: moneyFeatures),
+          ),
+        ],
       );
 }
 

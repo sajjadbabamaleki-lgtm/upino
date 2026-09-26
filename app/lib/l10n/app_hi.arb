@@ -730,5 +730,11 @@
   "frGapYearly": "बीमा जैसा कोई सालाना ख़र्च जोड़ें",
   "frGapBill": "वेतन से पहले देय कोई बिल जोड़ें",
   "frSeconds": "~{count} सेकंड",
-  "frEssentialsSheet": "वेतन तक रोज़मर्रा की ज़रूरतें"
+  "frEssentialsSheet": "वेतन तक रोज़मर्रा की ज़रूरतें",
+  "frDidWith": "देखिए Upino ने आपके {amount} के साथ क्या किया।",
+  "frBillCovered": "{name} का इंतज़ाम हो गया",
+  "frKeptFor": "{date} के लिए {amount} अलग रखे गए",
+  "frAmountUntil": "{date} तक {amount}",
+  "frGoalStarted": "{name} शुरू हो गया",
+  "frGoalBy": "{date} तक {target}"
 }

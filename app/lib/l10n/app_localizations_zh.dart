@@ -2486,4 +2486,34 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => '发薪前的日常必需';
+
+  @override
+  String frDidWith(String amount) {
+    return '这是 Upino 为你的 $amount 做的安排。';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name 已备好';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '已为 $date 留出 $amount';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '截至 $date，$amount';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name 已开始';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$date 前达到 $target';
+  }
 }

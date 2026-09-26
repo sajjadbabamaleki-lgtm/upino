@@ -730,5 +730,11 @@
   "frGapYearly": "Добавить ежегодный расход, например страховку",
   "frGapBill": "Добавить счёт, который нужно оплатить до зарплаты",
   "frSeconds": "~{count} сек",
-  "frEssentialsSheet": "Повседневные нужды до зарплаты"
+  "frEssentialsSheet": "Повседневные нужды до зарплаты",
+  "frDidWith": "Вот что Upino сделал с вашими {amount}.",
+  "frBillCovered": "{name}: покрыто",
+  "frKeptFor": "{amount} отложено на {date}",
+  "frAmountUntil": "{amount} до {date}",
+  "frGoalStarted": "{name}: начато",
+  "frGoalBy": "{target} к {date}"
 }

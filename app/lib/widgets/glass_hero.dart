@@ -13,13 +13,16 @@ import '../design/parts.dart';
 import '../design/tokens.dart';
 
 class GlassHero extends StatelessWidget {
-  const GlassHero({required this.child, super.key});
+  const GlassHero({required this.child, this.minHeight = heroHeight, super.key});
 
   final Widget child;
 
+  /// Home and Ask keep [heroHeight]; a card without a button may ask for less.
+  final double minHeight;
+
   /// Both heroes are at least this tall, so moving between Home and Ask the
   /// card does not jump.
-  static const minHeight = 236.0;
+  static const heroHeight = 236.0;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +104,7 @@ class GlassHero extends StatelessWidget {
                   // Content shorter than the card is spread to fill it, so
                   // a column with spaceBetween keeps its button at the foot.
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: minHeight - 42),
+                    constraints: BoxConstraints(minHeight: minHeight > 42 ? minHeight - 42 : 0),
                     child: IntrinsicHeight(child: child),
                   ),
                 ),

@@ -4505,6 +4505,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Everyday essentials until payday'**
   String get frEssentialsSheet;
+
+  /// No description provided for @frDidWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Here’s what Upino did with your {amount}.'**
+  String frDidWith(String amount);
+
+  /// No description provided for @frBillCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is covered'**
+  String frBillCovered(String name);
+
+  /// No description provided for @frKeptFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} kept for {date}'**
+  String frKeptFor(String amount, String date);
+
+  /// No description provided for @frAmountUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} until {date}'**
+  String frAmountUntil(String amount, String date);
+
+  /// No description provided for @frGoalStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} started'**
+  String frGoalStarted(String name);
+
+  /// No description provided for @frGoalBy.
+  ///
+  /// In en, this message translates to:
+  /// **'{target} by {date}'**
+  String frGoalBy(String target, String date);
 }
 
 class _AppLocalizationsDelegate

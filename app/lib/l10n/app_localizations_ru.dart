@@ -2606,4 +2606,34 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'Повседневные нужды до зарплаты';
+
+  @override
+  String frDidWith(String amount) {
+    return 'Вот что Upino сделал с вашими $amount.';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name: покрыто';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$amount отложено на $date';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$amount до $date';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name: начато';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$target к $date';
+  }
 }

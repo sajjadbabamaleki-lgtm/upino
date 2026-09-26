@@ -2597,4 +2597,34 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => '給料日までの日々の必需品';
+
+  @override
+  String frDidWith(String amount) {
+    return 'Upino があなたの $amount をこう振り分けました。';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$nameは確保済み';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$dateのために$amountを確保';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$dateまで$amount';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$nameをスタート';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$dateまでに$target';
+  }
 }

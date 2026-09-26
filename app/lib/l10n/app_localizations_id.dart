@@ -2697,4 +2697,34 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'Kebutuhan sehari-hari sampai gajian';
+
+  @override
+  String frDidWith(String amount) {
+    return 'Ini yang Upino lakukan dengan $amount milikmu.';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name sudah aman';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$amount disisihkan untuk $date';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$amount sampai $date';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name dimulai';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$target paling lambat $date';
+  }
 }

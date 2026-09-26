@@ -63,3 +63,8 @@ String formatDayNumber(BuildContext context, LocalDate date) =>
 /// True on the first day of a month in the calendar in use.
 bool isMonthStart(BuildContext context, LocalDate date) =>
     (_jalali(context) ? _toJalali(date).day : date.day) == 1;
+
+/// `Mon`, `Tue`… a weekday short enough for a day tile.
+String formatWeekdayShort(BuildContext context, LocalDate date) =>
+    DateFormat.E(_tag(context))
+        .format(DateTime(date.year, date.month, date.day));

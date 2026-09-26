@@ -730,5 +730,11 @@
   "frGapYearly": "添加年度费用，比如保险",
   "frGapBill": "添加发薪前到期的账单",
   "frSeconds": "约 {count} 秒",
-  "frEssentialsSheet": "发薪前的日常必需"
+  "frEssentialsSheet": "发薪前的日常必需",
+  "frDidWith": "这是 Upino 为你的 {amount} 做的安排。",
+  "frBillCovered": "{name} 已备好",
+  "frKeptFor": "已为 {date} 留出 {amount}",
+  "frAmountUntil": "截至 {date}，{amount}",
+  "frGoalStarted": "{name} 已开始",
+  "frGoalBy": "{date} 前达到 {target}"
 }

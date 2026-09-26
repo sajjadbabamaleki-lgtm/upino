@@ -1839,5 +1839,62 @@
       }
     }
   },
-  "frEssentialsSheet": "Everyday essentials until payday"
+  "frEssentialsSheet": "Everyday essentials until payday",
+  "frDidWith": "Here’s what Upino did with your {amount}.",
+  "@frDidWith": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "frBillCovered": "{name} is covered",
+  "@frBillCovered": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "frKeptFor": "{amount} kept for {date}",
+  "@frKeptFor": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frAmountUntil": "{amount} until {date}",
+  "@frAmountUntil": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "frGoalStarted": "{name} started",
+  "@frGoalStarted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "frGoalBy": "{target} by {date}",
+  "@frGoalBy": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

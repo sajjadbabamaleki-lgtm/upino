@@ -2578,4 +2578,34 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'نیازهای روزمره تا روز حقوق';
+
+  @override
+  String frDidWith(String amount) {
+    return 'ببین آپینو با $amount تو چه کرد.';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name پوشش داده شد';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$amount برای $date کنار گذاشته شد';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$amount تا $date';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name شروع شد';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$target تا $date';
+  }
 }

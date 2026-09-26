@@ -730,5 +730,11 @@
   "frGapYearly": "Añadir un gasto anual, como un seguro",
   "frGapBill": "Añadir una factura que vence antes del pago",
   "frSeconds": "~{count} s",
-  "frEssentialsSheet": "Lo esencial hasta el día de pago"
+  "frEssentialsSheet": "Lo esencial hasta el día de pago",
+  "frDidWith": "Esto es lo que Upino hizo con tus {amount}.",
+  "frBillCovered": "{name} está cubierto",
+  "frKeptFor": "{amount} apartados para el {date}",
+  "frAmountUntil": "{amount} hasta el {date}",
+  "frGoalStarted": "{name} en marcha",
+  "frGoalBy": "{target} para el {date}"
 }

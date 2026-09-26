@@ -730,5 +730,11 @@
   "frGapYearly": "Sigorta gibi yıllık bir gider ekle",
   "frGapBill": "Maaştan önce ödenecek bir fatura ekle",
   "frSeconds": "~{count} sn",
-  "frEssentialsSheet": "Maaşa kadar günlük ihtiyaçlar"
+  "frEssentialsSheet": "Maaşa kadar günlük ihtiyaçlar",
+  "frDidWith": "Upino {amount} tutarınızla bunları yaptı.",
+  "frBillCovered": "{name} karşılandı",
+  "frKeptFor": "{date} için {amount} ayrıldı",
+  "frAmountUntil": "{date} tarihine kadar {amount}",
+  "frGoalStarted": "{name} başladı",
+  "frGoalBy": "{date} tarihine kadar {target}"
 }

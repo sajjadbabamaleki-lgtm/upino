@@ -730,5 +730,11 @@
   "frGapYearly": "Jährliche Kosten hinzufügen, z. B. Versicherung",
   "frGapBill": "Rechnung vor dem Zahltag hinzufügen",
   "frSeconds": "~{count} Sek.",
-  "frEssentialsSheet": "Alltagsausgaben bis zum Zahltag"
+  "frEssentialsSheet": "Alltagsausgaben bis zum Zahltag",
+  "frDidWith": "Das hat Upino mit deinen {amount} gemacht.",
+  "frBillCovered": "{name} ist gedeckt",
+  "frKeptFor": "{amount} für den {date} zurückgelegt",
+  "frAmountUntil": "{amount} bis {date}",
+  "frGoalStarted": "{name} gestartet",
+  "frGoalBy": "{target} bis {date}"
 }

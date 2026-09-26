@@ -730,5 +730,11 @@
   "frGapYearly": "أضف تكلفة سنوية، مثل التأمين",
   "frGapBill": "أضف فاتورة مستحقة قبل الراتب",
   "frSeconds": "~{count} ث",
-  "frEssentialsSheet": "الضروريات اليومية حتى الراتب"
+  "frEssentialsSheet": "الضروريات اليومية حتى الراتب",
+  "frDidWith": "هذا ما فعله Upino بمبلغ {amount} لديك.",
+  "frBillCovered": "{name} مغطّى",
+  "frKeptFor": "{amount} محجوز ليوم {date}",
+  "frAmountUntil": "{amount} حتى {date}",
+  "frGoalStarted": "بدأ {name}",
+  "frGoalBy": "{target} بحلول {date}"
 }

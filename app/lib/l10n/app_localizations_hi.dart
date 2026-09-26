@@ -2593,4 +2593,34 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'वेतन तक रोज़मर्रा की ज़रूरतें';
+
+  @override
+  String frDidWith(String amount) {
+    return 'देखिए Upino ने आपके $amount के साथ क्या किया।';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name का इंतज़ाम हो गया';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$date के लिए $amount अलग रखे गए';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$date तक $amount';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name शुरू हो गया';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$date तक $target';
+  }
 }

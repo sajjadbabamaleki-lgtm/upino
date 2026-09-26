@@ -2581,4 +2581,34 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get frEssentialsSheet => 'Maaşa kadar günlük ihtiyaçlar';
+
+  @override
+  String frDidWith(String amount) {
+    return 'Upino $amount tutarınızla bunları yaptı.';
+  }
+
+  @override
+  String frBillCovered(String name) {
+    return '$name karşılandı';
+  }
+
+  @override
+  String frKeptFor(String amount, String date) {
+    return '$date için $amount ayrıldı';
+  }
+
+  @override
+  String frAmountUntil(String amount, String date) {
+    return '$date tarihine kadar $amount';
+  }
+
+  @override
+  String frGoalStarted(String name) {
+    return '$name başladı';
+  }
+
+  @override
+  String frGoalBy(String target, String date) {
+    return '$date tarihine kadar $target';
+  }
 }
