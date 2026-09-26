@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
+import 'glass_hero.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
 import '../design/tokens.dart';
@@ -52,7 +53,8 @@ class StsHero extends StatelessWidget {
             onConfirmBalance: onConfirmBalance,
             onQuickExpense: onQuickExpense,
           ),
-        HeroState.fundingGap => _GapHero(snapshot: snapshot, onResolve: onResolve),
+        HeroState.fundingGap =>
+          _GapHero(snapshot: snapshot, onResolve: onResolve),
         HeroState.reviewRequired =>
           _ReviewHero(snapshot: snapshot, onConfirmBalance: onConfirmBalance),
       };
@@ -79,108 +81,35 @@ class _GradientHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = isDark(context);
     final l = AppLocalizations.of(context);
-    final blue = dark ? UpinoTokens.darkGradientStart : UpinoTokens.gradientStart;
-    final radius = BorderRadius.circular(UpinoTokens.radiusHero);
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        // The light spilling above the card, onto the page behind it.
-        Positioned(
-          left: 60,
-          right: -20,
-          top: -70,
-          height: 180,
-          child: IgnorePointer(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  colors: [blue.withValues(alpha: dark ? 0.38 : 0.22), blue.withValues(alpha: 0)],
-                ),
-              ),
-            ),
+    return GlassHero(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.heroSafeToSpend,
+            style: const TextStyle(
+                color: Color(0xD9FFFFFF),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,),
           ),
-        ),
-        ClipRRect(
-          borderRadius: radius,
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: radius,
-              color: const Color(0xFF0E0F16),
-            ),
-            child: Stack(
-              children: [
-                // The blue light, strongest right of centre.
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        center: const Alignment(0.45, 0.05),
-                        radius: 0.95,
-                        colors: [blue, blue, blue.withValues(alpha: 0)],
-                        stops: const [0, 0.12, 1],
-                      ),
-                    ),
-                  ),
-                ),
-                // The violet one, low on the left.
-                const Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        center: Alignment(-0.75, 1.05),
-                        radius: 0.7,
-                        colors: [Color(0x805A3AE8), Color(0x005A3AE8)],
-                      ),
-                    ),
-                  ),
-                ),
-                // The frost: a faint white veil, lit along the top edge,
-                // inside a hairline.
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: radius,
-                      border: Border.all(color: const Color(0x24FFFFFF)),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0x26FFFFFF), Color(0x10FFFFFF), Color(0x0AFFFFFF)],
-                        stops: [0, 0.25, 1],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 20, 22, 22),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l.heroSafeToSpend,
-                        style: const TextStyle(color: Color(0xD9FFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(height: 16),
-                      _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-                      const SizedBox(height: 11),
-                      _HeroMeta(
-                        l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
-                      ),
-                      const SizedBox(height: 20),
-                      if (degraded)
-                        _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
-                      else if (onQuickExpense != null)
-                        _HeroButton(label: l.heroRecordSpend, onPressed: onQuickExpense!, ink: true),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 16),
+          _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
+          const SizedBox(height: 11),
+          _HeroMeta(
+            l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
           ),
-        ),
-      ],
+          const SizedBox(height: 20),
+          if (degraded)
+            _FreshnessRow(
+                snapshot: snapshot, onConfirmBalance: onConfirmBalance,)
+          else if (onQuickExpense != null)
+            _HeroButton(
+                label: l.heroRecordSpend,
+                onPressed: onQuickExpense!,
+                ink: true,),
+        ],
+      ),
     );
   }
 }
@@ -207,7 +136,10 @@ class _GapHero extends StatelessWidget {
         children: [
           Text(
             l.heroSafeToSpend,
-            style: const TextStyle(color: Color(0xCCFFFFFF), fontSize: 14, fontWeight: FontWeight.w500),
+            style: const TextStyle(
+                color: Color(0xCCFFFFFF),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,),
           ),
           const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
@@ -223,8 +155,11 @@ class _GapHero extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const UpinoIcon('alert',
-                        size: 19, color: UpinoTokens.criticalOnInverse,),
+                    const UpinoIcon(
+                      'alert',
+                      size: 19,
+                      color: UpinoTokens.criticalOnInverse,
+                    ),
                     const SizedBox(width: 9),
                     Expanded(
                       child: Text(
@@ -378,37 +313,37 @@ class _FreshnessRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
       ),
       child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            switch (days) {
-              null => l.heroBalanceNever,
-              0 => l.heroBalanceToday,
-              1 => l.heroBalanceYesterday,
-              _ => l.heroBalanceDays(days),
-            },
-            style: const TextStyle(color: Colors.white, fontSize: 13),
-          ),
-        ),
-        GestureDetector(
-          onTap: onConfirmBalance,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-            ),
+        children: [
+          Expanded(
             child: Text(
-              l.confirm,
-              style: const TextStyle(
-                color: UpinoTokens.gradientStart,
-                fontSize: 13.5,
-                fontWeight: FontWeight.w700,
+              switch (days) {
+                null => l.heroBalanceNever,
+                0 => l.heroBalanceToday,
+                1 => l.heroBalanceYesterday,
+                _ => l.heroBalanceDays(days),
+              },
+              style: const TextStyle(color: Colors.white, fontSize: 13),
+            ),
+          ),
+          GestureDetector(
+            onTap: onConfirmBalance,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              ),
+              child: Text(
+                l.confirm,
+                style: const TextStyle(
+                  color: UpinoTokens.gradientStart,
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }
@@ -416,7 +351,8 @@ class _FreshnessRow extends StatelessWidget {
 
 /// The white pill that sits inside a coloured hero.
 class _HeroButton extends StatelessWidget {
-  const _HeroButton({required this.label, required this.onPressed, this.ink = false});
+  const _HeroButton(
+      {required this.label, required this.onPressed, this.ink = false,});
 
   final String label;
   final VoidCallback onPressed;
@@ -431,16 +367,19 @@ class _HeroButton extends StatelessWidget {
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: Colors.white,
-            foregroundColor: ink ? const Color(0xFF0B0B0E) : UpinoTokens.actionPrimary,
+            foregroundColor:
+                ink ? const Color(0xFF0B0B0E) : UpinoTokens.actionPrimary,
             minimumSize: const Size.fromHeight(52),
           ),
           child: ink
               ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const UpinoIcon('su-plus', size: 18, color: Color(0xFF0B0B0E)),
+                    const UpinoIcon('su-plus',
+                        size: 18, color: Color(0xFF0B0B0E),),
                     const SizedBox(width: 8),
-                    Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
+                    Flexible(
+                        child: Text(label, overflow: TextOverflow.ellipsis),),
                   ],
                 )
               : Text(label),
@@ -473,20 +412,24 @@ class _Figure extends StatelessWidget {
       fit: BoxFit.scaleDown,
       alignment: Alignment.centerLeft,
       child: Text.rich(
-        TextSpan(children: [
-          TextSpan(text: dot < 0 ? text : text.substring(0, dot)),
-          if (dot >= 0)
-            TextSpan(
-              text: text.substring(dot),
-              style: TextStyle(fontSize: 26, letterSpacing: -0.6, color: color.withValues(alpha: 0.7)),
-            ),
-        ],),
+        TextSpan(
+          children: [
+            TextSpan(text: dot < 0 ? text : text.substring(0, dot)),
+            if (dot >= 0)
+              TextSpan(
+                text: text.substring(dot),
+                style: TextStyle(
+                    fontSize: 26,
+                    letterSpacing: -0.6,
+                    color: color.withValues(alpha: 0.7),),
+              ),
+          ],
+        ),
         style: base,
       ),
     );
   }
 }
-
 
 /// Dates read as words. The engine's own `toString` is an ISO string meant
 /// for logs and fixtures, never for the person using the app.

@@ -8,6 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/icon.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
@@ -18,10 +19,10 @@ import '../l10n/dates.dart';
 import '../state/app_state.dart';
 import '../state/ask_answers.dart';
 import '../state/insights.dart';
+import '../widgets/glass_hero.dart';
 import '../widgets/amount_sheet.dart' show categoryLabel;
 import '../widgets/best_move_card.dart' show bestMoveLines;
 import '../widgets/month_review.dart';
-import '../widgets/top_bar.dart' show UpinoMark;
 import 'ask_chat_screen.dart';
 
 class AskHubScreen extends StatelessWidget {
@@ -127,60 +128,64 @@ class _AskHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final dark = isDark(context);
     final g = greet(state);
-    return Container(
+    return GlassHero(
       key: const Key('ask-hero'),
-      padding: const EdgeInsets.fromLTRB(22, 20, 22, 22),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: dark
-              ? const [UpinoTokens.darkGradientStart, UpinoTokens.darkGradientEnd]
-              : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
-        ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const UpinoMark(size: 40),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  l.askHubTitle,
-                  style: theme.textTheme.headlineMedium
-                      ?.copyWith(color: UpinoTokens.textOnInverse),
+              Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: const Color(0x1FFFFFFF),
+                      borderRadius: BorderRadius.circular(11),
+                      border: Border.all(color: const Color(0x29FFFFFF)),
+                    ),
+                    alignment: Alignment.center,
+                    child: const UpinoIcon('chat', size: 19, color: Colors.white),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l.askHubTitle,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: UpinoTokens.textOnInverse,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Text(
+                switch (g.acquaintance) {
+                  Acquaintance.newcomer => l.askHubNew,
+                  Acquaintance.learning => l.askHubLearning(g.daysToSeason),
+                  Acquaintance.familiar => l.askHubFamiliar,
+                },
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xCCFFFFFF),
+                  fontSize: 13.5,
+                  height: 1.45,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            switch (g.acquaintance) {
-              Acquaintance.newcomer => l.askHubNew,
-              Acquaintance.learning => l.askHubLearning(g.daysToSeason),
-              Acquaintance.familiar => l.askHubFamiliar,
-            },
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: UpinoTokens.textOnInverse),
-          ),
           const SizedBox(height: 18),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              key: const Key('ask-start'),
-              onPressed: () => ChatPage.open(context, state),
-              style: FilledButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: UpinoTokens.actionPrimary,
-                minimumSize: const Size.fromHeight(52),
-              ),
-              child: Text(l.askHubStart),
-            ),
+          GlassHeroButton(
+            buttonKey: const Key('ask-start'),
+            label: l.askHubStart,
+            icon: const UpinoIcon('chat', size: 18, color: Color(0xFF0B0B0E)),
+            onPressed: () => ChatPage.open(context, state),
           ),
         ],
       ),
