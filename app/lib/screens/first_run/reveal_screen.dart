@@ -270,7 +270,6 @@ class _DayStrip extends StatelessWidget {
               ? context.l.dayToday
               : bill ?? '';
       return Container(
-        width: 52,
         padding: const EdgeInsets.fromLTRB(4, 9, 4, 8),
         decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(14)),
         child: Column(
@@ -296,13 +295,31 @@ class _DayStrip extends StatelessWidget {
       );
     }
 
+    // Edge to edge with the card above: the tiles share the full width
+    // while they fit, and only scroll when the pay is further away.
     return SizedBox(
       height: 70,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: n,
-        separatorBuilder: (_, __) => const SizedBox(width: 6),
-        itemBuilder: (_, i) => tile(i),
+      child: LayoutBuilder(
+        builder: (context, box) {
+          const gap = 6.0;
+          const minTile = 46.0;
+          if (n * minTile + (n - 1) * gap <= box.maxWidth) {
+            return Row(
+              children: [
+                for (var i = 0; i < n; i++) ...[
+                  if (i > 0) const SizedBox(width: gap),
+                  Expanded(child: tile(i)),
+                ],
+              ],
+            );
+          }
+          return ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: n,
+            separatorBuilder: (_, __) => const SizedBox(width: gap),
+            itemBuilder: (_, i) => SizedBox(width: 52, child: tile(i)),
+          );
+        },
       ),
     );
   }
