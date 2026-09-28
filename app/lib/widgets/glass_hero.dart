@@ -13,21 +13,17 @@ import '../design/parts.dart';
 import '../design/tokens.dart';
 
 class GlassHero extends StatelessWidget {
-  const GlassHero({required this.child, this.minHeight = heroHeight, super.key});
+  const GlassHero({required this.child, super.key});
 
+  /// The card is as tall as this and its padding, no taller: Home and Ask
+  /// are laid out to come to the same height on their own.
   final Widget child;
-
-  /// Home and Ask keep [heroHeight]; a card without a button may ask for less.
-  final double minHeight;
-
-  /// Both heroes are at least this tall, so moving between Home and Ask the
-  /// card does not jump.
-  static const heroHeight = 236.0;
 
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final blue = dark ? UpinoTokens.darkGradientStart : UpinoTokens.gradientStart;
+    final blue =
+        dark ? UpinoTokens.darkGradientStart : UpinoTokens.gradientStart;
     final radius = BorderRadius.circular(UpinoTokens.radiusHero);
     return Stack(
       clipBehavior: Clip.none,
@@ -42,7 +38,10 @@ class GlassHero extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
-                  colors: [blue.withValues(alpha: dark ? 0.38 : 0.22), blue.withValues(alpha: 0)],
+                  colors: [
+                    blue.withValues(alpha: dark ? 0.38 : 0.22),
+                    blue.withValues(alpha: 0),
+                  ],
                 ),
               ),
             ),
@@ -93,7 +92,11 @@ class GlassHero extends StatelessWidget {
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Color(0x26FFFFFF), Color(0x10FFFFFF), Color(0x0AFFFFFF)],
+                        colors: [
+                          Color(0x26FFFFFF),
+                          Color(0x10FFFFFF),
+                          Color(0x0AFFFFFF),
+                        ],
                         stops: [0, 0.25, 1],
                       ),
                     ),
@@ -101,12 +104,7 @@ class GlassHero extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(22, 20, 22, 22),
-                  // Content shorter than the card is spread to fill it, so
-                  // a column with spaceBetween keeps its button at the foot.
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: minHeight > 42 ? minHeight - 42 : 0),
-                    child: IntrinsicHeight(child: child),
-                  ),
+                  child: child,
                 ),
               ],
             ),

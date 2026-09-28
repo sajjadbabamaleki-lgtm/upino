@@ -93,13 +93,13 @@ class _GradientHero extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w500,),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
           const SizedBox(height: 11),
           _HeroMeta(
             l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           if (degraded)
             _FreshnessRow(
                 snapshot: snapshot, onConfirmBalance: onConfirmBalance,)

@@ -133,7 +133,6 @@ class _AskHero extends StatelessWidget {
       key: const Key('ask-hero'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +179,7 @@ class _AskHero extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
           GlassHeroButton(
             buttonKey: const Key('ask-start'),
             label: l.askHubStart,

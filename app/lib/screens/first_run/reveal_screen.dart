@@ -120,7 +120,6 @@ class _RevealScreenState extends State<RevealScreen>
                 v: _at(0.14, 0.45),
                 child: GlassHero(
                   key: const Key('reveal-sts'),
-                  minHeight: 0,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../design/icon.dart';
 import '../design/parts.dart';
@@ -77,54 +78,39 @@ class UpinoTopBar extends StatelessWidget {
   }
 }
 
-/// The app's mark: a U in the brand colour. A stand-in until there is a
-/// real logo; the launcher icon is drawn the same way.
+/// The app's mark: the Upino glyph — a U whose cut-out is a four-pointed
+/// spark — white on a rounded square in the brand colour. The launcher icon
+/// and the site use the same drawing.
 class UpinoMark extends StatelessWidget {
   const UpinoMark({this.size = 46, super.key});
 
   final double size;
 
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        key: const Key('upino-mark'),
-        width: size,
-        height: size,
-        child: Center(
-          // The site's mark: a rounded square with the U drawn as one stroke.
-          child: CustomPaint(
-            size: Size.square(size * 0.76),
-            painter: _MarkPainter(isDark(context) ? UpinoTokens.darkActionPrimary : UpinoTokens.actionPrimary),
-          ),
-        ),
-      );
-}
+  /// The glyph on a 32 grid, sitting in the square as it does in the logo.
+  static const glyph =
+      'M9.21 8.78H13.37A2.17 2.17 0 0 1 15.54 10.95V12.96A2.04 2.04 0 0 1 13.5 15H10.82A0.48 0.48 0 0 0 10.82 15.97H13.75A1.79 1.79 0 0 1 15.54 17.76V20.67A0.46 0.46 0 0 0 16.46 20.67V17.76A1.79 1.79 0 0 1 18.25 15.97H21.18A0.48 0.48 0 0 0 21.18 15H18.5A2.04 2.04 0 0 1 16.46 12.96V10.95A2.17 2.17 0 0 1 18.63 8.78H22.79A1.53 1.53 0 0 1 24.32 10.31V15.95A8.32 7.86 0 0 1 7.68 15.95V10.31A1.53 1.53 0 0 1 9.21 8.78Z';
 
-class _MarkPainter extends CustomPainter {
-  const _MarkPainter(this.color);
-  final Color color;
   @override
-  void paint(Canvas canvas, Size size) {
-    final k = size.width / 32;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(9 * k)),
-      Paint()..color = color,
-    );
-    final u = Path()
-      ..moveTo(10 * k, 9 * k)
-      ..lineTo(10 * k, 17.2 * k)
-      ..arcToPoint(Offset(22 * k, 17.2 * k), radius: Radius.circular(6 * k), clockwise: false)
-      ..lineTo(22 * k, 9 * k);
-    canvas.drawPath(
-      u,
-      Paint()
-        ..color = const Color(0xFFF2F2F2)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.2 * k
-        ..strokeCap = StrokeCap.round,
+  Widget build(BuildContext context) {
+    final tile = isDark(context)
+        ? UpinoTokens.darkActionPrimary
+        : UpinoTokens.actionPrimary;
+    final hex = (tile.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0');
+    return SizedBox(
+      key: const Key('upino-mark'),
+      width: size,
+      height: size,
+      child: Center(
+        child: SvgPicture.string(
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
+          '<rect width="32" height="32" rx="10" fill="#$hex"/>'
+          '<path fill="#F2F2F2" d="$glyph"/></svg>',
+          width: size * 0.76,
+          height: size * 0.76,
+        ),
+      ),
     );
   }
-  @override
-  bool shouldRepaint(_MarkPainter oldDelegate) => oldDelegate.color != color;
 }
 
 class _RoundButton extends StatelessWidget {
@@ -181,9 +167,9 @@ class _RoundButton extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: dark ? UpinoTokens.darkCritical : UpinoTokens.critical,
-                    borderRadius:
-                        BorderRadius.circular(UpinoTokens.radiusPill),
+                    color:
+                        dark ? UpinoTokens.darkCritical : UpinoTokens.critical,
+                    borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
                     border: Border.all(
                       color: dark
                           ? UpinoTokens.darkSurfaceRaised

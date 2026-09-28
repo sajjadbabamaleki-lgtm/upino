@@ -3,4 +3,6 @@
     <!-- UpinoTokens.surfacePage. The window wears the page colour so the
          launch frame and the app frame are the same shade. -->
     <color name="upino_page">#FFF0F0F0</color>
+    <!-- UpinoTokens.actionPrimary, behind the launcher glyph. -->
+    <color name="upino_brand">#FF2F3AE8</color>
 </resources>
