@@ -38,11 +38,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   static const _count = 4;
 
+  /// The day of the month each page is set on.
+  static const _days = [1, 12, 18, 30];
+
   static List<(String, String, String)> _moments(BuildContext c) => [
-        (c.l.frDay(1), c.l.frMoment1Title, c.l.frMoment1Body),
-        (c.l.frDay(12), c.l.frMoment2Title, c.l.frMoment2Body),
-        (c.l.frDay(18), c.l.frMoment3Title, c.l.frMoment3Body),
-        (c.l.frDay(30), c.l.frMoment4Title, c.l.frMoment4Body),
+        (c.l.frDay(_days[0]), c.l.frMoment1Title, c.l.frMoment1Body),
+        (c.l.frDay(_days[1]), c.l.frMoment2Title, c.l.frMoment2Body),
+        (c.l.frDay(_days[2]), c.l.frMoment3Title, c.l.frMoment3Body),
+        (c.l.frDay(_days[3]), c.l.frMoment4Title, c.l.frMoment4Body),
       ];
 
   @override
@@ -66,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: AnimatedBuilder(
                 animation: _pages,
                 builder: (context, _) => _Timeline(
-                  labels: [for (final m in _moments(context)) m.$1],
+                  days: _days,
                   at: _pages.hasClients && _pages.position.haveDimensions ? _pages.page ?? 0 : 0,
                 ),
               ),
@@ -135,57 +138,92 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-/// Four moments on a line; the line fills with the swipe.
+/// The month as a ruler: one bar per day, filled up to where the swipe is.
+/// The four moments stand taller, and a chip rides the playhead, counting
+/// the days as the pages turn, so the swipe reads as time passing.
 class _Timeline extends StatelessWidget {
-  const _Timeline({required this.labels, required this.at});
-  final List<String> labels;
+  const _Timeline({required this.days, required this.at});
+
+  /// The day of the month each page is about, in page order.
+  final List<int> days;
+
+  /// The page position, fractional mid-swipe.
   final double at;
+
+  static const monthDays = 30;
+  static const _chipHeight = 24.0;
+  static const _barsTop = _chipHeight + 10;
+  static const _tall = 22.0;
+  static const _short = 10.0;
+
+  /// The day under the playhead: the moment's day on each page, and the
+  /// days between passing evenly as the swipe goes.
+  double get _day {
+    final a = at.clamp(0.0, days.length - 1.0);
+    final i = a.floor().clamp(0, days.length - 2);
+    return days[i] + (days[i + 1] - days[i]) * (a - i);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final n = labels.length;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final ink = inkOf(context);
+    final day = _day;
     return SizedBox(
-      height: 42,
+      height: _barsTop + _tall,
       child: LayoutBuilder(builder: (context, box) {
         final w = box.maxWidth;
-        double x(int i) => 7 + (w - 14) * i / (n - 1);
+        final cx = w / monthDays * (day - 0.5);
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            Positioned(
-              left: 7,
-              right: 7,
-              top: 6,
-              child: Container(height: 2, color: sunkenColor(context)),
-            ),
-            Positioned(
-              left: 7,
-              top: 6,
-              width: (w - 14) * (at / (n - 1)).clamp(0.0, 1.0),
-              child: Container(height: 2, color: inkOf(context)),
-            ),
-            for (var i = 0; i < n; i++) ...[
-              Positioned(
-                left: x(i) - 7,
-                top: 0,
-                child: _Dot(on: at >= i - 0.5, now: (at - i).abs() < 0.5, last: i == n - 1),
+            Positioned.fill(
+              top: _barsTop,
+              child: CustomPaint(
+                painter: _Ruler(
+                  day: day,
+                  moments: days,
+                  rtl: rtl,
+                  past: ink,
+                  // ink held back, so the bars read on the page whatever its grey
+                  future: ink.withValues(alpha: 0.13),
+                  tall: _tall,
+                  short: _short,
+                ),
               ),
-              Positioned(
-                left: (x(i) - 30).clamp(0.0, w - 60),
-                width: 60,
-                top: 22,
-                child: Text(
-                  labels[i].toUpperCase(),
-                  textAlign: i == 0 ? TextAlign.left : i == n - 1 ? TextAlign.right : TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1,
-                    color: (at - i).abs() < 0.5 ? inkOf(context) : tertOf(context),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: _chipHeight,
+              child: CustomSingleChildLayout(
+                delegate: _ChipAt(rtl ? w - cx : cx),
+                child: Container(
+                  key: const Key('timeline-chip'),
+                  height: _chipHeight,
+                  padding: const EdgeInsets.symmetric(horizontal: 11),
+                  decoration: BoxDecoration(
+                    color: ink,
+                    borderRadius: BorderRadius.circular(_chipHeight / 2),
+                  ),
+                  child: Center(
+                    widthFactor: 1,
+                    child: Text(
+                      context.l.frDay(day.round().clamp(1, monthDays)).toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.8,
+                        height: 1,
+                        color: pageOf(context),
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
+            ),
           ],
         );
       },),
@@ -193,27 +231,78 @@ class _Timeline extends StatelessWidget {
   }
 }
 
-class _Dot extends StatelessWidget {
-  const _Dot({required this.on, required this.now, required this.last});
-  final bool on;
-  final bool now;
-  final bool last;
+/// Centres the chip on the playhead, held inside the row at the ends.
+class _ChipAt extends SingleChildLayoutDelegate {
+  const _ChipAt(this.x);
+  final double x;
 
   @override
-  Widget build(BuildContext context) {
-    final c = now ? (last || !on ? lime : lime) : (on ? inkOf(context) : sunkenColor(context));
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 260),
-      curve: _ease,
-      width: 14,
-      height: 14,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: c,
-        boxShadow: now ? [BoxShadow(color: lime.withValues(alpha: 0.35), blurRadius: 0, spreadRadius: 5)] : null,
-      ),
-    );
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => constraints.loosen();
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) =>
+      Offset((x - childSize.width / 2).clamp(0.0, math.max(0.0, size.width - childSize.width)), 0);
+
+  @override
+  bool shouldRelayout(_ChipAt oldDelegate) => oldDelegate.x != x;
+}
+
+class _Ruler extends CustomPainter {
+  const _Ruler({
+    required this.day,
+    required this.moments,
+    required this.rtl,
+    required this.past,
+    required this.future,
+    required this.tall,
+    required this.short,
+  });
+
+  final double day;
+  final List<int> moments;
+  final bool rtl;
+  final Color past;
+  final Color future;
+  final double tall;
+  final double short;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const n = _Timeline.monthDays;
+    final step = size.width / n;
+    final bar = math.min(3.5, step * 0.4);
+    final paint = Paint();
+    for (var d = 1; d <= n; d++) {
+      // A bar fills over the half day either side of it, so the fill glides
+      // with the swipe instead of ticking over; the bars near the playhead
+      // swell toward the moments' height.
+      final reach = (day - d + 0.5).clamp(0.0, 1.0);
+      final h = moments.contains(d) ? tall : short + (tall - short) * 0.4 * _swell(day - d);
+      final cx = step * (d - 0.5);
+      final x = rtl ? size.width - cx : cx;
+      paint.color = Color.lerp(future, past, reach)!;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(x - bar / 2, size.height - h, bar, h),
+          Radius.circular(bar / 2),
+        ),
+        paint,
+      );
+    }
   }
+
+  /// 1 on the playhead, easing to 0 two days away.
+  static double _swell(double distance) {
+    final t = (1 - distance.abs() / 2).clamp(0.0, 1.0);
+    return t * t * (3 - 2 * t);
+  }
+
+  @override
+  bool shouldRepaint(_Ruler oldDelegate) =>
+      oldDelegate.day != day ||
+      oldDelegate.past != past ||
+      oldDelegate.future != future ||
+      oldDelegate.rtl != rtl;
 }
 
 /// The blue hero card, as Home shows it.
