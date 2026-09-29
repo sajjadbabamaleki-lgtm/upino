@@ -105,15 +105,23 @@
   const setCompact = () => nav.classList.toggle("is-compact", window.scrollY > 40);
   setCompact();
   window.addEventListener("scroll", setCompact, { passive: true });
-  // the glass turns smoky while a dark section is behind it
-  if ("IntersectionObserver" in window) {
-    const under = new Set();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => (e.isIntersecting ? under.add(e.target) : under.delete(e.target)));
-      nav.classList.toggle("is-over-ink", under.size > 0);
-    }, { rootMargin: "-40px 0px -95% 0px" });
-    $$("section.ink, .footer").forEach((el) => io.observe(el));
-  }
+  // The nav reads light over the blue hero and turns smoky over dark sections.
+  // Measured against the nav's own midline rather than an IntersectionObserver:
+  // a rootMargin of "-40px … -95%" leaves no strip at all on a phone shorter
+  // than 800px, and Safari then never reports the hero as under the nav.
+  const hero = $(".hero");
+  const inks = $$("section.ink, .footer");
+  const under = (el) => {
+    const r = el.getBoundingClientRect(), y = nav.getBoundingClientRect().top + 30;
+    return r.top <= y && r.bottom > y;
+  };
+  const setTone = () => {
+    nav.classList.toggle("is-dark", !!hero && under(hero));
+    nav.classList.toggle("is-over-ink", inks.some(under));
+  };
+  setTone();
+  window.addEventListener("scroll", setTone, { passive: true });
+  window.addEventListener("resize", setTone);
   const closeMenu = () => {
     menu.hidden = true; menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.setAttribute("aria-label", "Open menu"); nav.classList.remove("is-open");
@@ -137,12 +145,6 @@
     if (!sec || !bento) return;
     const days = $(".bt__days", bento);
     for (let i = 0; i < 30; i++) { const d = document.createElement("i"); if (i >= 18) d.className = "left"; days.appendChild(d); }
-
-    // the nav reads light while it sits over this hero
-    const nav = $("#nav");
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(([e]) => nav.classList.toggle("is-dark", e.isIntersecting), { rootMargin: "-40px 0px -95% 0px" }).observe(sec);
-    } else nav.classList.add("is-dark");
 
     // Move €180 to Travel: Safe to Spend and the goal change together
     const btn = $("#heroMove"), fig = $("#heroFigure");
