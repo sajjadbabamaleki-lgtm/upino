@@ -48,7 +48,7 @@ class UpinoTopBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const UpinoMark(size: itemHeight),
+          const UpinoMark(size: itemHeight, round: true),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -81,10 +81,18 @@ class UpinoTopBar extends StatelessWidget {
 /// The app's mark: the Upino glyph — a U whose cut-out is a four-pointed
 /// spark — white on a rounded square in the brand colour. The launcher icon
 /// and the site use the same drawing.
+///
+/// [round] draws it as a circle filling [size] instead, for a pill bar whose
+/// other items are circles; the site's nav does the same once it turns to
+/// glass. The glyph steps down to clear the corners the circle gives up.
 class UpinoMark extends StatelessWidget {
-  const UpinoMark({this.size = 46, super.key});
+  const UpinoMark({this.size = 46, this.round = false, super.key});
 
   final double size;
+  final bool round;
+
+  /// How much of the tile the glyph keeps inside the circle.
+  static const roundGlyphScale = 0.78;
 
   /// The glyph on a 32 grid, sitting in the square as it does in the logo.
   static const glyph =
@@ -101,13 +109,22 @@ class UpinoMark extends StatelessWidget {
       width: size,
       height: size,
       child: Center(
-        child: SvgPicture.string(
-          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
-          '<rect width="32" height="32" rx="10" fill="#$hex"/>'
-          '<path fill="#F2F2F2" d="$glyph"/></svg>',
-          width: size * 0.76,
-          height: size * 0.76,
-        ),
+        child: round
+            ? SvgPicture.string(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
+                '<circle cx="16" cy="16" r="16" fill="#$hex"/>'
+                '<path fill="#F2F2F2" d="$glyph" transform="translate(16 16) '
+                'scale($roundGlyphScale) translate(-16 -16)"/></svg>',
+                width: size,
+                height: size,
+              )
+            : SvgPicture.string(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">'
+                '<rect width="32" height="32" rx="10" fill="#$hex"/>'
+                '<path fill="#F2F2F2" d="$glyph"/></svg>',
+                width: size * 0.76,
+                height: size * 0.76,
+              ),
       ),
     );
   }
