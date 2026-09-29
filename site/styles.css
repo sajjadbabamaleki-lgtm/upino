@@ -164,7 +164,7 @@ button { font: inherit; color: inherit; }
   transition: max-width 420ms var(--ease-out), padding 420ms var(--ease-out), background-color 300ms ease, box-shadow 300ms ease, height 300ms var(--ease-out);
 }
 .nav.is-compact .nav__inner {
-  max-width: 860px; height: 54px; padding: 0 7px;
+  max-width: 860px; height: 54px; padding: 0 7px 0 11px; /* the smaller mark sits as far from the end as from the top */
   /* glass: the page shows through, blurred, with a lit top edge */
   background: rgba(255, 255, 255, 0.52);
   -webkit-backdrop-filter: saturate(1.8) blur(22px); backdrop-filter: saturate(1.8) blur(22px);
@@ -182,8 +182,11 @@ button { font: inherit; color: inherit; }
 .nav.is-over-ink.is-compact:not(.is-open) .nav__menu span { background: #fff; }
 .nav.is-compact .nav__secondary { display: none; }
 .brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); }
-.brand__mark { width: 40px; height: 40px; color: var(--accent); } /* as tall as the nav button */
-.brand__word { font: 600 19px/1 var(--font); letter-spacing: -0.04em; }
+.brand__mark { width: 40px; height: 40px; color: var(--accent); transition: width 420ms var(--ease-out), height 420ms var(--ease-out); } /* as tall as the nav button */
+.brand__word { font: 600 19px/1 var(--font); letter-spacing: -0.04em; transition: font-size 420ms var(--ease-out); }
+/* inside the glass pill the logo steps down a fifth */
+.nav.is-compact .brand__mark { width: 32px; height: 32px; }
+.nav.is-compact .brand__word { font-size: 15.2px; }
 .nav__links { display: flex; gap: 26px; margin-left: auto; }
 .nav__links a { font-size: 14.5px; color: var(--text-2); text-decoration: none; transition: color 160ms ease; }
 .nav__links a:hover { color: var(--text); }
