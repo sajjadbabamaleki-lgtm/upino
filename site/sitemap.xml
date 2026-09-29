@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PLACEHOLDER: replace upino.example with the real domain. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://upino.example/</loc></url>
-  <url><loc>https://upino.example/articles/</loc></url>
-  <url><loc>https://upino.example/articles/balance-is-not-spending-money.html</loc></url>
-  <url><loc>https://upino.example/articles/how-safe-to-spend-is-calculated.html</loc></url>
-  <url><loc>https://upino.example/articles/why-your-history-stays-on-your-phone.html</loc></url>
+  <url><loc>https://upino.co/</loc></url>
+  <url><loc>https://upino.co/articles/</loc></url>
+  <url><loc>https://upino.co/articles/balance-is-not-spending-money.html</loc></url>
+  <url><loc>https://upino.co/articles/how-safe-to-spend-is-calculated.html</loc></url>
+  <url><loc>https://upino.co/articles/why-your-history-stays-on-your-phone.html</loc></url>
 </urlset>

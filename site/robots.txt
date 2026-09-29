@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# PLACEHOLDER: replace upino.example with the real domain.
-Sitemap: https://upino.example/sitemap.xml
+Sitemap: https://upino.co/sitemap.xml
