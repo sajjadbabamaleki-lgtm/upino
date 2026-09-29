@@ -62,7 +62,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+              padding: const EdgeInsets.fromLTRB(24, 40, 24, 0),
               child: AnimatedBuilder(
                 animation: _pages,
                 builder: (context, _) => _Timeline(
