@@ -10,7 +10,7 @@ class UpinoTokens {
   const UpinoTokens._();
 
   // --- Light mode (§32.2) -------------------------------------------------
-  static const surfacePage = Color(0xFFF7F7F7);
+  static const surfacePage = Color(0xFFF2F2F2); // 95% white, as on the site
   static const surfaceCard = Color(0xFFFFFFFF);
   static const surfaceSunken = Color(0xFFF4F4F5);
   static const surfaceRaised = Color(0xFFFFFFFF);
