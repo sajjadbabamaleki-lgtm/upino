@@ -679,6 +679,40 @@
     window.addEventListener("resize", fit, { passive: true });
   })();
 
+  /* ── coming soon: what the store buttons open until the apps are listed ── */
+  (function soon() {
+    const dlg = $("#soon");
+    if (!dlg || typeof dlg.showModal !== "function") return;
+    let opener = null;
+    let leaving = 0;
+    const open = (platform, from) => {
+      clearTimeout(leaving);
+      opener = from;
+      dlg.dataset.platform = platform;
+      dlg.classList.remove("is-out");
+      if (!dlg.open) dlg.showModal();
+      document.documentElement.style.overflow = "hidden";
+      // one frame in the start state, so the entrance transitions
+      requestAnimationFrame(() => requestAnimationFrame(() => dlg.classList.add("is-in")));
+      $(".soon__ok", dlg).focus({ preventScroll: true });
+    };
+    const close = () => {
+      if (!dlg.open || dlg.classList.contains("is-out")) return;
+      dlg.classList.add("is-out");
+      dlg.classList.remove("is-in");
+      leaving = setTimeout(() => {
+        dlg.close();
+        dlg.classList.remove("is-out");
+        document.documentElement.style.overflow = "";
+        if (opener) opener.focus({ preventScroll: true });
+      }, reduce ? 160 : 240);
+    };
+    $$(".store[data-platform]").forEach((b) => b.addEventListener("click", () => open(b.dataset.platform, b)));
+    $$("[data-close]", dlg).forEach((el) => el.addEventListener("click", close));
+    // Escape closes through the same exit as the buttons
+    dlg.addEventListener("cancel", (e) => { e.preventDefault(); close(); });
+  })();
+
   const yr = $("#year");
   if (yr) yr.textContent = String(new Date().getFullYear());
 })();
