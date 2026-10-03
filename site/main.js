@@ -644,7 +644,21 @@
         $(".strip__hit", st).setAttribute("aria-expanded", String(on));
       });
       current = i;
+      // phone layout: slide the row so the open strip sits first, except
+      // at the end, where the one before it stays as a slice on the left
+      list.style.setProperty("--shift", String(Math.min(i, Math.max(0, strips.length - 2))));
     }
+    const list = strips[0].parentElement;
+    // a swipe on the row opens the next or the previous person
+    let x0 = null, y0 = 0;
+    list.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    list.addEventListener("touchend", (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+      open(Math.max(0, Math.min(strips.length - 1, current + (dx < 0 ? 1 : -1))));
+    }, { passive: true });
     strips.forEach((st, i) => {
       const hit = $(".strip__hit", st);
       hit.addEventListener("click", () => open(i));

@@ -1019,16 +1019,30 @@ button { font: inherit; color: inherit; }
 .strip.is-open .strip__bio { grid-template-rows: 1fr; opacity: 1; transition-delay: 120ms; }
 .strips__note { margin: 16px 0 0; }
 
-/* On a phone the same accordion: tap a strip and it opens. The open strip
-   takes most of the width and carries the words; the others stay as
-   slices of their portraits until they are tapped. */
+/* On a phone, one person at a time: the open strip takes most of the row
+   and the next shows as a slice beside it. Opening the slice slides the
+   row along, so the open one leaves to the left and the slice takes its
+   place, with the one after it arriving as the new slice. */
 @media (max-width: 900px) {
-  .strips { height: clamp(440px, 118vw, 560px); gap: 6px; }
-  .strip.is-open { flex-grow: 7; }
-  .strip__caption { padding: 56px 18px 20px; transition: opacity 300ms ease; }
-  .strip:not(.is-open) .strip__caption { opacity: 0; transition-duration: 120ms; }
-  .strip__name { font-size: clamp(19px, 8.2cqi, 26px); }
-  .strip__bio p { font-size: 14px; }
+  /* clipped at the page column, so only the open strip and its neighbour show */
+  .strips-view { overflow: hidden; border-radius: var(--r-lg); }
+  .strips {
+    /* the open strip keeps its old proportions (about 0.59 wide to tall), only smaller */
+    height: min(calc((100vw - 2 * var(--gutter)) * 0.59 / 0.59), 560px); gap: 8px;
+    transform: translate3d(calc(var(--shift, 0) * -41%), 0, 0);
+    transition: transform 640ms var(--ease-out);
+    touch-action: pan-y;
+  }
+  .strip, .strip.is-open { flex: 0 0 calc(41% - 8px); transition: flex-basis 640ms var(--ease-out); }
+  .strip.is-open { flex-basis: 59%; }
+  .strip__caption { padding: 48px 14px 16px; transition: opacity 300ms ease 180ms; }
+  .strip:not(.is-open) .strip__caption { opacity: 0; transition: opacity 120ms ease; }
+  .strip__role { font-size: 12px; }
+  .strip__name { font-size: clamp(17px, 9cqi, 22px); }
+  .strip__bio p { padding-top: 6px; font-size: 13px; line-height: 1.4; }
+}
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .strips, .strip, .strip.is-open { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .strip { transition: none; }
