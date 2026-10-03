@@ -413,18 +413,18 @@ button { font: inherit; color: inherit; }
 .seg-control {
   position: relative; margin-top: 26px;
   display: grid; grid-template-columns: 1fr 1fr; padding: 4px;
-  background: var(--paper-2); border-radius: 999px;
+  background: var(--accent); border-radius: 999px;
 }
 .seg-control__opt {
   position: relative; z-index: 1; border: 0; background: transparent; cursor: pointer;
-  min-height: 44px; border-radius: 999px; font-size: 14.5px; font-weight: 500; color: var(--text-2);
+  min-height: 44px; border-radius: 999px; font-size: 14.5px; font-weight: 500; line-height: 1.2; color: rgba(255, 255, 255, 0.85);
   transition: color 200ms ease;
 }
-.seg-control__opt[aria-checked="true"] { color: var(--text); }
+.seg-control__opt[aria-checked="true"] { color: var(--accent); }
 .seg-control__thumb {
   position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
-  background: var(--card); border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(15,16,18,.08), 0 4px 12px -4px rgba(15,16,18,.16);
+  background: #fff; border-radius: 999px;
+  box-shadow: 0 6px 16px -6px rgba(8, 10, 60, 0.5);
   transition: transform 260ms var(--ease-out);
 }
 .seg-control[data-value="wait"] .seg-control__thumb { transform: translateX(100%); }
@@ -440,7 +440,7 @@ button { font: inherit; color: inherit; }
 .wbars { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 14px); height: 150px; margin-top: 40px; }
 .wbars__col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
 .wbars__cap { height: calc(var(--c) * 100%); border-radius: 10px 10px 0 0; background: repeating-linear-gradient(135deg, rgba(47,58,232,.3) 0 5px, rgba(47,58,232,.08) 5px 10px); transition: height 650ms var(--ease-out); }
-.wbars__bar { height: calc(var(--v) * 100%); border-radius: 0 0 10px 10px; background: #ececf1; transition: height 650ms var(--ease-out), background-color 250ms ease; }
+.wbars__bar { height: calc(var(--v) * 100%); border-radius: 0 0 10px 10px; background: var(--accent-tint); transition: height 650ms var(--ease-out), background-color 250ms ease; }
 .wbars__col.no-cap .wbars__bar { border-radius: 10px; }
 .wbars__col.is-low .wbars__bar { background: var(--accent); }
 .wbars__pill { position: absolute; left: 50%; bottom: calc((var(--v) + var(--c)) * 100% + 8px); transform: translateX(-50%); padding: 4px 9px; border-radius: 7px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 650; white-space: nowrap; opacity: 0; transition: opacity 200ms ease, bottom 650ms var(--ease-out); }
