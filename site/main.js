@@ -14,7 +14,7 @@
   if (G && ST) G.registerPlugin(ST);
   const animate = !!G && !reduce;
 
-  const eur = (n) => "€" + Math.round(n).toLocaleString("en-US");
+  const usd = (n) => "$" + Math.round(n).toLocaleString("en-US");
   const NS = "http://www.w3.org/2000/svg";
   const el = (tag, attrs = {}, parent) => {
     const n = document.createElementNS(NS, tag);
@@ -25,12 +25,12 @@
 
   /** Tween a number shown in [node], or set it at once without motion. */
   function countTo(node, from, to, dur = 0.6) {
-    if (reduce) { node.textContent = eur(to); return; }
+    if (reduce) { node.textContent = usd(to); return; }
     if (!G) {
       const t0 = performance.now();
       const step = (t) => {
         const k = Math.min(1, (t - t0) / (dur * 1000));
-        node.textContent = eur(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+        node.textContent = usd(from + (to - from) * (1 - Math.pow(1 - k, 3)));
         if (k < 1) node._count = requestAnimationFrame(step);
       };
       cancelAnimationFrame(node._count);
@@ -39,7 +39,7 @@
     }
     const o = { v: from };
     G.to(o, { v: to, duration: dur, ease: "power3.out", overwrite: true,
-      onUpdate: () => { node.textContent = eur(o.v); } });
+      onUpdate: () => { node.textContent = usd(o.v); } });
   }
 
   const onEnter = (target, fn) => {
@@ -69,7 +69,7 @@
     if (d < 0) v += Math.sin(d * 1.7) * 38 + Math.sin(d * 0.53) * 26; // the past was lived, not planned
     return v;
   }
-  /** Buying the €700 laptop today: the rest of this period shrinks. */
+  /** Buying the $700 laptop today: the rest of this period shrinks. */
   function buyNow(d) {
     if (d >= 0 && d < 10) return 450 - 43 * d;
     return baseline(d);
@@ -81,21 +81,21 @@
   }
 
   const EVENTS = [
-    { d: -20, kind: "income", text: "Income €5,400" },
-    { d: -20, kind: "goal", text: "€180 to Travel" },
-    { d: -14, kind: "bill", text: "Rent €1,100, protected" },
-    { d: -8, kind: "bill", text: "Phone €24, protected" },
-    { d: 6, kind: "bill", text: "Subscriptions €18, protected" },
-    { d: 10, kind: "income", text: "Income €5,400" },
-    { d: 10, kind: "goal", text: "€180 to Travel" },
-    { d: 10, kind: "annual", text: "Car tax fund €140" },
-    { d: 13, kind: "bill", text: "Insurance €184, protected" },
-    { d: 17, kind: "bill", text: "Rent €1,100, protected" },
-    { d: 21, kind: "bill", text: "Card instalment €188, protected" },
-    { d: 41, kind: "income", text: "Income €5,400" },
-    { d: 41, kind: "goal", text: "€180 to Travel" },
-    { d: 47, kind: "bill", text: "Rent €1,100, protected" },
-    { d: 60, kind: "annual", text: "Car insurance €410, fully set aside" },
+    { d: -20, kind: "income", text: "Income $5,400" },
+    { d: -20, kind: "goal", text: "$180 to Travel" },
+    { d: -14, kind: "bill", text: "Rent $1,100, protected" },
+    { d: -8, kind: "bill", text: "Phone $24, protected" },
+    { d: 6, kind: "bill", text: "Subscriptions $18, protected" },
+    { d: 10, kind: "income", text: "Income $5,400" },
+    { d: 10, kind: "goal", text: "$180 to Travel" },
+    { d: 10, kind: "annual", text: "Car tax fund $140" },
+    { d: 13, kind: "bill", text: "Insurance $184, protected" },
+    { d: 17, kind: "bill", text: "Rent $1,100, protected" },
+    { d: 21, kind: "bill", text: "Card instalment $188, protected" },
+    { d: 41, kind: "income", text: "Income $5,400" },
+    { d: 41, kind: "goal", text: "$180 to Travel" },
+    { d: 47, kind: "bill", text: "Rent $1,100, protected" },
+    { d: 60, kind: "annual", text: "Car insurance $410, fully set aside" },
   ];
 
   /* ── nav ─────────────────────────────────────────────────────────── */
@@ -146,7 +146,7 @@
     const days = $(".bt__days", bento);
     for (let i = 0; i < 30; i++) { const d = document.createElement("i"); if (i >= 18) d.className = "left"; days.appendChild(d); }
 
-    // Move €180 to Travel: Safe to Spend and the goal change together
+    // Move $180 to Travel: Safe to Spend and the goal change together
     const btn = $("#heroMove"), fig = $("#heroFigure");
     let moved = false;
     btn.addEventListener("click", () => {
@@ -157,7 +157,7 @@
       $("#heroGoalBar").style.setProperty("--p", moved ? 0.75 : 0.72);
       $("#heroGoalText").textContent = moved ? "June 2027 · ahead of plan" : "June 2027 · on track";
       $("#heroMoveK").textContent = moved ? "Done" : "Next best move";
-      $("#heroMoveText").innerHTML = moved ? 'Moved <b class="num">€180</b> to Travel' : 'Move <b class="num">€180</b> to Travel';
+      $("#heroMoveText").innerHTML = moved ? 'Moved <b class="num">$180</b> to Travel' : 'Move <b class="num">$180</b> to Travel';
       btn.textContent = moved ? "Undo" : "Move";
       if (!reduce) $$(".bt--sts, .bt--goal", bento).forEach((t) => { t.classList.remove("flash"); void t.offsetWidth; t.classList.add("flash"); });
     });
@@ -198,7 +198,7 @@
       const resolved = step >= 6;
       section.classList.toggle("is-resolved", resolved);
       label.textContent = step === 0 ? "Available money" : resolved ? "Safe to spend" : NAME[ORDER[step - 1]];
-      if (instant) figure.textContent = eur(left); else countTo(figure, shown, left, 0.5);
+      if (instant) figure.textContent = usd(left); else countTo(figure, shown, left, 0.5);
       shown = left;
     }
 
@@ -286,7 +286,7 @@
         c.style.setProperty("--c", (cap / MAX).toFixed(4));
         c.classList.toggle("no-cap", cap < 10);
         c.classList.toggle("is-low", w === least);
-        if (w === least) c.firstChild.innerHTML = `${eur(v)}<small> lowest</small>`;
+        if (w === least) c.firstChild.innerHTML = `${usd(v)}<small> lowest</small>`;
       });
     }
     render();
@@ -359,10 +359,10 @@
     function paint() {
       weeks.forEach((w, i) => cols[i].style.setProperty("--v", (low(w).v / MAX).toFixed(4)));
       card.classList.toggle("is-buy", bought);
-      $("#tlToday").textContent = eur(bought ? buyNow(0) : baseline(0));
+      $("#tlToday").textContent = usd(bought ? buyNow(0) : baseline(0));
       let m = { v: Infinity, d: 0 };
       for (let d = 0; d < 10; d++) { const v = bought ? buyNow(d) : baseline(d); if (v < m.v) m = { v, d }; }
-      $("#tlLow").textContent = `${eur(m.v)}, ${fmtDate(m.d)}`;
+      $("#tlLow").textContent = `${usd(m.v)}, ${fmtDate(m.d)}`;
       if (shown !== null) show(shown);
     }
     let shown = null;
@@ -371,7 +371,7 @@
       const w = weeks[i], l = low(w);
       const when = w.now ? "This week" : `${fmtDate(w.from)} to ${fmtDate(w.to)}`;
       const evs = w.events.map((e) => `<span>${e.text}</span>`).join("");
-      tip.innerHTML = `<span class="tip-date">${when}</span><b>${eur(l.v)}</b><span>lowest, on ${fmtDate(l.d)}</span>${evs}`;
+      tip.innerHTML = `<span class="tip-date">${when}</span><b>${usd(l.v)}</b><span>lowest, on ${fmtDate(l.d)}</span>${evs}`;
       tip.hidden = false;
       const cb = cols[i].getBoundingClientRect(), pb = card.getBoundingClientRect();
       const bar = cols[i].querySelector(".tlb__bar").getBoundingClientRect();
@@ -588,7 +588,7 @@
     if (reduce) { $$(".op-wait i").forEach((d) => d.classList.add("on")); return; }
     const seq = (root, sel, cls, gap, start = 0) => $$(sel, root).forEach((n, i) => setTimeout(() => n.classList.add(cls), start + i * gap));
     const arrive = (sel, fn) => { const n = $(sel); if (n) { n.classList.add("is-pre"); onEnter(n, () => { n.classList.remove("is-pre"); fn && fn(n); }); } };
-    $$("#pnAmt, .mb__legend b").forEach((b) => { b.textContent = "€0"; });
+    $$("#pnAmt, .mb__legend b").forEach((b) => { b.textContent = "$0"; });
     arrive(".pn", () => { const n = $("#pnAmt"); if (n) setTimeout(() => countTo(n, 0, 1284, 1.1), 700); });
     arrive(".mb", (n) => $$(".mb__legend b", n).forEach((b, i) => setTimeout(() => countTo(b, 0, +b.dataset.v, 0.9), i * 150)));
     const ops = $(".ops");
