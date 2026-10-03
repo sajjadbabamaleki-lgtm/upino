@@ -821,7 +821,7 @@ button { font: inherit; color: inherit; }
     radial-gradient(42% 40% at 12% 102%, rgba(90, 58, 232, 0.5), rgba(90, 58, 232, 0) 100%),
     radial-gradient(62% 75% at 72% 52%, var(--accent) 0%, var(--accent) 10%, rgba(47, 58, 232, 0) 100%),
     #0e0f16;
-  --p-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 40px 80px -40px rgba(20, 24, 120, 0.6);
+  --p-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   --p-fg: #fff; --p-strong: #fff; --p-fg2: rgba(255, 255, 255, 0.82); --p-fg3: rgba(255, 255, 255, 0.7);
   --p-line: rgba(255, 255, 255, 0.16); --p-dash: rgba(255, 255, 255, 0.34);
   --p-seg: rgba(8, 9, 20, 0.32); --p-seg-edge: rgba(255, 255, 255, 0.12); --p-seg-fg: rgba(255, 255, 255, 0.8); --p-seg-hover: #fff;
