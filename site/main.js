@@ -691,10 +691,13 @@
       dlg.dataset.platform = platform;
       dlg.classList.remove("is-out");
       if (!dlg.open) dlg.showModal();
-      document.documentElement.style.overflow = "hidden";
-      // one frame in the start state, so the entrance transitions
-      requestAnimationFrame(() => requestAnimationFrame(() => dlg.classList.add("is-in")));
-      $(".soon__ok", dlg).focus({ preventScroll: true });
+      dlg.scrollTop = 0;
+      // read layout once in the start state, so the entrance always transitions
+      void dlg.offsetHeight;
+      dlg.classList.add("is-in");
+      // focus the button only once the sheet has arrived: focusing it while it
+      // is still below the screen makes the browser jump it into view
+      setTimeout(() => { if (dlg.classList.contains("is-in")) $(".soon__ok", dlg).focus({ preventScroll: true }); }, reduce ? 0 : 480);
     };
     const close = () => {
       if (!dlg.open || dlg.classList.contains("is-out")) return;
@@ -703,7 +706,6 @@
       leaving = setTimeout(() => {
         dlg.close();
         dlg.classList.remove("is-out");
-        document.documentElement.style.overflow = "";
         if (opener) opener.focus({ preventScroll: true });
       }, reduce ? 160 : 240);
     };
