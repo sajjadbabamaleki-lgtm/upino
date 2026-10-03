@@ -810,7 +810,7 @@ button { font: inherit; color: inherit; }
 /* One ink panel, in the language of the footer and the team: white for what
    matters, grey for the rest, the brand blue for the chosen plan, and the
    app's lime only for money kept (savings, the free days). */
-.pricing { padding-block: var(--section); border-top: 1px solid var(--line); }
+.pricing { padding-block: var(--section); border-top: 1px solid var(--line); background: var(--card); } /* white, so the navy panel stands on a clean ground */
 .pricing__head .h2 { max-width: 16ch; }
 .plan {
   /* the panel's palette; a theme is one set of these values. This one is
