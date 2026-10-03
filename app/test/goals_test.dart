@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:upino/screens/goals_screen.dart';
 import 'package:upino/data/plan_document.dart';
 import 'package:upino/data/plan_store.dart';
 import 'package:upino/data/serialization.dart';
@@ -52,6 +53,8 @@ AppState funded({PlanStore? store}) => AppState(
       );
 
 void main() {
+  // These look at the person's own goals, not the samples.
+  setUp(() => GoalsScreen.samplesWhenFew = false);
   group('the funding schedule', () {
     test('spreads the remainder over the periods that are left', () {
       // 365 days at 30 per period is 13 periods; €1,200 over 13.
@@ -241,7 +244,7 @@ void main() {
     });
 
     test('the schema version moved with the shape', () {
-      expect(schemaVersion, 3);
+      expect(schemaVersion, 10);
     });
   });
 
@@ -314,8 +317,9 @@ void main() {
 
       expect(state.goals.single.name, 'Laptop');
       expect(state.goals.single.target, eur('1200.00'));
-      expect(find.text('Laptop'), findsOneWidget);
-      expect(find.text('of €1,200.00'), findsOneWidget);
+      // On its tile, and again in full further down.
+      expect(find.text('Laptop'), findsWidgets);
+      expect(find.text('of €1,200'), findsWidgets);
     });
 
     testWidgets('money can be added to a goal from its card', (tester) async {
@@ -328,6 +332,9 @@ void main() {
       await openGoals(tester, state);
 
       final id = state.goals.single.id;
+      // The whole goal opens from its tile.
+      await tester.tap(find.byKey(Key('goal-tile-$id')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(Key('goal-add-$id')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField).last, '300.00');
@@ -336,7 +343,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(state.goals.single.saved, eur('300.00'));
-      expect(find.text('€300.00'), findsOneWidget);
+      // In the open goal, and on its tile as this month's addition.
+      expect(find.text('€300'), findsWidgets);
     });
 
     testWidgets('a goal can be deleted from its editor', (tester) async {
@@ -348,7 +356,14 @@ void main() {
         );
       await openGoals(tester, state);
 
-      await tester.tap(find.byType(RowAffordance).first);
+      await tester.tap(find.byKey(Key('goal-tile-${state.goals.single.id}')));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byKey(Key('goal-card-${state.goals.single.id}')),
+          matching: find.byType(RowAffordance),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('goal-delete')));
       await tester.pumpAndSettle();

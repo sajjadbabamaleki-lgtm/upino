@@ -40,13 +40,22 @@ class UpinoCard extends StatelessWidget {
   final double radius;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => inRowGroup(context)
+      ? SizedBox(
+          width: double.infinity,
+          child: Padding(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16), child: child),
+        )
+      : Container(
         width: double.infinity,
         padding: padding,
         decoration: BoxDecoration(
           color: gradient == null ? color ?? cardColor(context) : null,
           gradient: gradient,
           borderRadius: BorderRadius.circular(radius),
+          // A soft lift instead of an outline: the card sits on the page.
+          boxShadow: isDark(context) || color != null || gradient != null
+              ? null
+              : const [BoxShadow(color: Color(0x0D0F1012), blurRadius: 30, offset: Offset(0, 10), spreadRadius: -12)],
         ),
         child: child,
       );
@@ -103,8 +112,10 @@ class SectionHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // 20 above a heading and 10 below it: the heading belongs to what
+    // follows it, and reads as the start of a new section.
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 0, 4, 12),
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 10),
       child: Row(
         children: [
           // Flexible so a long heading wraps instead of overflowing beside
@@ -177,10 +188,14 @@ class ActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
+    final grouped = context.dependOnInheritedWidgetOfExactType<_InRowGroup>() != null;
+    Widget card({required Widget child}) => grouped
+        ? Padding(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15), child: child)
+        : UpinoCard(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16), child: child);
+    return Pressable(
       onTap: onTap,
-      child: UpinoCard(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      scale: grouped ? 0.985 : 0.97,
+      child: card(
         child: Row(
           children: [
             if (leading != null) ...[leading!, const SizedBox(width: 14)],
@@ -207,6 +222,67 @@ class ActionRow extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Marks a custom row that may share a [RowGroup] card with others.
+mixin GroupableRow on Widget {}
+
+/// Whether this widget sits inside a [RowGroup], and should drop its own card.
+bool inRowGroup(BuildContext context) =>
+    context.dependOnInheritedWidgetOfExactType<_InRowGroup>() != null;
+
+class _InRowGroup extends InheritedWidget {
+  const _InRowGroup({required super.child});
+  @override
+  bool updateShouldNotify(_InRowGroup oldWidget) => false;
+}
+
+/// Rows that belong together share one card, split by hairlines, instead of
+/// each being a card of its own.
+class RowGroup extends StatelessWidget {
+  const RowGroup({required this.rows, super.key});
+  final List<Widget> rows;
+
+  @override
+  Widget build(BuildContext context) => UpinoCard(
+        padding: EdgeInsets.zero,
+        child: _InRowGroup(
+          child: Column(children: [
+            for (var i = 0; i < rows.length; i++) ...[
+              if (i > 0) Divider(height: 1, thickness: 1, indent: 18, endIndent: 18, color: borderColor(context)),
+              rows[i],
+            ],
+          ],),
+        ),
+      );
+}
+
+/// Folds each run of [ActionRow]s, and the 10-point gaps between them, into
+/// one [RowGroup].
+List<Widget> groupRows(List<Widget> items) {
+  final out = <Widget>[];
+  final run = <Widget>[];
+  var gap = false;
+  void flush() {
+    if (run.length == 1) out.add(run.first);
+    if (run.length > 1) out.add(RowGroup(rows: List.of(run)));
+    if (run.isNotEmpty && gap) out.add(const SizedBox(height: 10));
+    run.clear();
+    gap = false;
+  }
+  for (final w in items) {
+    if (w is ActionRow || w is GroupableRow || (w is UpinoCard && w.color == null && w.gradient == null)) {
+      run.add(w);
+      gap = false;
+    } else if (w is SizedBox && w.height == 10 && w.child == null && run.isNotEmpty) {
+      gap = true;
+    } else {
+      flush();
+      out.add(w);
+    }
+  }
+  flush();
+  return out;
 }
 
 /// Segmented progress, used for funding a goal or a sinking fund across
@@ -318,11 +394,13 @@ class UpinoNavBar extends StatelessWidget {
     'plan',
     'goals',
     'activity',
-    'profile',
+    'chat',
   ];
 
+  /// Profile moved to the capsule at the top; its place went to Ask, the
+  /// thing only this app does.
   static List<String> labelsOf(AppLocalizations l) =>
-      [l.navHome, l.navPlan, l.navGoals, l.navActivity, l.navProfile];
+      [l.navHome, l.navPlan, l.navGoals, l.navActivity, l.navAsk];
 
   static int get destinationCount => _icons.length;
 
@@ -334,7 +412,7 @@ class UpinoNavBar extends StatelessWidget {
       key: const Key('nav-bar-surface'),
       padding: const EdgeInsets.all(inset),
       decoration: BoxDecoration(
-        color: dark ? UpinoTokens.darkSurfaceRaised : UpinoTokens.surfaceRaised,
+        color: dark ? UpinoTokens.darkChrome : UpinoTokens.surfaceRaised,
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
       ),
       child: SizedBox(
@@ -390,7 +468,9 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = isDark(context);
-    final tint = dark ? UpinoTokens.darkActionTint : UpinoTokens.actionTint;
+    // A whisper of blue, not a block of it: the glyph already says which
+    // tab this is.
+    final tint = dark ? const Color(0xFF1C1D2D) : UpinoTokens.actionTint;
     final onTint =
         dark ? UpinoTokens.darkTextPrimary : UpinoTokens.actionOnTint;
     final glyph =
@@ -489,6 +569,65 @@ class NavScrim extends StatelessWidget {
 }
 
 /// The faint dotted field in the corner of the hero, as on the reference.
+/// Fine grid lines across the whole card, the texture of the site's hero.
+class GridField extends StatelessWidget {
+  const GridField({this.color = Colors.white, super.key});
+  final Color color;
+  @override
+  Widget build(BuildContext context) => CustomPaint(painter: _GridPainter(color));
+}
+
+class _GridPainter extends CustomPainter {
+  const _GridPainter(this.color);
+  final Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    const step = 28.0;
+    final p = Paint()
+      ..color = color.withValues(alpha: 0.09)
+      ..strokeWidth = 1;
+    for (var x = step; x < size.width; x += step) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), p);
+    }
+    for (var y = step; y < size.height; y += step) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), p);
+    }
+  }
+  @override
+  bool shouldRepaint(_GridPainter oldDelegate) => oldDelegate.color != color;
+}
+
+/// Anything tappable sinks a little under the finger and comes back.
+class Pressable extends StatefulWidget {
+  const Pressable({required this.child, this.onTap, this.scale = 0.97, super.key});
+  final Widget child;
+  final VoidCallback? onTap;
+  final double scale;
+  @override
+  State<Pressable> createState() => _PressableState();
+}
+
+class _PressableState extends State<Pressable> {
+  bool _down = false;
+  void _set(bool v) {
+    if (widget.onTap != null && v != _down) setState(() => _down = v);
+  }
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: widget.onTap,
+        onTapDown: (_) => _set(true),
+        onTapUp: (_) => _set(false),
+        onTapCancel: () => _set(false),
+        child: AnimatedScale(
+          scale: _down ? widget.scale : 1,
+          duration: Duration(milliseconds: _down ? 90 : 220),
+          curve: _down ? Curves.easeOut : Curves.easeOutBack,
+          child: widget.child,
+        ),
+      );
+}
+
 class DotField extends StatelessWidget {
   const DotField({this.color = Colors.white, super.key});
 

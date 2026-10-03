@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Bank messages, read on the phone to suggest spends. Never sent.
+
+         Only in the Play build. READ_SMS is a restricted permission: Play
+         requires a permissions declaration approved by Google, and Play
+         Protect blocks sideloaded apps that request it. The direct APK
+         leaves it out so it installs. -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+</manifest>

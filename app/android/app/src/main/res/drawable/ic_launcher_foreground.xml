@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Upino glyph, centred in the adaptive icon's 108dp canvas and sized
+     to sit in the visible 72dp the way the logo sits in its square. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFF2F2F2"
+        android:pathData="M38.5 37.83H48A4.95 4.95 0 0 1 52.95 42.78V47.38A4.66 4.66 0 0 1 48.29 52.05H42.17A1.11 1.11 0 0 0 42.17 54.26H48.87A4.08 4.08 0 0 1 52.95 58.34V64.99A1.05 1.05 0 0 0 55.05 64.99V58.34A4.08 4.08 0 0 1 59.13 54.26H65.83A1.11 1.11 0 0 0 65.83 52.05H59.71A4.66 4.66 0 0 1 55.05 47.38V42.78A4.95 4.95 0 0 1 60 37.83H69.5A3.5 3.5 0 0 1 73 41.32V54.2A19 17.95 0 0 1 35 54.2V41.32A3.5 3.5 0 0 1 38.5 37.83Z" />
+</vector>

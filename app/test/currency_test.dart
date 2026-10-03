@@ -405,7 +405,7 @@ void main() {
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
       final state = AppState(now: DateTime.utc(2026, 10, 1, 10));
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       return state;
     }

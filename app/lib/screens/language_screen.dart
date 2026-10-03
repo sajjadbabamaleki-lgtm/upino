@@ -31,6 +31,9 @@ const languageNames = <String, ({String native, String english})>{
   'pt': (native: 'Português', english: 'Portuguese'),
   'ru': (native: 'Русский', english: 'Russian'),
   'tr': (native: 'Türkçe', english: 'Turkish'),
+  'de': (native: 'Deutsch', english: 'German'),
+  'ja': (native: '日本語', english: 'Japanese'),
+  'id': (native: 'Indonesia', english: 'Indonesian'),
 };
 
 class LanguagePicker extends StatelessWidget {
@@ -46,7 +49,7 @@ class LanguagePicker extends StatelessWidget {
   final ValueChanged<String?> onSelect;
   final bool showHeading;
 
-  static const rowHeight = 44.0;
+  static const rowHeight = 46.0;
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +82,17 @@ class LanguagePicker extends StatelessWidget {
             ),
           ),
         Flexible(
-          child: ListView.separated(
+          // Two columns: thirteen languages and the phone in one column
+          // would push the last of them below the screen, and a language
+          // someone has to scroll to find may never be found.
+          child: GridView.builder(
             shrinkWrap: true,
-            // Tight on purpose: eleven rows, and the sheet is sized to show
-            // all of them at once on a phone. Every point spent here is a
-            // point the last row has to be scrolled to reach.
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: rowHeight,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 6,
+            ),
             padding: const EdgeInsets.fromLTRB(
               UpinoTokens.gutter,
               0,
@@ -91,7 +100,6 @@ class LanguagePicker extends StatelessWidget {
               12,
             ),
             itemCount: codes.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 4),
             itemBuilder: (context, i) => Reveal(
               index: i,
               child: _LanguageRow(

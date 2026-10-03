@@ -78,7 +78,7 @@ void main() {
   testWidgets('the heading still clears the status bar', (tester) async {
     await pumpApp(tester);
 
-    final heading = tester.renderObject<RenderBox>(find.text('Your plan'));
+    final heading = tester.renderObject<RenderBox>(find.byKey(const Key('top-title')));
     final top = heading.localToGlobal(Offset.zero).dy;
     expect(
       top,

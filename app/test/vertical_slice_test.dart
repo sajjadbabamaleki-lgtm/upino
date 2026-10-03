@@ -8,7 +8,13 @@ import 'package:upino/engine/money.dart';
 import 'package:upino/engine/plan.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
+import 'package:upino/widgets/sts_hero.dart';
+
 import 'pickers.dart';
+
+/// The figure in the hero; the pay card repeats it lower down.
+Finder inHero(String text) =>
+    find.descendant(of: find.byType(StsHero), matching: find.text(text));
 
 void main() {
   _reopenTests();
@@ -33,7 +39,7 @@ void main() {
       ..physicalSize = const Size(420, 1800)
       ..devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(UpinoApp(state: state));
+    await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
     await tester.pumpAndSettle();
     if (currency != null &&
         find.byKey(const Key('change-currency')).evaluate().isNotEmpty) {
@@ -84,9 +90,10 @@ void main() {
     await tester.tap(cta);
     await tester.pumpAndSettle();
 
-    expect(find.text('Your plan'), findsOneWidget);
+    // Home, named in the capsule rather than by a heading of its own.
+    expect(find.byKey(const Key('top-title')), findsOneWidget);
     // 3000 − 1200 rent − 400 essentials = 1400.
-    expect(find.text('€1,400.00'), findsOneWidget);
+    expect(inHero('€1,400'), findsOneWidget);
     expect(state.snapshot.safeToSpendNow.toString(), '1400.00 EUR');
     expect(state.snapshot.confidenceState, ConfidenceState.trusted);
 
@@ -104,9 +111,9 @@ void main() {
     await tester.pumpAndSettle();
 
     // 4. The figure recalculates immediately, with a transient confirmation.
-    expect(find.text('€1,375.00'), findsOneWidget);
+    expect(inHero('€1,375'), findsOneWidget);
     expect(state.snapshot.safeToSpendNow.toString(), '1375.00 EUR');
-    expect(find.text('€25.00 recorded'), findsOneWidget);
+    expect(find.text('€25 recorded'), findsOneWidget);
     expect(state.snapshot.ledger.cumulativeSpending.toString(), '25.00 EUR');
   });
 
@@ -118,12 +125,12 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
     await tester.pumpAndSettle();
 
-    expect(find.text('€2,040.00'), findsOneWidget);
+    expect(inHero('€2,040'), findsOneWidget);
 
     state.confirmBalance(Money.parse('1840.00', 'EUR'));
     await tester.pumpAndSettle();
 
-    expect(find.text('€1,840.00'), findsOneWidget);
+    expect(inHero('€1,840'), findsOneWidget);
     // §15.1: an adjustment is neither expense nor income (INV-13).
     expect(state.snapshot.ledger.cumulativeSpending.toString(), '0.00 EUR');
   });
@@ -144,8 +151,8 @@ void main() {
     expect(s.safeToSpendNow.toString(), '0.00 EUR');
     expect(s.mandatoryFundingGap.toString(), '200.00 EUR');
 
-    expect(find.text('€0.00'), findsOneWidget);
-    expect(find.text('€200.00 short'), findsOneWidget);
+    expect(inHero('€0'), findsOneWidget);
+    expect(find.text('€200 short'), findsOneWidget);
     expect(find.text('See what is short'), findsOneWidget);
 
     // The breakdown names the claim rather than moving it.
@@ -172,7 +179,7 @@ void main() {
     // §22 RunScenario is non-mutating.
     expect(state.snapshot.safeToSpendNow.toString(), '600.00 EUR');
     await tester.pumpAndSettle();
-    expect(find.text('€600.00'), findsOneWidget);
+    expect(inHero('€600'), findsOneWidget);
   });
 }
 
@@ -197,7 +204,7 @@ void _reopenTests() {
         ..physicalSize = const Size(420, 1800)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       if (currency != null) await pickCurrency(tester, currency);
       return state;
@@ -221,18 +228,18 @@ void _reopenTests() {
       await tester.tap(find.widgetWithText(FilledButton, 'Build my plan'));
       await tester.pumpAndSettle();
 
-      expect(find.text('€3,000.00'), findsOneWidget);
+      expect(inHero('€3,000'), findsOneWidget);
       first.recordExpense(Money.parse('25.00', 'EUR'));
       await tester.pumpAndSettle();
-      expect(find.text('€2,975.00'), findsOneWidget);
+      expect(inHero('€2,975'), findsOneWidget);
 
       // Close and reopen against the same storage.
       final second = await boot(tester);
       expect(second.isOnboarded, isTrue);
       expect(find.byKey(const Key('change-currency')), findsNothing);
       expect(find.text('Set up your plan'), findsNothing);
-      expect(find.text('Your plan'), findsOneWidget);
-      expect(find.text('€2,975.00'), findsOneWidget);
+      expect(find.byKey(const Key('top-title')), findsOneWidget);
+      expect(inHero('€2,975'), findsOneWidget);
       expect(second.snapshot.ledger.cumulativeSpending,
           Money.parse('25.00', 'EUR'),);
     });
@@ -259,7 +266,7 @@ void _setupIsObviousTests() {
         ..physicalSize = const Size(420, 1800)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(
+      await tester.pumpWidget(UpinoApp(singleFormSetup: true,
         state: AppState(
           now: DateTime.utc(2026, 10, 1, 10),
           utcOffset: const Duration(hours: 2),

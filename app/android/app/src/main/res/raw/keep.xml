@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Resources the release shrinker cannot see being used: the widget is
+     drawn from a layout the launcher inflates, and the reminder's icon is
+     named from Dart. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@layout/upino_widget,@drawable/widget_*,@xml/upino_widget_info,@mipmap/ic_launcher" />

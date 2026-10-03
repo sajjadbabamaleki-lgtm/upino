@@ -172,11 +172,11 @@ void main() {
 
       expect(find.text('Activity'), findsWidgets);
       expect(find.text('Spent'), findsOneWidget);
-      expect(find.text('−€25.00'), findsOneWidget);
+      expect(find.text('−€25'), findsOneWidget);
 
       await tester.tap(find.text('Spent'));
       await tester.pumpAndSettle();
-      expect(find.text('Remove €25.00?'), findsOneWidget);
+      expect(find.text('Remove €25?'), findsOneWidget);
 
       await tester.tap(find.widgetWithText(FilledButton, 'Remove it'));
       await tester.pumpAndSettle();

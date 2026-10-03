@@ -3,12 +3,19 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../domain/account.dart';
+import '../design/icon.dart';
 import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/tokens.dart';
+import '../engine/currencies.dart';
 import '../engine/plan.dart';
 import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
+import 'backup_section.dart';
+import 'demo_screen.dart';
+import 'faster_entry_section.dart';
+import 'currency_screen.dart';
 import 'language_screen.dart';
 import '../widgets/amount_sheet.dart';
 import '../widgets/upino_sheet.dart';
@@ -68,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
       currency: state.currency,
       title: AppLocalizations.of(context).askBalanceTitle,
       explanation: AppLocalizations.of(context).askBalanceBlurb,
-      initial: state.snapshot.trustedAllocatableLiquidity,
+      initial: state.accountBalance(Account.mainId),
     );
     if (observed != null) state.confirmBalance(observed.amount);
   }
@@ -116,13 +123,11 @@ class ProfileScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: revealed([
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Text(l.profileTitle, style: theme.textTheme.headlineLarge),
-        ),
-
+      children: revealed(groupRows([
+        // The page's name is in the capsule above.
         SectionHeading(l.profileYourData),
+        _CurrencyRow(state: state),
+        const SizedBox(height: 10),
         ActionRow(
           key: const Key('profile-confirm-balance'),
           title: l.profileConfirmBalance,
@@ -176,7 +181,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(l.profileAppearance),
         UpinoCard(
           child: Column(
@@ -218,8 +223,22 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 10),
         _LanguageRow(state: state),
 
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
+        FasterEntrySection(state: state),
+
+        const SizedBox(height: 20),
+        BackupSection(state: state),
+
+        const SizedBox(height: 20),
         SectionHeading(l.profileStartAgain),
+        ActionRow(
+          key: const Key('profile-demo'),
+          title: l.demoTry,
+          subtitle: l.demoTrySub,
+          trailing: const RowAffordance(icon: 'chevronRight'),
+          onTap: () => DemoScreen.open(context, state),
+        ),
+        const SizedBox(height: 10),
         ActionRow(
           key: const Key('profile-start-over'),
           title: l.profileDelete,
@@ -228,7 +247,7 @@ class ProfileScreen extends StatelessWidget {
               isDark(context) ? UpinoTokens.darkCritical : UpinoTokens.critical,
           onTap: () => _startOver(context),
         ),
-      ]),
+      ]),),
     );
   }
 }
@@ -239,7 +258,7 @@ class ProfileScreen extends StatelessWidget {
 ///
 /// The row opens the same picker onboarding opens, rather than a second
 /// layout that would have to be kept in step with it.
-class _LanguageRow extends StatelessWidget {
+class _LanguageRow extends StatelessWidget with GroupableRow {
   const _LanguageRow({required this.state});
 
   final AppState state;
@@ -268,6 +287,77 @@ class _LanguageRow extends StatelessWidget {
       key: const Key('profile-language'),
       title: l.profileLanguage,
       subtitle: code == null ? l.languagePhone : languageNames[code]!.native,
+      trailing: const RowAffordance(icon: 'chevronRight'),
+      onTap: () => _open(context),
+    );
+  }
+}
+
+/// The currency the plan is kept in. Onboarding asks it first; this is the
+/// way back to it afterwards, through the same picker.
+///
+/// A change is confirmed before it happens, because it changes what every
+/// figure in the plan means and there is no exchange rate behind it.
+class _CurrencyRow extends StatelessWidget with GroupableRow {
+  const _CurrencyRow({required this.state});
+
+  final AppState state;
+
+  Future<void> _open(BuildContext context) async {
+    final picked = await UpinoSheet.show<String>(
+      context,
+      builder: (sheetContext) => UpinoSheet(
+        onClose: () => Navigator.of(sheetContext).pop(),
+        child: CurrencyPicker(
+          selected: state.currency,
+          onSelect: (code) => Navigator.of(sheetContext).pop(code),
+        ),
+      ),
+    );
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (picked == null || picked == state.currency || !context.mounted) {
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final l = AppLocalizations.of(dialogContext);
+        return AlertDialog(
+          backgroundColor: cardColor(dialogContext),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(UpinoTokens.radiusCard),
+          ),
+          title: Text(l.currencyChangeTitle(picked)),
+          content: Text(l.currencyChangeBlurb(picked)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(l.cancel),
+            ),
+            TextButton(
+              key: const Key('currency-change-confirm'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(l.currencyChangeConfirm),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed ?? false) state.changeCurrency(picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final info = currencyCatalogue
+        .where((c) => c.code == state.currency)
+        .firstOrNull;
+    return ActionRow(
+      key: const Key('profile-currency'),
+      leading: info == null ? null : CountryFlag(info.flagCountry, size: 22),
+      title: l.profileCurrency,
+      subtitle: info == null ? state.currency : '${info.name} · ${info.code}',
       trailing: const RowAffordance(icon: 'chevronRight'),
       onTap: () => _open(context),
     );

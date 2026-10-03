@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../design/parts.dart';
+import 'glass_hero.dart';
 import '../design/theme.dart';
 import '../design/icon.dart';
 import '../design/tokens.dart';
@@ -52,15 +53,19 @@ class StsHero extends StatelessWidget {
             onConfirmBalance: onConfirmBalance,
             onQuickExpense: onQuickExpense,
           ),
-        HeroState.fundingGap => _GapHero(snapshot: snapshot, onResolve: onResolve),
+        HeroState.fundingGap =>
+          _GapHero(snapshot: snapshot, onResolve: onResolve),
         HeroState.reviewRequired =>
           _ReviewHero(snapshot: snapshot, onConfirmBalance: onConfirmBalance),
       };
 }
 
-/// States S1 and S2. The fill is identical in both: age is de-emphasis, not
-/// alarm (§15.2). The gradient appears nowhere else in the app, so its
-/// presence alone says the number is current.
+/// States S1 and S2: frosted glass lit from behind by a strong blue light
+/// on the right and a violet one low on the left, with a little of the blue
+/// spilling above the card. The card carries its own dark ground, so it
+/// looks the same on a light or a dark page. Age is de-emphasis, not alarm
+/// (§15.2), so both states share it; the blue light is drawn from the hero's
+/// own gradient tokens, which appear nowhere else.
 class _GradientHero extends StatelessWidget {
   const _GradientHero({
     required this.snapshot,
@@ -76,42 +81,33 @@ class _GradientHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = isDark(context);
     final l = AppLocalizations.of(context);
-    return _HeroShell(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(UpinoTokens.radiusHero),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: dark
-              ? const [UpinoTokens.darkGradientStart, UpinoTokens.darkGradientEnd]
-              : const [UpinoTokens.gradientStart, UpinoTokens.gradientEnd],
-        ),
-      ),
-      decoration2: const DotField(),
+    return GlassHero(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UpinoBadge(
+          Text(
             l.heroSafeToSpend,
-            background: const Color(0x2EFFFFFF),
-            foreground: UpinoTokens.textOnInverse,
+            style: const TextStyle(
+                color: Color(0xD9FFFFFF),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,),
+          ),
+          const SizedBox(height: 12),
+          _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
+          const SizedBox(height: 11),
+          _HeroMeta(
+            l.heroUntil(formatDate(context, snapshot.decisionHorizonEnd)),
           ),
           const SizedBox(height: 16),
-          _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
-          const SizedBox(height: 14),
-          _HeroMeta(
-            l.heroUntilSetAside(
-              formatDate(context, snapshot.decisionHorizonEnd),
-              snapshot.protectedTotal.display(),
-            ),
-          ),
-          const SizedBox(height: 26),
           if (degraded)
-            _FreshnessRow(snapshot: snapshot, onConfirmBalance: onConfirmBalance)
+            _FreshnessRow(
+                snapshot: snapshot, onConfirmBalance: onConfirmBalance,)
           else if (onQuickExpense != null)
-            _HeroButton(label: l.heroRecordSpend, onPressed: onQuickExpense!),
+            _HeroButton(
+                label: l.heroRecordSpend,
+                onPressed: onQuickExpense!,
+                ink: true,),
         ],
       ),
     );
@@ -138,10 +134,12 @@ class _GapHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UpinoBadge(
+          Text(
             l.heroSafeToSpend,
-            background: const Color(0x1FFFFFFF),
-            foreground: UpinoTokens.textOnInverse,
+            style: const TextStyle(
+                color: Color(0xCCFFFFFF),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,),
           ),
           const SizedBox(height: 16),
           _Figure(snapshot.safeToSpendNow, color: UpinoTokens.textOnInverse),
@@ -157,8 +155,11 @@ class _GapHero extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const UpinoIcon('alert',
-                        size: 19, color: UpinoTokens.criticalOnInverse,),
+                    const UpinoIcon(
+                      'alert',
+                      size: 19,
+                      color: UpinoTokens.criticalOnInverse,
+                    ),
                     const SizedBox(width: 9),
                     Expanded(
                       child: Text(
@@ -250,12 +251,10 @@ class _HeroShell extends StatelessWidget {
   const _HeroShell({
     required this.decoration,
     required this.child,
-    this.decoration2,
   });
 
   final BoxDecoration decoration;
   final Widget child;
-  final Widget? decoration2;
 
   @override
   Widget build(BuildContext context) => ClipRRect(
@@ -265,10 +264,10 @@ class _HeroShell extends StatelessWidget {
           decoration: decoration,
           child: Stack(
             children: [
-              if (decoration2 != null)
-                Positioned(top: -6, right: -6, child: decoration2!),
               Padding(
-                padding: const EdgeInsets.fromLTRB(22, 16, 22, 16),
+                // The bottom matches the sides, so the button at the foot of
+                // the card sits in an even frame rather than on its edge.
+                padding: const EdgeInsets.fromLTRB(22, 16, 22, 22),
                 child: child,
               ),
             ],
@@ -314,37 +313,37 @@ class _FreshnessRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
       ),
       child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            switch (days) {
-              null => l.heroBalanceNever,
-              0 => l.heroBalanceToday,
-              1 => l.heroBalanceYesterday,
-              _ => l.heroBalanceDays(days),
-            },
-            style: const TextStyle(color: Colors.white, fontSize: 13),
-          ),
-        ),
-        GestureDetector(
-          onTap: onConfirmBalance,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
-            ),
+        children: [
+          Expanded(
             child: Text(
-              l.confirm,
-              style: const TextStyle(
-                color: UpinoTokens.gradientStart,
-                fontSize: 13.5,
-                fontWeight: FontWeight.w700,
+              switch (days) {
+                null => l.heroBalanceNever,
+                0 => l.heroBalanceToday,
+                1 => l.heroBalanceYesterday,
+                _ => l.heroBalanceDays(days),
+              },
+              style: const TextStyle(color: Colors.white, fontSize: 13),
+            ),
+          ),
+          GestureDetector(
+            onTap: onConfirmBalance,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(UpinoTokens.radiusPill),
+              ),
+              child: Text(
+                l.confirm,
+                style: const TextStyle(
+                  color: UpinoTokens.gradientStart,
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }
@@ -352,10 +351,14 @@ class _FreshnessRow extends StatelessWidget {
 
 /// The white pill that sits inside a coloured hero.
 class _HeroButton extends StatelessWidget {
-  const _HeroButton({required this.label, required this.onPressed});
+  const _HeroButton(
+      {required this.label, required this.onPressed, this.ink = false,});
 
   final String label;
   final VoidCallback onPressed;
+
+  /// Ink label with a plus, for the glass hero; blue otherwise.
+  final bool ink;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -364,10 +367,22 @@ class _HeroButton extends StatelessWidget {
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: Colors.white,
-            foregroundColor: UpinoTokens.actionPrimary,
+            foregroundColor:
+                ink ? const Color(0xFF0B0B0E) : UpinoTokens.actionPrimary,
             minimumSize: const Size.fromHeight(52),
           ),
-          child: Text(label),
+          child: ink
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const UpinoIcon('su-plus',
+                        size: 18, color: Color(0xFF0B0B0E),),
+                    const SizedBox(width: 8),
+                    Flexible(
+                        child: Text(label, overflow: TextOverflow.ellipsis),),
+                  ],
+                )
+              : Text(label),
         ),
       );
 }
@@ -381,19 +396,40 @@ class _Figure extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => FittedBox(
-        fit: BoxFit.scaleDown,
-        alignment: Alignment.centerLeft,
-        child: Text(
-          amount.display(),
-          style: Theme.of(context)
-              .textTheme
-              .displayLarge
-              ?.copyWith(color: color, fontFeatures: moneyFeatures),
+  Widget build(BuildContext context) {
+    // The whole euros large, the cents small beside them.
+    final text = amount.display();
+    final dot = text.lastIndexOf('.');
+    final base = Theme.of(context).textTheme.displayLarge?.copyWith(
+          color: color,
+          fontFeatures: moneyFeatures,
+          fontSize: 54,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -2.4,
+          height: 1.0,
+        );
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: dot < 0 ? text : text.substring(0, dot)),
+            if (dot >= 0)
+              TextSpan(
+                text: text.substring(dot),
+                style: TextStyle(
+                    fontSize: 26,
+                    letterSpacing: -0.6,
+                    color: color.withValues(alpha: 0.7),),
+              ),
+          ],
         ),
-      );
+        style: base,
+      ),
+    );
+  }
 }
-
 
 /// Dates read as words. The engine's own `toString` is an ISO string meant
 /// for logs and fixtures, never for the person using the app.
