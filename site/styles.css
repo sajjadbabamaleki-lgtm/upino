@@ -1015,7 +1015,7 @@ button { font: inherit; color: inherit; }
 }
 .strip__bio { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 480ms var(--ease-out), opacity 300ms ease; }
 .strip__bio > div { overflow: hidden; }
-.strip__bio p { margin: 0; padding-top: 10px; max-width: 34ch; font-size: 14px; color: #d7a45a; font-family: var(--mono); }
+.strip__bio p { margin: 0; padding-top: 10px; max-width: 34ch; font-size: 15px; line-height: 1.45; color: rgba(242, 242, 242, 0.82); text-wrap: pretty; }
 .strip.is-open .strip__bio { grid-template-rows: 1fr; opacity: 1; transition-delay: 120ms; }
 .strips__note { margin: 16px 0 0; }
 
