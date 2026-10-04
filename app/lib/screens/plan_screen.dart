@@ -10,7 +10,10 @@ import '../design/motion.dart';
 import '../design/parts.dart';
 import '../design/theme.dart';
 import '../design/tokens.dart';
+import '../domain/account.dart';
+import '../domain/bill.dart';
 import '../domain/goal.dart';
+import '../domain/holding.dart';
 import '../engine/domain.dart';
 import '../engine/money.dart';
 import '../l10n/app_localizations.dart';
@@ -18,6 +21,12 @@ import '../l10n/dates.dart';
 import '../l10n/labels.dart';
 import '../state/app_state.dart';
 import '../widgets/amount_sheet.dart';
+import '../widgets/account_editor_sheet.dart';
+import '../widgets/balance_history_card.dart';
+import '../widgets/bill_editor_sheet.dart';
+import '../widgets/bills_sheet.dart';
+import '../widgets/choice_sheet.dart';
+import '../widgets/holding_editor_sheet.dart';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({
@@ -66,22 +75,144 @@ class PlanScreen extends StatelessWidget {
     if (amount != null) state.setExpectedIncome(amount: amount.amount);
   }
 
+  Future<void> _editHolding(BuildContext context, Holding? holding) async {
+    final draft = await HoldingEditorSheet.show(
+      context,
+      currency: state.currency,
+      holding: holding,
+    );
+    if (draft == null) return;
+    if (holding == null) {
+      state.addHolding(
+        name: draft.name,
+        quantityMilli: draft.quantityMilli,
+        unitPrice: draft.unitPrice,
+      );
+    } else if (draft.deleted) {
+      state.removeHolding(holding.id);
+    } else {
+      state.updateHolding(
+        holding.id,
+        name: draft.name,
+        quantityMilli: draft.quantityMilli,
+        unitPrice: draft.unitPrice,
+      );
+    }
+  }
+
   Future<void> _confirmBalance(BuildContext context) async {
     final observed = await AmountSheet.show(
       context,
       currency: state.currency,
       title: AppLocalizations.of(context).askBalanceTitle,
       explanation: AppLocalizations.of(context).askBalanceBlurb,
-      initial: state.snapshot.trustedAllocatableLiquidity,
+      initial: state.accountBalance(Account.mainId),
     );
     if (observed != null) state.confirmBalance(observed.amount);
   }
+
+  Future<void> _recordPay(BuildContext context) async {
+    final l = AppLocalizations.of(context);
+    final amount = await AmountSheet.show(
+      context,
+      currency: state.currency,
+      title: l.payArrivedTitle,
+      explanation: l.payDueSub,
+      initial: state.nextIncome?.expectedAmount,
+    );
+    if (amount != null) state.confirmIncome(amount.amount);
+  }
+
+  Future<void> _addAccount(BuildContext context) async {
+    final draft =
+        await AccountEditorSheet.show(context, currency: state.currency);
+    if (draft == null) return;
+    state.addAccount(
+      name: draft.name,
+      kind: draft.kind,
+      opening: draft.opening,
+      counted: draft.counted,
+    );
+  }
+
+  Future<void> _openAccount(BuildContext context, Account a) async {
+    final l = AppLocalizations.of(context);
+    final targets = [
+      (id: Account.mainId, name: l.accountMain),
+      for (final o in state.accounts)
+        if (o.id != a.id && o.holdsMoney) (id: o.id, name: o.name),
+    ];
+    final choice = await ChoiceSheet.show<String>(
+      context,
+      title: a.name,
+      subtitle: accountKindLabel(l, a.kind),
+      choices: [
+        if (a.holdsMoney) Choice('confirm', l.accountConfirm),
+        if (a.holdsMoney)
+          for (final t in targets)
+            Choice('move:${t.id}', l.accountMoveTo(t.name)),
+        if (a.kind == AccountKind.card)
+          Choice('pay', l.accountPayCard, detail: l.accountPayBlurb),
+        if (a.holdsMoney)
+          Choice(
+            'count',
+            a.counted ? l.accountStopCounting : l.accountCounted,
+            detail: l.accountCountedSub,
+          ),
+        Choice(
+          'remove',
+          l.accountRemove,
+          detail: state.accountInUse(a.id) ? l.accountInUse : null,
+          destructive: true,
+        ),
+      ],
+    );
+    if (choice == null || !context.mounted) return;
+    if (choice == 'confirm') {
+      final observed = await AmountSheet.show(
+        context,
+        currency: state.currency,
+        title: l.accountConfirm,
+        initial: state.accountBalance(a.id),
+        allowZero: true,
+      );
+      if (observed != null) state.confirmAccountBalance(a.id, observed.amount);
+    } else if (choice.startsWith('move:')) {
+      final to = choice.substring(5);
+      final amount = await AmountSheet.show(
+        context,
+        currency: state.currency,
+        title: l.accountMove,
+        explanation: l.accountMoveBlurb,
+      );
+      if (amount != null) {
+        state.transfer(from: a.id, to: to, amount: amount.amount);
+      }
+    } else if (choice == 'pay') {
+      final amount = await AmountSheet.show(
+        context,
+        currency: state.currency,
+        title: l.accountPayCard,
+        explanation: l.accountPayBlurb,
+        initial: state.accountBalance(a.id),
+      );
+      if (amount != null) state.payCard(a.id, amount.amount);
+    } else if (choice == 'count') {
+      state.updateAccount(a.id, counted: !a.counted);
+    } else if (choice == 'remove') {
+      state.removeAccount(a.id);
+    }
+  }
+
+  Future<void> _addBill(BuildContext context) => addBillFlow(context, state);
+
+  Future<void> _openBill(BuildContext context, Bill bill) =>
+      openBillFlow(context, state, bill);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    final snapshot = state.snapshot;
     final claims = state.editableClaims;
     final existing = {for (final c in claims) c.id};
     final addable =
@@ -90,27 +221,50 @@ class PlanScreen extends StatelessWidget {
 
     return ListView(
       padding: padding,
-      children: revealed([
+      children: revealed(groupRows([
+        // The page's name is in the capsule above.
         Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l.planTitle, style: theme.textTheme.headlineLarge),
-              const SizedBox(height: 2),
-              Text(
-                l.planBlurb,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 14),
+          child: Text(
+            l.planBlurb,
+            style: theme.textTheme.bodySmall,
           ),
         ),
         SectionHeading(l.planMoneyAndIncome),
+        // Once there is a history to draw.
+        if (state.daysInUse >= 2) ...[
+          BalanceHistoryCard(state: state),
+          const SizedBox(height: 10),
+        ],
         ActionRow(
           key: const Key('plan-balance'),
-          title: l.planMoneyYouHave,
-          subtitle: snapshot.trustedAllocatableLiquidity.display(),
+          title: state.accounts.isEmpty ? l.planMoneyYouHave : l.accountMain,
+          subtitle: state.accountBalance(Account.mainId).display(),
           onTap: () => _confirmBalance(context),
+        ),
+        const SizedBox(height: 10),
+        for (final a in state.accounts) ...[
+          ActionRow(
+            key: Key('plan-account-${a.id}'),
+            title: a.name,
+            subtitle: [
+              accountKindLabel(l, a.kind),
+              if (a.isDebt)
+                l.accountOwed(state.accountBalance(a.id).display())
+              else
+                state.accountBalance(a.id).display(),
+              if (a.holdsMoney && !a.counted) l.accountNotCounted,
+            ].join(UpinoTokens.separator),
+            onTap: () => _openAccount(context, a),
+          ),
+          const SizedBox(height: 10),
+        ],
+        ActionRow(
+          key: const Key('plan-account-add'),
+          title: l.accountAdd,
+          subtitle: l.accountAddSub,
+          trailing: const RowAffordance(icon: 'add'),
+          onTap: () => _addAccount(context),
         ),
         const SizedBox(height: 10),
         ActionRow(
@@ -136,7 +290,50 @@ class PlanScreen extends StatelessWidget {
             ),
           ),
         ],
-        const SizedBox(height: 26),
+        if (income != null) ...[
+          const SizedBox(height: 10),
+          ActionRow(
+            key: const Key('plan-pay-arrived'),
+            title: l.planRecordPay,
+            subtitle: l.planRecordPaySub,
+            trailing: const RowAffordance(icon: 'add'),
+            onTap: () => _recordPay(context),
+          ),
+        ],
+        // Bills come before goals because the waterfall funds them first.
+        const SizedBox(height: 20),
+        SectionHeading(
+          l.billsTitle,
+          count: state.bills.isEmpty ? null : state.bills.length,
+        ),
+        for (final bill in state.bills) ...[
+          ActionRow(
+            key: Key('plan-bill-${bill.id}'),
+            title: bill.name,
+            subtitle: bill.nextDue < state.today
+                ? l.billOverdue(formatDate(context, bill.nextDue))
+                : l.billRow(
+                    billEveryLabel(l, bill.every),
+                    formatDate(context, bill.nextDue),
+                  ),
+            titleColor: bill.nextDue < state.today
+                ? (isDark(context)
+                    ? UpinoTokens.darkCritical
+                    : UpinoTokens.critical)
+                : null,
+            trailing: _Amount(bill.amount),
+            onTap: () => _openBill(context, bill),
+          ),
+          const SizedBox(height: 10),
+        ],
+        ActionRow(
+          key: const Key('plan-bill-add'),
+          title: l.billAdd,
+          subtitle: l.billAddSub,
+          trailing: const RowAffordance(icon: 'add'),
+          onTap: () => _addBill(context),
+        ),
+        const SizedBox(height: 20),
         SectionHeading(
           l.planGoals,
           count: state.goals.isEmpty ? null : state.goals.length,
@@ -171,7 +368,7 @@ class PlanScreen extends StatelessWidget {
             onTap: () => onOpenGoals(),
           ),
         ],
-        const SizedBox(height: 26),
+        const SizedBox(height: 20),
         SectionHeading(
           l.planSetAsideFirst,
           count: claims.isEmpty ? null : claims.length,
@@ -200,7 +397,7 @@ class PlanScreen extends StatelessWidget {
             const SizedBox(height: 10),
           ],
         if (addable.isNotEmpty) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           SectionHeading(l.planAddToPlan),
           for (final option in addable) ...[
             ActionRow(
@@ -217,7 +414,54 @@ class PlanScreen extends StatelessWidget {
             const SizedBox(height: 10),
           ],
         ],
-      ]),
+        // Last, because the screen reads in the order money is assigned and
+        // holdings are assigned nothing: they sit beside the plan.
+        const SizedBox(height: 20),
+        SectionHeading(
+          l.holdingsTitle,
+          count: state.holdings.isEmpty ? null : state.holdings.length,
+        ),
+        for (final h in state.holdings) ...[
+          ActionRow(
+            key: Key('plan-holding-${h.id}'),
+            title: h.name,
+            subtitle: l.holdingSummary(
+              formatQuantity(h.quantityMilli),
+              h.unitPrice.display(),
+              formatDateShort(context, h.pricedOn),
+            ),
+            trailing: _Amount(h.value),
+            onTap: () => _editHolding(context, h),
+          ),
+          const SizedBox(height: 10),
+        ],
+        if (state.holdings.length > 1) ...[
+          UpinoCard(
+            key: const Key('plan-holdings-total'),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(l.holdingsTotal,
+                      style: theme.textTheme.titleMedium,),
+                ),
+                Text(
+                  state.holdingsTotal.display(),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontFeatures: moneyFeatures),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+        ActionRow(
+          key: const Key('plan-holding-add'),
+          title: l.holdingsAdd,
+          subtitle: state.holdings.isEmpty ? l.holdingsBlurb : l.holdingsAddSub,
+          trailing: const RowAffordance(icon: 'add'),
+          onTap: () => _editHolding(context, null),
+        ),
+      ]),),
     );
   }
 

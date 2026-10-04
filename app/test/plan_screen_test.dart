@@ -12,6 +12,11 @@ import 'package:upino/engine/domain.dart';
 import 'package:upino/engine/money.dart';
 import 'package:upino/main.dart';
 import 'package:upino/state/app_state.dart';
+import 'package:upino/widgets/sts_hero.dart';
+
+/// The figure in the hero; the pay card repeats it lower down.
+Finder inHero(String text) =>
+    find.descendant(of: find.byType(StsHero), matching: find.text(text));
 
 final now = DateTime.utc(2026, 10, 1, 10);
 const cest = Duration(hours: 2);
@@ -149,7 +154,7 @@ void main() {
         ..physicalSize = const Size(420, 1400)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('nav-1')));
       await tester.pumpAndSettle();
@@ -171,7 +176,7 @@ void main() {
 
       await tester.tap(find.byKey(const Key('nav-0')));
       await tester.pumpAndSettle();
-      expect(find.text('€450.00'), findsOneWidget);
+      expect(inHero('€450'), findsOneWidget);
     });
 
     testWidgets('a commitment can be removed from the plan', (tester) async {
@@ -190,6 +195,8 @@ void main() {
       final state = await openPlan(tester, funded());
       expect(find.byKey(const Key('plan-add-buffer')), findsOneWidget);
 
+      await tester.ensureVisible(find.byKey(const Key('plan-add-buffer')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('plan-add-buffer')));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '150.00');
@@ -224,9 +231,9 @@ void main() {
         ..physicalSize = const Size(420, 1200)
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
-      await tester.pumpWidget(UpinoApp(state: state));
+      await tester.pumpWidget(UpinoApp(state: state, singleFormSetup: true));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('nav-4')));
+      await tester.tap(find.byKey(const Key('top-profile')));
       await tester.pumpAndSettle();
       return state;
     }

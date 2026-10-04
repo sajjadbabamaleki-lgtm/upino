@@ -6,10 +6,13 @@ import 'package:flutter/services.dart';
 import 'l10n/app_localizations.dart';
 
 import 'data/plan_store.dart';
+import 'device/device_bridge.dart';
 import 'design/motion.dart';
 import 'design/theme.dart';
 import 'design/tokens.dart';
 import 'screens/home_screen.dart';
+import 'screens/first_run/first_run_flow.dart';
+import 'screens/first_run/reveal_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'state/app_state.dart';
 
@@ -21,14 +24,22 @@ Future<void> main() async {
   // moves up; nothing lands under the status icons.
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   final state = AppState(store: await FilePlanStore.inAppDirectory());
-  unawaited(state.restore());
   runApp(UpinoApp(state: state));
+  await state.restore();
+  // After the plan is back, so the widget and the reminder describe the
+  // real plan and not an empty one.
+  await DeviceBridge.start(state);
 }
 
 class UpinoApp extends StatelessWidget {
-  const UpinoApp({required this.state, this.fontFamily, super.key});
+  const UpinoApp({required this.state, this.fontFamily, this.singleFormSetup = false, super.key});
 
   final AppState state;
+
+  /// The one-screen setup form instead of the guided first run. Kept for
+  /// the tests that drive the engine through setup; people never see it.
+  @visibleForTesting
+  final bool singleFormSetup;
 
   /// Set only by the screenshot harness, which loads its own face.
   final String? fontFamily;
@@ -45,6 +56,16 @@ class UpinoApp extends StatelessWidget {
         scrollBehavior: const UpinoScrollBehavior(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        // A phone in a language the app does not speak gets English, not
+        // whichever language happens to sort first (Arabic, right to left).
+        localeResolutionCallback: (device, supported) {
+          if (device != null) {
+            for (final l in supported) {
+              if (l.languageCode == device.languageCode) return l;
+            }
+          }
+          return const Locale('en');
+        },
         // Null follows the phone; Flutter then resolves to the closest
         // supported language, falling back to English. Arabic and Persian
         // flip the whole layout, which Directionality handles from the
@@ -65,12 +86,16 @@ class UpinoApp extends StatelessWidget {
         home: !state.isRestored
             ? const _RestoringScreen()
             : state.isOnboarded
-                ? HomeScreen(state: state)
-                : OnboardingScreen(state: state),
+                ? (state.revealPending
+                    ? RevealScreen(state: state)
+                    : HomeScreen(state: state))
+                : singleFormSetup
+                    ? OnboardingScreen(state: state)
+                    : FirstRunFlow(state: state),
       );
 
   ThemeData _themed(Brightness brightness) =>
-      buildTheme(brightness: brightness, fontFamily: fontFamily);
+      buildTheme(brightness: brightness, fontFamily: fontFamily ?? 'Geist');
 
   /// Transparent bars, with the glyphs inside them set to whichever of black
   /// or white reads against the page underneath. Android and iOS name that

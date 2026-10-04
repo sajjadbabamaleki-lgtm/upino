@@ -133,10 +133,16 @@ class _SheetHead extends StatelessWidget {
 
   static const height = 44.0;
 
+  /// The close icon's distance from both the top and the side of the sheet.
+  static const _cornerInset = UpinoTokens.gutter + 6;
+
   @override
   Widget build(BuildContext context) => SizedBox(
         height: height,
         child: Stack(
+          // The close button reaches a little below the head, over the
+          // empty right-hand end of the title row.
+          clipBehavior: Clip.none,
           children: [
             Center(
               child: Container(
@@ -151,29 +157,33 @@ class _SheetHead extends StatelessWidget {
               ),
             ),
             if (onClose != null)
-              // 36, not 30, and held further in from the edge: at 30 it was
-              // under the 44px a finger actually covers, and it sat close
-              // enough to the corner to be reached by accident while
-              // scrolling the list.
+              // The icon is already a square with a cross in it, so it is
+              // drawn on its own: inside a grey circle it read as a box in a
+              // ball. It sits as far from the top of the sheet as from its
+              // side, so it reads as set into the corner rather than stuck
+              // to one edge of it.
+              // The tap target stays 40 by 36 around it, held 22 in from the
+              // edge so scrolling the list does not catch it.
               Positioned(
-                top: 4,
-                right: UpinoTokens.gutter + 6,
+                // The icon is centred in a 36-high target, so 6 above it.
+                top: _cornerInset - 6,
+                right: _cornerInset,
                 child: GestureDetector(
                   key: const Key('sheet-close'),
                   onTap: onClose,
                   behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    width: 36,
+                  child: SizedBox(
+                    width: 40,
                     height: 36,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: sunkenColor(context),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const UpinoIcon(
-                      'close',
-                      size: 19,
-                      color: UpinoTokens.textTertiary,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: UpinoIcon(
+                        'close',
+                        size: 24,
+                        color: isDark(context)
+                            ? UpinoTokens.darkTextTertiary
+                            : UpinoTokens.textTertiary,
+                      ),
                     ),
                   ),
                 ),

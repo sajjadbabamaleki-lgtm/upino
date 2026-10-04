@@ -24,7 +24,7 @@ Future<void> pumpSetup(WidgetTester tester) async {
     ..devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
-    UpinoApp(state: AppState(now: DateTime.utc(2026, 10, 1, 10))),
+    UpinoApp(state: AppState(now: DateTime.utc(2026, 10, 1, 10)), singleFormSetup: true),
   );
   await tester.pumpAndSettle();
 }

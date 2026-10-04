@@ -21,6 +21,7 @@ class Goal {
     required this.targetDate,
     required this.saved,
     required this.kind,
+    this.icon,
   });
 
   final String id;
@@ -29,6 +30,9 @@ class Goal {
   final LocalDate targetDate;
   final Money saved;
   final GoalKind kind;
+
+  /// The icon the person chose for it, a key into the icon set.
+  final String? icon;
 
   Money get remaining => (target - saved).clampedAtZero;
   bool get isComplete => remaining.isZero;
@@ -45,6 +49,7 @@ class Goal {
     LocalDate? targetDate,
     Money? saved,
     GoalKind? kind,
+    String? icon,
   }) =>
       Goal(
         id: id,
@@ -53,6 +58,7 @@ class Goal {
         targetDate: targetDate ?? this.targetDate,
         saved: saved ?? this.saved,
         kind: kind ?? this.kind,
+        icon: icon ?? this.icon,
       );
 
   /// Pay periods left before the target date, never fewer than one: a goal
@@ -105,4 +111,18 @@ class Goal {
       userPriority: targetDate.differenceInDays(today),
     );
   }
+}
+
+/// Money put toward a goal, and when. Kept so a month can say how much went
+/// to goals, which the goal's running total alone cannot.
+class GoalContribution {
+  const GoalContribution({
+    required this.goalId,
+    required this.amount,
+    required this.at,
+  });
+
+  final String goalId;
+  final Money amount;
+  final DateTime at;
 }

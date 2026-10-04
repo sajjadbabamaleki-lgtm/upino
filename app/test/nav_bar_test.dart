@@ -166,7 +166,7 @@ void main() {
 
   testWidgets('only the selected destination shows a label', (t) async {
     await pumpBar(t, 4, Brightness.light);
-    expect(find.text('Profile'), findsOneWidget);
+    expect(find.text('Ask'), findsOneWidget);
     expect(find.text('Home'), findsNothing);
     expect(find.text('Plan'), findsNothing);
     expect(find.text('Goals'), findsNothing);

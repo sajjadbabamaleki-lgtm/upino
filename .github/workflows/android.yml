@@ -18,6 +18,24 @@ env:
   FLUTTER_HOME: ${{ github.workspace }}/.flutter
 
 jobs:
+  # The TypeScript engine is the reference the Dart port is checked against.
+  # Both run the same §24 fixture table, so a divergence is only caught if
+  # both suites run — this one as much as `flutter test`.
+  engine:
+    name: Engine tests (TypeScript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
   build:
     name: Test and build APK
     runs-on: ubuntu-latest
@@ -70,16 +88,23 @@ jobs:
         working-directory: app
         run: flutter test
 
-      # Debug signing, so the APK installs without a release key. Fine for
-      # trying the app; a store build needs its own signing config.
+      # A release build: compiled ahead of time, so it runs at full speed and
+      # is a fraction of a debug APK's size. Signed with the committed debug
+      # key (android/app/build.gradle.kts) so every build installs over the
+      # last; a store build needs its own key.
+      # Each build gets a higher versionCode (the run number), so a phone
+      # always takes the new APK as an update of the one it has; with every
+      # build at versionCode 1, some installers refuse it.
       - name: Build APK
         working-directory: app
-        run: flutter build apk --debug
+        run: >-
+          flutter build apk --release --flavor direct
+          --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: upino-apk
-          path: app/build/app/outputs/flutter-apk/app-debug.apk
+          path: app/build/app/outputs/flutter-apk/app-direct-release.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -92,16 +117,37 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          cp app/build/app/outputs/flutter-apk/app-debug.apk upino.apk
+          cp app/build/app/outputs/flutter-apk/app-direct-release.apk upino.apk
 
           # A moving tag keeps one stable download URL across builds.
           gh release delete latest-android --yes --cleanup-tag || true
           gh release create latest-android upino.apk \
             --title "Upino — latest Android build" \
-            --notes "Debug-signed build of ${{ github.sha }}.
+            --notes "Build of ${{ github.sha }}.
 
           Download **upino.apk** below and open it on an Android phone.
           Android asks once to allow installing from this source.
 
-          The app requests no permissions and makes no network calls." \
+          The app makes no network calls. It asks for SMS or notification
+          access only if you turn those features on in Profile." \
             --target "${{ github.sha }}" 
+
+      # Any other branch publishes to its own moving pre-release, so a change
+      # can be tried on a phone before it is merged without replacing the
+      # build the stable link above points at.
+      - name: Publish to the preview-android release
+        if: github.ref_name != 'claude/v1-to-v2-improvements-075f22'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cp app/build/app/outputs/flutter-apk/app-direct-release.apk upino-preview.apk
+
+          gh release delete preview-android --yes --cleanup-tag || true
+          gh release create preview-android upino-preview.apk \
+            --prerelease --latest=false \
+            --title "Upino — preview Android build" \
+            --notes "Preview of ${{ github.ref_name }} at ${{ github.sha }}. Not merged yet.
+
+          Download **upino-preview.apk** below and open it on an Android phone." \
+            --target "${{ github.sha }}"
