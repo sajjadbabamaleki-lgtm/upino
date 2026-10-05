@@ -1,0 +1,77 @@
+name: iOS build
+
+# Compiles the iOS app on a Mac runner, so a change that breaks the iOS build
+# is caught here rather than on someone's Mac before a store release.
+#
+# The build is unsigned: it proves the project compiles, but the result can't
+# be installed on a phone. Signing needs an Apple Developer account and is
+# done in Xcode (or added here later with the certificate as a secret).
+#
+# macOS minutes cost more than Linux ones, so this only runs when the app or
+# this workflow changes, or when started by hand.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'app/**'
+      - '.github/workflows/ios.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_HOME: ${{ github.workspace }}/.flutter
+
+jobs:
+  build:
+    name: Build iOS (unsigned)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Flutter
+        id: flutter-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FLUTTER_HOME }}
+          key: flutter-stable-${{ runner.os }}-v1
+
+      - name: Install Flutter
+        if: steps.flutter-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 -b stable https://github.com/flutter/flutter.git "$FLUTTER_HOME"
+
+      - name: Put Flutter on PATH
+        run: |
+          echo "$FLUTTER_HOME/bin" >> "$GITHUB_PATH"
+          echo "$FLUTTER_HOME/bin/cache/dart-sdk/bin" >> "$GITHUB_PATH"
+
+      - name: Warm up Flutter
+        run: |
+          flutter --version
+          flutter precache --ios
+
+      - name: Dependencies
+        working-directory: app
+        run: flutter pub get
+
+      - name: Messages
+        working-directory: app
+        run: flutter gen-l10n
+
+      - name: Build iOS app
+        working-directory: app
+        run: flutter build ios --release --no-codesign
+
+      - name: Package
+        run: |
+          cd app/build/ios/iphoneos
+          zip -qr "$GITHUB_WORKSPACE/upino-ios-unsigned.zip" Runner.app
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: upino-ios-unsigned
+          path: upino-ios-unsigned.zip
+          if-no-files-found: error
+          retention-days: 14
